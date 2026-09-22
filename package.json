@@ -1,0 +1,26 @@
+{
+  "name": "schotten-cartes-classiques",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Schotten Totten adapté à un jeu de 52 cartes ou de tarot : statistiques des combinaisons, simulation de parties et règles imprimables.",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "test:coverage": "node --test --experimental-test-coverage tests/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "npm run lint && npm test",
+    "build": "node scripts/build.js",
+    "build:quick": "node scripts/build.js --quick",
+    "pdf": "node scripts/pdf.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-sonarjs": "^4.2.0",
+    "globals": "^17.12.0"
+  }
+}
