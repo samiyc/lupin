@@ -26,6 +26,15 @@ describe("outsTable", () => {
   });
 });
 
+describe("outsTable with a colourless joker", () => {
+  it("counts the jokers for trips and runs, never for a colour", () => {
+    const rows = Object.fromEntries(
+      outsTable(DECKS.classique, JOKER_RULES.colorless).map((row) => [row.id, row.jokers]),
+    );
+    assert.deepEqual(rows, { pair: 2, suitedOpen: 0, suitedGap: 0, suited: 0, open: 2, gap: 2 });
+  });
+});
+
 describe("sampleStartingHands", () => {
   const run = (spec, jokerRule, seed) =>
     sampleStartingHands(spec, { jokerRule, samples: 3000, rng: createRng(seed) });

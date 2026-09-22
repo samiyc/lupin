@@ -1,5 +1,6 @@
 import { FORMATIONS } from "../config/formations.js";
-import { colorOf, isJoker, realCardCount, valueOf } from "./cards.js";
+import { colorOf, isJoker, valueOf } from "./cards.js";
+import { jokerStandIns } from "./stand-ins.js";
 
 /** One bit per formation, in `FORMATIONS` order. */
 export const FORMATION_BIT = Object.freeze(
@@ -65,19 +66,20 @@ export const sumOfScore = (score) => score % SUM_SPAN;
 
 /**
  * Reference definition of "the best a side can make": every joker tries every
- * real card, duplicates included (a joker may copy any card). Slow, and only
- * used to check the lookup tables of `evaluator.js` against.
+ * card it may stand for — any real card, duplicates included, or any value
+ * without a suit for a colourless joker. Slow, and only used to check the
+ * lookup tables of `evaluator.js` against.
  */
-export function bestByBruteForce(spec, cards, order) {
+export function bestByBruteForce(spec, cards, order, jokerRule) {
   const real = cards.filter((card) => !isJoker(card));
   const jokers = cards.length - real.length;
   if (jokers === 0) {
     return strengthScore(order, classify(spec, real), sumOf(spec, real));
   }
   let best = -1;
-  for (let card = 0; card < realCardCount(spec); card += 1) {
+  for (const card of jokerStandIns(spec, jokerRule)) {
     const withCard = [...real, card, ...Array(jokers - 1).fill(cards.find(isJoker))];
-    best = Math.max(best, bestByBruteForce(spec, withCard, order));
+    best = Math.max(best, bestByBruteForce(spec, withCard, order, jokerRule));
   }
   return best;
 }

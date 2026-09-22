@@ -30,20 +30,25 @@ export const FORMATION_SHORT = Object.freeze({
   sum: "So",
 });
 
+/**
+ * `swapped` exchanges the two strongest, `straightUp` the two middle ones
+ * (in four colours a flush is easier to hold than a run), `bothSwapped`
+ * does both.
+ */
 export const ORDERS = Object.freeze({
   original: Object.freeze([...FORMATIONS]),
-  swapped: Object.freeze([
-    "threeOfAKind",
-    "straightFlush",
-    "flush",
-    "straight",
-    "sum",
-  ]),
+  swapped: Object.freeze(["threeOfAKind", "straightFlush", "flush", "straight", "sum"]),
+  straightUp: Object.freeze(["straightFlush", "threeOfAKind", "straight", "flush", "sum"]),
+  bothSwapped: Object.freeze(["threeOfAKind", "straightFlush", "straight", "flush", "sum"]),
 });
 
+export const ORDER_IDS = Object.freeze(Object.keys(ORDERS));
+
 export const ORDER_LABELS = Object.freeze({
-  original: "Ordre d'origine (Suite couleur > Brelan)",
-  swapped: "Ordre inversé (Brelan > Suite couleur)",
+  original: "Ordre d'origine",
+  swapped: "Brelan avant Suite couleur",
+  straightUp: "Suite avant Couleur",
+  bothSwapped: "Les deux échanges",
 });
 
 /** The formations that are a real pattern, i.e. everything but the sum. */

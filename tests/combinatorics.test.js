@@ -84,6 +84,28 @@ describe("the wild-card paradox in 4 colours × 1-10 + 2 jokers", () => {
   });
 });
 
+describe("a colourless joker in 4 colours × 1-10", () => {
+  it("restores the original order, whichever order is played", () => {
+    for (const order of Object.values(ORDERS)) {
+      const { best } = enumerateTriples(DECKS.classique, order, JOKER_RULES.colorless);
+      assert.deepEqual(best, {
+        straightFlush: 32, threeOfAKind: 200, flush: 448, straight: 1024, sum: 9776,
+      });
+    }
+    const { best } = enumerateTriples(DECKS.classique, ORDERS.original, JOKER_RULES.colorless);
+    assert.deepEqual(inversions(best, ORDERS.original), []);
+  });
+
+  it("but not in 5 colours × 1-8, where trips outnumber flushes", () => {
+    const { best } = enumerateTriples(DECKS.tarot, ORDERS.original, JOKER_RULES.colorless);
+    assert.equal(best.threeOfAKind, 280);
+    assert.equal(best.flush, 250);
+    assert.deepEqual(inversions(best, ORDERS.original), [
+      { stronger: "threeOfAKind", weaker: "flush" },
+    ]);
+  });
+});
+
 describe("rarityOrder", () => {
   it("sorts the patterns from rarest to commonest, the sum last", () => {
     const counts = { straightFlush: 208, threeOfAKind: 160, flush: 672, straight: 888, sum: 9552 };

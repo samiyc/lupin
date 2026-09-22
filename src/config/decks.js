@@ -98,8 +98,10 @@ export const DECK_IDS = Object.freeze([
 ]);
 
 /**
- * How jokers may be placed. `maxPerSide` caps jokers on one player's side of
- * one border; `maxPerPlayer` caps them over the whole game.
+ * How jokers may be placed and what they may become. `maxPerSide` caps
+ * jokers on one player's side of one border; `maxPerPlayer` caps them over
+ * the whole game; a `colorless` joker takes any value but no suit, so it
+ * never helps a flush or a straight flush.
  */
 export const JOKER_RULES = Object.freeze({
   free: { id: "free", label: "Jokers libres", maxPerSide: 3, maxPerPlayer: 3 },
@@ -114,6 +116,13 @@ export const JOKER_RULES = Object.freeze({
     label: "1 joker max par joueur",
     maxPerSide: 1,
     maxPerPlayer: 1,
+  },
+  colorless: {
+    id: "colorless",
+    label: "Joker sans couleur",
+    maxPerSide: 3,
+    maxPerPlayer: 3,
+    colorless: true,
   },
 });
 

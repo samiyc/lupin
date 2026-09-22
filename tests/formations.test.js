@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { DECKS } from "../src/config/decks.js";
+import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { JOKER, cardOf, cardLabel, realCardCount } from "../src/core/cards.js";
 import { getEvaluator, getReachability } from "../src/core/evaluator.js";
@@ -52,25 +52,35 @@ describe("strength scores", () => {
 });
 
 describe("the lookup-table evaluator matches the brute-force definition", () => {
+  const { free, colorless } = JOKER_RULES;
   for (const spec of [classique, tarot]) {
-    for (const [orderId, order] of Object.entries(ORDERS)) {
-      it(`${spec.id}, ${orderId} order, every hand with one or two jokers`, () => {
-        const evaluator = getEvaluator(spec, order);
-        const n = realCardCount(spec);
-        for (let a = 0; a < n; a += 1) {
-          const twoJokers = [a, JOKER, JOKER];
-          assert.equal(evaluator.score(twoJokers), bestByBruteForce(spec, twoJokers, order));
-          for (let b = a + 1; b < n; b += 1) {
-            const oneJoker = [a, b, JOKER];
-            assert.equal(evaluator.score(oneJoker), bestByBruteForce(spec, oneJoker, order));
+    for (const rule of [free, colorless]) {
+      for (const [orderId, order] of Object.entries(ORDERS)) {
+        it(`${spec.id}, ${rule.id}, ${orderId} order, every hand with one or two jokers`, () => {
+          const evaluator = getEvaluator(spec, order, rule);
+          const n = realCardCount(spec);
+          for (let a = 0; a < n; a += 1) {
+            const twoJokers = [a, JOKER, JOKER];
+            assert.equal(evaluator.score(twoJokers), bestByBruteForce(spec, twoJokers, order, rule));
+            for (let b = a + 1; b < n; b += 1) {
+              const oneJoker = [a, b, JOKER];
+              assert.equal(evaluator.score(oneJoker), bestByBruteForce(spec, oneJoker, order, rule));
+            }
           }
-        }
-      });
+        });
+      }
     }
   }
 
+  it("a colourless joker never finishes a colour", () => {
+    const evaluator = getEvaluator(classique, ORDERS.original, JOKER_RULES.colorless);
+    assert.equal(evaluator.formation([card(4, HEART), card(5, HEART), JOKER]), "straight");
+    assert.equal(evaluator.formation([card(2, HEART), card(9, HEART), JOKER]), "sum");
+    assert.equal(evaluator.formation([card(7, HEART), card(7, SPADE), JOKER]), "threeOfAKind");
+  });
+
   it("ignores card order inside a side", () => {
-    const evaluator = getEvaluator(classique, ORDERS.original);
+    const evaluator = getEvaluator(classique, ORDERS.original, JOKER_RULES.free);
     const hand = [card(4, HEART), JOKER, card(6, HEART)];
     assert.equal(evaluator.score(hand), evaluator.score([...hand].reverse()));
     assert.equal(evaluator.formation(hand), "straightFlush");
@@ -78,7 +88,7 @@ describe("the lookup-table evaluator matches the brute-force definition", () => 
   });
 
   it("resolves a joker to the highest sum inside the best formation", () => {
-    const evaluator = getEvaluator(classique, ORDERS.original);
+    const evaluator = getEvaluator(classique, ORDERS.original, JOKER_RULES.free);
     assert.equal(evaluator.formation([card(9, HEART), card(10, HEART), JOKER]), "straightFlush");
     assert.equal(evaluator.sum([card(9, HEART), card(10, HEART), JOKER]), 27);
     assert.equal(evaluator.sum([card(1, SPADE), card(5, HEART), JOKER]), 16);
@@ -86,7 +96,7 @@ describe("the lookup-table evaluator matches the brute-force definition", () => 
 });
 
 describe("reachability", () => {
-  const reach = getReachability(classique);
+  const reach = getReachability(classique, JOKER_RULES.free);
   const has = (mask, f) => (mask & FORMATION_BIT[f]) !== 0;
 
   it("a pair is a start of three of a kind and nothing else", () => {

@@ -28,8 +28,8 @@ function forEachTriple(deck, visit) {
  * left out of the population rather than forced into a formation.
  */
 export function enumerateTriples(spec, order, jokerRule) {
-  const evaluator = getEvaluator(spec, order);
-  const reach = getReachability(spec);
+  const evaluator = getEvaluator(spec, order, jokerRule);
+  const reach = getReachability(spec, jokerRule);
   const best = zeroCounts();
   const reachable = zeroCounts();
   let total = 0;

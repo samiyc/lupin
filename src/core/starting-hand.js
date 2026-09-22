@@ -1,5 +1,5 @@
 import { PATTERNS } from "../config/formations.js";
-import { buildDeck, cardOf, isJoker, realCardCount } from "./cards.js";
+import { JOKER, buildDeck, cardOf, isJoker, realCardCount } from "./cards.js";
 import { getReachability } from "./evaluator.js";
 import { hasFormation } from "./formations.js";
 
@@ -31,7 +31,7 @@ function maskOver(hand, groups, allowed, reach) {
  * it sit, so two jokers never make a trio under "one per border".
  */
 export function sampleStartingHands(spec, { jokerRule, samples, rng }) {
-  const reach = getReachability(spec);
+  const reach = getReachability(spec, jokerRule);
   const deck = buildDeck(spec);
   const triples = combinations(spec.handSize, 3);
   const pairs = combinations(spec.handSize, 2);
@@ -72,13 +72,19 @@ export function outsTable(spec, jokerRule) {
     { id: "open", label: "Deux qui se suivent", target: "straight", cards: [at(0, mid), at(1, mid + 1)] },
     { id: "gap", label: "Suite à trou (ex. 4 et 6)", target: "straight", cards: [at(0, mid), at(1, mid + 2)] },
   ];
-  const reach = getReachability(spec);
-  const jokers = jokerRule.maxPerSide >= 1 ? spec.jokers : 0;
+  const reach = getReachability(spec, jokerRule);
   const unseen = realCardCount(spec) + spec.jokers - 2;
   return starts.map((start) => {
     const real = countRealOuts(spec, reach, start);
+    const jokers = jokerOuts(spec, reach, jokerRule, start);
     return { ...start, real, jokers, outs: real + jokers, unseen, share: (real + jokers) / unseen };
   });
+}
+
+/** A joker is an out only where it may sit and where it helps: a colourless one never finishes a colour. */
+function jokerOuts(spec, reach, jokerRule, { cards, target }) {
+  if (spec.jokers === 0 || jokerRule.maxPerSide < 1) return 0;
+  return hasFormation(reach.mask([...cards, JOKER]), target) ? spec.jokers : 0;
 }
 
 function countRealOuts(spec, reach, { cards, target }) {
