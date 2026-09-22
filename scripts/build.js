@@ -1,6 +1,8 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SAMPLE_SIZES, SEED } from "../src/config/simulations.js";
+import { analyze, assertNarrative } from "../src/report/analysis.js";
 import {
   assembleSimulations,
   computeExact,
@@ -8,46 +10,47 @@ import {
   computeStartingHands,
   simulationTasks,
 } from "../src/report/data.js";
+import { renderDocument, renderFragment } from "../src/report/html/page.js";
+import { renderMarkdown } from "../src/report/markdown.js";
 import { runPool } from "./lib/pool.js";
 
 /**
  * `npm run build`: every number of every report, from scratch.
  * `--quick` shrinks the samples for iterating on the report layout.
+ * `--reports-only` re-renders the reports from the existing out/data.json.
  */
 const quick = process.argv.includes("--quick");
+const reportsOnly = process.argv.includes("--reports-only");
 const sizes = quick ? SAMPLE_SIZES.quick : SAMPLE_SIZES.full;
 const outDir = fileURLToPath(new URL("../out/", import.meta.url));
 const started = Date.now();
 const elapsed = () => `${((Date.now() - started) / 1000).toFixed(1)} s`;
-
 const log = (message) => process.stdout.write(`${message}\n`);
+const write = (name, content) => writeFileSync(join(outDir, name), content);
 
-log(`Build ${quick ? "rapide" : "complet"} — graine ${SEED}`);
-const exact = computeExact();
-log(`  mains de 3 cartes : énumération exacte (${elapsed()})`);
-const outs = computeOuts();
-const startingHands = computeStartingHands(sizes.startingHands);
-log(`  mains de départ : ${sizes.startingHands} tirages par paquet (${elapsed()})`);
+async function compute() {
+  log(`Build ${quick ? "rapide" : "complet"} — graine ${SEED}`);
+  const exact = computeExact();
+  log(`  mains de 3 cartes : énumération exacte (${elapsed()})`);
+  const outs = computeOuts();
+  const startingHands = computeStartingHands(sizes.startingHands);
+  log(`  mains de départ : ${sizes.startingHands} tirages par paquet (${elapsed()})`);
+  const tasks = simulationTasks(sizes);
+  const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks, {
+    onProgress: (done, total) => {
+      if (done % 50 === 0 || done === total) log(`  parties : ${done}/${total} lots (${elapsed()})`);
+    },
+  });
+  const simulations = assembleSimulations(tasks, results);
+  return { generatedAt: new Date().toISOString(), seed: SEED, quick, sizes, exact, outs, startingHands, simulations };
+}
 
-const tasks = simulationTasks(sizes);
-const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks, {
-  onProgress: (done, total) => {
-    if (done % 25 === 0 || done === total) log(`  parties : ${done}/${total} lots (${elapsed()})`);
-  },
-});
-const simulations = assembleSimulations(tasks, results);
+mkdirSync(join(outDir, "artifact"), { recursive: true });
+const data = reportsOnly ? JSON.parse(readFileSync(join(outDir, "data.json"), "utf8")) : await compute();
+if (!reportsOnly) write("data.json", JSON.stringify(data, null, 1));
 
-const data = {
-  generatedAt: new Date().toISOString(),
-  seed: SEED,
-  quick,
-  sizes,
-  exact,
-  outs,
-  startingHands,
-  simulations,
-};
-
-mkdirSync(outDir, { recursive: true });
-writeFileSync(new URL("data.json", `file://${outDir.replaceAll("\\", "/")}/`), JSON.stringify(data, null, 1));
-log(`Terminé en ${elapsed()} → out/data.json`);
+const findings = assertNarrative(analyze(data));
+write("statistiques.md", renderMarkdown(findings, data));
+write("statistiques.html", renderDocument(findings, data));
+write(join("artifact", "statistiques.html"), renderFragment(findings, data));
+log(`Terminé en ${elapsed()} → out/statistiques.md, out/statistiques.html`);

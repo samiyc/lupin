@@ -1,0 +1,126 @@
+<header class="felt">
+  <div class="wrap">
+    <p class="eyebrow">Étude statistique · {{games}} parties simulées par variante</p>
+    <h1>Schotten Totten à 42&nbsp;cartes</h1>
+    <p class="lede">Peut-on jouer à Schotten Totten avec le jeu de 52&nbsp;cartes du tiroir&nbsp;? <strong>Oui, à une condition&nbsp;:</strong> le joker vaut le chiffre qu’on veut, mais il n’a pas de couleur.</p>
+    <div class="hand">{{verdictCards}}</div>
+  </div>
+</header>
+
+<main>
+  <section id="combinaisons">
+    <div class="wrap">
+      <p class="eyebrow">Le rappel</p>
+      <h2>Cinq combinaisons, de la plus forte à la plus faible</h2>
+      <div class="prose lead"><p>Les règles d’origine, montrées avec un jeu de 52&nbsp;cartes. Si deux lignes ont la même combinaison, la plus grosse somme gagne&nbsp;; si l’égalité persiste, celui qui a terminé sa ligne le premier l’emporte.</p></div>
+      <div class="forms">{{formationsGrid}}</div>
+    </div>
+  </section>
+
+  <section id="trois-cartes">
+    <div class="wrap">
+      <p class="eyebrow">Premier angle · calcul exact</p>
+      <h2>Trois cartes tirées au hasard</h2>
+      <div class="prose lead">
+        <p>On compte toutes les mains de 3&nbsp;cartes possibles, une par une. C’est la logique des règles d’origine&nbsp;: plus une combinaison est rare, plus elle est forte. Chaque panneau classe les combinaisons de la plus rare à la plus courante, et coche celles qui sont à leur place.</p>
+      </div>
+      <div class="ladders">{{laddersGrid}}</div>
+      <div class="callout">
+        <h3>Le paradoxe du joker libre</h3>
+        <div class="prose">
+          <p>En 4&nbsp;couleurs avec un joker qui peut tout remplacer, la Suite couleur devient plus courante que le Brelan. On pourrait les échanger… mais alors les mains à deux jokers deviennent des Brelans, et le Brelan redevient le plus courant. <strong>Aucun ordre ne tient.</strong> Ce paradoxe est connu au poker avec jokers (Gadbois, <em>Mathematics Magazine</em>, 1996).</p>
+        </div>
+        <div class="seesaw">{{paradoxChart}}</div>
+        <div class="prose"><p>Avec un <strong>joker sans couleur</strong>, les comptes ne dépendent plus de l’ordre choisi&nbsp;: <span class="num">{{clSF}}</span> Suites couleur, <span class="num">{{cl3K}}</span> Brelans, <span class="num">{{clFL}}</span> Couleurs et <span class="num">{{clST}}</span> Suites. La Suite couleur redevient rare, et l’ordre d’origine tient.</p>
+        <p>En tarot, ce même joker a un petit défaut au tirage de 3&nbsp;cartes&nbsp;: le Brelan (<span class="num">{{tarotCl3K}}</span>) y devient à peine plus courant que la Couleur (<span class="num">{{tarotClFL}}</span>). Les angles suivants, plus proches du jeu réel, montrent que l’ordre tient quand même.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="main-de-depart">
+    <div class="wrap">
+      <p class="eyebrow">Deuxième angle · {{startingHands}} mains tirées par paquet</p>
+      <h2>Ce que contient déjà la main de départ</h2>
+      <div class="prose lead"><p>En jeu, on choisit ses 3&nbsp;cartes parmi 6. Voici la probabilité que les 6&nbsp;cartes reçues contiennent déjà la combinaison complète.</p></div>
+      <div class="scroll">{{handTable}}</div>
+      <div class="prose"><p>En 4&nbsp;couleurs avec joker libre, la Couleur (<span class="num">{{handFlush}}</span>) devient plus courante que la Suite (<span class="num">{{handStraight}}</span>)&nbsp;: avec six cartes pour quatre couleurs, il y en a forcément plusieurs de la même. Le joker sans couleur remet les choses dans l’ordre.</p></div>
+    </div>
+  </section>
+
+  <section id="cartes-utiles">
+    <div class="wrap">
+      <p class="eyebrow">Troisième angle · calcul exact</p>
+      <h2>Les cartes qui complètent</h2>
+      <div class="prose lead"><p>Deux cartes sont posées&nbsp;: combien de cartes du paquet terminent la combinaison&nbsp;? Les jokers qui conviennent aussi sont comptés à part.</p></div>
+      <div class="scroll">{{outsTable}}</div>
+      <div class="prose"><p>En 4&nbsp;couleurs, une paire n’a plus que 2&nbsp;cartes pour devenir Brelan, contre 4 dans l’original&nbsp;: c’est pour ça que le Brelan recule. Le joker sans couleur aide le Brelan et la Suite, jamais la Couleur.</p></div>
+    </div>
+  </section>
+
+  <section id="parties">
+    <div class="wrap">
+      <p class="eyebrow">Quatrième angle · {{games}} parties par variante</p>
+      <h2>Des parties entières, jouées par des robots</h2>
+      <div class="prose lead">
+        <p>Deux robots «&nbsp;gourmands&nbsp;» s’affrontent&nbsp;: chacun pose la carte qui augmente le plus ses chances de gagner une borne, face à ce que l’adversaire construit. Le robot gourmand bat un joueur qui pose au hasard dans <span class="num">{{greedyWin}}</span> des parties, et deux robots au hasard retrouvent les probabilités exactes (Suite couleur <span class="num">{{randomSF}}</span> en jeu, <span class="num">{{exactSF}}</span> au calcul).</p>
+        <p>Même dans l’original, en jeu, la Couleur se construit plus souvent que la Suite (<span class="num">{{refFlushBuilt}}</span> contre <span class="num">{{refStraightBuilt}}</span>)&nbsp;: on court après ce qui rapporte. Les parties ne servent donc pas à classer les combinaisons, mais à mesurer si le jeu <em>ressemble</em> à l’original. On compare, rang par rang, la part des bornes gagnées par la 1re&nbsp;combinaison de l’ordre, par la 2e, et ainsi de suite. 100&nbsp;% veut dire&nbsp;: même profil que l’original.</p>
+      </div>
+      {{profileChart}}
+      <div class="scroll">{{statsTable}}</div>
+      <div class="prose"><p>Le second joueur gagne un peu plus souvent partout, original compris (<span class="num">{{refFirst}}</span> pour le premier)&nbsp;: c’est le jeu, pas les cartes. Celui qui pose le plus de jokers gagne <span class="num">{{jokerEdgeFree}}</span> des parties avec un joker libre, <span class="num">{{jokerEdgeColorless}}</span> avec un joker sans couleur.</p></div>
+    </div>
+  </section>
+
+  <section id="variantes">
+    <div class="wrap">
+      <p class="eyebrow">Toutes les variantes testées en 4 couleurs</p>
+      <h2>La règle du joker compte plus que l’ordre</h2>
+      <div class="prose lead"><p>Ressemblance avec l’original pour chaque règle de joker et chaque ordre. Changer l’ordre ne rattrape pas un joker libre&nbsp;; avec le joker sans couleur, échanger Brelan et Suite couleur coûte <span class="num">{{swapCost}}</span>&nbsp;points.</p></div>
+      <div class="scroll">{{variantsGrid}}</div>
+      <div class="prose"><p>Et «&nbsp;1&nbsp;joker maximum par joueur&nbsp;»&nbsp;? Le second joker reste coincé en main&nbsp;: <span class="num">{{onePerPlayerDraws}}</span> des parties se terminent sans vainqueur.</p></div>
+    </div>
+  </section>
+
+  <section id="explorer">
+    <div class="wrap">
+      <p class="eyebrow">À toi de jouer</p>
+      <h2>Explorer toutes les combinaisons</h2>
+      <div class="prose lead"><p>Choisis un paquet, une règle de joker et un ordre&nbsp;: les trois angles se recalculent à partir des mêmes données.</p></div>
+      <div class="explorer">
+        <form class="controls" id="explorer-form">
+          <fieldset id="f-deck"><legend>Paquet</legend>{{deckChips}}</fieldset>
+          <fieldset id="f-rule"><legend>Joker</legend>{{ruleChips}}</fieldset>
+          <fieldset id="f-order"><legend>Ordre des combinaisons</legend>{{orderChips}}</fieldset>
+        </form>
+        <div class="panes">
+          <div class="pane" id="pane-triples"></div>
+          <div class="pane" id="pane-hand"></div>
+          <div class="pane" id="pane-play"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="regle">
+    <div class="wrap">
+      <p class="eyebrow">Conclusion</p>
+      <h2>La règle retenue</h2>
+      <div class="callout brass">{{rulesCard}}</div>
+    </div>
+  </section>
+
+  <section id="methode">
+    <div class="wrap prose">
+      <p class="eyebrow">Méthode</p>
+      <h2>Comment c’est calculé</h2>
+      <p><strong>Mains de 3 cartes&nbsp;:</strong> toutes comptées (calcul exact). Un joker prend la meilleure valeur possible pour sa ligne.</p>
+      <p><strong>Mains de départ&nbsp;:</strong> {{startingHands}} mains de 6 tirées au hasard pour chaque paquet.</p>
+      <p><strong>Parties&nbsp;:</strong> {{games}} par variante, robot contre robot, avec la graine {{seed}}&nbsp;: tout se rejoue à l’identique.</p>
+      <p><strong>Simplification&nbsp;:</strong> une borne se règle quand les deux côtés ont 3&nbsp;cartes. La revendication anticipée («&nbsp;je prouve que tu ne peux plus me battre&nbsp;») n’est pas simulée&nbsp;: elle change le moment où l’on gagne une borne, pas les combinaisons que l’on construit.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Généré par <code>npm run build</code> le {{generated}} · aucun chiffre de cette page n’a été tapé à la main.</div>
+</footer>
