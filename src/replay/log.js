@@ -152,18 +152,25 @@ function replayTurn(state, entry, index) {
   if (drawing && formatCard(state.spec, hand[hand.length - 1]) !== entry.drew) fail(`pioche différente (${entry.drew})`);
 }
 
+const NO_OPINION = Object.freeze({ advice: null, adviceGap: null, refused: false });
+
 /**
  * A second opinion on a logged move: the advisor bot's best candidates, and
  * `adviceGap`, how much less the advisor rates the move actually played than
- * its best (0 when the move was one of its best).
+ * its best (0 when the move was one of its best). A move the advisor refuses
+ * to consider at all (the strategist's joker off a pair) has no gap to
+ * measure: `refused` says so instead.
  */
 function adviceFor(state, advisor, entry) {
   const moves = legalMoves(state);
-  if (!advisor || moves.length === 0 || !entry.move) return { advice: null, adviceGap: null };
-  const scored = advisor.scoreMoves(state, moves);
-  const best = Math.max(...scored.map((candidate) => candidate.gain));
+  if (!advisor || moves.length === 0 || !entry.move) return NO_OPINION;
+  const scored = advisor.scoreMoves(state, moves, { keepAll: true });
+  const considered = scored.filter((candidate) => !candidate.refused);
+  const advice = candidatesOf(state.spec, considered);
   const played = scored.find(({ move }) => formatCard(state.spec, move.card) === entry.move.card && move.border === entry.move.border - 1);
-  return { advice: candidatesOf(state.spec, scored), adviceGap: Math.max(0, best - played.gain) };
+  if (!played || played.refused) return { advice, adviceGap: null, refused: Boolean(played) };
+  const best = Math.max(...considered.map((candidate) => candidate.gain));
+  return { advice, adviceGap: Math.max(0, best - played.gain), refused: false };
 }
 
 /**
@@ -176,9 +183,9 @@ export function replayStates(log, { advisor = null } = {}) {
   if (log.format !== REPLAY_FORMAT) throw new Error(`Format de replay inconnu : ${log.format}`);
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
   const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null });
-  const frames = [{ state: snapshot(state), entry: null, advice: null, adviceGap: null }];
+  const frames = [{ state: snapshot(state), entry: null, ...NO_OPINION }];
   log.turns.forEach((entry, index) => {
-    const opinion = entry.candidates ? { advice: null, adviceGap: null } : adviceFor(state, advisor, entry);
+    const opinion = entry.candidates ? NO_OPINION : adviceFor(state, advisor, entry);
     replayTurn(state, entry, index);
     frames.push({ state: snapshot(state), entry, ...opinion });
   });

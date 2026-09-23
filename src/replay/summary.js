@@ -37,7 +37,8 @@ function tallyBorders(summary, log) {
 
 function tallyAdvice(summary, log, advisor) {
   if (!advisor || !log.players.some((player) => player.kind === "human")) return;
-  for (const { entry, advice, adviceGap } of replayStates(log, { advisor }).slice(1)) {
+  for (const { entry, advice, adviceGap, refused } of replayStates(log, { advisor }).slice(1)) {
+    if (refused) summary.advice.refused.push({ startedAt: log.startedAt, turn: entry.turn, hand: entry.hand, played: entry.move });
     if (adviceGap === null) continue;
     summary.advice.moves += 1;
     if (adviceGap < 1e-9) summary.advice.agreed += 1;
@@ -53,7 +54,7 @@ export function summarizeReplays(logs, { advisor = null } = {}) {
     vsBots: {},
     formations: { human: zeroFormations(), bot: zeroFormations() },
     jokers: { human: zeroFormations(), bot: zeroFormations() },
-    advice: { moves: 0, agreed: 0, examples: [] },
+    advice: { moves: 0, agreed: 0, examples: [], refused: [] },
   };
   for (const log of logs.filter((candidate) => candidate.result)) {
     tallyResult(summary, log);

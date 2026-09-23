@@ -69,11 +69,16 @@ export function strategistAdjust(side, card, input) {
 /**
  * Scores moves with `gainOf(move)` plus the strategist's bonus (times
  * `scale`), after dropping the jokers it would not play — unless that leaves
- * nothing to play.
+ * nothing to play. With `keepAll` (advising on someone else's move), the
+ * dropped moves stay in, scored and marked `refused`.
  */
-export function strategistMoves(moves, sideOf, context, { gainOf, scale }) {
+export function strategistMoves(moves, sideOf, context, { gainOf, scale, keepAll = false }) {
   const judged = moves.map((move) => ({ move, ...strategistAdjust(sideOf(move), move.card, context) }));
   const allowed = judged.filter((entry) => entry.allowed);
   const pool = allowed.length > 0 ? allowed : judged;
-  return pool.map(({ move, bonus }) => ({ move, gain: gainOf(move) + scale * bonus }));
+  const kept = keepAll ? judged : pool;
+  return kept.map((entry) => {
+    const scored = { move: entry.move, gain: gainOf(entry.move) + scale * entry.bonus };
+    return pool.includes(entry) ? scored : { ...scored, refused: true };
+  });
 }

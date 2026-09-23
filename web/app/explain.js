@@ -23,6 +23,17 @@ function candidateList(title, candidates, move) {
   return [el("p", {}, title), el("ol", {}, ...items)];
 }
 
+function adviceVerdict({ adviceGap, refused }) {
+  if (refused) return "Le Stratège ne pose jamais un joker hors d'une paire : pas d'écart mesurable.";
+  if (adviceGap === null || adviceGap === undefined) return null;
+  return adviceGap < 1e-9 ? "Même choix que le Stratège." : `Écart avec le meilleur coup du Stratège : ${gain(adviceGap)}`;
+}
+
+function adviceParts(frame, move) {
+  const verdict = adviceVerdict(frame);
+  return [...(verdict ? [el("p", {}, verdict)] : []), ...candidateList("Le Stratège aurait joué :", frame.advice, move)];
+}
+
 export function renderExplain(log, frame) {
   const box = $("explain");
   const entry = frame?.entry;
@@ -39,9 +50,6 @@ export function renderExplain(log, frame) {
     parts.push(el("p", {}, entry.drew ? `Pioche : ${entry.drew}` : "Pioche vide."));
   }
   parts.push(...candidateList("Ses meilleures options :", entry.candidates, entry.move));
-  if (frame.adviceGap !== null && frame.adviceGap !== undefined) {
-    parts.push(el("p", {}, frame.adviceGap < 1e-9 ? "Même choix que le Stratège." : `Écart avec le meilleur coup du Stratège : ${gain(frame.adviceGap)}`));
-  }
-  parts.push(...candidateList("Le Stratège aurait joué :", frame.advice, entry.move));
+  parts.push(...adviceParts(frame, entry.move));
   box.replaceChildren(...parts);
 }

@@ -2,7 +2,8 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { OFFICIAL_RULES } from "../src/config/rules.js";
 import { createRng } from "../src/core/random.js";
-import { finishLog, playLogged, rulesOf, startLog } from "../src/replay/log.js";
+import { isJoker } from "../src/core/cards.js";
+import { finishLog, playLogged, replayStates, rulesOf, startLog } from "../src/replay/log.js";
 import { summarizeReplays } from "../src/replay/summary.js";
 import { BOTS, pickBest } from "../src/sim/bots.js";
 import { createGame, legalMoves } from "../src/sim/game.js";
@@ -52,5 +53,47 @@ describe("summarizeReplays", () => {
   it("skips unfinished logs", () => {
     const unfinished = { ...logs[0], result: null };
     assert.equal(summarizeReplays([unfinished]).advice.moves, 0);
+  });
+});
+
+/** A game where seat 0, marked human, drops its first joker on an empty border. */
+function stubbornJokerGame(seed) {
+  const { spec, order, jokerRule, endMode } = rulesOf(OFFICIAL_RULES);
+  const rng = createRng(seed);
+  const state = createGame(spec, { order, jokerRule, endMode, rng });
+  const players = [
+    { seat: 0, kind: "human", name: "Test" },
+    { seat: 1, kind: "bot", bot: "basique", version: "1.0.0" },
+  ];
+  const bots = [BOTS.greedy(rng), BOTS.greedy(rng)];
+  const log = startLog(state, { rules: OFFICIAL_RULES, players, seed, startedAt: "2026-09-24T10:00:00+02:00" });
+  let stubborn = true;
+  while (!state.over) {
+    const moves = legalMoves(state);
+    const odd = moves.find((move) => isJoker(move.card) && state.borders[move.border].sides[0].length === 0);
+    const hasOther = moves.some((move) => !isJoker(move.card));
+    const forced = state.current === 0 && stubborn && odd && hasOther;
+    if (forced) stubborn = false;
+    playLogged(log, state, forced ? odd : pickBest(bots[state.current].scoreMoves(state, moves), rng));
+  }
+  return { log: finishLog(log, state, "2026-09-24T10:05:00+02:00"), forcedJoker: !stubborn };
+}
+
+describe("advice on a joker the strategist refuses", () => {
+  const seed = [1, 2, 3, 4, 5, 6, 7, 8].find((candidate) => stubbornJokerGame(candidate).forcedJoker);
+  const { log } = stubbornJokerGame(seed);
+
+  it("marks the move refused instead of crashing", () => {
+    const frames = replayStates(log, { advisor: BOTS.strategist(createRng(1)) });
+    const refused = frames.filter((frame) => frame.refused);
+    assert.equal(refused.length, 1);
+    assert.equal(refused[0].adviceGap, null);
+    assert.ok(refused[0].advice.length > 0, "the advisor still says what it would play");
+  });
+
+  it("lists it apart in the summary", () => {
+    const summary = summarizeReplays([log], { advisor: BOTS.strategist(createRng(1)) });
+    assert.equal(summary.advice.refused.length, 1);
+    assert.equal(summary.advice.refused[0].played.card, "JK");
   });
 });

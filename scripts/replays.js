@@ -41,4 +41,9 @@ if (examples.length > 0) lines.push("Les plus grands écarts avec le Stratège :
 for (const example of examples.slice(0, 10)) {
   lines.push(`  ${example.startedAt.slice(0, 16)} tour ${example.turn} (écart ${example.gap.toFixed(3)}) : main ${example.hand.join(" ")} — joué ${example.played.card}→${example.played.border}, conseillé ${example.advised.card}→${example.advised.border}`);
 }
+const { refused } = summary.advice;
+if (refused.length > 0) lines.push("", `Jokers posés hors d'une paire (le Stratège ne le fait jamais) : ${refused.length}`);
+for (const move of refused) {
+  lines.push(`  ${move.startedAt.slice(0, 16)} tour ${move.turn} : main ${move.hand.join(" ")} — joué ${move.played.card}→${move.played.border}`);
+}
 process.stdout.write(`${lines.join("\n")}\n`);

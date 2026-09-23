@@ -13,9 +13,10 @@ import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
  * `experimental` is the strategist with its own settings (`experimental.js`).
  * None looks ahead.
  *
- * Every bot is `{ name, scoreMoves(state, moves), choose(state, moves) }`.
+ * Every bot is `{ name, scoreMoves(state, moves, options), choose(state, moves) }`.
  * `scoreMoves` returns each candidate with its gain: the replay logs and the
- * observer's "why this move" panel read it.
+ * observer's "why this move" panel read it. `options.keepAll` keeps the moves
+ * a bot refuses to consider (marked `refused`), to advise on a human's move.
  */
 const TEMPERATURE = 0.35;
 const JOKER_COST = 0.08;
@@ -38,7 +39,7 @@ export const greedyBot = (rng) => ({
 /** `greedy` plus some of Sami's habits; all three by default. */
 export const strategistBot = (rng, { habits = HABITS, strategy = STRATEGY, name } = {}) => {
   const set = new Set(habits);
-  const scoreMoves = (state, moves) => scoreStrategist(state, moves, { habits: set, strategy });
+  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { habits: set, strategy, keepAll });
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
@@ -84,7 +85,7 @@ function scoreGreedy(state, moves) {
   return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
 }
 
-function scoreStrategist(state, moves, { habits, strategy }) {
+function scoreStrategist(state, moves, { habits, strategy, keepAll }) {
   const { mine, threat } = views(state);
   const player = state.current;
   const context = {
@@ -98,6 +99,7 @@ function scoreStrategist(state, moves, { habits, strategy }) {
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => moveGain(state, move, mine, threat[move.border]),
     scale: VALUE_TO_CHANCE,
+    keepAll,
   });
 }
 
