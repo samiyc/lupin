@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { ideasBonus } from "./ideas.js";
 
 /**
  * Sami's three habits from his real games, as adjustments on top of the
@@ -49,12 +50,13 @@ function suitedBonus({ spec, side, card, unseen, evaluator, strategy }) {
 }
 
 /**
- * `{ allowed, bonus }` for placing `card` on `side`. `context` carries
- * `{ spec, evaluator, mySides, unseen, habits, strategy }`: `habits` a subset
- * of `HABITS`, `strategy` the bonuses (`STRATEGY` unless an experiment says
- * otherwise).
+ * `{ allowed, bonus }` for placing `card` on `side` (border `border`).
+ * `context` carries `{ spec, evaluator, mySides, unseen, habits, strategy }`:
+ * `habits` a subset of `HABITS`, `strategy` the bonuses (`STRATEGY` unless an
+ * experiment says otherwise). With a non-empty `ideas` set it also carries
+ * what `ideasBonus` (`ideas.js`) reads.
  */
-export function strategistAdjust(side, card, input) {
+export function strategistAdjust(side, card, input, border) {
   const context = { strategy: STRATEGY, ...input };
   const { habits } = context;
   if (isJoker(card)) {
@@ -63,6 +65,7 @@ export function strategistAdjust(side, card, input) {
   let bonus = 0;
   if (habits.has("opening") && side.length === 0) bonus += openingBonus(context, card);
   if (habits.has("suited")) bonus += suitedBonus({ ...context, side, card });
+  if (context.ideas?.size > 0) bonus += ideasBonus(context, border, card);
   return { allowed: true, bonus };
 }
 
@@ -73,7 +76,7 @@ export function strategistAdjust(side, card, input) {
  * dropped moves stay in, scored and marked `refused`.
  */
 export function strategistMoves(moves, sideOf, context, { gainOf, scale, keepAll = false }) {
-  const judged = moves.map((move) => ({ move, ...strategistAdjust(sideOf(move), move.card, context) }));
+  const judged = moves.map((move) => ({ move, ...strategistAdjust(sideOf(move), move.card, context, move.border) }));
   const allowed = judged.filter((entry) => entry.allowed);
   const pool = allowed.length > 0 ? allowed : judged;
   const kept = keepAll ? judged : pool;

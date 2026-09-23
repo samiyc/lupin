@@ -17,8 +17,8 @@ export function verdict(f) {
     `  les variantes (ta version rapide : ${pct(f.rapide.resemblance)}, le tarot : ${pct(f.picks.tarot.resemblance)}).`,
     "♣ Avec un joker « libre », aucun ordre ne tient et la Suite couleur",
     `  gagne ${ratio} fois plus de bornes que dans l'original. À éviter.`,
-    `★ Tes ${f.irl.columns} colonnes jouées pour de vrai confirment le tableau, et tes trois`,
-    `  habitudes rendent le robot plus fort (${pct(f.duels.strategist.rate, 0)} de victoires contre l'ancien).`,
+    `★ Tes ${f.irl.columns} colonnes jouées pour de vrai confirment le tableau. Tes habitudes`,
+    `  et tes idées rendent le robot plus fort : ${pct(f.duels.strategist.rate, 0)} de victoires contre l'ancien.`,
   ];
   return ["## Le verdict", "", ...fence(box(lines, { title: "LE VERDICT", inner: 70 })), ""];
 }

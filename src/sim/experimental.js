@@ -1,3 +1,4 @@
+import { IDEA_WEIGHTS, STRATEGIST_IDEAS } from "./ideas.js";
 import { HABITS, STRATEGY } from "./strategist.js";
 
 /**
@@ -6,9 +7,12 @@ import { HABITS, STRATEGY } from "./strategist.js";
  * then measured with `npm run duel -- experimental stratege`. What wins moves
  * into the strategist, with a new strategist version.
  *
- * Current experiment: none — identical to strategist 1.0.0.
+ * Current experiment: none — identical to strategist 1.1.0. The ideas it
+ * tried (`ideas.js`) and what they measured are in docs/analyse-replays.md.
  */
 export const EXPERIMENT = Object.freeze({
   habits: HABITS,
   strategy: Object.freeze({ ...STRATEGY }),
+  ideas: STRATEGIST_IDEAS,
+  weights: Object.freeze({ ...IDEA_WEIGHTS }),
 });

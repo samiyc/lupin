@@ -77,11 +77,15 @@ Trois robots :
   parties réelles. Le joker attend une paire pour faire un Brelan. Les colonnes
   s'ouvrent avec des cartes du milieu, une couleur à la fois. Deux cartes qui se
   suivent dans la même couleur passent avant une paire, tant que la Suite couleur
-  reste possible.
+  reste possible. Depuis la version 1.1, il suit aussi deux idées tirées des
+  parties de Sami contre les robots (`docs/analyse-replays.md`) : les trois bornes
+  du milieu seulement pour un départ solide, et jamais la même valeur seule sur
+  deux bornes.
 
-Le stratège bat le gourmand dans environ 58 % des parties (4 000 parties, des deux
-côtés de la table), et chaque habitude seule le rend déjà meilleur. **C'est lui qui
-joue toutes les parties du rapport.** Le gourmand rejoue les variantes du tableau
+Avec ses trois habitudes, le stratège battait le gourmand dans environ 58 % des
+parties (4 000 parties, des deux côtés de la table), et chaque habitude seule le
+rend déjà meilleur. Les deux idées de la version 1.1 le portent à environ 65 %.
+**C'est lui qui joue toutes les parties du rapport.** Le gourmand rejoue les variantes du tableau
 principal, pour comparer l'ancien résultat au nouveau.
 
 2 000 parties robot stratège contre robot stratège par variante, réparties sur les

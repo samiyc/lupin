@@ -77,6 +77,7 @@ function playNumbers(f, data) {
     irlOptimum: pct(human.optimum.ratio, 0),
     botOptimum: pct(bot.optimum.ratio, 0),
     botJokerTrips: pct(bot.jokers.counts.threeOfAKind / bot.jokers.total, 0),
+    habitsRate: pct(f.duels["strategist:habits"].rate, 0),
     strategistRate: pct(f.duels.strategist.rate, 0),
   };
 }

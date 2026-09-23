@@ -43,7 +43,7 @@ export function simulation(f, data) {
     "",
     `${int(data.sizes.games)} parties par variante entre deux robots « stratèges » : chacun pose la carte`,
     "qui augmente le plus ses chances de gagner une borne, face à ce que l'adversaire",
-    "est en train de construire, et suit en plus tes trois habitudes (voir plus bas).",
+    "est en train de construire, et suit en plus tes habitudes et tes idées (voir plus bas).",
     "La colonne « Ancien robot » donne la ressemblance obtenue avec la première version,",
     "sans tes habitudes. Deux vérifications avant de croire ces parties :",
     "",

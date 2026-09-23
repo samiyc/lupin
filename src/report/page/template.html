@@ -62,7 +62,7 @@
       <p class="eyebrow">Quatrième angle · {{games}} parties par variante</p>
       <h2>Des parties entières, jouées par des robots</h2>
       <div class="prose lead">
-        <p>Deux robots «&nbsp;stratèges&nbsp;» s’affrontent&nbsp;: chacun pose la carte qui augmente le plus ses chances de gagner une borne, face à ce que l’adversaire construit, et suit en plus tes trois habitudes (voir plus bas). La colonne «&nbsp;Ancien robot&nbsp;» donne la ressemblance obtenue avec la première version, sans tes habitudes. Le robot stratège bat un joueur qui pose au hasard dans <span class="num">{{botWin}}</span> des parties, et deux robots au hasard retrouvent les probabilités exactes (Suite couleur <span class="num">{{randomSF}}</span> en jeu, <span class="num">{{exactSF}}</span> au calcul).</p>
+        <p>Deux robots «&nbsp;stratèges&nbsp;» s’affrontent&nbsp;: chacun pose la carte qui augmente le plus ses chances de gagner une borne, face à ce que l’adversaire construit, et suit en plus tes habitudes et tes idées (voir plus bas). La colonne «&nbsp;Ancien robot&nbsp;» donne la ressemblance obtenue avec la première version, sans tes habitudes. Le robot stratège bat un joueur qui pose au hasard dans <span class="num">{{botWin}}</span> des parties, et deux robots au hasard retrouvent les probabilités exactes (Suite couleur <span class="num">{{randomSF}}</span> en jeu, <span class="num">{{exactSF}}</span> au calcul).</p>
         <p>Même dans l’original, en jeu, la Couleur se construit plus souvent que la Suite (<span class="num">{{refFlushBuilt}}</span> contre <span class="num">{{refStraightBuilt}}</span>)&nbsp;: on court après ce qui rapporte. Les parties ne servent donc pas à classer les combinaisons, mais à mesurer si le jeu <em>ressemble</em> à l’original. On compare, rang par rang, la part des bornes gagnées par la 1re&nbsp;combinaison de l’ordre, par la 2e, et ainsi de suite. 100&nbsp;% veut dire&nbsp;: même profil que l’original.</p>
       </div>
       {{profileChart}}
@@ -107,9 +107,9 @@
     <div class="wrap">
       <p class="eyebrow">Tes stratégies dans le robot</p>
       <h2>Chacune de tes habitudes rend le robot plus fort</h2>
-      <div class="prose lead"><p>Chaque habitude a été ajoutée seule, puis les trois ensemble, et le robot ainsi modifié a joué contre l’ancien, des deux côtés de la table.</p></div>
+      <div class="prose lead"><p>Chaque habitude a été ajoutée seule, puis les trois ensemble, puis deux de tes idées tirées des parties contre les robots&nbsp;: les trois bornes du milieu réservées à un départ solide (Brelan en main, ou deux cartes de même couleur qui se suivent, bouts libres), et jamais la même valeur seule sur deux bornes. Le robot ainsi modifié a joué contre l’ancien, des deux côtés de la table.</p></div>
       <div class="scroll">{{duelsTable}}</div>
-      <div class="prose"><p><strong>Était-ce déjà pris en compte&nbsp;?</strong> En partie&nbsp;: l’ancien robot comptait déjà les cartes encore cachées, d’où ton «&nbsp;tant que la couleur n’est pas épuisée&nbsp;», et hésitait à dépenser un joker. Mais les trois habitudes ensemble le font gagner <span class="num">{{strategistRate}}</span> des parties contre l’ancien. C’est donc lui qui joue désormais toutes les parties de ce rapport.</p></div>
+      <div class="prose"><p><strong>Était-ce déjà pris en compte&nbsp;?</strong> En partie&nbsp;: l’ancien robot comptait déjà les cartes encore cachées, d’où ton «&nbsp;tant que la couleur n’est pas épuisée&nbsp;», et hésitait à dépenser un joker. Mais les trois habitudes ensemble le font gagner <span class="num">{{habitsRate}}</span> des parties contre l’ancien, et <span class="num">{{strategistRate}}</span> avec tes deux idées. C’est donc lui, le stratège version&nbsp;1.1, qui joue désormais toutes les parties de ce rapport.</p></div>
     </div>
   </section>
 

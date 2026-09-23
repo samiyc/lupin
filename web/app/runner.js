@@ -43,7 +43,7 @@ export function generateBotGame(bottomId, topId, seed) {
   return finishLog(log, state);
 }
 
-/** "Stratège 1.0.0", or the human's name, for a log's player entry. */
+/** "Stratège 1.1.0", or the human's name, for a log's player entry. */
 export function playerName(entry) {
   if (!entry) return "";
   return entry.kind === "human" ? entry.name : `${entry.label ?? entry.bot} ${entry.version}`;

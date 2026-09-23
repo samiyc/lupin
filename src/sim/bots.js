@@ -1,6 +1,7 @@
 import { isJoker, valueOf } from "../core/cards.js";
 import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
+import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS } from "./ideas.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
 
 /**
@@ -36,10 +37,14 @@ export const greedyBot = (rng) => ({
   choose: (state, moves) => pickBest(scoreGreedy(state, moves), rng),
 });
 
-/** `greedy` plus some of Sami's habits; all three by default. */
-export const strategistBot = (rng, { habits = HABITS, strategy = STRATEGY, name } = {}) => {
+/**
+ * `greedy` plus some of Sami's habits (all three by default), and optionally
+ * some of his later ideas (`ideas.js`, none by default).
+ */
+export const strategistBot = (rng, { habits = HABITS, strategy = STRATEGY, ideas = [], weights = IDEA_WEIGHTS, name } = {}) => {
   const set = new Set(habits);
-  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { habits: set, strategy, keepAll });
+  const tuning = { habits: set, strategy, ideas: new Set(ideas), weights };
+  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { ...tuning, keepAll });
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
@@ -85,7 +90,19 @@ function scoreGreedy(state, moves) {
   return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
 }
 
-function scoreStrategist(state, moves, { habits, strategy, keepAll }) {
+/** What the ideas read on top of the strategist's context; nothing when none is on. */
+function ideasContext(state, player, { ideas, weights }) {
+  if (ideas.size === 0) return {};
+  return {
+    ideas,
+    weights,
+    hand: state.hands[player],
+    theirSides: state.borders.map((border) => border.sides[1 - player]),
+    boardCards: state.borders.flatMap((border) => border.sides.flat()),
+  };
+}
+
+function scoreStrategist(state, moves, { habits, strategy, keepAll, ...tuning }) {
   const { mine, threat } = views(state);
   const player = state.current;
   const context = {
@@ -95,6 +112,7 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll }) {
     mySides: state.borders.map((border) => border.sides[player]),
     habits,
     strategy,
+    ...ideasContext(state, player, tuning),
   };
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => moveGain(state, move, mine, threat[move.border]),
@@ -127,10 +145,14 @@ export { VALUE_TO_CHANCE };
 export const BOTS = Object.freeze({
   random: randomBot,
   greedy: greedyBot,
-  strategist: (rng) => strategistBot(rng),
+  strategist: (rng) => strategistBot(rng, { ideas: STRATEGIST_IDEAS, name: "strategist" }),
   experimental: (rng) => strategistBot(rng, { ...EXPERIMENT, name: "experimental" }),
   // One habit at a time, to weigh each against the plain greedy bot.
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
   "strategist:suited": (rng) => strategistBot(rng, { habits: ["suited"] }),
+  // The three habits without the ideas: strategist 1.0.0, for the report.
+  "strategist:habits": (rng) => strategistBot(rng, { name: "strategist:habits" }),
+  // The three habits plus one idea at a time, to weigh each idea on its own.
+  ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
 });

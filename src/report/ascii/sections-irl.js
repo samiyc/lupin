@@ -111,7 +111,8 @@ const HABIT_LABELS = {
   "strategist:joker": "Garder le joker pour un Brelan",
   "strategist:opening": "Ouvrir au milieu, une couleur à la fois",
   "strategist:suited": "Suite couleur plutôt que paire",
-  strategist: "Les trois ensemble",
+  "strategist:habits": "Les trois ensemble",
+  strategist: "Les trois, plus tes deux idées",
 };
 
 export function strategies(f) {
@@ -122,16 +123,19 @@ export function strategies(f) {
   return [
     "## Tes stratégies dans le robot",
     "",
-    "Chaque habitude a été ajoutée seule, puis les trois ensemble, et le robot ainsi modifié a",
-    "joué contre l'ancien (le « gourmand »), des deux côtés de la table :",
+    "Chaque habitude a été ajoutée seule, puis les trois ensemble, puis deux de tes idées tirées",
+    "des parties contre les robots : les trois bornes du milieu réservées à un départ solide",
+    "(Brelan en main, ou deux cartes de même couleur qui se suivent, bouts libres), et jamais",
+    "la même valeur seule sur deux bornes. Le robot ainsi modifié a joué contre l'ancien",
+    "(le « gourmand »), des deux côtés de la table :",
     "",
     ...fence(table(["Habitude", "Parties gagnées", "Fourchette à 95 %", "Parties"], rows, RIGHT)),
     "",
     "**Était-ce déjà pris en compte ?** En partie : l'ancien robot comptait déjà les cartes",
     "encore cachées (d'où ton « tant que la couleur n'est pas épuisée ») et hésitait à dépenser",
-    "un joker. Mais chacune de tes habitudes le rend plus fort, et les trois ensemble le font",
-    `gagner ${pct(f.duels.strategist.rate, 0)} des parties contre l'ancien. C'est donc lui, le « stratège », qui joue`,
-    "désormais toutes les parties de ce rapport.",
+    "un joker. Mais chacune de tes habitudes le rend plus fort : les trois ensemble le font",
+    `gagner ${pct(f.duels["strategist:habits"].rate, 0)} des parties contre l'ancien, et ${pct(f.duels.strategist.rate, 0)} avec tes deux idées.`,
+    "C'est donc lui, le « stratège » version 1.1, qui joue désormais toutes les parties de ce rapport.",
     "",
   ];
 }

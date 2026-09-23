@@ -69,7 +69,8 @@ const HABITS = [
   ["strategist:joker", "Garder le joker pour un Brelan"],
   ["strategist:opening", "Ouvrir au milieu, une couleur à la fois"],
   ["strategist:suited", "Suite couleur plutôt que paire"],
-  ["strategist", "Les trois ensemble"],
+  ["strategist:habits", "Les trois ensemble"],
+  ["strategist", "Les trois, plus tes deux idées"],
 ];
 
 /** Win rate against the previous bot, with a bar from 50 % (a draw of skill). */

@@ -50,6 +50,7 @@ export const DUEL_CHALLENGERS = Object.freeze([
   "strategist:joker",
   "strategist:opening",
   "strategist:suited",
+  "strategist:habits",
 ]);
 
 /**

@@ -15,13 +15,13 @@ export const BOT_LINEUP = Object.freeze({
   }),
   stratege: Object.freeze({
     engine: "strategist",
-    version: "1.0.0",
+    version: "1.1.0",
     label: "Stratège",
-    description: "Le Basique, plus les trois habitudes de Sami. La référence des statistiques.",
+    description: "Le Basique, plus les habitudes et les idées de Sami. La référence des statistiques.",
   }),
   experimental: Object.freeze({
     engine: "experimental",
-    version: "0.1.0",
+    version: "0.2.0",
     label: "Expérimental",
     description: "Banc d'essai des nouvelles idées. Pour l'instant identique au Stratège.",
   }),
@@ -31,7 +31,7 @@ export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 
 export const DEFAULT_OPPONENT = "stratege";
 
-/** "stratege@1.0.0": how a bot is named in replays. */
+/** "stratege@1.1.0": how a bot is named in replays. */
 export const botTag = (id) => `${id}@${BOT_LINEUP[id].version}`;
 
 export function engineOf(id) {

@@ -23,18 +23,32 @@ adversaire et ton prénom.
 - **Poser une carte** : glisse-la de ta main vers une borne. Autre façon : clique
   la carte, puis la borne, ou tape 1 à 7. Échap annule la sélection.
 - **Ranger ta main** : glisse une carte sur une autre, ou utilise « Trier par
-  couleur » ou « par valeur ». Tu peux ranger ta main même pendant le tour du
-  robot.
-- **En haut** : le numéro du tour et les cartes restantes dans la pioche.
+  couleur » (♠ ♥ ♣ ♦, noir et rouge en alternance, jokers à la fin) ou « par
+  valeur ». Tu peux ranger ta main même pendant le tour du robot.
+- **Lire les piles** : chaque carte porte sa valeur et sa couleur dans le coin
+  haut gauche, la partie qui reste visible quand les cartes se chevauchent.
+  Survole une carte d'une pile pour la voir en entier.
+- **Compter les couleurs** : en haut à droite, un bouton par couleur donne le
+  nombre de cartes de cette couleur que tu vois, sur le plateau et dans ta main,
+  sur 10 (« ♥ 6/10 »). Maintiens un bouton, à la souris ou avec Entrée : les
+  cartes de cette couleur s'allument, les autres passent en gris.
+- **À gauche** : la pioche (grisée une fois vide), le numéro du tour et un
+  chronomètre discret : le temps du coup en cours et celui de la partie. Il
+  s'arrête quand la fenêtre n'est plus active, pour une note prise ailleurs par
+  exemple, et reprend à ton retour.
 - **En fin de partie** : les bornes se règlent une à une. Chacune glisse vers son
   gagnant, verte si elle est à toi, rouge sinon, et la combinaison s'affiche de
   chaque côté.
-- **Enregistrement** : la partie s'enregistre toute seule dans `replays/`.
+- **Enregistrement** : la partie s'enregistre toute seule dans `replays/`. Le nom
+  du fichier finit par le score, en bornes, premier joueur d'abord : `_4-3`.
+  Une victoire par 3 bornes côte à côte remplace le chiffre du gagnant par un B :
+  `_B-2`.
 - **« Recommencer »** : demande confirmation, puis abandonne la partie sans rien
   enregistrer.
 
 **Observer.** Deux robots de la gamme s'affrontent, avec les deux mains visibles.
-- Boutons lecture, pause, coup précédent, coup suivant, et vitesse.
+- Boutons début ⏮, coup précédent ⏪, lecture et pause, coup suivant ⏩, fin ⏭
+  (les bornes réglées), et vitesse. Les touches Début et Fin font la même chose.
 - La **graine** identifie la partie : remets la même pour la revoir.
 - Le panneau de droite dit ce que le robot avait en main, où il a joué, ce qu'il y
   avait en face, et ses meilleures options avec leur gain estimé.
@@ -44,7 +58,8 @@ adversaire et ton prénom.
 (`data/replays/`).
 - Même lecteur que l'Observer.
 - Pour chacun de tes coups, le panneau dit ce que le **Stratège** aurait joué et
-  l'écart avec son meilleur coup.
+  l'écart avec son meilleur coup. Un joker posé hors d'une paire est signalé à
+  part : le Stratège ne le jouerait jamais, il n'y a donc pas d'écart à mesurer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
 
 `?debug` dans l'adresse expose les commandes du jeu dans la console
@@ -55,21 +70,23 @@ adversaire et ton prénom.
 | Robot | Version | Ce qu'il fait |
 |---|---|---|
 | **Basique** | 1.0.0 | Joue la carte qui vaut le plus à l'instant T, face à ce que l'adversaire construit. |
-| **Stratège** | 1.0.0 | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. C'est la référence des statistiques. |
-| **Expérimental** | 0.1.0 | Banc d'essai. Au départ identique au Stratège ; on y teste une idée (`src/sim/experimental.js`). |
+| **Stratège** | 1.1.0 | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Depuis 1.1, deux idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide, jamais la même valeur seule sur deux bornes. C'est la référence des statistiques. |
+| **Expérimental** | 0.2.0 | Banc d'essai. Au départ identique au Stratège ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`). |
 
 **Versions.** Tout changement de comportement change le numéro :
 - dernier chiffre : un réglage ;
 - chiffre du milieu : une nouvelle règle ;
 - premier chiffre : une autre façon de penser.
 
-Chaque replay enregistre le robot et sa version (`stratege@1.0.0`), donc les
-générations restent comparables.
+Chaque replay enregistre le robot et sa version (`stratege@1.1.0`), donc les
+générations restent comparables. L'historique des versions et les mesures
+qui les justifient sont dans `docs/analyse-replays.md`.
 
 **Tester une idée :**
 
 ```bash
 npm run duel -- experimental stratege 2000   # 2 000 parties de chaque côté
+npm run duel -- idea:counter stratege 2000   # une idée seule (src/sim/ideas.js)
 ```
 
 Le duel affiche le taux de victoire avec sa fourchette à 95 %. Si l'Expérimental
@@ -89,10 +106,12 @@ numérotées de 1 à 7 :
   - ce qu'il y avait des deux côtés de la borne avant le coup, si la borne était
     vide, si le coup la complète ;
   - la carte piochée, si c'était un joker ;
+  - pour toi, le temps de réflexion (`thinkMs`, en millisecondes, chronomètre
+    arrêté quand la fenêtre n'est pas active) ;
   - pour un robot, ses 5 meilleurs coups avec leur gain ;
 - **la fin** : pour chaque borne, les deux côtés, les combinaisons, les sommes, le
-  gagnant, ce qui a départagé et l'ordre de complétion ; le vainqueur et le type
-  de victoire.
+  gagnant, ce qui a départagé et l'ordre de complétion ; le vainqueur, le type
+  de victoire et la durée de jeu (`activeMs`).
 
 Relire un replay rejoue la partie coup par coup et vérifie chaque coup et chaque
 pioche : un fichier abîmé est refusé.
@@ -103,7 +122,8 @@ npm run replays   # bilan de toutes les parties enregistrées
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de
 chaque côté et l'usage des jokers. Il donne aussi le pourcentage de tes coups
-identiques au meilleur choix du Stratège, et tes plus grands écarts avec lui.
+identiques au meilleur choix du Stratège, tes plus grands écarts avec lui, et tes
+coups les plus longs à jouer.
 C'est la matière pour améliorer le robot, ou ton jeu.
 
 `replays/` est ignoré par git ; `data/replays/` est versionné, pour les parties

@@ -49,8 +49,10 @@ src/core/     cards, formations (classify, brute-force reference),
               partition (exact best split of ≤ 21 cards into trios),
               notation ("7♥" ↔ id, shared by logs, real games and the page)
 src/sim/      game (rules engine, endMode early|final), bots (random, greedy,
-              strategist + one-habit variants, experimental), strategist (Sami's
-              three habits), experimental (the sandbox), potential (the bots'
+              strategist + one-habit and one-idea variants, experimental),
+              strategist (Sami's three habits), ideas (his four later ideas,
+              two of them in strategist 1.1), experimental (the sandbox),
+              potential (the bots'
               estimate), simulate (two-player tallies), solo (Sami's solo test
               protocol, same tally for bots and real games)
 src/irl/      cards (reads data/irl/essais.json), analysis (tallies the real
@@ -62,7 +64,7 @@ src/replay/   log (write a game log, replay it frame by frame), summary
 web/          index.html, style.css, app/: main (tabs), play (Jouer), viewer +
               panels (Observer, Replays), view + hand (PURE, tested), table
               (DOM), drag (input), runner (games as the page plays them),
-              explain, replays-api, dom
+              clock (PURE timer, paused out of focus), explain, replays-api, dom
 data/irl/     essais.json: the 10 real games, transcribed from the photos
 data/replays/ kept replays (versioned); replays/ holds the rest (ignored)
 scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
@@ -92,8 +94,10 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   a browser script. `out/artifact/statistiques.html` is the same page without
   the doctype/html/head/body skeleton, for publishing as an Artifact.
 - **The reference bot is `strategist`** (`REFERENCE_BOT` in
-  `src/config/simulations.js`). It beat `greedy` head to head (~58 % of 4 000
-  games), so every simulated statistic uses it; `greedy` is still played on
+  `src/config/simulations.js`), version 1.1: the three habits plus the
+  `middle` and `spread` ideas (`STRATEGIST_IDEAS`). It beats `greedy` head to
+  head (~65 %; the habits alone, `strategist:habits`, ~58 %), so every
+  simulated statistic uses it; `greedy` is still played on
   `PREVIOUS_BOT_ROWS` so the report shows old and new. Changing the reference
   bot moves every resemblance figure: rerun the build and let
   `assertNarrative` say which sentence no longer holds (it caught two).
@@ -109,10 +113,27 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   wins. `tests/final-mode.test.js` holds it to the simulations' early mode.
 - **Bots have names and versions** (`src/config/bots.js`). Any change of
   behaviour bumps the version; replays record `id@version`. New ideas go into
-  `src/sim/experimental.js` first and are measured with `npm run duel`.
-  Every bot exposes `scoreMoves` (logged as its best candidates).
+  `src/sim/experimental.js` or `src/sim/ideas.js` first and are measured with
+  `npm run duel` (which also takes engine ids such as `idea:counter`). Every bot
+  exposes `scoreMoves` (logged as its best candidates); `{ keepAll: true }`
+  keeps the moves it refuses, marked `refused`, so the replay advisor can find a
+  human's joker played off a pair instead of crashing on it.
+- **Drag and drop never trusts `dataTransfer`.** The dragged card lives in
+  `drag.js` as `{ index, card }`, cleared on dragend and on every new or
+  abandoned game, and `play.js` re-locates the card before playing it. Reading
+  the index back from `dataTransfer` played the wrong card: any foreign drop
+  carries text too, and `Number("")` is 0.
+- **Dialogs are opened through `openDialog()`**, which resets `returnValue`:
+  Escape closes a dialog without touching it, so dismissing "Nouvelle partie"
+  replayed the previous answer.
+- **The page is shown at 125 %** (`--ui-zoom` on `:root`, applied with CSS
+  `zoom`), stepping down on narrow windows. Sizes stay in px at 1:1; change the
+  factor, not every token.
 - **Replays are `lopin-replay/1` JSON** with the full deck order;
   `replayStates` rebuilds a game and rejects illegal moves or wrong draws.
+  Human turns may carry `thinkMs` and the result `activeMs` (both optional, so
+  older logs stay valid). File names end with the score (`_4-3`, `B` for the
+  winner of three adjacent borders), from `scoreTag()`.
   The server writes `replays/` (ignored) and copies kept ones to
   `data/replays/`; it serves only `web/`, `src/`, the rules' fonts and PDF, on
   127.0.0.1. Names go through `scripts/lib/replay-files.js`.

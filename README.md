@@ -22,7 +22,9 @@ tient.
 Les parties jouées pour de vrai (10 photos, 140 groupes de 3 cartes) confirment le
 tableau. Les trois habitudes de jeu relevées pendant ces parties rendent le robot
 plus fort : c'est donc ce robot « stratège » qui joue toutes les parties simulées.
-Le détail est dans le rapport.
+Le détail est dans le rapport. Les 15 premières parties contre lui dans le
+navigateur lui ont apporté deux idées de plus (version 1.1) : voir
+`docs/analyse-replays.md`.
 
 ## Jouer contre les robots
 
@@ -46,6 +48,7 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 | `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
 | `data/replays/` | les replays gardés pour l'analyse (les autres vont dans `replays/`, hors git) |
 | `docs/jouer.md` | jouer, observer, replays, versions des robots |
+| `docs/analyse-replays.md` | les parties contre le Stratège, et les idées mesurées |
 | `docs/noms.md` | propositions de noms |
 | `docs/methode.md` | méthode, hypothèses et limites des calculs |
 
