@@ -45,6 +45,27 @@ export default [
   },
 
   {
+    // Shared with the web game, which imports these modules in the browser:
+    // no Node built-in may creep in.
+    files: ["src/core/**/*.js", "src/sim/**/*.js", "src/config/**/*.js", "src/replay/**/*.js"],
+    languageOptions: { globals: {} },
+    rules: {
+      "no-restricted-imports": ["error", { patterns: [{ group: ["node:*"], message: "Code partagé avec le navigateur : pas de module Node." }] }],
+    },
+  },
+
+  {
+    // The web game: browser ES modules served by `npm run play`.
+    files: ["web/**/*.js"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "module",
+      globals: globals.browser,
+    },
+    rules: { ...COMPLEXITY_BUDGET, ...COMMON_RULES },
+  },
+
+  {
     // Inlined into the HTML report as a classic <script>, so that the page
     // still works when opened over file:// (ES modules would not).
     files: ["src/report/page/**/*.js"],

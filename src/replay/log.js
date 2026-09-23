@@ -26,7 +26,15 @@ export function rulesOf(rules) {
   };
 }
 
-export function startLog(state, { rules, players, seed, startedAt = new Date().toISOString() }) {
+/** "2026-09-23T21:47:39+02:00": local time with its offset, so replay names read like the clock. */
+export function localTimestamp(date = new Date()) {
+  const offset = -date.getTimezoneOffset();
+  const local = new Date(date.getTime() + offset * 60000).toISOString().slice(0, 19);
+  const pad = (n) => String(Math.abs(n)).padStart(2, "0");
+  return `${local}${offset >= 0 ? "+" : "-"}${pad(Math.trunc(offset / 60))}:${pad(offset % 60)}`;
+}
+
+export function startLog(state, { rules, players, seed, startedAt = localTimestamp() }) {
   return {
     format: REPLAY_FORMAT,
     startedAt,
@@ -92,7 +100,7 @@ export function playLogged(log, state, move, scored = null) {
   return entry;
 }
 
-export function finishLog(log, state, endedAt = new Date().toISOString()) {
+export function finishLog(log, state, endedAt = localTimestamp()) {
   const { spec } = state;
   log.endedAt = endedAt;
   log.result = {
@@ -145,17 +153,34 @@ function replayTurn(state, entry, index) {
 }
 
 /**
- * Every state of a logged game: `frames[0]` is the deal, `frames[i]` the
- * table after turn `i`, with the turn's log entry attached.
+ * A second opinion on a logged move: the advisor bot's best candidates, and
+ * `adviceGap`, how much less the advisor rates the move actually played than
+ * its best (0 when the move was one of its best).
  */
-export function replayStates(log) {
+function adviceFor(state, advisor, entry) {
+  const moves = legalMoves(state);
+  if (!advisor || moves.length === 0 || !entry.move) return { advice: null, adviceGap: null };
+  const scored = advisor.scoreMoves(state, moves);
+  const best = Math.max(...scored.map((candidate) => candidate.gain));
+  const played = scored.find(({ move }) => formatCard(state.spec, move.card) === entry.move.card && move.border === entry.move.border - 1);
+  return { advice: candidatesOf(state.spec, scored), adviceGap: Math.max(0, best - played.gain) };
+}
+
+/**
+ * Every state of a logged game: `frames[0]` is the deal, `frames[i]` the
+ * table after turn `i`, with the turn's log entry attached. With an
+ * `advisor` bot, each human move also gets that bot's opinion (`advice`,
+ * `adviceGap`): how it is weighed in the replay viewer and the summary.
+ */
+export function replayStates(log, { advisor = null } = {}) {
   if (log.format !== REPLAY_FORMAT) throw new Error(`Format de replay inconnu : ${log.format}`);
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
   const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null });
-  const frames = [{ state: snapshot(state), entry: null }];
+  const frames = [{ state: snapshot(state), entry: null, advice: null, adviceGap: null }];
   log.turns.forEach((entry, index) => {
+    const opinion = entry.candidates ? { advice: null, adviceGap: null } : adviceFor(state, advisor, entry);
     replayTurn(state, entry, index);
-    frames.push({ state: snapshot(state), entry });
+    frames.push({ state: snapshot(state), entry, ...opinion });
   });
   return frames;
 }

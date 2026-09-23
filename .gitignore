@@ -38,4 +38,4 @@ real life test/
 # ---- Replays -------------------------------------------------------------
 # Every game against a bot is logged here automatically; the ones worth
 # keeping for analysis are copied to data/replays/, which is versioned.
-replays/
+/replays/
