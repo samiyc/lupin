@@ -62,12 +62,12 @@
       <p class="eyebrow">Quatrième angle · {{games}} parties par variante</p>
       <h2>Des parties entières, jouées par des robots</h2>
       <div class="prose lead">
-        <p>Deux robots «&nbsp;gourmands&nbsp;» s’affrontent&nbsp;: chacun pose la carte qui augmente le plus ses chances de gagner une borne, face à ce que l’adversaire construit. Le robot gourmand bat un joueur qui pose au hasard dans <span class="num">{{greedyWin}}</span> des parties, et deux robots au hasard retrouvent les probabilités exactes (Suite couleur <span class="num">{{randomSF}}</span> en jeu, <span class="num">{{exactSF}}</span> au calcul).</p>
+        <p>Deux robots «&nbsp;stratèges&nbsp;» s’affrontent&nbsp;: chacun pose la carte qui augmente le plus ses chances de gagner une borne, face à ce que l’adversaire construit, et suit en plus tes trois habitudes (voir plus bas). La colonne «&nbsp;Ancien robot&nbsp;» donne la ressemblance obtenue avec la première version, sans tes habitudes. Le robot stratège bat un joueur qui pose au hasard dans <span class="num">{{botWin}}</span> des parties, et deux robots au hasard retrouvent les probabilités exactes (Suite couleur <span class="num">{{randomSF}}</span> en jeu, <span class="num">{{exactSF}}</span> au calcul).</p>
         <p>Même dans l’original, en jeu, la Couleur se construit plus souvent que la Suite (<span class="num">{{refFlushBuilt}}</span> contre <span class="num">{{refStraightBuilt}}</span>)&nbsp;: on court après ce qui rapporte. Les parties ne servent donc pas à classer les combinaisons, mais à mesurer si le jeu <em>ressemble</em> à l’original. On compare, rang par rang, la part des bornes gagnées par la 1re&nbsp;combinaison de l’ordre, par la 2e, et ainsi de suite. 100&nbsp;% veut dire&nbsp;: même profil que l’original.</p>
       </div>
       {{profileChart}}
       <div class="scroll">{{statsTable}}</div>
-      <div class="prose"><p>Le second joueur gagne un peu plus souvent partout, original compris (<span class="num">{{refFirst}}</span> pour le premier)&nbsp;: c’est le jeu, pas les cartes. Celui qui pose le plus de jokers gagne <span class="num">{{jokerEdgeFree}}</span> des parties avec un joker libre, <span class="num">{{jokerEdgeColorless}}</span> avec un joker sans couleur.</p></div>
+      <div class="prose"><p>Le second joueur gagne un peu plus souvent dans toutes les variantes du tableau, original compris (<span class="num">{{refFirst}}</span> pour le premier)&nbsp;: c’est le jeu, pas les cartes. Celui qui pose le plus de jokers gagne <span class="num">{{jokerEdgeFree}}</span> des parties avec un joker libre, <span class="num">{{jokerEdgeColorless}}</span> avec un joker sans couleur.</p></div>
     </div>
   </section>
 
@@ -78,6 +78,38 @@
       <div class="prose lead"><p>Ressemblance avec l’original pour chaque règle de joker et chaque ordre. Changer l’ordre ne rattrape pas un joker libre&nbsp;; avec le joker sans couleur, échanger Brelan et Suite couleur coûte <span class="num">{{swapCost}}</span>&nbsp;points.</p></div>
       <div class="scroll">{{variantsGrid}}</div>
       <div class="prose"><p>Et «&nbsp;1&nbsp;joker maximum par joueur&nbsp;»&nbsp;? Le second joker reste coincé en main&nbsp;: <span class="num">{{onePerPlayerDraws}}</span> des parties se terminent sans vainqueur.</p></div>
+    </div>
+  </section>
+
+  <section id="en-vrai">
+    <div class="wrap">
+      <p class="eyebrow">Cinquième angle · tes {{irlColumns}} colonnes jouées pour de vrai</p>
+      <h2>Tes parties en vrai</h2>
+      <div class="prose lead">
+        <p>{{irlGames}} photos, lues carte par carte&nbsp;: chacune contient bien les 42&nbsp;cartes. Tu jouais seul, une moitié du paquet à la fois, pour la meilleure combinaison par colonne. Pour comparer ce qui est comparable, les robots ont rejoué <strong>le même protocole</strong>, {{soloGames}}&nbsp;fois chacun.</p>
+      </div>
+      <div class="scroll">{{irlTable}}</div>
+      <ul class="findings">
+        <li><strong>Tu fais bien plus de Suites couleur que le robot&nbsp;:</strong> <span class="num">{{irlSF}}</span> de tes colonnes (fourchette à 95&nbsp;% de <span class="num">{{irlSFLow}}</span> à <span class="num">{{irlSFHigh}}</span>), contre <span class="num">{{botSF}}</span>. Moins de Sommes aussi&nbsp;: <span class="num">{{irlSum}}</span> contre <span class="num">{{botSum}}</span>.</li>
+        <li><strong>Tu joues mieux que lui.</strong> Avec les mêmes 21&nbsp;cartes, le meilleur rangement possible, calculé exactement, vaut 100&nbsp;: tu atteins <span class="num">{{irlOptimum}}</span>, le robot <span class="num">{{botOptimum}}</span>.</li>
+        <li><strong>Tes {{irlJokers}} jokers ont tous fini en Brelan</strong>&nbsp;; ceux du robot stratège aussi, à <span class="num">{{botJokerTrips}}</span>.</li>
+      </ul>
+      <h3>Ligne du haut, à l’aveugle, et ligne du bas, qui voit l’autre moitié</h3>
+      <div class="scroll">{{irlLinesTable}}</div>
+      <div class="prose"><p>Avec {{irlGames}} lignes de chaque sorte, tes écarts entre haut et bas restent dans le bruit&nbsp;: les fourchettes se recouvrent.</p></div>
+      <h3>Ton impression, vérifiée sur le même protocole</h3>
+      <div class="scroll">{{feelingTable}}</div>
+      <div class="prose"><p>La Couleur est bien plus présente en 4&nbsp;couleurs, et le Brelan en version rapide&nbsp;: c’est confirmé. Les Suites couleur, elles, sortent à peu près autant dans les deux&nbsp;: si elles te semblent plus faciles ici, c’est sans doute ta façon de jouer, pas le paquet.</p></div>
+    </div>
+  </section>
+
+  <section id="habitudes">
+    <div class="wrap">
+      <p class="eyebrow">Tes stratégies dans le robot</p>
+      <h2>Chacune de tes habitudes rend le robot plus fort</h2>
+      <div class="prose lead"><p>Chaque habitude a été ajoutée seule, puis les trois ensemble, et le robot ainsi modifié a joué contre l’ancien, des deux côtés de la table.</p></div>
+      <div class="scroll">{{duelsTable}}</div>
+      <div class="prose"><p><strong>Était-ce déjà pris en compte&nbsp;?</strong> En partie&nbsp;: l’ancien robot comptait déjà les cartes encore cachées, d’où ton «&nbsp;tant que la couleur n’est pas épuisée&nbsp;», et hésitait à dépenser un joker. Mais les trois habitudes ensemble le font gagner <span class="num">{{strategistRate}}</span> des parties contre l’ancien. C’est donc lui qui joue désormais toutes les parties de ce rapport.</p></div>
     </div>
   </section>
 

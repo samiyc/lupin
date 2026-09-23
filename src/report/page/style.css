@@ -324,3 +324,10 @@ tr.pick-row td:first-child { font-weight: 700; }
   .prow .pbar { grid-column: 1 / -1; }
   .phead span:nth-child(2) { grid-column: 1 / -1; }
 }
+
+/* ── Real games and habits ──────────────────────────────── */
+td .range { display: block; font: 400 0.75rem/1.2 var(--mono); color: var(--ink-3); }
+.findings { max-width: 68ch; padding-left: 1.2em; display: grid; gap: 0.5em; margin: 18px 0 28px; }
+.duels td.edge { width: 28%; min-width: 120px; }
+.edge-bar { display: block; height: 12px; background: var(--rank-2); border-radius: 0 4px 4px 0; min-width: 2px; }
+section h3 { margin-top: 28px; }

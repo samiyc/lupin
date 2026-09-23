@@ -15,9 +15,14 @@ tiroir, un jeu de 52 cartes ou un jeu de tarot :
 
 Le 4 couleurs marche, **à une condition : le joker vaut le chiffre qu'on veut,
 mais il n'a pas de couleur.** Avec cette règle, l'ordre d'origine des
-combinaisons reste juste, et une partie ressemble à l'original autant que la
-version rapide 6 × 1-7. Avec un joker qui peut tout remplacer, aucun ordre ne
-tient. Le détail est dans le rapport.
+combinaisons reste juste, et c'est la variante la plus fidèle à l'original de
+toutes celles testées. Avec un joker qui peut tout remplacer, aucun ordre ne
+tient.
+
+Les parties jouées pour de vrai (10 photos, 140 groupes de 3 cartes) confirment le
+tableau. Les trois habitudes de jeu relevées pendant ces parties rendent le robot
+plus fort : c'est donc ce robot « stratège » qui joue toutes les parties simulées.
+Le détail est dans le rapport.
 
 ## Les fichiers
 
@@ -26,20 +31,25 @@ tient. Le détail est dans le rapport.
 | `regles/regles.pdf` | **la fiche de règles à imprimer** (A4 recto-verso) |
 | `out/statistiques.html` | le rapport complet, interactif (s'ouvre d'un double-clic) |
 | `out/statistiques.md` | le même rapport en ASCII art |
+| `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
 | `docs/noms.md` | propositions de noms |
 | `docs/methode.md` | méthode, hypothèses et limites des calculs |
 
 ## Commandes
 
 ```bash
-npm run build     # recalcule toutes les statistiques → out/ (environ 1 min 30)
+npm run build     # recalcule toutes les statistiques → out/ (environ 3 min)
 npm run pdf       # regles/regles.html → regles/regles.pdf (Edge ou Chrome)
 npm run check     # lint + tests, avant chaque commit
 ```
 
 Aucun chiffre n'est tapé à la main dans les rapports : ils sortent tous de
-`npm run build`. Changer une règle, c'est modifier `src/config/` et relancer le
-build.
+`npm run build`, y compris le tableau « Les combinaisons en chiffres » de la fiche
+de règles. Changer une règle, c'est modifier `src/config/` et relancer le build,
+puis `npm run pdf`.
+
+Les photos des parties réelles (`real life test/`) restent hors de git : elles
+sont lourdes, et certaines contiennent la position GPS du téléphone.
 
 Les polices de la fiche de règles (Atkinson Hyperlegible, Bodoni Moda) sont
 livrées dans `regles/fonts/`, sous licence SIL Open Font License.

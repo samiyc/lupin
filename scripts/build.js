@@ -8,6 +8,7 @@ import { assembleResults, simulationTasks } from "../src/report/tasks.js";
 import { tallyEssais } from "../src/irl/analysis.js";
 import { renderDocument, renderFragment } from "../src/report/html/page.js";
 import { renderMarkdown } from "../src/report/markdown.js";
+import { injectRulesStats, renderRulesStats } from "../src/report/rules-stats.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -63,4 +64,10 @@ const findings = assertNarrative(analyze(data));
 write("statistiques.md", renderMarkdown(findings, data));
 write("statistiques.html", renderDocument(findings, data));
 write(join("artifact", "statistiques.html"), renderFragment(findings, data));
-log(`Terminé en ${elapsed()} → out/statistiques.md, out/statistiques.html`);
+
+// The rules sheet carries a statistics box; only the block between its markers is rewritten.
+const rulesPath = fileURLToPath(new URL("../regles/regles.html", import.meta.url));
+const rules = readFileSync(rulesPath, "utf8");
+const updated = injectRulesStats(rules, renderRulesStats(findings));
+if (updated !== rules) writeFileSync(rulesPath, updated);
+log(`Terminé en ${elapsed()} → out/statistiques.md, out/statistiques.html, regles/regles.html`);

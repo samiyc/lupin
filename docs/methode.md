@@ -65,18 +65,55 @@ Un moteur joue les règles complètes : pose, pioche, règlement d'une borne qua
 les deux côtés ont 3 cartes, départage par la somme puis par celui qui a fini le
 premier, victoire à la majorité ou à 3 bornes côte à côte.
 
-Deux robots :
+Trois robots :
 
 - **au hasard** : n'importe quelle carte, n'importe où. Il sert de contrôle : entre
   deux robots au hasard, les fréquences retombent sur les calculs exacts ;
 - **gourmand** : pour chaque coup possible, il estime ce que la ligne deviendra
   (cartes en main certaines, cartes non vues pondérées par la chance de les
   piocher) et joue le coup qui augmente le plus sa chance de gagner la borne, face à
-  ce que l'adversaire construit. Il bat le robot au hasard dans environ 98 % des
-  parties.
+  ce que l'adversaire construit ;
+- **stratège** : le gourmand plus les trois habitudes de Sami, relevées pendant ses
+  parties réelles. Le joker attend une paire pour faire un Brelan. Les colonnes
+  s'ouvrent avec des cartes du milieu, une couleur à la fois. Deux cartes qui se
+  suivent dans la même couleur passent avant une paire, tant que la Suite couleur
+  reste possible.
 
-2 000 parties robot gourmand contre robot gourmand par variante, réparties sur les
+Le stratège bat le gourmand dans environ 58 % des parties (4 000 parties, des deux
+côtés de la table), et chaque habitude seule le rend déjà meilleur. **C'est lui qui
+joue toutes les parties du rapport.** Le gourmand rejoue les variantes du tableau
+principal, pour comparer l'ancien résultat au nouveau.
+
+2 000 parties robot stratège contre robot stratège par variante, réparties sur les
 cœurs du processeur. Le résultat ne dépend pas de l'ordre de calcul.
+
+## Cinquième angle : les parties réelles
+
+Sami a photographié 10 parties d'essai (`real life test/pictures`, hors de git).
+Elles sont transcrites dans `data/irl/essais.json`, une colonne par chaîne de
+caractères. Un test vérifie que chaque photo contient les 42 cartes, une fois
+chacune : une carte mal lue le fait échouer.
+
+**Son protocole.** Le paquet est coupé en deux moitiés de 21. Chaque moitié se joue
+seul (main de 6, puis la pioche) sur 7 colonnes de 3, pour faire la meilleure
+combinaison dans chaque colonne. La ligne du haut est jouée sans savoir ce qui
+reste dans la pioche. La ligne du bas voit l'autre moitié sur la table, donc
+connaît sa pioche carte par carte.
+
+**La comparaison juste.** Les robots rejouent exactement ce protocole
+(`src/sim/solo.js`), 2 000 fois chacun, sans adversaire. Les chiffres de la partie
+à deux ne se comparent pas directement : là, une borne déjà perdue ne vaut plus
+qu'on y mette une belle carte.
+
+**Le meilleur rangement possible.** Pour une ligne de 21 cartes, un calcul exact
+(programmation dynamique sur les sous-ensembles, `src/core/partition.js`) trouve
+la meilleure répartition en 7 trios. Une combinaison vaut son rang (4 pour la Suite
+couleur, 0 pour la Somme) plus sa somme en fraction. C'est une borne supérieure :
+en jouant carte par carte avec 6 en main, on ne l'atteint pas toujours. Toutes les
+lignes réelles sont calculées, et 100 parties par robot.
+
+Avec 140 colonnes, les parts mesurées sur les parties réelles restent
+approximatives. Le rapport donne leur fourchette à 95 % (intervalle de Wilson).
 
 **La ressemblance avec l'original.** Pour chaque variante, on mesure la part des
 bornes gagnées par la 1re combinaison de l'ordre, par la 2e, etc., jusqu'à la
@@ -95,9 +132,13 @@ statistique est d'environ un point.
   dès qu'on prouve que l'adversaire ne peut plus gagner. La simulation attend que
   les deux côtés soient complets. Cela change le moment où l'on gagne une borne,
   peu les combinaisons que l'on construit.
-- **Le second joueur gagne un peu plus souvent** (environ 55 %) dans toutes les
-  variantes, original compris. C'est vraisemblablement un effet du jeu, ou des
-  robots, et pas des cartes. À vérifier autour d'une vraie table.
+- **Le second joueur gagne un peu plus souvent** (entre 51 et 57 %) dans les
+  variantes du tableau, original compris. C'est vraisemblablement un effet du jeu,
+  ou des robots, et pas des cartes. À vérifier autour d'une vraie table.
+- **Le classement des variantes dépend un peu du robot.** Avec le gourmand, le
+  tarot sortait devant (95 %) ; avec le stratège, c'est le 4 couleurs avec joker sans
+  couleur (95 %), et le tarot recule (86 %). La conclusion sur le 4 couleurs ne
+  change pas : c'est la règle du joker sans couleur qui le rend fidèle.
 - **Le joker peut copier une carte déjà posée.** Cela ne change aucun compte de
   combinaison, seulement quelques sommes.
 

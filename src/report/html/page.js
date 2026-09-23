@@ -5,6 +5,7 @@ import { RANK_NAMES } from "../columns.js";
 import { dateFr, int, pct, smartPct } from "../format.js";
 import * as exact from "./fragments-exact.js";
 import * as play from "./fragments-play.js";
+import * as irl from "./fragments-irl.js";
 import { fill, fr } from "./markup.js";
 
 const asset = (name) => readFileSync(new URL(`../page/${name}`, import.meta.url), "utf8");
@@ -45,7 +46,7 @@ function numbers(f, data) {
     clSF: int(cl.straightFlush), cl3K: int(cl.threeOfAKind), clFL: int(cl.flush), clST: int(cl.straight),
     tarotCl3K: smartPct(tc.best.threeOfAKind / tc.total), tarotClFL: smartPct(tc.best.flush / tc.total),
     handFlush: pct(f.lenses.classique.hand.flush), handStraight: pct(f.lenses.classique.hand.straight),
-    greedyWin: pct(f.botWinRate),
+    botWin: pct(f.botWinRate),
     randomSF: pct(byId["classique-free-original"].randomBuilt.straightFlush),
     exactSF: pct(exactFree.best.straightFlush / exactFree.total),
     refFlushBuilt: pct(f.reference.built.flush), refStraightBuilt: pct(f.reference.built.straight),
@@ -54,6 +55,29 @@ function numbers(f, data) {
     jokerEdgeColorless: pct(byId["classique-colorless-original"].jokerEdge),
     swapCost: String(Math.round(100 * (byId["classique-colorless-original"].resemblance - byId["classique-colorless-swapped"].resemblance))),
     onePerPlayerDraws: pct(byId["classique-onePerPlayer-original"].drawShare),
+    ...playNumbers(f, data),
+  };
+}
+
+/** The numbers quoted in the real-games and habits sections. */
+function playNumbers(f, data) {
+  const bot = f.solo["solo-classique-strategist"];
+  const human = f.irl;
+  return {
+    irlGames: String(human.games),
+    irlColumns: String(human.columns),
+    irlJokers: String(human.jokers.total),
+    soloGames: int(data.sizes.soloGames),
+    irlSF: pct(human.all.straightFlush.share),
+    irlSFLow: pct(human.all.straightFlush.low, 0),
+    irlSFHigh: pct(human.all.straightFlush.high, 0),
+    botSF: pct(bot.all.straightFlush.share),
+    irlSum: pct(human.all.sum.share),
+    botSum: pct(bot.all.sum.share),
+    irlOptimum: pct(human.optimum.ratio, 0),
+    botOptimum: pct(bot.optimum.ratio, 0),
+    botJokerTrips: pct(bot.jokers.counts.threeOfAKind / bot.jokers.total, 0),
+    strategistRate: pct(f.duels.strategist.rate, 0),
   };
 }
 
@@ -69,6 +93,10 @@ function fragments(f, data) {
     statsTable: play.statsTable(f),
     variantsGrid: play.variantsGrid(f),
     rulesCard: play.rulesCard(f),
+    irlTable: irl.irlTable(f),
+    irlLinesTable: irl.irlLinesTable(f),
+    feelingTable: irl.feelingTable(f),
+    duelsTable: irl.duelsTable(f),
     deckChips: play.deckChips(),
     ruleChips: play.ruleChips(),
     orderChips: play.orderChips(),

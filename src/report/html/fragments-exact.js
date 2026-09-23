@@ -12,7 +12,7 @@ export function verdictCards(f) {
   const cards = [
     ["♠", "Joker sans couleur", "Il prend le chiffre qu’on veut, jamais la couleur."],
     ["♥", "Ordre inchangé", "Suite couleur, Brelan, Couleur, Suite, Somme : rien à réordonner."],
-    ["♦", `${pct(f.picks.classique.resemblance)} fidèle`, `à l’original, autant que ta version rapide (${pct(f.rapide.resemblance)}).`],
+    ["♦", `${pct(f.picks.classique.resemblance)} fidèle`, `à l’original : la meilleure de toutes les variantes (ta version rapide : ${pct(f.rapide.resemblance)}).`],
     ["♣", "Joker libre : non", `Aucun ordre ne tient, et la Suite couleur gagne ${ratio} fois plus de bornes.`],
   ];
   return cards

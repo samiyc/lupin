@@ -35,11 +35,12 @@ export function profileChart(f) {
 
 export function statsTable(f) {
   const best = f.picks.classique.id;
-  const header = ["Variante", "Ressemblance", "Bornes jouées à la somme", "Le plus de jokers gagne", "2e joueur gagne", "Cartes posées"];
+  const header = ["Variante", "Ressemblance", "Ancien robot", "Bornes jouées à la somme", "Le plus de jokers gagne", "2e joueur gagne", "Cartes posées"];
   const rows = PROFILE_ROWS.map(({ id, label: name }) => {
     const sim = f.byId[id];
     const values = [
       pct(sim.resemblance),
+      sim.previous ? pct(sim.previous.resemblance) : "—",
       pct(sim.sumShare),
       sim.jokerEdge === null ? "—" : pct(sim.jokerEdge),
       pct(1 - sim.firstPlayerWins - sim.drawShare),
@@ -73,6 +74,7 @@ export function rulesCard(f) {
     ["Joker", "Vaut le chiffre de votre choix, mais n’a pas de couleur."],
     ["Ordre", order],
     ["Partie", "7 bornes · 6 cartes en main · 4 bornes, ou 3 côte à côte, pour gagner."],
+    ["Conseil", "Gardez le joker pour un Brelan."],
     ["Fidélité", `${pct(f.picks.classique.resemblance)} de ressemblance avec l’original.`],
   ];
   return tag("dl", { class: "rules" }, ...items.flatMap(([term, text]) => [tag("dt", {}, esc(term)), tag("dd", {}, fr(text))]));
