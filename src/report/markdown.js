@@ -1,6 +1,7 @@
 import { int } from "./format.js";
 import { formations, outs, startingHand, triples, verdict } from "./ascii/sections-exact.js";
 import { method, recommendation, simulation, variants } from "./ascii/sections-play.js";
+import { realGames, strategies } from "./ascii/sections-irl.js";
 
 /** `out/statistiques.md`: the whole report as Markdown with ASCII art. */
 export function renderMarkdown(findings, data) {
@@ -24,6 +25,8 @@ export function renderMarkdown(findings, data) {
     ...outs(data),
     ...simulation(findings, data),
     ...variants(findings),
+    ...realGames(findings),
+    ...strategies(findings),
     ...recommendation(findings),
     ...method(data),
   ].join("\n");

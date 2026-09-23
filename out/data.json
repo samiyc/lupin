@@ -1,10 +1,13 @@
 {
- "generatedAt": "2026-09-22T22:05:09.166Z",
+ "generatedAt": "2026-09-23T17:58:24.575Z",
  "seed": 20260922,
  "quick": false,
  "sizes": {
   "games": 2000,
   "baselineGames": 1000,
+  "duelGames": 2000,
+  "soloGames": 2000,
+  "soloOptimumGames": 100,
   "startingHands": 200000
  },
  "exact": {
@@ -2804,72 +2807,72 @@
    "deck": "original",
    "jokerRule": "free",
    "order": "original",
-   "greedy-greedy": {
+   "strategist-strategist": {
     "games": 2000,
     "wins": [
-     865,
-     1135
+     862,
+     1138
     ],
     "draws": 0,
-    "turns": 102130,
+    "turns": 101911,
     "endings": {
-     "adjacent": 1224,
-     "majority": 776,
+     "adjacent": 1215,
+     "majority": 785,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 1714,
-     "threeOfAKind": 6756,
-     "flush": 11360,
-     "straight": 4256,
-     "sum": 6445
+     "straightFlush": 3004,
+     "threeOfAKind": 4790,
+     "flush": 12798,
+     "straight": 4201,
+     "sum": 5614
     },
-    "builtTotal": 30531,
+    "builtTotal": 30407,
     "winning": {
-     "straightFlush": 1439,
-     "threeOfAKind": 4989,
-     "flush": 5203,
-     "straight": 1319,
-     "sum": 650
+     "straightFlush": 2391,
+     "threeOfAKind": 3314,
+     "flush": 6171,
+     "straight": 1181,
+     "sum": 498
     },
     "decidedBy": {
-     "formation": 9519,
-     "sum": 3769,
-     "first": 312
+     "formation": 9109,
+     "sum": 4099,
+     "first": 347
     },
     "jokerEdge": {
      "games": 0,
      "won": 0
     },
     "shares": {
-     "firstPlayerWins": 0.4325,
-     "secondPlayerWins": 0.5675,
-     "averageTurns": 51.065,
+     "firstPlayerWins": 0.431,
+     "secondPlayerWins": 0.569,
+     "averageTurns": 50.9555,
      "endings": {
-      "adjacent": 0.612,
-      "majority": 0.388,
+      "adjacent": 0.6075,
+      "majority": 0.3925,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.05613966132783073,
-      "threeOfAKind": 0.221283285840621,
-      "flush": 0.3720808358717369,
-      "straight": 0.13939929907307327,
-      "sum": 0.21109691788673807
+      "straightFlush": 0.09879304107606801,
+      "threeOfAKind": 0.1575295162298155,
+      "flush": 0.42088992666162395,
+      "straight": 0.13815897655145196,
+      "sum": 0.18462853948104055
      },
      "winning": {
-      "straightFlush": 0.10580882352941176,
-      "threeOfAKind": 0.36683823529411763,
-      "flush": 0.3825735294117647,
-      "straight": 0.09698529411764706,
-      "sum": 0.04779411764705882
+      "straightFlush": 0.17639247510143857,
+      "threeOfAKind": 0.24448542973072668,
+      "flush": 0.4552563629656953,
+      "straight": 0.08712652157875322,
+      "sum": 0.036739210623386205
      },
      "decidedBy": {
-      "formation": 0.6999264705882353,
-      "sum": 0.2771323529411765,
-      "first": 0.022941176470588236
+      "formation": 0.6720029509406124,
+      "sum": 0.3023976392475101,
+      "first": 0.025599409811877537
      },
      "jokerEdge": null
     }
@@ -2943,737 +2946,7 @@
      },
      "jokerEdge": null
     }
-   }
-  },
-  "rapide-free-original": {
-   "deck": "rapide",
-   "jokerRule": "free",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     898,
-     1102
-    ],
-    "draws": 0,
-    "turns": 79980,
-    "endings": {
-     "adjacent": 973,
-     "majority": 1027,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 1657,
-     "threeOfAKind": 6475,
-     "flush": 6889,
-     "straight": 3364,
-     "sum": 5870
-    },
-    "builtTotal": 24255,
-    "winning": {
-     "straightFlush": 1425,
-     "threeOfAKind": 4617,
-     "flush": 3137,
-     "straight": 1179,
-     "sum": 701
-    },
-    "decidedBy": {
-     "formation": 8000,
-     "sum": 2775,
-     "first": 284
-    },
-    "jokerEdge": {
-     "games": 0,
-     "won": 0
-    },
-    "shares": {
-     "firstPlayerWins": 0.449,
-     "secondPlayerWins": 0.551,
-     "averageTurns": 39.99,
-     "endings": {
-      "adjacent": 0.4865,
-      "majority": 0.5135,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.06831581117295403,
-      "threeOfAKind": 0.26695526695526695,
-      "flush": 0.28402391259534115,
-      "straight": 0.13869305297876727,
-      "sum": 0.24201195629767058
-     },
-     "winning": {
-      "straightFlush": 0.12885432679265757,
-      "threeOfAKind": 0.4174880188082105,
-      "flush": 0.28366036712180126,
-      "straight": 0.10661000090424089,
-      "sum": 0.0633872863730898
-     },
-     "decidedBy": {
-      "formation": 0.7233927118184285,
-      "sum": 0.2509268469120174,
-      "first": 0.02568044126955421
-     },
-     "jokerEdge": null
-    }
    },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     505,
-     495
-    ],
-    "draws": 0,
-    "turns": 39799,
-    "endings": {
-     "adjacent": 487,
-     "majority": 513,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 32,
-     "threeOfAKind": 148,
-     "flush": 202,
-     "straight": 1087,
-     "sum": 10871
-    },
-    "builtTotal": 12340,
-    "winning": {
-     "straightFlush": 29,
-     "threeOfAKind": 133,
-     "flush": 186,
-     "straight": 913,
-     "sum": 4323
-    },
-    "decidedBy": {
-     "formation": 1215,
-     "sum": 4057,
-     "first": 312
-    },
-    "jokerEdge": {
-     "games": 0,
-     "won": 0
-    },
-    "shares": {
-     "firstPlayerWins": 0.505,
-     "secondPlayerWins": 0.495,
-     "averageTurns": 39.799,
-     "endings": {
-      "adjacent": 0.487,
-      "majority": 0.513,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.002593192868719611,
-      "threeOfAKind": 0.011993517017828201,
-      "flush": 0.016369529983792545,
-      "straight": 0.08808752025931929,
-      "sum": 0.8809562398703403
-     },
-     "winning": {
-      "straightFlush": 0.005193409742120344,
-      "threeOfAKind": 0.023818051575931233,
-      "flush": 0.03330945558739255,
-      "straight": 0.1635028653295129,
-      "sum": 0.774176217765043
-     },
-     "decidedBy": {
-      "formation": 0.21758595988538681,
-      "sum": 0.7265401146131805,
-      "first": 0.055873925501432664
-     },
-     "jokerEdge": null
-    }
-   }
-  },
-  "classique-free-original": {
-   "deck": "classique",
-   "jokerRule": "free",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     892,
-     1108
-    ],
-    "draws": 0,
-    "turns": 80029,
-    "endings": {
-     "adjacent": 958,
-     "majority": 1042,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 3476,
-     "threeOfAKind": 2134,
-     "flush": 10402,
-     "straight": 2667,
-     "sum": 5623
-    },
-    "builtTotal": 24302,
-    "winning": {
-     "straightFlush": 2710,
-     "threeOfAKind": 1541,
-     "flush": 5301,
-     "straight": 767,
-     "sum": 751
-    },
-    "decidedBy": {
-     "formation": 7098,
-     "sum": 3695,
-     "first": 277
-    },
-    "jokerEdge": {
-     "games": 964,
-     "won": 721
-    },
-    "shares": {
-     "firstPlayerWins": 0.446,
-     "secondPlayerWins": 0.554,
-     "averageTurns": 40.0145,
-     "endings": {
-      "adjacent": 0.479,
-      "majority": 0.521,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.14303349518558142,
-      "threeOfAKind": 0.08781170274051518,
-      "flush": 0.42803061476421694,
-      "straight": 0.10974405398732615,
-      "sum": 0.2313801333223603
-     },
-     "winning": {
-      "straightFlush": 0.24480578139114725,
-      "threeOfAKind": 0.13920505871725383,
-      "flush": 0.4788617886178862,
-      "straight": 0.06928635953026197,
-      "sum": 0.06784101174345077
-     },
-     "decidedBy": {
-      "formation": 0.6411924119241192,
-      "sum": 0.33378500451671184,
-      "first": 0.025022583559168924
-     },
-     "jokerEdge": 0.7479253112033195
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     487,
-     513
-    ],
-    "draws": 0,
-    "turns": 39611,
-    "endings": {
-     "adjacent": 456,
-     "majority": 544,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 201,
-     "threeOfAKind": 163,
-     "flush": 750,
-     "straight": 923,
-     "sum": 10181
-    },
-    "builtTotal": 12218,
-    "winning": {
-     "straightFlush": 181,
-     "threeOfAKind": 146,
-     "flush": 636,
-     "straight": 728,
-     "sum": 3816
-    },
-    "decidedBy": {
-     "formation": 1630,
-     "sum": 3656,
-     "first": 221
-    },
-    "jokerEdge": {
-     "games": 519,
-     "won": 366
-    },
-    "shares": {
-     "firstPlayerWins": 0.487,
-     "secondPlayerWins": 0.513,
-     "averageTurns": 39.611,
-     "endings": {
-      "adjacent": 0.456,
-      "majority": 0.544,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.016451137665739073,
-      "threeOfAKind": 0.013340972335897856,
-      "flush": 0.06138484203633983,
-      "straight": 0.07554427893272221,
-      "sum": 0.833278769029301
-     },
-     "winning": {
-      "straightFlush": 0.032867259851098604,
-      "threeOfAKind": 0.026511712366079535,
-      "flush": 0.11548937715634647,
-      "straight": 0.1321953876883966,
-      "sum": 0.6929362629380789
-     },
-     "decidedBy": {
-      "formation": 0.295986925730888,
-      "sum": 0.6638823315779917,
-      "first": 0.040130742691120394
-     },
-     "jokerEdge": 0.7052023121387283
-    }
-   }
-  },
-  "classique-onePerBorder-original": {
-   "deck": "classique",
-   "jokerRule": "onePerBorder",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     904,
-     1096
-    ],
-    "draws": 0,
-    "turns": 80038,
-    "endings": {
-     "adjacent": 913,
-     "majority": 1087,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 3397,
-     "threeOfAKind": 2158,
-     "flush": 10462,
-     "straight": 2595,
-     "sum": 5665
-    },
-    "builtTotal": 24277,
-    "winning": {
-     "straightFlush": 2689,
-     "threeOfAKind": 1589,
-     "flush": 5295,
-     "straight": 782,
-     "sum": 709
-    },
-    "decidedBy": {
-     "formation": 7183,
-     "sum": 3640,
-     "first": 241
-    },
-    "jokerEdge": {
-     "games": 999,
-     "won": 762
-    },
-    "shares": {
-     "firstPlayerWins": 0.452,
-     "secondPlayerWins": 0.548,
-     "averageTurns": 40.019,
-     "endings": {
-      "adjacent": 0.4565,
-      "majority": 0.5435,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.13992667957325863,
-      "threeOfAKind": 0.08889071961115459,
-      "flush": 0.4309428677348931,
-      "straight": 0.10689129628866828,
-      "sum": 0.23334843679202538
-     },
-     "winning": {
-      "straightFlush": 0.24304049168474331,
-      "threeOfAKind": 0.1436189443239335,
-      "flush": 0.47857917570498915,
-      "straight": 0.07067968185104845,
-      "sum": 0.06408170643528562
-     },
-     "decidedBy": {
-      "formation": 0.6492227042660882,
-      "sum": 0.3289949385394071,
-      "first": 0.0217823571945047
-     },
-     "jokerEdge": 0.7627627627627628
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     518,
-     479
-    ],
-    "draws": 3,
-    "turns": 39780,
-    "endings": {
-     "adjacent": 455,
-     "majority": 542,
-     "exhaustion": 0,
-     "draw": 3
-    },
-    "built": {
-     "straightFlush": 205,
-     "threeOfAKind": 166,
-     "flush": 736,
-     "straight": 1000,
-     "sum": 10228
-    },
-    "builtTotal": 12335,
-    "winning": {
-     "straightFlush": 184,
-     "threeOfAKind": 152,
-     "flush": 624,
-     "straight": 824,
-     "sum": 3821
-    },
-    "decidedBy": {
-     "formation": 1738,
-     "sum": 3625,
-     "first": 242
-    },
-    "jokerEdge": {
-     "games": 513,
-     "won": 348
-    },
-    "shares": {
-     "firstPlayerWins": 0.518,
-     "secondPlayerWins": 0.479,
-     "averageTurns": 39.78,
-     "endings": {
-      "adjacent": 0.455,
-      "majority": 0.542,
-      "exhaustion": 0,
-      "draw": 0.003
-     },
-     "built": {
-      "straightFlush": 0.016619375760032428,
-      "threeOfAKind": 0.013457640859343332,
-      "flush": 0.05966761248479935,
-      "straight": 0.08107012565869477,
-      "sum": 0.8291852452371301
-     },
-     "winning": {
-      "straightFlush": 0.03282783229259589,
-      "threeOfAKind": 0.02711864406779661,
-      "flush": 0.11132917038358608,
-      "straight": 0.1470115967885816,
-      "sum": 0.6817127564674398
-     },
-     "decidedBy": {
-      "formation": 0.31008028545941124,
-      "sum": 0.6467439785905441,
-      "first": 0.043175735950044605
-     },
-     "jokerEdge": 0.6783625730994152
-    }
-   }
-  },
-  "classique-colorless-original": {
-   "deck": "classique",
-   "jokerRule": "colorless",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     904,
-     1096
-    ],
-    "draws": 0,
-    "turns": 79765,
-    "endings": {
-     "adjacent": 966,
-     "majority": 1034,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 1352,
-     "threeOfAKind": 4270,
-     "flush": 10480,
-     "straight": 2844,
-     "sum": 5193
-    },
-    "builtTotal": 24139,
-    "winning": {
-     "straightFlush": 1152,
-     "threeOfAKind": 3301,
-     "flush": 5104,
-     "straight": 803,
-     "sum": 644
-    },
-    "decidedBy": {
-     "formation": 7433,
-     "sum": 3345,
-     "first": 226
-    },
-    "jokerEdge": {
-     "games": 983,
-     "won": 645
-    },
-    "shares": {
-     "firstPlayerWins": 0.452,
-     "secondPlayerWins": 0.548,
-     "averageTurns": 39.8825,
-     "endings": {
-      "adjacent": 0.483,
-      "majority": 0.517,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.05600894817515224,
-      "threeOfAKind": 0.1768921662040681,
-      "flush": 0.4341522018310618,
-      "straight": 0.11781763950453623,
-      "sum": 0.21512904428518165
-     },
-     "winning": {
-      "straightFlush": 0.10468920392584515,
-      "threeOfAKind": 0.2999818247909851,
-      "flush": 0.4638313340603417,
-      "straight": 0.07297346419483824,
-      "sum": 0.058524173027989825
-     },
-     "decidedBy": {
-      "formation": 0.6754816430388949,
-      "sum": 0.30398037077426393,
-      "first": 0.020537986186841148
-     },
-     "jokerEdge": 0.6561546286876907
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     512,
-     488
-    ],
-    "draws": 0,
-    "turns": 39670,
-    "endings": {
-     "adjacent": 468,
-     "majority": 532,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 34,
-     "threeOfAKind": 218,
-     "flush": 484,
-     "straight": 1088,
-     "sum": 10450
-    },
-    "builtTotal": 12274,
-    "winning": {
-     "straightFlush": 33,
-     "threeOfAKind": 191,
-     "flush": 409,
-     "straight": 889,
-     "sum": 4045
-    },
-    "decidedBy": {
-     "formation": 1466,
-     "sum": 3877,
-     "first": 224
-    },
-    "jokerEdge": {
-     "games": 563,
-     "won": 366
-    },
-    "shares": {
-     "firstPlayerWins": 0.512,
-     "secondPlayerWins": 0.488,
-     "averageTurns": 39.67,
-     "endings": {
-      "adjacent": 0.468,
-      "majority": 0.532,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.002770083102493075,
-      "threeOfAKind": 0.017761121068926185,
-      "flush": 0.03943294769431318,
-      "straight": 0.0886426592797784,
-      "sum": 0.8513931888544891
-     },
-     "winning": {
-      "straightFlush": 0.005927788755164361,
-      "threeOfAKind": 0.034309322795042216,
-      "flush": 0.07346865457158254,
-      "straight": 0.15969103646488234,
-      "sum": 0.7266031974133286
-     },
-     "decidedBy": {
-      "formation": 0.2633375246991198,
-      "sum": 0.6964253637506737,
-      "first": 0.040237111550206574
-     },
-     "jokerEdge": 0.650088809946714
-    }
-   }
-  },
-  "classique-free-swapped": {
-   "deck": "classique",
-   "jokerRule": "free",
-   "order": "swapped",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     888,
-     1112
-    ],
-    "draws": 0,
-    "turns": 79903,
-    "endings": {
-     "adjacent": 888,
-     "majority": 1112,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 2265,
-     "threeOfAKind": 3623,
-     "flush": 10259,
-     "straight": 2250,
-     "sum": 5773
-    },
-    "builtTotal": 24170,
-    "winning": {
-     "straightFlush": 1583,
-     "threeOfAKind": 2929,
-     "flush": 5081,
-     "straight": 649,
-     "sum": 754
-    },
-    "decidedBy": {
-     "formation": 7272,
-     "sum": 3490,
-     "first": 234
-    },
-    "jokerEdge": {
-     "games": 974,
-     "won": 731
-    },
-    "shares": {
-     "firstPlayerWins": 0.444,
-     "secondPlayerWins": 0.556,
-     "averageTurns": 39.9515,
-     "endings": {
-      "adjacent": 0.444,
-      "majority": 0.556,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.09371121224658668,
-      "threeOfAKind": 0.14989656599089782,
-      "flush": 0.4244517997517584,
-      "straight": 0.09309060819197353,
-      "sum": 0.23884981381878362
-     },
-     "winning": {
-      "straightFlush": 0.14396144052382684,
-      "threeOfAKind": 0.26636958894143326,
-      "flush": 0.4620771189523463,
-      "straight": 0.05902146234994544,
-      "sum": 0.06857038923244817
-     },
-     "decidedBy": {
-      "formation": 0.6613313932339032,
-      "sum": 0.3173881411422335,
-      "first": 0.021280465623863223
-     },
-     "jokerEdge": 0.7505133470225873
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     494,
-     506
-    ],
-    "draws": 0,
-    "turns": 39792,
-    "endings": {
-     "adjacent": 466,
-     "majority": 534,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 201,
-     "threeOfAKind": 209,
-     "flush": 700,
-     "straight": 967,
-     "sum": 10243
-    },
-    "builtTotal": 12320,
-    "winning": {
-     "straightFlush": 179,
-     "threeOfAKind": 179,
-     "flush": 606,
-     "straight": 771,
-     "sum": 3866
-    },
-    "decidedBy": {
-     "formation": 1678,
-     "sum": 3695,
-     "first": 228
-    },
-    "jokerEdge": {
-     "games": 553,
-     "won": 378
-    },
-    "shares": {
-     "firstPlayerWins": 0.494,
-     "secondPlayerWins": 0.506,
-     "averageTurns": 39.792,
-     "endings": {
-      "adjacent": 0.466,
-      "majority": 0.534,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.016314935064935063,
-      "threeOfAKind": 0.016964285714285713,
-      "flush": 0.056818181818181816,
-      "straight": 0.07849025974025974,
-      "sum": 0.8314123376623377
-     },
-     "winning": {
-      "straightFlush": 0.031958578825209784,
-      "threeOfAKind": 0.031958578825209784,
-      "flush": 0.10819496518478842,
-      "straight": 0.1376539903588645,
-      "sum": 0.6902338868059276
-     },
-     "decidedBy": {
-      "formation": 0.299589359043028,
-      "sum": 0.6597036243527942,
-      "first": 0.040707016604177824
-     },
-     "jokerEdge": 0.6835443037974683
-    }
-   }
-  },
-  "classique-onePerBorder-swapped": {
-   "deck": "classique",
-   "jokerRule": "onePerBorder",
-   "order": "swapped",
    "greedy-greedy": {
     "games": 2000,
     "wins": [
@@ -3681,357 +2954,142 @@
      1106
     ],
     "draws": 0,
-    "turns": 79940,
+    "turns": 101953,
     "endings": {
-     "adjacent": 925,
-     "majority": 1075,
+     "adjacent": 1246,
+     "majority": 754,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 2453,
-     "threeOfAKind": 3513,
-     "flush": 10205,
-     "straight": 2227,
-     "sum": 5822
+     "straightFlush": 1613,
+     "threeOfAKind": 6733,
+     "flush": 11609,
+     "straight": 4158,
+     "sum": 6261
     },
-    "builtTotal": 24220,
+    "builtTotal": 30374,
     "winning": {
-     "straightFlush": 1763,
-     "threeOfAKind": 2868,
-     "flush": 5016,
-     "straight": 637,
-     "sum": 738
+     "straightFlush": 1344,
+     "threeOfAKind": 4968,
+     "flush": 5324,
+     "straight": 1256,
+     "sum": 638
     },
     "decidedBy": {
-     "formation": 7362,
-     "sum": 3453,
-     "first": 207
+     "formation": 9285,
+     "sum": 3913,
+     "first": 332
     },
     "jokerEdge": {
-     "games": 949,
-     "won": 735
+     "games": 0,
+     "won": 0
     },
     "shares": {
      "firstPlayerWins": 0.447,
      "secondPlayerWins": 0.553,
-     "averageTurns": 39.97,
+     "averageTurns": 50.9765,
      "endings": {
-      "adjacent": 0.4625,
-      "majority": 0.5375,
+      "adjacent": 0.623,
+      "majority": 0.377,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.10127993393889348,
-      "threeOfAKind": 0.14504541701073492,
-      "flush": 0.42134599504541703,
-      "straight": 0.09194880264244426,
-      "sum": 0.24037985136251033
+      "straightFlush": 0.05310462895897807,
+      "threeOfAKind": 0.2216698492131428,
+      "flush": 0.38220188318957005,
+      "straight": 0.13689339566734707,
+      "sum": 0.206130242970962
      },
      "winning": {
-      "straightFlush": 0.15995282162946833,
-      "threeOfAKind": 0.2602068590092542,
-      "flush": 0.4550898203592814,
-      "straight": 0.05779350390128833,
-      "sum": 0.06695699510070767
+      "straightFlush": 0.09933481152993348,
+      "threeOfAKind": 0.3671840354767184,
+      "flush": 0.3934959349593496,
+      "straight": 0.09283074648928308,
+      "sum": 0.04715447154471545
      },
      "decidedBy": {
-      "formation": 0.6679368535655961,
-      "sum": 0.31328252585737615,
-      "first": 0.018780620577027764
+      "formation": 0.6862527716186253,
+      "sum": 0.2892091648189209,
+      "first": 0.024538063562453808
      },
-     "jokerEdge": 0.7744994731296101
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     505,
-     493
-    ],
-    "draws": 2,
-    "turns": 39682,
-    "endings": {
-     "adjacent": 500,
-     "majority": 498,
-     "exhaustion": 0,
-     "draw": 2
-    },
-    "built": {
-     "straightFlush": 188,
-     "threeOfAKind": 166,
-     "flush": 711,
-     "straight": 970,
-     "sum": 10221
-    },
-    "builtTotal": 12256,
-    "winning": {
-     "straightFlush": 154,
-     "threeOfAKind": 155,
-     "flush": 606,
-     "straight": 762,
-     "sum": 3849
-    },
-    "decidedBy": {
-     "formation": 1630,
-     "sum": 3682,
-     "first": 214
-    },
-    "jokerEdge": {
-     "games": 523,
-     "won": 357
-    },
-    "shares": {
-     "firstPlayerWins": 0.505,
-     "secondPlayerWins": 0.493,
-     "averageTurns": 39.682,
-     "endings": {
-      "adjacent": 0.5,
-      "majority": 0.498,
-      "exhaustion": 0,
-      "draw": 0.002
-     },
-     "built": {
-      "straightFlush": 0.015339425587467363,
-      "threeOfAKind": 0.013544386422976501,
-      "flush": 0.05801240208877285,
-      "straight": 0.07914490861618799,
-      "sum": 0.8339588772845953
-     },
-     "winning": {
-      "straightFlush": 0.027868259138617443,
-      "threeOfAKind": 0.028049221860296777,
-      "flush": 0.10966340933767643,
-      "straight": 0.13789359391965256,
-      "sum": 0.6965255157437568
-     },
-     "decidedBy": {
-      "formation": 0.29496923633731453,
-      "sum": 0.666304741223308,
-      "first": 0.03872602243937749
-     },
-     "jokerEdge": 0.6826003824091779
+     "jokerEdge": null
     }
    }
   },
-  "classique-colorless-swapped": {
-   "deck": "classique",
-   "jokerRule": "colorless",
-   "order": "swapped",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     908,
-     1092
-    ],
-    "draws": 0,
-    "turns": 80042,
-    "endings": {
-     "adjacent": 923,
-     "majority": 1077,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 1129,
-     "threeOfAKind": 4461,
-     "flush": 10166,
-     "straight": 2651,
-     "sum": 5902
-    },
-    "builtTotal": 24309,
-    "winning": {
-     "straightFlush": 817,
-     "threeOfAKind": 3521,
-     "flush": 5170,
-     "straight": 787,
-     "sum": 788
-    },
-    "decidedBy": {
-     "formation": 7293,
-     "sum": 3552,
-     "first": 238
-    },
-    "jokerEdge": {
-     "games": 1006,
-     "won": 678
-    },
-    "shares": {
-     "firstPlayerWins": 0.454,
-     "secondPlayerWins": 0.546,
-     "averageTurns": 40.021,
-     "endings": {
-      "adjacent": 0.4615,
-      "majority": 0.5385,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.04644370397795056,
-      "threeOfAKind": 0.18351227940269035,
-      "flush": 0.41819902093874695,
-      "straight": 0.10905425973919125,
-      "sum": 0.24279073594142087
-     },
-     "winning": {
-      "straightFlush": 0.07371650275196247,
-      "threeOfAKind": 0.31769376522602183,
-      "flush": 0.4664801948930795,
-      "straight": 0.07100965442569701,
-      "sum": 0.07109988270323919
-     },
-     "decidedBy": {
-      "formation": 0.6580348281151313,
-      "sum": 0.32049084182982945,
-      "first": 0.02147433005503925
-     },
-     "jokerEdge": 0.6739562624254473
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     496,
-     504
-    ],
-    "draws": 0,
-    "turns": 39728,
-    "endings": {
-     "adjacent": 477,
-     "majority": 523,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 26,
-     "threeOfAKind": 205,
-     "flush": 507,
-     "straight": 1089,
-     "sum": 10446
-    },
-    "builtTotal": 12273,
-    "winning": {
-     "straightFlush": 24,
-     "threeOfAKind": 187,
-     "flush": 444,
-     "straight": 891,
-     "sum": 4000
-    },
-    "decidedBy": {
-     "formation": 1496,
-     "sum": 3818,
-     "first": 232
-    },
-    "jokerEdge": {
-     "games": 524,
-     "won": 349
-    },
-    "shares": {
-     "firstPlayerWins": 0.496,
-     "secondPlayerWins": 0.504,
-     "averageTurns": 39.728,
-     "endings": {
-      "adjacent": 0.477,
-      "majority": 0.523,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.002118471441375377,
-      "threeOfAKind": 0.016703332518536625,
-      "flush": 0.04131019310681985,
-      "straight": 0.08873136152529944,
-      "sum": 0.8511366414079687
-     },
-     "winning": {
-      "straightFlush": 0.00432744320230797,
-      "threeOfAKind": 0.03371799495131626,
-      "flush": 0.08005769924269744,
-      "straight": 0.16065632888568337,
-      "sum": 0.7212405337179949
-     },
-     "decidedBy": {
-      "formation": 0.2697439596105301,
-      "sum": 0.6884240894338262,
-      "first": 0.04183195095564371
-     },
-     "jokerEdge": 0.666030534351145
-    }
-   }
-  },
-  "classique-free-straightUp": {
-   "deck": "classique",
+  "rapide-free-original": {
+   "deck": "rapide",
    "jokerRule": "free",
-   "order": "straightUp",
-   "greedy-greedy": {
+   "order": "original",
+   "strategist-strategist": {
     "games": 2000,
     "wins": [
-     893,
-     1107
+     917,
+     1083
     ],
     "draws": 0,
-    "turns": 80317,
+    "turns": 79885,
     "endings": {
-     "adjacent": 884,
-     "majority": 1116,
+     "adjacent": 931,
+     "majority": 1069,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 3697,
-     "threeOfAKind": 2335,
-     "flush": 5584,
-     "straight": 7195,
-     "sum": 5673
+     "straightFlush": 3275,
+     "threeOfAKind": 3927,
+     "flush": 8967,
+     "straight": 3310,
+     "sum": 4745
     },
-    "builtTotal": 24484,
+    "builtTotal": 24224,
     "winning": {
-     "straightFlush": 2878,
-     "threeOfAKind": 1579,
-     "flush": 1964,
-     "straight": 4102,
-     "sum": 633
+     "straightFlush": 2602,
+     "threeOfAKind": 2720,
+     "flush": 4254,
+     "straight": 1013,
+     "sum": 412
     },
     "decidedBy": {
-     "formation": 7828,
-     "sum": 3079,
-     "first": 249
+     "formation": 7871,
+     "sum": 2766,
+     "first": 364
     },
     "jokerEdge": {
-     "games": 967,
-     "won": 697
+     "games": 0,
+     "won": 0
     },
     "shares": {
-     "firstPlayerWins": 0.4465,
-     "secondPlayerWins": 0.5535,
-     "averageTurns": 40.1585,
+     "firstPlayerWins": 0.4585,
+     "secondPlayerWins": 0.5415,
+     "averageTurns": 39.9425,
      "endings": {
-      "adjacent": 0.442,
-      "majority": 0.558,
+      "adjacent": 0.4655,
+      "majority": 0.5345,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.15099656918804116,
-      "threeOfAKind": 0.09536840385557915,
-      "flush": 0.2280673092631923,
-      "straight": 0.2938653814736154,
-      "sum": 0.23170233621957195
+      "straightFlush": 0.135196499339498,
+      "threeOfAKind": 0.16211195508586526,
+      "flush": 0.37017007926023776,
+      "straight": 0.13664134742404227,
+      "sum": 0.19588011889035667
      },
      "winning": {
-      "straightFlush": 0.2579777698099677,
-      "threeOfAKind": 0.1415381857296522,
-      "flush": 0.17604876299749014,
-      "straight": 0.36769451416278237,
-      "sum": 0.05674076730010757
+      "straightFlush": 0.23652395236796656,
+      "threeOfAKind": 0.2472502499772748,
+      "flush": 0.386692118898282,
+      "straight": 0.09208253795109536,
+      "sum": 0.03745114080538133
      },
      "decidedBy": {
-      "formation": 0.7016851918250269,
-      "sum": 0.2759949802796701,
-      "first": 0.022319827895302975
+      "formation": 0.715480410871739,
+      "sum": 0.2514316880283611,
+      "first": 0.03308790109990001
      },
-     "jokerEdge": 0.7207859358841778
+     "jokerEdge": null
     }
    },
    "random-random": {
@@ -4041,551 +3099,256 @@
      483
     ],
     "draws": 0,
-    "turns": 39832,
+    "turns": 39858,
     "endings": {
-     "adjacent": 464,
-     "majority": 536,
+     "adjacent": 457,
+     "majority": 543,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 35,
+     "threeOfAKind": 131,
+     "flush": 183,
+     "straight": 1143,
+     "sum": 10879
+    },
+    "builtTotal": 12371,
+    "winning": {
+     "straightFlush": 34,
+     "threeOfAKind": 115,
+     "flush": 161,
+     "straight": 970,
+     "sum": 4349
+    },
+    "decidedBy": {
+     "formation": 1236,
+     "sum": 4024,
+     "first": 369
+    },
+    "jokerEdge": {
+     "games": 0,
+     "won": 0
+    },
+    "shares": {
+     "firstPlayerWins": 0.517,
+     "secondPlayerWins": 0.483,
+     "averageTurns": 39.858,
+     "endings": {
+      "adjacent": 0.457,
+      "majority": 0.543,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.00282919731630426,
+      "threeOfAKind": 0.010589281383881658,
+      "flush": 0.014792660253819416,
+      "straight": 0.0923935009295934,
+      "sum": 0.8793953601164013
+     },
+     "winning": {
+      "straightFlush": 0.0060401492272162014,
+      "threeOfAKind": 0.020429916503819506,
+      "flush": 0.02860188310534731,
+      "straight": 0.17232190442352105,
+      "sum": 0.772606146740096
+     },
+     "decidedBy": {
+      "formation": 0.21957718955409486,
+      "sum": 0.7148694261858234,
+      "first": 0.06555338426008173
+     },
+     "jokerEdge": null
+    }
+   },
+   "greedy-greedy": {
+    "games": 2000,
+    "wins": [
+     875,
+     1125
+    ],
+    "draws": 0,
+    "turns": 80043,
+    "endings": {
+     "adjacent": 947,
+     "majority": 1053,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1714,
+     "threeOfAKind": 6438,
+     "flush": 6977,
+     "straight": 3386,
+     "sum": 5796
+    },
+    "builtTotal": 24311,
+    "winning": {
+     "straightFlush": 1494,
+     "threeOfAKind": 4567,
+     "flush": 3222,
+     "straight": 1136,
+     "sum": 677
+    },
+    "decidedBy": {
+     "formation": 8052,
+     "sum": 2769,
+     "first": 275
+    },
+    "jokerEdge": {
+     "games": 0,
+     "won": 0
+    },
+    "shares": {
+     "firstPlayerWins": 0.4375,
+     "secondPlayerWins": 0.5625,
+     "averageTurns": 40.0215,
+     "endings": {
+      "adjacent": 0.4735,
+      "majority": 0.5265,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.0705030644564189,
+      "threeOfAKind": 0.26481839496524207,
+      "flush": 0.28698942865369587,
+      "straight": 0.1392785158981531,
+      "sum": 0.23841059602649006
+     },
+     "winning": {
+      "straightFlush": 0.13464311463590484,
+      "threeOfAKind": 0.41158976207642395,
+      "flush": 0.2903749098774333,
+      "straight": 0.10237923576063446,
+      "sum": 0.06101297764960346
+     },
+     "decidedBy": {
+      "formation": 0.7256669069935112,
+      "sum": 0.2495493871665465,
+      "first": 0.02478370583994232
+     },
+     "jokerEdge": null
+    }
+   }
+  },
+  "classique-free-original": {
+   "deck": "classique",
+   "jokerRule": "free",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     974,
+     1026
+    ],
+    "draws": 0,
+    "turns": 80406,
+    "endings": {
+     "adjacent": 944,
+     "majority": 1056,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3944,
+     "threeOfAKind": 2696,
+     "flush": 9405,
+     "straight": 1652,
+     "sum": 6850
+    },
+    "builtTotal": 24547,
+    "winning": {
+     "straightFlush": 3286,
+     "threeOfAKind": 1867,
+     "flush": 4391,
+     "straight": 541,
+     "sum": 961
+    },
+    "decidedBy": {
+     "formation": 7719,
+     "sum": 3144,
+     "first": 183
+    },
+    "jokerEdge": {
+     "games": 1206,
+     "won": 940
+    },
+    "shares": {
+     "firstPlayerWins": 0.487,
+     "secondPlayerWins": 0.513,
+     "averageTurns": 40.203,
+     "endings": {
+      "adjacent": 0.472,
+      "majority": 0.528,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.1606713651362692,
+      "threeOfAKind": 0.10983012180714548,
+      "flush": 0.38314254287692995,
+      "straight": 0.06729946632989775,
+      "sum": 0.2790565038497576
+     },
+     "winning": {
+      "straightFlush": 0.29748325185587543,
+      "threeOfAKind": 0.1690204598949846,
+      "flush": 0.39751946405938804,
+      "straight": 0.048977005250769506,
+      "sum": 0.08699981893898244
+     },
+     "decidedBy": {
+      "formation": 0.6988049972840847,
+      "sum": 0.2846279196089082,
+      "first": 0.016567083107007063
+     },
+     "jokerEdge": 0.7794361525704809
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     513,
+     487
+    ],
+    "draws": 0,
+    "turns": 39731,
+    "endings": {
+     "adjacent": 460,
+     "majority": 540,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
      "straightFlush": 218,
-     "threeOfAKind": 179,
-     "flush": 721,
-     "straight": 966,
-     "sum": 10234
+     "threeOfAKind": 190,
+     "flush": 707,
+     "straight": 944,
+     "sum": 10197
     },
-    "builtTotal": 12318,
+    "builtTotal": 12256,
     "winning": {
-     "straightFlush": 197,
-     "threeOfAKind": 164,
-     "flush": 547,
-     "straight": 823,
-     "sum": 3851
+     "straightFlush": 199,
+     "threeOfAKind": 172,
+     "flush": 584,
+     "straight": 742,
+     "sum": 3833
     },
     "decidedBy": {
-     "formation": 1674,
-     "sum": 3683,
-     "first": 225
+     "formation": 1640,
+     "sum": 3687,
+     "first": 203
     },
     "jokerEdge": {
-     "games": 517,
-     "won": 382
+     "games": 529,
+     "won": 378
     },
     "shares": {
-     "firstPlayerWins": 0.517,
-     "secondPlayerWins": 0.483,
-     "averageTurns": 39.832,
-     "endings": {
-      "adjacent": 0.464,
-      "majority": 0.536,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.017697678194512095,
-      "threeOfAKind": 0.014531579801915896,
-      "flush": 0.05853222925799643,
-      "straight": 0.0784218217243059,
-      "sum": 0.8308166910212696
-     },
-     "winning": {
-      "straightFlush": 0.03529201003224651,
-      "threeOfAKind": 0.0293801504836976,
-      "flush": 0.09799355069867431,
-      "straight": 0.1474381941956288,
-      "sum": 0.6898960945897528
-     },
-     "decidedBy": {
-      "formation": 0.2998925116445718,
-      "sum": 0.6597993550698674,
-      "first": 0.04030813328556073
-     },
-     "jokerEdge": 0.7388781431334622
-    }
-   }
-  },
-  "classique-onePerBorder-straightUp": {
-   "deck": "classique",
-   "jokerRule": "onePerBorder",
-   "order": "straightUp",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     881,
-     1119
-    ],
-    "draws": 0,
-    "turns": 80043,
-    "endings": {
-     "adjacent": 954,
-     "majority": 1046,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 3722,
-     "threeOfAKind": 2453,
-     "flush": 5426,
-     "straight": 7062,
-     "sum": 5568
-    },
-    "builtTotal": 24231,
-    "winning": {
-     "straightFlush": 2930,
-     "threeOfAKind": 1649,
-     "flush": 1839,
-     "straight": 3944,
-     "sum": 619
-    },
-    "decidedBy": {
-     "formation": 7719,
-     "sum": 3028,
-     "first": 234
-    },
-    "jokerEdge": {
-     "games": 1002,
-     "won": 697
-    },
-    "shares": {
-     "firstPlayerWins": 0.4405,
-     "secondPlayerWins": 0.5595,
-     "averageTurns": 40.0215,
-     "endings": {
-      "adjacent": 0.477,
-      "majority": 0.523,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.15360488630267013,
-      "threeOfAKind": 0.10123395650200157,
-      "flush": 0.2239280260822913,
-      "straight": 0.291444843382444,
-      "sum": 0.22978828773059304
-     },
-     "winning": {
-      "straightFlush": 0.26682451507148713,
-      "threeOfAKind": 0.15016847281668336,
-      "flush": 0.16747108642200165,
-      "straight": 0.35916583189144885,
-      "sum": 0.05637009379837902
-     },
-     "decidedBy": {
-      "formation": 0.7029414443129041,
-      "sum": 0.2757490210363355,
-      "first": 0.021309534650760405
-     },
-     "jokerEdge": 0.6956087824351297
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     508,
-     491
-    ],
-    "draws": 1,
-    "turns": 39782,
-    "endings": {
-     "adjacent": 471,
-     "majority": 528,
-     "exhaustion": 0,
-     "draw": 1
-    },
-    "built": {
-     "straightFlush": 203,
-     "threeOfAKind": 181,
-     "flush": 749,
-     "straight": 985,
-     "sum": 10168
-    },
-    "builtTotal": 12286,
-    "winning": {
-     "straightFlush": 182,
-     "threeOfAKind": 161,
-     "flush": 579,
-     "straight": 845,
-     "sum": 3798
-    },
-    "decidedBy": {
-     "formation": 1703,
-     "sum": 3651,
-     "first": 211
-    },
-    "jokerEdge": {
-     "games": 514,
-     "won": 364
-    },
-    "shares": {
-     "firstPlayerWins": 0.508,
-     "secondPlayerWins": 0.491,
-     "averageTurns": 39.782,
-     "endings": {
-      "adjacent": 0.471,
-      "majority": 0.528,
-      "exhaustion": 0,
-      "draw": 0.001
-     },
-     "built": {
-      "straightFlush": 0.016522871561126487,
-      "threeOfAKind": 0.014732215529871398,
-      "flush": 0.0609636985186391,
-      "straight": 0.08017255412664821,
-      "sum": 0.8276086602637148
-     },
-     "winning": {
-      "straightFlush": 0.03270440251572327,
-      "threeOfAKind": 0.028930817610062894,
-      "flush": 0.10404312668463613,
-      "straight": 0.1518418688230009,
-      "sum": 0.6824797843665769
-     },
-     "decidedBy": {
-      "formation": 0.3060197663971249,
-      "sum": 0.6560646900269542,
-      "first": 0.03791554357592093
-     },
-     "jokerEdge": 0.708171206225681
-    }
-   }
-  },
-  "classique-colorless-straightUp": {
-   "deck": "classique",
-   "jokerRule": "colorless",
-   "order": "straightUp",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     866,
-     1134
-    ],
-    "draws": 0,
-    "turns": 79940,
-    "endings": {
-     "adjacent": 940,
-     "majority": 1060,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 1427,
-     "threeOfAKind": 3872,
-     "flush": 5290,
-     "straight": 8162,
-     "sum": 5428
-    },
-    "builtTotal": 24179,
-    "winning": {
-     "straightFlush": 1213,
-     "threeOfAKind": 2855,
-     "flush": 1790,
-     "straight": 4463,
-     "sum": 652
-    },
-    "decidedBy": {
-     "formation": 7459,
-     "sum": 3204,
-     "first": 310
-    },
-    "jokerEdge": {
-     "games": 977,
-     "won": 607
-    },
-    "shares": {
-     "firstPlayerWins": 0.433,
-     "secondPlayerWins": 0.567,
-     "averageTurns": 39.97,
-     "endings": {
-      "adjacent": 0.47,
-      "majority": 0.53,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.05901815625129244,
-      "threeOfAKind": 0.1601389635634228,
-      "flush": 0.21878489598411846,
-      "straight": 0.3375656561478969,
-      "sum": 0.22449232805326935
-     },
-     "winning": {
-      "straightFlush": 0.11054406269935296,
-      "threeOfAKind": 0.2601840882165315,
-      "flush": 0.16312767702542605,
-      "straight": 0.40672559919803153,
-      "sum": 0.05941857286065798
-     },
-     "decidedBy": {
-      "formation": 0.6797594094595826,
-      "sum": 0.2919894285974665,
-      "first": 0.02825116194295088
-     },
-     "jokerEdge": 0.6212896622313203
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     506,
-     494
-    ],
-    "draws": 0,
-    "turns": 39573,
-    "endings": {
-     "adjacent": 501,
-     "majority": 499,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 34,
-     "threeOfAKind": 251,
-     "flush": 436,
-     "straight": 1096,
-     "sum": 10357
-    },
-    "builtTotal": 12174,
-    "winning": {
-     "straightFlush": 27,
-     "threeOfAKind": 222,
-     "flush": 343,
-     "straight": 948,
-     "sum": 3951
-    },
-    "decidedBy": {
-     "formation": 1501,
-     "sum": 3763,
-     "first": 227
-    },
-    "jokerEdge": {
-     "games": 525,
-     "won": 349
-    },
-    "shares": {
-     "firstPlayerWins": 0.506,
-     "secondPlayerWins": 0.494,
-     "averageTurns": 39.573,
-     "endings": {
-      "adjacent": 0.501,
-      "majority": 0.499,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.002792837194020043,
-      "threeOfAKind": 0.020617709873500905,
-      "flush": 0.03581402989978643,
-      "straight": 0.0900279283719402,
-      "sum": 0.8507474946607524
-     },
-     "winning": {
-      "straightFlush": 0.004917137133491167,
-      "threeOfAKind": 0.040429794208705155,
-      "flush": 0.062465853214350754,
-      "straight": 0.17264614824257876,
-      "sum": 0.7195410672008742
-     },
-     "decidedBy": {
-      "formation": 0.27335640138408307,
-      "sum": 0.6853032234565652,
-      "first": 0.04134037515935167
-     },
-     "jokerEdge": 0.6647619047619048
-    }
-   }
-  },
-  "classique-free-bothSwapped": {
-   "deck": "classique",
-   "jokerRule": "free",
-   "order": "bothSwapped",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     912,
-     1088
-    ],
-    "draws": 0,
-    "turns": 80237,
-    "endings": {
-     "adjacent": 902,
-     "majority": 1098,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 2382,
-     "threeOfAKind": 3613,
-     "flush": 5492,
-     "straight": 6915,
-     "sum": 5998
-    },
-    "builtTotal": 24400,
-    "winning": {
-     "straightFlush": 1577,
-     "threeOfAKind": 2834,
-     "flush": 2011,
-     "straight": 3948,
-     "sum": 779
-    },
-    "decidedBy": {
-     "formation": 7691,
-     "sum": 3196,
-     "first": 262
-    },
-    "jokerEdge": {
-     "games": 964,
-     "won": 646
-    },
-    "shares": {
-     "firstPlayerWins": 0.456,
-     "secondPlayerWins": 0.544,
-     "averageTurns": 40.1185,
-     "endings": {
-      "adjacent": 0.451,
-      "majority": 0.549,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.09762295081967214,
-      "threeOfAKind": 0.14807377049180329,
-      "flush": 0.22508196721311474,
-      "straight": 0.28340163934426227,
-      "sum": 0.24581967213114755
-     },
-     "winning": {
-      "straightFlush": 0.14144766346757556,
-      "threeOfAKind": 0.2541932011839627,
-      "flush": 0.1803749215176249,
-      "straight": 0.3541124764552875,
-      "sum": 0.06987173737554937
-     },
-     "decidedBy": {
-      "formation": 0.6898376536012198,
-      "sum": 0.28666248093999463,
-      "first": 0.023499865458785543
-     },
-     "jokerEdge": 0.6701244813278008
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     506,
-     494
-    ],
-    "draws": 0,
-    "turns": 39683,
-    "endings": {
-     "adjacent": 468,
-     "majority": 532,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 170,
-     "threeOfAKind": 213,
-     "flush": 720,
-     "straight": 950,
-     "sum": 10226
-    },
-    "builtTotal": 12279,
-    "winning": {
-     "straightFlush": 154,
-     "threeOfAKind": 186,
-     "flush": 547,
-     "straight": 799,
-     "sum": 3858
-    },
-    "decidedBy": {
-     "formation": 1634,
-     "sum": 3697,
-     "first": 213
-    },
-    "jokerEdge": {
-     "games": 526,
-     "won": 374
-    },
-    "shares": {
-     "firstPlayerWins": 0.506,
-     "secondPlayerWins": 0.494,
-     "averageTurns": 39.683,
-     "endings": {
-      "adjacent": 0.468,
-      "majority": 0.532,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.013844775633194886,
-      "threeOfAKind": 0.017346689469826534,
-      "flush": 0.058636696799413635,
-      "straight": 0.07736786383255966,
-      "sum": 0.8328039742650053
-     },
-     "winning": {
-      "straightFlush": 0.027777777777777776,
-      "threeOfAKind": 0.03354978354978355,
-      "flush": 0.09866522366522366,
-      "straight": 0.14411976911976912,
-      "sum": 0.6958874458874459
-     },
-     "decidedBy": {
-      "formation": 0.29473304473304474,
-      "sum": 0.6668470418470418,
-      "first": 0.038419913419913417
-     },
-     "jokerEdge": 0.7110266159695817
-    }
-   }
-  },
-  "classique-onePerBorder-bothSwapped": {
-   "deck": "classique",
-   "jokerRule": "onePerBorder",
-   "order": "bothSwapped",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     929,
-     1071
-    ],
-    "draws": 0,
-    "turns": 80028,
-    "endings": {
-     "adjacent": 920,
-     "majority": 1080,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 2585,
-     "threeOfAKind": 3572,
-     "flush": 5313,
-     "straight": 6809,
-     "sum": 5931
-    },
-    "builtTotal": 24210,
-    "winning": {
-     "straightFlush": 1710,
-     "threeOfAKind": 2854,
-     "flush": 1832,
-     "straight": 3825,
-     "sum": 758
-    },
-    "decidedBy": {
-     "formation": 7736,
-     "sum": 2993,
-     "first": 250
-    },
-    "jokerEdge": {
-     "games": 977,
-     "won": 660
-    },
-    "shares": {
-     "firstPlayerWins": 0.4645,
-     "secondPlayerWins": 0.5355,
-     "averageTurns": 40.014,
+     "firstPlayerWins": 0.513,
+     "secondPlayerWins": 0.487,
+     "averageTurns": 39.731,
      "endings": {
       "adjacent": 0.46,
       "majority": 0.54,
@@ -4593,144 +3356,1079 @@
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.10677406030565882,
-      "threeOfAKind": 0.14754233787691037,
-      "flush": 0.219454770755886,
-      "straight": 0.28124741842213963,
-      "sum": 0.2449814126394052
+      "straightFlush": 0.017787206266318537,
+      "threeOfAKind": 0.01550261096605744,
+      "flush": 0.05768603133159269,
+      "straight": 0.07702349869451697,
+      "sum": 0.8320006527415144
      },
      "winning": {
-      "straightFlush": 0.15575188997176428,
-      "threeOfAKind": 0.2599508151926405,
-      "flush": 0.16686401311594862,
-      "straight": 0.34839238546315693,
-      "sum": 0.06904089625648967
+      "straightFlush": 0.035985533453887886,
+      "threeOfAKind": 0.031103074141048823,
+      "flush": 0.10560578661844484,
+      "straight": 0.1341772151898734,
+      "sum": 0.693128390596745
      },
      "decidedBy": {
-      "formation": 0.7046179069131979,
-      "sum": 0.27261134893888334,
-      "first": 0.022770744147918753
+      "formation": 0.2965641952983725,
+      "sum": 0.6667269439421338,
+      "first": 0.03670886075949367
      },
-     "jokerEdge": 0.6755373592630501
+     "jokerEdge": 0.7145557655954632
+    }
+   },
+   "greedy-greedy": {
+    "games": 2000,
+    "wins": [
+     880,
+     1120
+    ],
+    "draws": 0,
+    "turns": 79934,
+    "endings": {
+     "adjacent": 893,
+     "majority": 1107,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3440,
+     "threeOfAKind": 2126,
+     "flush": 10349,
+     "straight": 2687,
+     "sum": 5607
+    },
+    "builtTotal": 24209,
+    "winning": {
+     "straightFlush": 2757,
+     "threeOfAKind": 1571,
+     "flush": 5242,
+     "straight": 766,
+     "sum": 700
+    },
+    "decidedBy": {
+     "formation": 7261,
+     "sum": 3539,
+     "first": 236
+    },
+    "jokerEdge": {
+     "games": 996,
+     "won": 758
+    },
+    "shares": {
+     "firstPlayerWins": 0.44,
+     "secondPlayerWins": 0.56,
+     "averageTurns": 39.967,
+     "endings": {
+      "adjacent": 0.4465,
+      "majority": 0.5535,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.14209591474245115,
+      "threeOfAKind": 0.08781857986699161,
+      "flush": 0.4274856458341939,
+      "straight": 0.11099177991655995,
+      "sum": 0.23160807963980337
+     },
+     "winning": {
+      "straightFlush": 0.2498187749184487,
+      "threeOfAKind": 0.1423523015585357,
+      "flush": 0.4749909387459224,
+      "straight": 0.0694092062341428,
+      "sum": 0.06342877854295034
+     },
+     "decidedBy": {
+      "formation": 0.6579376585719463,
+      "sum": 0.32067778180500184,
+      "first": 0.02138455962305183
+     },
+     "jokerEdge": 0.7610441767068273
+    }
+   }
+  },
+  "classique-onePerBorder-original": {
+   "deck": "classique",
+   "jokerRule": "onePerBorder",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     949,
+     1050
+    ],
+    "draws": 1,
+    "turns": 80505,
+    "endings": {
+     "adjacent": 982,
+     "majority": 1017,
+     "exhaustion": 0,
+     "draw": 1
+    },
+    "built": {
+     "straightFlush": 3878,
+     "threeOfAKind": 2897,
+     "flush": 9403,
+     "straight": 1662,
+     "sum": 6745
+    },
+    "builtTotal": 24585,
+    "winning": {
+     "straightFlush": 3210,
+     "threeOfAKind": 2031,
+     "flush": 4418,
+     "straight": 521,
+     "sum": 913
+    },
+    "decidedBy": {
+     "formation": 7865,
+     "sum": 3050,
+     "first": 178
+    },
+    "jokerEdge": {
+     "games": 1222,
+     "won": 980
+    },
+    "shares": {
+     "firstPlayerWins": 0.4745,
+     "secondPlayerWins": 0.525,
+     "averageTurns": 40.2525,
+     "endings": {
+      "adjacent": 0.491,
+      "majority": 0.5085,
+      "exhaustion": 0,
+      "draw": 0.0005
+     },
+     "built": {
+      "straightFlush": 0.15773845840959935,
+      "threeOfAKind": 0.11783607890990441,
+      "flush": 0.38246898515354893,
+      "straight": 0.06760219646125687,
+      "sum": 0.2743542810656905
+     },
+     "winning": {
+      "straightFlush": 0.2893716758316055,
+      "threeOfAKind": 0.18308843414766068,
+      "flush": 0.39826917876138107,
+      "straight": 0.04696655548544127,
+      "sum": 0.08230415577391148
+     },
+     "decidedBy": {
+      "formation": 0.7090056792571893,
+      "sum": 0.27494816550978096,
+      "first": 0.016046155233029838
+     },
+     "jokerEdge": 0.8019639934533551
     }
    },
    "random-random": {
     "games": 1000,
     "wins": [
-     508,
-     488
+     494,
+     502
     ],
     "draws": 4,
-    "turns": 39789,
+    "turns": 39670,
     "endings": {
-     "adjacent": 492,
-     "majority": 504,
+     "adjacent": 479,
+     "majority": 517,
      "exhaustion": 0,
      "draw": 4
     },
     "built": {
-     "straightFlush": 191,
-     "threeOfAKind": 189,
-     "flush": 743,
-     "straight": 945,
-     "sum": 10225
+     "straightFlush": 189,
+     "threeOfAKind": 163,
+     "flush": 726,
+     "straight": 946,
+     "sum": 10214
     },
-    "builtTotal": 12293,
+    "builtTotal": 12238,
     "winning": {
-     "straightFlush": 165,
-     "threeOfAKind": 162,
-     "flush": 586,
-     "straight": 818,
-     "sum": 3803
+     "straightFlush": 171,
+     "threeOfAKind": 142,
+     "flush": 606,
+     "straight": 745,
+     "sum": 3849
     },
     "decidedBy": {
-     "formation": 1680,
-     "sum": 3642,
-     "first": 212
+     "formation": 1605,
+     "sum": 3683,
+     "first": 225
     },
     "jokerEdge": {
-     "games": 524,
-     "won": 359
+     "games": 562,
+     "won": 397
     },
     "shares": {
-     "firstPlayerWins": 0.508,
-     "secondPlayerWins": 0.488,
-     "averageTurns": 39.789,
+     "firstPlayerWins": 0.494,
+     "secondPlayerWins": 0.502,
+     "averageTurns": 39.67,
      "endings": {
-      "adjacent": 0.492,
-      "majority": 0.504,
+      "adjacent": 0.479,
+      "majority": 0.517,
       "exhaustion": 0,
       "draw": 0.004
      },
      "built": {
-      "straightFlush": 0.015537297649068575,
-      "threeOfAKind": 0.015374603432847963,
-      "flush": 0.06044090132595786,
-      "straight": 0.07687301716423982,
-      "sum": 0.8317741804278858
+      "straightFlush": 0.01544369995097238,
+      "threeOfAKind": 0.013319169798986763,
+      "flush": 0.05932341885929073,
+      "straight": 0.0773002124530152,
+      "sum": 0.834613498937735
      },
      "winning": {
-      "straightFlush": 0.029815684857246116,
-      "threeOfAKind": 0.029273581496205278,
-      "flush": 0.10589085652331044,
-      "straight": 0.14781351644380195,
-      "sum": 0.6872063606794362
+      "straightFlush": 0.031017594775984036,
+      "threeOfAKind": 0.02575730092508616,
+      "flush": 0.10992200253945221,
+      "straight": 0.13513513513513514,
+      "sum": 0.6981679666243424
      },
      "decidedBy": {
-      "formation": 0.3035778821828695,
-      "sum": 0.6581134803035779,
-      "first": 0.03830863751355258
+      "formation": 0.29113005623072735,
+      "sum": 0.6680573190640304,
+      "first": 0.040812624705242155
      },
-     "jokerEdge": 0.6851145038167938
+     "jokerEdge": 0.7064056939501779
     }
-   }
-  },
-  "classique-colorless-bothSwapped": {
-   "deck": "classique",
-   "jokerRule": "colorless",
-   "order": "bothSwapped",
+   },
    "greedy-greedy": {
     "games": 2000,
     "wins": [
-     914,
-     1086
+     858,
+     1142
     ],
     "draws": 0,
-    "turns": 80261,
+    "turns": 79872,
     "endings": {
-     "adjacent": 916,
-     "majority": 1084,
+     "adjacent": 936,
+     "majority": 1064,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 1160,
-     "threeOfAKind": 4009,
-     "flush": 5162,
-     "straight": 7922,
-     "sum": 6169
+     "straightFlush": 3445,
+     "threeOfAKind": 2354,
+     "flush": 10256,
+     "straight": 2419,
+     "sum": 5662
     },
-    "builtTotal": 24422,
+    "builtTotal": 24136,
     "winning": {
-     "straightFlush": 764,
-     "threeOfAKind": 3070,
-     "flush": 1864,
-     "straight": 4610,
-     "sum": 818
+     "straightFlush": 2731,
+     "threeOfAKind": 1731,
+     "flush": 5034,
+     "straight": 696,
+     "sum": 750
     },
     "decidedBy": {
-     "formation": 7403,
-     "sum": 3446,
-     "first": 277
+     "formation": 7087,
+     "sum": 3623,
+     "first": 232
     },
     "jokerEdge": {
-     "games": 972,
-     "won": 614
+     "games": 973,
+     "won": 741
     },
     "shares": {
-     "firstPlayerWins": 0.457,
-     "secondPlayerWins": 0.543,
-     "averageTurns": 40.1305,
+     "firstPlayerWins": 0.429,
+     "secondPlayerWins": 0.571,
+     "averageTurns": 39.936,
+     "endings": {
+      "adjacent": 0.468,
+      "majority": 0.532,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.1427328471992045,
+      "threeOfAKind": 0.09753065959562479,
+      "flush": 0.42492542260523697,
+      "straight": 0.10022373218428902,
+      "sum": 0.2345873384156447
+     },
+     "winning": {
+      "straightFlush": 0.2495887406324255,
+      "threeOfAKind": 0.15819777006031804,
+      "flush": 0.46006214585998906,
+      "straight": 0.0636081155181868,
+      "sum": 0.0685432279290806
+     },
+     "decidedBy": {
+      "formation": 0.6476878084445257,
+      "sum": 0.3311094863827454,
+      "first": 0.021202705172728934
+     },
+     "jokerEdge": 0.7615621788283659
+    }
+   }
+  },
+  "classique-colorless-original": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     930,
+     1070
+    ],
+    "draws": 0,
+    "turns": 79333,
+    "endings": {
+     "adjacent": 944,
+     "majority": 1056,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 2697,
+     "threeOfAKind": 3831,
+     "flush": 11261,
+     "straight": 1631,
+     "sum": 4591
+    },
+    "builtTotal": 24011,
+    "winning": {
+     "straightFlush": 2236,
+     "threeOfAKind": 2823,
+     "flush": 5035,
+     "straight": 430,
+     "sum": 461
+    },
+    "decidedBy": {
+     "formation": 7057,
+     "sum": 3707,
+     "first": 221
+    },
+    "jokerEdge": {
+     "games": 1079,
+     "won": 742
+    },
+    "shares": {
+     "firstPlayerWins": 0.465,
+     "secondPlayerWins": 0.535,
+     "averageTurns": 39.6665,
+     "endings": {
+      "adjacent": 0.472,
+      "majority": 0.528,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.11232351838740577,
+      "threeOfAKind": 0.1595518720586398,
+      "flush": 0.46899337803506724,
+      "straight": 0.06792720003331806,
+      "sum": 0.1912040314855691
+     },
+     "winning": {
+      "straightFlush": 0.20355029585798817,
+      "threeOfAKind": 0.25698680018206643,
+      "flush": 0.45835229858898496,
+      "straight": 0.03914428766499772,
+      "sum": 0.04196631770596267
+     },
+     "decidedBy": {
+      "formation": 0.6424214838416021,
+      "sum": 0.3374601729631315,
+      "first": 0.020118343195266272
+     },
+     "jokerEdge": 0.6876737720111215
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     498,
+     502
+    ],
+    "draws": 0,
+    "turns": 39762,
+    "endings": {
+     "adjacent": 467,
+     "majority": 533,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 36,
+     "threeOfAKind": 208,
+     "flush": 487,
+     "straight": 1093,
+     "sum": 10475
+    },
+    "builtTotal": 12299,
+    "winning": {
+     "straightFlush": 34,
+     "threeOfAKind": 187,
+     "flush": 418,
+     "straight": 865,
+     "sum": 4053
+    },
+    "decidedBy": {
+     "formation": 1451,
+     "sum": 3866,
+     "first": 240
+    },
+    "jokerEdge": {
+     "games": 536,
+     "won": 366
+    },
+    "shares": {
+     "firstPlayerWins": 0.498,
+     "secondPlayerWins": 0.502,
+     "averageTurns": 39.762,
+     "endings": {
+      "adjacent": 0.467,
+      "majority": 0.533,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.0029270672412391252,
+      "threeOfAKind": 0.016911944060492724,
+      "flush": 0.03959671518009594,
+      "straight": 0.08886901374095454,
+      "sum": 0.8516952597772176
+     },
+     "winning": {
+      "straightFlush": 0.006118409213604463,
+      "threeOfAKind": 0.033651250674824544,
+      "flush": 0.07522044268490193,
+      "straight": 0.15565952852258413,
+      "sum": 0.7293503689040849
+     },
+     "decidedBy": {
+      "formation": 0.2611121108511787,
+      "sum": 0.6956991182292603,
+      "first": 0.043188770919560915
+     },
+     "jokerEdge": 0.6828358208955224
+    }
+   },
+   "greedy-greedy": {
+    "games": 2000,
+    "wins": [
+     883,
+     1117
+    ],
+    "draws": 0,
+    "turns": 79887,
+    "endings": {
+     "adjacent": 901,
+     "majority": 1099,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1341,
+     "threeOfAKind": 4161,
+     "flush": 10559,
+     "straight": 2914,
+     "sum": 5277
+    },
+    "builtTotal": 24252,
+    "winning": {
+     "straightFlush": 1139,
+     "threeOfAKind": 3250,
+     "flush": 5179,
+     "straight": 848,
+     "sum": 672
+    },
+    "decidedBy": {
+     "formation": 7480,
+     "sum": 3384,
+     "first": 224
+    },
+    "jokerEdge": {
+     "games": 1018,
+     "won": 697
+    },
+    "shares": {
+     "firstPlayerWins": 0.4415,
+     "secondPlayerWins": 0.5585,
+     "averageTurns": 39.9435,
+     "endings": {
+      "adjacent": 0.4505,
+      "majority": 0.5495,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.05529440870856012,
+      "threeOfAKind": 0.171573478476002,
+      "flush": 0.43538677222497113,
+      "straight": 0.12015503875968993,
+      "sum": 0.21759030183077685
+     },
+     "winning": {
+      "straightFlush": 0.10272366522366522,
+      "threeOfAKind": 0.2931096681096681,
+      "flush": 0.4670815295815296,
+      "straight": 0.07647907647907648,
+      "sum": 0.06060606060606061
+     },
+     "decidedBy": {
+      "formation": 0.6746031746031746,
+      "sum": 0.3051948051948052,
+      "first": 0.020202020202020204
+     },
+     "jokerEdge": 0.6846758349705304
+    }
+   }
+  },
+  "classique-free-swapped": {
+   "deck": "classique",
+   "jokerRule": "free",
+   "order": "swapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     943,
+     1057
+    ],
+    "draws": 0,
+    "turns": 80450,
+    "endings": {
+     "adjacent": 962,
+     "majority": 1038,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3064,
+     "threeOfAKind": 4140,
+     "flush": 9629,
+     "straight": 1441,
+     "sum": 6355
+    },
+    "builtTotal": 24629,
+    "winning": {
+     "straightFlush": 2087,
+     "threeOfAKind": 3583,
+     "flush": 4330,
+     "straight": 410,
+     "sum": 747
+    },
+    "decidedBy": {
+     "formation": 7986,
+     "sum": 2972,
+     "first": 199
+    },
+    "jokerEdge": {
+     "games": 1188,
+     "won": 962
+    },
+    "shares": {
+     "firstPlayerWins": 0.4715,
+     "secondPlayerWins": 0.5285,
+     "averageTurns": 40.225,
+     "endings": {
+      "adjacent": 0.481,
+      "majority": 0.519,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.12440618782735799,
+      "threeOfAKind": 0.16809452271712208,
+      "flush": 0.39096187421332573,
+      "straight": 0.05850826261723984,
+      "sum": 0.25802915262495435
+     },
+     "winning": {
+      "straightFlush": 0.1870574527202653,
+      "threeOfAKind": 0.3211436766155777,
+      "flush": 0.3880971587344268,
+      "straight": 0.036748229810881064,
+      "sum": 0.06695348211884915
+     },
+     "decidedBy": {
+      "formation": 0.7157838128529175,
+      "sum": 0.26637985121448415,
+      "first": 0.01783633593259837
+     },
+     "jokerEdge": 0.8097643097643098
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     489,
+     511
+    ],
+    "draws": 0,
+    "turns": 39603,
+    "endings": {
+     "adjacent": 473,
+     "majority": 527,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 179,
+     "threeOfAKind": 229,
+     "flush": 696,
+     "straight": 975,
+     "sum": 10126
+    },
+    "builtTotal": 12205,
+    "winning": {
+     "straightFlush": 164,
+     "threeOfAKind": 205,
+     "flush": 593,
+     "straight": 770,
+     "sum": 3764
+    },
+    "decidedBy": {
+     "formation": 1679,
+     "sum": 3637,
+     "first": 180
+    },
+    "jokerEdge": {
+     "games": 517,
+     "won": 365
+    },
+    "shares": {
+     "firstPlayerWins": 0.489,
+     "secondPlayerWins": 0.511,
+     "averageTurns": 39.603,
+     "endings": {
+      "adjacent": 0.473,
+      "majority": 0.527,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.014666120442441623,
+      "threeOfAKind": 0.018762802130274477,
+      "flush": 0.057025809094633347,
+      "straight": 0.07988529291274069,
+      "sum": 0.8296599754199099
+     },
+     "winning": {
+      "straightFlush": 0.029839883551673944,
+      "threeOfAKind": 0.03729985443959243,
+      "flush": 0.1078966521106259,
+      "straight": 0.1401018922852984,
+      "sum": 0.6848617176128093
+     },
+     "decidedBy": {
+      "formation": 0.3054949053857351,
+      "sum": 0.6617540029112081,
+      "first": 0.03275109170305677
+     },
+     "jokerEdge": 0.7059961315280464
+    }
+   }
+  },
+  "classique-onePerBorder-swapped": {
+   "deck": "classique",
+   "jokerRule": "onePerBorder",
+   "order": "swapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     937,
+     1062
+    ],
+    "draws": 1,
+    "turns": 80701,
+    "endings": {
+     "adjacent": 915,
+     "majority": 1084,
+     "exhaustion": 0,
+     "draw": 1
+    },
+    "built": {
+     "straightFlush": 3089,
+     "threeOfAKind": 4054,
+     "flush": 9633,
+     "straight": 1392,
+     "sum": 6613
+    },
+    "builtTotal": 24781,
+    "winning": {
+     "straightFlush": 2169,
+     "threeOfAKind": 3495,
+     "flush": 4435,
+     "straight": 347,
+     "sum": 779
+    },
+    "decidedBy": {
+     "formation": 8077,
+     "sum": 2965,
+     "first": 183
+    },
+    "jokerEdge": {
+     "games": 1195,
+     "won": 947
+    },
+    "shares": {
+     "firstPlayerWins": 0.4685,
+     "secondPlayerWins": 0.531,
+     "averageTurns": 40.3505,
+     "endings": {
+      "adjacent": 0.4575,
+      "majority": 0.542,
+      "exhaustion": 0,
+      "draw": 0.0005
+     },
+     "built": {
+      "straightFlush": 0.12465195109156209,
+      "threeOfAKind": 0.16359307533997822,
+      "flush": 0.388725233041443,
+      "straight": 0.05617206730963238,
+      "sum": 0.2668576732173843
+     },
+     "winning": {
+      "straightFlush": 0.1932293986636971,
+      "threeOfAKind": 0.31135857461024496,
+      "flush": 0.39510022271714923,
+      "straight": 0.03091314031180401,
+      "sum": 0.06939866369710468
+     },
+     "decidedBy": {
+      "formation": 0.7195545657015591,
+      "sum": 0.2641425389755011,
+      "first": 0.016302895322939867
+     },
+     "jokerEdge": 0.792468619246862
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     511,
+     487
+    ],
+    "draws": 2,
+    "turns": 39817,
+    "endings": {
+     "adjacent": 443,
+     "majority": 555,
+     "exhaustion": 0,
+     "draw": 2
+    },
+    "built": {
+     "straightFlush": 166,
+     "threeOfAKind": 197,
+     "flush": 690,
+     "straight": 981,
+     "sum": 10302
+    },
+    "builtTotal": 12336,
+    "winning": {
+     "straightFlush": 144,
+     "threeOfAKind": 186,
+     "flush": 605,
+     "straight": 787,
+     "sum": 3860
+    },
+    "decidedBy": {
+     "formation": 1670,
+     "sum": 3722,
+     "first": 190
+    },
+    "jokerEdge": {
+     "games": 532,
+     "won": 366
+    },
+    "shares": {
+     "firstPlayerWins": 0.511,
+     "secondPlayerWins": 0.487,
+     "averageTurns": 39.817,
+     "endings": {
+      "adjacent": 0.443,
+      "majority": 0.555,
+      "exhaustion": 0,
+      "draw": 0.002
+     },
+     "built": {
+      "straightFlush": 0.013456549935149158,
+      "threeOfAKind": 0.015969520103761348,
+      "flush": 0.055933852140077824,
+      "straight": 0.07952334630350194,
+      "sum": 0.8351167315175098
+     },
+     "winning": {
+      "straightFlush": 0.025797205302758867,
+      "threeOfAKind": 0.033321390182730205,
+      "flush": 0.10838409172339664,
+      "straight": 0.1409888928699391,
+      "sum": 0.6915084199211752
+     },
+     "decidedBy": {
+      "formation": 0.2991759226083841,
+      "sum": 0.666786098172698,
+      "first": 0.03403797921891795
+     },
+     "jokerEdge": 0.6879699248120301
+    }
+   }
+  },
+  "classique-colorless-swapped": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "swapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     906,
+     1094
+    ],
+    "draws": 0,
+    "turns": 79641,
+    "endings": {
+     "adjacent": 939,
+     "majority": 1061,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 2208,
+     "threeOfAKind": 4312,
+     "flush": 11028,
+     "straight": 1559,
+     "sum": 5106
+    },
+    "builtTotal": 24213,
+    "winning": {
+     "straightFlush": 1342,
+     "threeOfAKind": 3671,
+     "flush": 5008,
+     "straight": 495,
+     "sum": 563
+    },
+    "decidedBy": {
+     "formation": 7261,
+     "sum": 3587,
+     "first": 231
+    },
+    "jokerEdge": {
+     "games": 1091,
+     "won": 815
+    },
+    "shares": {
+     "firstPlayerWins": 0.453,
+     "secondPlayerWins": 0.547,
+     "averageTurns": 39.8205,
+     "endings": {
+      "adjacent": 0.4695,
+      "majority": 0.5305,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.09119068269111634,
+      "threeOfAKind": 0.1780861520670714,
+      "flush": 0.45545781191921697,
+      "straight": 0.06438689959938876,
+      "sum": 0.21087845372320654
+     },
+     "winning": {
+      "straightFlush": 0.12113006589042333,
+      "threeOfAKind": 0.3313475945482444,
+      "flush": 0.45202635616932935,
+      "straight": 0.04467912266450041,
+      "sum": 0.05081686072750248
+     },
+     "decidedBy": {
+      "formation": 0.6553840599332069,
+      "sum": 0.3237656828233595,
+      "first": 0.020850257243433524
+     },
+     "jokerEdge": 0.7470210815765352
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     506,
+     494
+    ],
+    "draws": 0,
+    "turns": 39610,
+    "endings": {
+     "adjacent": 451,
+     "majority": 549,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 39,
+     "threeOfAKind": 229,
+     "flush": 509,
+     "straight": 1068,
+     "sum": 10378
+    },
+    "builtTotal": 12223,
+    "winning": {
+     "straightFlush": 35,
+     "threeOfAKind": 208,
+     "flush": 431,
+     "straight": 855,
+     "sum": 3975
+    },
+    "decidedBy": {
+     "formation": 1482,
+     "sum": 3789,
+     "first": 233
+    },
+    "jokerEdge": {
+     "games": 547,
+     "won": 367
+    },
+    "shares": {
+     "firstPlayerWins": 0.506,
+     "secondPlayerWins": 0.494,
+     "averageTurns": 39.61,
+     "endings": {
+      "adjacent": 0.451,
+      "majority": 0.549,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.0031907060459788923,
+      "threeOfAKind": 0.01873517139818375,
+      "flush": 0.04164280454880144,
+      "straight": 0.08737625787449889,
+      "sum": 0.8490550601325371
+     },
+     "winning": {
+      "straightFlush": 0.006359011627906977,
+      "threeOfAKind": 0.0377906976744186,
+      "flush": 0.07830668604651163,
+      "straight": 0.15534156976744187,
+      "sum": 0.7222020348837209
+     },
+     "decidedBy": {
+      "formation": 0.26925872093023256,
+      "sum": 0.6884084302325582,
+      "first": 0.0423328488372093
+     },
+     "jokerEdge": 0.6709323583180987
+    }
+   }
+  },
+  "classique-free-straightUp": {
+   "deck": "classique",
+   "jokerRule": "free",
+   "order": "straightUp",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     988,
+     1012
+    ],
+    "draws": 0,
+    "turns": 80672,
+    "endings": {
+     "adjacent": 923,
+     "majority": 1077,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 4465,
+     "threeOfAKind": 2612,
+     "flush": 4682,
+     "straight": 5464,
+     "sum": 7531
+    },
+    "builtTotal": 24754,
+    "winning": {
+     "straightFlush": 3778,
+     "threeOfAKind": 1718,
+     "flush": 1779,
+     "straight": 2840,
+     "sum": 1083
+    },
+    "decidedBy": {
+     "formation": 8436,
+     "sum": 2572,
+     "first": 190
+    },
+    "jokerEdge": {
+     "games": 1196,
+     "won": 945
+    },
+    "shares": {
+     "firstPlayerWins": 0.494,
+     "secondPlayerWins": 0.506,
+     "averageTurns": 40.336,
+     "endings": {
+      "adjacent": 0.4615,
+      "majority": 0.5385,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.18037488890684333,
+      "threeOfAKind": 0.10551830007271552,
+      "flush": 0.18914114890522743,
+      "straight": 0.22073200290862083,
+      "sum": 0.3042336592065929
+     },
+     "winning": {
+      "straightFlush": 0.3373816752991606,
+      "threeOfAKind": 0.15342025361671727,
+      "flush": 0.15886765493838184,
+      "straight": 0.25361671727094126,
+      "sum": 0.09671369887479907
+     },
+     "decidedBy": {
+      "formation": 0.7533488122879085,
+      "sum": 0.22968387212002142,
+      "first": 0.01696731559207001
+     },
+     "jokerEdge": 0.790133779264214
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     491,
+     509
+    ],
+    "draws": 0,
+    "turns": 39741,
+    "endings": {
+     "adjacent": 458,
+     "majority": 542,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 192,
+     "threeOfAKind": 200,
+     "flush": 715,
+     "straight": 990,
+     "sum": 10189
+    },
+    "builtTotal": 12286,
+    "winning": {
+     "straightFlush": 167,
+     "threeOfAKind": 177,
+     "flush": 560,
+     "straight": 823,
+     "sum": 3842
+    },
+    "decidedBy": {
+     "formation": 1668,
+     "sum": 3721,
+     "first": 180
+    },
+    "jokerEdge": {
+     "games": 519,
+     "won": 372
+    },
+    "shares": {
+     "firstPlayerWins": 0.491,
+     "secondPlayerWins": 0.509,
+     "averageTurns": 39.741,
      "endings": {
       "adjacent": 0.458,
       "majority": 0.542,
@@ -4738,25 +4436,390 @@
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.04749815739906642,
-      "threeOfAKind": 0.16415526983867004,
-      "flush": 0.21136680042584555,
-      "straight": 0.3243796576856932,
-      "sum": 0.25260011465072474
+      "straightFlush": 0.015627543545498942,
+      "threeOfAKind": 0.016278691193228063,
+      "flush": 0.05819632101579033,
+      "straight": 0.08057952140647892,
+      "sum": 0.8293179228390037
      },
      "winning": {
-      "straightFlush": 0.06866798490023368,
-      "threeOfAKind": 0.2759302534603631,
-      "flush": 0.16753550242674817,
-      "straight": 0.41434477799748337,
-      "sum": 0.07352148121517167
+      "straightFlush": 0.0299874304183875,
+      "threeOfAKind": 0.03178308493445861,
+      "flush": 0.10055665289998204,
+      "straight": 0.14778236667265218,
+      "sum": 0.6898904650745197
      },
      "decidedBy": {
-      "formation": 0.6653783929534424,
-      "sum": 0.30972496854215353,
-      "first": 0.024896638504404097
+      "formation": 0.2995151732806608,
+      "sum": 0.6681630454300592,
+      "first": 0.03232178128927994
      },
-     "jokerEdge": 0.6316872427983539
+     "jokerEdge": 0.7167630057803468
+    }
+   }
+  },
+  "classique-onePerBorder-straightUp": {
+   "deck": "classique",
+   "jokerRule": "onePerBorder",
+   "order": "straightUp",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     989,
+     1011
+    ],
+    "draws": 0,
+    "turns": 80474,
+    "endings": {
+     "adjacent": 937,
+     "majority": 1063,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 4291,
+     "threeOfAKind": 2751,
+     "flush": 4473,
+     "straight": 5365,
+     "sum": 7656
+    },
+    "builtTotal": 24536,
+    "winning": {
+     "straightFlush": 3599,
+     "threeOfAKind": 1815,
+     "flush": 1773,
+     "straight": 2774,
+     "sum": 1136
+    },
+    "decidedBy": {
+     "formation": 8372,
+     "sum": 2531,
+     "first": 194
+    },
+    "jokerEdge": {
+     "games": 1215,
+     "won": 930
+    },
+    "shares": {
+     "firstPlayerWins": 0.4945,
+     "secondPlayerWins": 0.5055,
+     "averageTurns": 40.237,
+     "endings": {
+      "adjacent": 0.4685,
+      "majority": 0.5315,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.17488588196935115,
+      "threeOfAKind": 0.11212096511248777,
+      "flush": 0.18230355396152592,
+      "straight": 0.21865829801108574,
+      "sum": 0.3120313009455494
+     },
+     "winning": {
+      "straightFlush": 0.32432188879877444,
+      "threeOfAKind": 0.16355771830224386,
+      "flush": 0.1597729115977291,
+      "straight": 0.2499774713886636,
+      "sum": 0.10237000991258899
+     },
+     "decidedBy": {
+      "formation": 0.7544381364332703,
+      "sum": 0.2280796611696855,
+      "first": 0.017482202397044247
+     },
+     "jokerEdge": 0.7654320987654321
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     497,
+     500
+    ],
+    "draws": 3,
+    "turns": 39651,
+    "endings": {
+     "adjacent": 431,
+     "majority": 566,
+     "exhaustion": 0,
+     "draw": 3
+    },
+    "built": {
+     "straightFlush": 189,
+     "threeOfAKind": 170,
+     "flush": 662,
+     "straight": 975,
+     "sum": 10246
+    },
+    "builtTotal": 12242,
+    "winning": {
+     "straightFlush": 170,
+     "threeOfAKind": 149,
+     "flush": 517,
+     "straight": 817,
+     "sum": 3857
+    },
+    "decidedBy": {
+     "formation": 1605,
+     "sum": 3695,
+     "first": 210
+    },
+    "jokerEdge": {
+     "games": 522,
+     "won": 365
+    },
+    "shares": {
+     "firstPlayerWins": 0.497,
+     "secondPlayerWins": 0.5,
+     "averageTurns": 39.651,
+     "endings": {
+      "adjacent": 0.431,
+      "majority": 0.566,
+      "exhaustion": 0,
+      "draw": 0.003
+     },
+     "built": {
+      "straightFlush": 0.015438653814736154,
+      "threeOfAKind": 0.013886619833360562,
+      "flush": 0.05407613135108642,
+      "straight": 0.07964384904427381,
+      "sum": 0.8369547459565431
+     },
+     "winning": {
+      "straightFlush": 0.030852994555353903,
+      "threeOfAKind": 0.027041742286751363,
+      "flush": 0.09382940108892922,
+      "straight": 0.1482758620689655,
+      "sum": 0.7
+     },
+     "decidedBy": {
+      "formation": 0.2912885662431942,
+      "sum": 0.6705989110707804,
+      "first": 0.038112522686025406
+     },
+     "jokerEdge": 0.6992337164750958
+    }
+   }
+  },
+  "classique-colorless-straightUp": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "straightUp",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     1020,
+     980
+    ],
+    "draws": 0,
+    "turns": 80313,
+    "endings": {
+     "adjacent": 931,
+     "majority": 1069,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3309,
+     "threeOfAKind": 3760,
+     "flush": 4166,
+     "straight": 6457,
+     "sum": 6821
+    },
+    "builtTotal": 24513,
+    "winning": {
+     "straightFlush": 2888,
+     "threeOfAKind": 2716,
+     "flush": 1187,
+     "straight": 3593,
+     "sum": 787
+    },
+    "decidedBy": {
+     "formation": 8574,
+     "sum": 2379,
+     "first": 218
+    },
+    "jokerEdge": {
+     "games": 1148,
+     "won": 794
+    },
+    "shares": {
+     "firstPlayerWins": 0.51,
+     "secondPlayerWins": 0.49,
+     "averageTurns": 40.1565,
+     "endings": {
+      "adjacent": 0.4655,
+      "majority": 0.5345,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.1349895973565047,
+      "threeOfAKind": 0.15338799820503407,
+      "flush": 0.16995063843674785,
+      "straight": 0.2634112511728471,
+      "sum": 0.2782605148288663
+     },
+     "winning": {
+      "straightFlush": 0.2585265419389491,
+      "threeOfAKind": 0.2431295318234715,
+      "flush": 0.10625727329692955,
+      "straight": 0.32163637991227284,
+      "sum": 0.07045027302837704
+     },
+     "decidedBy": {
+      "formation": 0.7675230507564229,
+      "sum": 0.212962134097216,
+      "first": 0.019514815146361112
+     },
+     "jokerEdge": 0.6916376306620209
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     514,
+     486
+    ],
+    "draws": 0,
+    "turns": 39650,
+    "endings": {
+     "adjacent": 468,
+     "majority": 532,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 42,
+     "threeOfAKind": 182,
+     "flush": 473,
+     "straight": 1089,
+     "sum": 10467
+    },
+    "builtTotal": 12253,
+    "winning": {
+     "straightFlush": 41,
+     "threeOfAKind": 163,
+     "flush": 366,
+     "straight": 928,
+     "sum": 4026
+    },
+    "decidedBy": {
+     "formation": 1440,
+     "sum": 3854,
+     "first": 230
+    },
+    "jokerEdge": {
+     "games": 528,
+     "won": 386
+    },
+    "shares": {
+     "firstPlayerWins": 0.514,
+     "secondPlayerWins": 0.486,
+     "averageTurns": 39.65,
+     "endings": {
+      "adjacent": 0.468,
+      "majority": 0.532,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.0034277319840039172,
+      "threeOfAKind": 0.014853505264016976,
+      "flush": 0.038602791153186974,
+      "straight": 0.08887619358524443,
+      "sum": 0.8542397780135477
+     },
+     "winning": {
+      "straightFlush": 0.007422157856625634,
+      "threeOfAKind": 0.02950760318609703,
+      "flush": 0.0662563359884142,
+      "straight": 0.16799420709630702,
+      "sum": 0.7288196958725561
+     },
+     "decidedBy": {
+      "formation": 0.2606806661839247,
+      "sum": 0.6976828385228095,
+      "first": 0.04163649529326575
+     },
+     "jokerEdge": 0.7310606060606061
+    }
+   }
+  },
+  "classique-free-bothSwapped": {
+   "deck": "classique",
+   "jokerRule": "free",
+   "order": "bothSwapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     912,
+     1088
+    ],
+    "draws": 0,
+    "turns": 80618,
+    "endings": {
+     "adjacent": 915,
+     "majority": 1085,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3273,
+     "threeOfAKind": 4087,
+     "flush": 4771,
+     "straight": 5437,
+     "sum": 7168
+    },
+    "builtTotal": 24736,
+    "winning": {
+     "straightFlush": 2234,
+     "threeOfAKind": 3563,
+     "flush": 1643,
+     "straight": 2854,
+     "sum": 922
+    },
+    "decidedBy": {
+     "formation": 8670,
+     "sum": 2368,
+     "first": 178
+    },
+    "jokerEdge": {
+     "games": 1147,
+     "won": 885
+    },
+    "shares": {
+     "firstPlayerWins": 0.456,
+     "secondPlayerWins": 0.544,
+     "averageTurns": 40.309,
+     "endings": {
+      "adjacent": 0.4575,
+      "majority": 0.5425,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.1323172703751617,
+      "threeOfAKind": 0.16522477360931437,
+      "flush": 0.1928767787839586,
+      "straight": 0.21980109961190167,
+      "sum": 0.2897800776196636
+     },
+     "winning": {
+      "straightFlush": 0.19917974322396576,
+      "threeOfAKind": 0.3176711840228245,
+      "flush": 0.14648716119828817,
+      "straight": 0.25445791726105566,
+      "sum": 0.0822039942938659
+     },
+     "decidedBy": {
+      "formation": 0.7730028530670471,
+      "sum": 0.21112696148359486,
+      "first": 0.01587018544935806
+     },
+     "jokerEdge": 0.7715780296425457
     }
    },
    "random-random": {
@@ -4766,406 +4829,41 @@
      493
     ],
     "draws": 0,
-    "turns": 39764,
+    "turns": 39735,
     "endings": {
-     "adjacent": 452,
-     "majority": 548,
+     "adjacent": 471,
+     "majority": 529,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 39,
-     "threeOfAKind": 203,
-     "flush": 476,
-     "straight": 1135,
-     "sum": 10483
+     "straightFlush": 201,
+     "threeOfAKind": 219,
+     "flush": 707,
+     "straight": 931,
+     "sum": 10212
     },
-    "builtTotal": 12336,
+    "builtTotal": 12270,
     "winning": {
-     "straightFlush": 36,
-     "threeOfAKind": 185,
-     "flush": 382,
-     "straight": 961,
-     "sum": 4021
+     "straightFlush": 186,
+     "threeOfAKind": 195,
+     "flush": 555,
+     "straight": 793,
+     "sum": 3811
     },
     "decidedBy": {
-     "formation": 1518,
-     "sum": 3812,
-     "first": 255
+     "formation": 1682,
+     "sum": 3657,
+     "first": 201
     },
     "jokerEdge": {
-     "games": 502,
-     "won": 330
+     "games": 513,
+     "won": 352
     },
     "shares": {
      "firstPlayerWins": 0.507,
      "secondPlayerWins": 0.493,
-     "averageTurns": 39.764,
-     "endings": {
-      "adjacent": 0.452,
-      "majority": 0.548,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.00316147859922179,
-      "threeOfAKind": 0.016455901426718548,
-      "flush": 0.03858625162127108,
-      "straight": 0.09200713359273671,
-      "sum": 0.8497892347600519
-     },
-     "winning": {
-      "straightFlush": 0.006445837063563115,
-      "threeOfAKind": 0.03312444046553268,
-      "flush": 0.06839749328558639,
-      "straight": 0.1720680393912265,
-      "sum": 0.7199641897940913
-     },
-     "decidedBy": {
-      "formation": 0.27179946284691137,
-      "sum": 0.6825425246195166,
-      "first": 0.045658012533572066
-     },
-     "jokerEdge": 0.6573705179282868
-    }
-   }
-  },
-  "classique-onePerPlayer-original": {
-   "deck": "classique",
-   "jokerRule": "onePerPlayer",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     784,
-     975
-    ],
-    "draws": 241,
-    "turns": 80667,
-    "endings": {
-     "adjacent": 827,
-     "majority": 932,
-     "exhaustion": 0,
-     "draw": 241
-    },
-    "built": {
-     "straightFlush": 3044,
-     "threeOfAKind": 1999,
-     "flush": 10422,
-     "straight": 2625,
-     "sum": 6062
-    },
-    "builtTotal": 24152,
-    "winning": {
-     "straightFlush": 2420,
-     "threeOfAKind": 1490,
-     "flush": 5474,
-     "straight": 783,
-     "sum": 763
-    },
-    "decidedBy": {
-     "formation": 7097,
-     "sum": 3586,
-     "first": 247
-    },
-    "jokerEdge": {
-     "games": 687,
-     "won": 470
-    },
-    "shares": {
-     "firstPlayerWins": 0.392,
-     "secondPlayerWins": 0.4875,
-     "averageTurns": 40.3335,
-     "endings": {
-      "adjacent": 0.4135,
-      "majority": 0.466,
-      "exhaustion": 0,
-      "draw": 0.1205
-     },
-     "built": {
-      "straightFlush": 0.12603511096389533,
-      "threeOfAKind": 0.08276747267307055,
-      "flush": 0.431517058628685,
-      "straight": 0.10868665120900961,
-      "sum": 0.25099370652533953
-     },
-     "winning": {
-      "straightFlush": 0.22140896614821592,
-      "threeOfAKind": 0.13632204940530648,
-      "flush": 0.5008234217749313,
-      "straight": 0.07163769441903019,
-      "sum": 0.06980786825251602
-     },
-     "decidedBy": {
-      "formation": 0.6493138151875572,
-      "sum": 0.3280878316559927,
-      "first": 0.022598353156450136
-     },
-     "jokerEdge": 0.6841339155749636
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     438,
-     449
-    ],
-    "draws": 113,
-    "turns": 39897,
-    "endings": {
-     "adjacent": 445,
-     "majority": 442,
-     "exhaustion": 0,
-     "draw": 113
-    },
-    "built": {
-     "straightFlush": 175,
-     "threeOfAKind": 137,
-     "flush": 678,
-     "straight": 890,
-     "sum": 10246
-    },
-    "builtTotal": 12126,
-    "winning": {
-     "straightFlush": 152,
-     "threeOfAKind": 112,
-     "flush": 577,
-     "straight": 702,
-     "sum": 3893
-    },
-    "decidedBy": {
-     "formation": 1498,
-     "sum": 3698,
-     "first": 240
-    },
-    "jokerEdge": {
-     "games": 410,
-     "won": 280
-    },
-    "shares": {
-     "firstPlayerWins": 0.438,
-     "secondPlayerWins": 0.449,
-     "averageTurns": 39.897,
-     "endings": {
-      "adjacent": 0.445,
-      "majority": 0.442,
-      "exhaustion": 0,
-      "draw": 0.113
-     },
-     "built": {
-      "straightFlush": 0.014431799439221507,
-      "threeOfAKind": 0.011298037275276266,
-      "flush": 0.05591291439881247,
-      "straight": 0.07339600857661224,
-      "sum": 0.8449612403100775
-     },
-     "winning": {
-      "straightFlush": 0.027961736571008096,
-      "threeOfAKind": 0.020603384841795438,
-      "flush": 0.10614422369389256,
-      "straight": 0.1291390728476821,
-      "sum": 0.7161515820456218
-     },
-     "decidedBy": {
-      "formation": 0.275570272259014,
-      "sum": 0.6802796173657101,
-      "first": 0.04415011037527594
-     },
-     "jokerEdge": 0.6829268292682927
-    }
-   }
-  },
-  "tarot-free-original": {
-   "deck": "tarot",
-   "jokerRule": "free",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     877,
-     1123
-    ],
-    "draws": 0,
-    "turns": 79883,
-    "endings": {
-     "adjacent": 943,
-     "majority": 1057,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 3382,
-     "threeOfAKind": 3487,
-     "flush": 8713,
-     "straight": 3114,
-     "sum": 5416
-    },
-    "builtTotal": 24112,
-    "winning": {
-     "straightFlush": 2690,
-     "threeOfAKind": 2444,
-     "flush": 4214,
-     "straight": 984,
-     "sum": 612
-    },
-    "decidedBy": {
-     "formation": 7665,
-     "sum": 2998,
-     "first": 281
-    },
-    "jokerEdge": {
-     "games": 987,
-     "won": 723
-    },
-    "shares": {
-     "firstPlayerWins": 0.4385,
-     "secondPlayerWins": 0.5615,
-     "averageTurns": 39.9415,
-     "endings": {
-      "adjacent": 0.4715,
-      "majority": 0.5285,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.1402621101526211,
-      "threeOfAKind": 0.1446167883211679,
-      "flush": 0.36135534173855344,
-      "straight": 0.12914731254147313,
-      "sum": 0.22461844724618446
-     },
-     "winning": {
-      "straightFlush": 0.24579678362573099,
-      "threeOfAKind": 0.2233187134502924,
-      "flush": 0.3850511695906433,
-      "straight": 0.08991228070175439,
-      "sum": 0.05592105263157895
-     },
-     "decidedBy": {
-      "formation": 0.7003837719298246,
-      "sum": 0.2739400584795322,
-      "first": 0.025676169590643276
-     },
-     "jokerEdge": 0.7325227963525835
-    }
-   },
-   "random-random": {
-    "games": 1000,
-    "wins": [
-     505,
-     495
-    ],
-    "draws": 0,
-    "turns": 39759,
-    "endings": {
-     "adjacent": 447,
-     "majority": 553,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 217,
-     "threeOfAKind": 236,
-     "flush": 433,
-     "straight": 1309,
-     "sum": 10085
-    },
-    "builtTotal": 12280,
-    "winning": {
-     "straightFlush": 198,
-     "threeOfAKind": 199,
-     "flush": 371,
-     "straight": 1050,
-     "sum": 3729
-    },
-    "decidedBy": {
-     "formation": 1743,
-     "sum": 3525,
-     "first": 279
-    },
-    "jokerEdge": {
-     "games": 511,
-     "won": 361
-    },
-    "shares": {
-     "firstPlayerWins": 0.505,
-     "secondPlayerWins": 0.495,
-     "averageTurns": 39.759,
-     "endings": {
-      "adjacent": 0.447,
-      "majority": 0.553,
-      "exhaustion": 0,
-      "draw": 0
-     },
-     "built": {
-      "straightFlush": 0.017671009771986972,
-      "threeOfAKind": 0.019218241042345277,
-      "flush": 0.03526058631921824,
-      "straight": 0.10659609120521173,
-      "sum": 0.8212540716612378
-     },
-     "winning": {
-      "straightFlush": 0.03569497025419145,
-      "threeOfAKind": 0.035875247881737876,
-      "flush": 0.06688299981972237,
-      "straight": 0.18929150892374255,
-      "sum": 0.6722552731206057
-     },
-     "decidedBy": {
-      "formation": 0.31422390481341267,
-      "sum": 0.6354786371011357,
-      "first": 0.05029745808545159
-     },
-     "jokerEdge": 0.7064579256360078
-    }
-   }
-  },
-  "tarot-onePerBorder-original": {
-   "deck": "tarot",
-   "jokerRule": "onePerBorder",
-   "order": "original",
-   "greedy-greedy": {
-    "games": 2000,
-    "wins": [
-     883,
-     1117
-    ],
-    "draws": 0,
-    "turns": 79866,
-    "endings": {
-     "adjacent": 942,
-     "majority": 1058,
-     "exhaustion": 0,
-     "draw": 0
-    },
-    "built": {
-     "straightFlush": 3430,
-     "threeOfAKind": 3505,
-     "flush": 8732,
-     "straight": 2960,
-     "sum": 5525
-    },
-    "builtTotal": 24152,
-    "winning": {
-     "straightFlush": 2752,
-     "threeOfAKind": 2441,
-     "flush": 4172,
-     "straight": 979,
-     "sum": 599
-    },
-    "decidedBy": {
-     "formation": 7673,
-     "sum": 2994,
-     "first": 276
-    },
-    "jokerEdge": {
-     "games": 1012,
-     "won": 768
-    },
-    "shares": {
-     "firstPlayerWins": 0.4415,
-     "secondPlayerWins": 0.5585,
-     "averageTurns": 39.933,
+     "averageTurns": 39.735,
      "endings": {
       "adjacent": 0.471,
       "majority": 0.529,
@@ -5173,95 +4871,820 @@
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.14201722424643923,
-      "threeOfAKind": 0.14512255713812522,
-      "flush": 0.36154355746936073,
-      "straight": 0.12255713812520702,
-      "sum": 0.22875952302086783
+      "straightFlush": 0.016381418092909536,
+      "threeOfAKind": 0.01784841075794621,
+      "flush": 0.0576202118989405,
+      "straight": 0.0758761206193969,
+      "sum": 0.8322738386308068
      },
      "winning": {
-      "straightFlush": 0.25148496755917027,
-      "threeOfAKind": 0.22306497304212738,
-      "flush": 0.38124828657589327,
-      "straight": 0.0894635840263182,
-      "sum": 0.05473818879649091
+      "straightFlush": 0.033574007220216605,
+      "threeOfAKind": 0.0351985559566787,
+      "flush": 0.10018050541516245,
+      "straight": 0.14314079422382672,
+      "sum": 0.6879061371841155
      },
      "decidedBy": {
-      "formation": 0.7011788357854336,
-      "sum": 0.27359956136342867,
-      "first": 0.025221602851137715
+      "formation": 0.3036101083032491,
+      "sum": 0.6601083032490975,
+      "first": 0.03628158844765343
      },
-     "jokerEdge": 0.758893280632411
+     "jokerEdge": 0.6861598440545809
+    }
+   }
+  },
+  "classique-onePerBorder-bothSwapped": {
+   "deck": "classique",
+   "jokerRule": "onePerBorder",
+   "order": "bothSwapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     961,
+     1039
+    ],
+    "draws": 0,
+    "turns": 80592,
+    "endings": {
+     "adjacent": 937,
+     "majority": 1063,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3336,
+     "threeOfAKind": 3886,
+     "flush": 4651,
+     "straight": 5544,
+     "sum": 7244
+    },
+    "builtTotal": 24661,
+    "winning": {
+     "straightFlush": 2322,
+     "threeOfAKind": 3397,
+     "flush": 1554,
+     "straight": 2921,
+     "sum": 1012
+    },
+    "decidedBy": {
+     "formation": 8631,
+     "sum": 2384,
+     "first": 191
+    },
+    "jokerEdge": {
+     "games": 1140,
+     "won": 903
+    },
+    "shares": {
+     "firstPlayerWins": 0.4805,
+     "secondPlayerWins": 0.5195,
+     "averageTurns": 40.296,
+     "endings": {
+      "adjacent": 0.4685,
+      "majority": 0.5315,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.1352743197761648,
+      "threeOfAKind": 0.15757674060257085,
+      "flush": 0.1885973804792993,
+      "straight": 0.22480840193017315,
+      "sum": 0.2937431572117919
+     },
+     "winning": {
+      "straightFlush": 0.20721042298768516,
+      "threeOfAKind": 0.30314117437087273,
+      "flush": 0.1386757094413707,
+      "straight": 0.2606639300374799,
+      "sum": 0.09030876316259147
+     },
+     "decidedBy": {
+      "formation": 0.770212386221667,
+      "sum": 0.21274317330001785,
+      "first": 0.017044440478315187
+     },
+     "jokerEdge": 0.7921052631578948
     }
    },
    "random-random": {
     "games": 1000,
     "wins": [
-     508,
-     492
+     511,
+     483
+    ],
+    "draws": 6,
+    "turns": 39514,
+    "endings": {
+     "adjacent": 471,
+     "majority": 523,
+     "exhaustion": 0,
+     "draw": 6
+    },
+    "built": {
+     "straightFlush": 183,
+     "threeOfAKind": 170,
+     "flush": 774,
+     "straight": 941,
+     "sum": 10100
+    },
+    "builtTotal": 12168,
+    "winning": {
+     "straightFlush": 164,
+     "threeOfAKind": 159,
+     "flush": 602,
+     "straight": 786,
+     "sum": 3780
+    },
+    "decidedBy": {
+     "formation": 1642,
+     "sum": 3641,
+     "first": 208
+    },
+    "jokerEdge": {
+     "games": 551,
+     "won": 378
+    },
+    "shares": {
+     "firstPlayerWins": 0.511,
+     "secondPlayerWins": 0.483,
+     "averageTurns": 39.514,
+     "endings": {
+      "adjacent": 0.471,
+      "majority": 0.523,
+      "exhaustion": 0,
+      "draw": 0.006
+     },
+     "built": {
+      "straightFlush": 0.015039447731755425,
+      "threeOfAKind": 0.013971071663379356,
+      "flush": 0.06360946745562131,
+      "straight": 0.07733399079552926,
+      "sum": 0.8300460223537146
+     },
+     "winning": {
+      "straightFlush": 0.02986705518120561,
+      "threeOfAKind": 0.028956474230559096,
+      "flush": 0.1096339464578401,
+      "straight": 0.14314332544163177,
+      "sum": 0.6883991986887634
+     },
+     "decidedBy": {
+      "formation": 0.2990347841923147,
+      "sum": 0.6630850482607904,
+      "first": 0.03788016754689492
+     },
+     "jokerEdge": 0.6860254083484574
+    }
+   }
+  },
+  "classique-colorless-bothSwapped": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "bothSwapped",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     920,
+     1080
     ],
     "draws": 0,
-    "turns": 39729,
+    "turns": 80236,
     "endings": {
-     "adjacent": 484,
-     "majority": 516,
+     "adjacent": 956,
+     "majority": 1044,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 162,
-     "threeOfAKind": 237,
-     "flush": 435,
-     "straight": 1338,
-     "sum": 10088
+     "straightFlush": 2828,
+     "threeOfAKind": 4270,
+     "flush": 4280,
+     "straight": 6085,
+     "sum": 6975
     },
-    "builtTotal": 12260,
+    "builtTotal": 24438,
     "winning": {
-     "straightFlush": 145,
-     "threeOfAKind": 217,
-     "flush": 366,
-     "straight": 1097,
-     "sum": 3706
+     "straightFlush": 1775,
+     "threeOfAKind": 3631,
+     "flush": 1396,
+     "straight": 3385,
+     "sum": 916
     },
     "decidedBy": {
-     "formation": 1750,
-     "sum": 3527,
-     "first": 254
+     "formation": 8358,
+     "sum": 2542,
+     "first": 203
     },
     "jokerEdge": {
-     "games": 516,
-     "won": 362
+     "games": 1118,
+     "won": 844
     },
     "shares": {
-     "firstPlayerWins": 0.508,
-     "secondPlayerWins": 0.492,
-     "averageTurns": 39.729,
+     "firstPlayerWins": 0.46,
+     "secondPlayerWins": 0.54,
+     "averageTurns": 40.118,
      "endings": {
-      "adjacent": 0.484,
-      "majority": 0.516,
+      "adjacent": 0.478,
+      "majority": 0.522,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.013213703099510603,
-      "threeOfAKind": 0.01933115823817292,
-      "flush": 0.035481239804241435,
-      "straight": 0.10913539967373573,
-      "sum": 0.8228384991843393
+      "straightFlush": 0.1157214174646043,
+      "threeOfAKind": 0.1747278828054669,
+      "flush": 0.1751370815942385,
+      "straight": 0.2489974629675096,
+      "sum": 0.2854161551681807
      },
      "winning": {
-      "straightFlush": 0.026215874163804012,
-      "threeOfAKind": 0.039233411679623936,
-      "flush": 0.06617248237208462,
-      "straight": 0.19833664798408968,
-      "sum": 0.6700415838003978
+      "straightFlush": 0.15986670269296588,
+      "threeOfAKind": 0.32702873097361074,
+      "flush": 0.1257317842024678,
+      "straight": 0.3048725569665856,
+      "sum": 0.08250022516436999
      },
      "decidedBy": {
-      "formation": 0.3163984812872898,
-      "sum": 0.6376785391430121,
-      "first": 0.04592297956969806
+      "formation": 0.7527695217508782,
+      "sum": 0.22894713140592632,
+      "first": 0.018283346843195533
      },
-     "jokerEdge": 0.7015503875968992
+     "jokerEdge": 0.7549194991055456
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     513,
+     487
+    ],
+    "draws": 0,
+    "turns": 39755,
+    "endings": {
+     "adjacent": 459,
+     "majority": 541,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 35,
+     "threeOfAKind": 226,
+     "flush": 485,
+     "straight": 1089,
+     "sum": 10434
+    },
+    "builtTotal": 12269,
+    "winning": {
+     "straightFlush": 31,
+     "threeOfAKind": 198,
+     "flush": 374,
+     "straight": 923,
+     "sum": 4012
+    },
+    "decidedBy": {
+     "formation": 1485,
+     "sum": 3820,
+     "first": 233
+    },
+    "jokerEdge": {
+     "games": 524,
+     "won": 361
+    },
+    "shares": {
+     "firstPlayerWins": 0.513,
+     "secondPlayerWins": 0.487,
+     "averageTurns": 39.755,
+     "endings": {
+      "adjacent": 0.459,
+      "majority": 0.541,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.0028527182329448203,
+      "threeOfAKind": 0.01842040916130084,
+      "flush": 0.03953052408509251,
+      "straight": 0.08876029016219741,
+      "sum": 0.8504360583584645
+     },
+     "winning": {
+      "straightFlush": 0.005597688696280245,
+      "threeOfAKind": 0.035752979414951244,
+      "flush": 0.06753340556157457,
+      "straight": 0.16666666666666666,
+      "sum": 0.7244492596605273
+     },
+     "decidedBy": {
+      "formation": 0.2681473456121343,
+      "sum": 0.689779703864211,
+      "first": 0.04207295052365475
+     },
+     "jokerEdge": 0.6889312977099237
+    }
+   }
+  },
+  "classique-onePerPlayer-original": {
+   "deck": "classique",
+   "jokerRule": "onePerPlayer",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     841,
+     908
+    ],
+    "draws": 251,
+    "turns": 81173,
+    "endings": {
+     "adjacent": 848,
+     "majority": 901,
+     "exhaustion": 0,
+     "draw": 251
+    },
+    "built": {
+     "straightFlush": 3692,
+     "threeOfAKind": 2706,
+     "flush": 9396,
+     "straight": 1734,
+     "sum": 6946
+    },
+    "builtTotal": 24474,
+    "winning": {
+     "straightFlush": 3012,
+     "threeOfAKind": 1882,
+     "flush": 4630,
+     "straight": 573,
+     "sum": 912
+    },
+    "decidedBy": {
+     "formation": 7698,
+     "sum": 3111,
+     "first": 200
+    },
+    "jokerEdge": {
+     "games": 996,
+     "won": 719
+    },
+    "shares": {
+     "firstPlayerWins": 0.4205,
+     "secondPlayerWins": 0.454,
+     "averageTurns": 40.5865,
+     "endings": {
+      "adjacent": 0.424,
+      "majority": 0.4505,
+      "exhaustion": 0,
+      "draw": 0.1255
+     },
+     "built": {
+      "straightFlush": 0.1508539674756885,
+      "threeOfAKind": 0.11056631527335131,
+      "flush": 0.38391762686933073,
+      "straight": 0.07085069870066192,
+      "sum": 0.2838113916809676
+     },
+     "winning": {
+      "straightFlush": 0.27359433191025523,
+      "threeOfAKind": 0.17095104005813425,
+      "flush": 0.4205649922790444,
+      "straight": 0.05204832409846489,
+      "sum": 0.08284131165410119
+     },
+     "decidedBy": {
+      "formation": 0.6992460713961305,
+      "sum": 0.2825869742937597,
+      "first": 0.01816695431010991
+     },
+     "jokerEdge": 0.7218875502008032
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     430,
+     451
+    ],
+    "draws": 119,
+    "turns": 40174,
+    "endings": {
+     "adjacent": 404,
+     "majority": 477,
+     "exhaustion": 0,
+     "draw": 119
+    },
+    "built": {
+     "straightFlush": 176,
+     "threeOfAKind": 136,
+     "flush": 709,
+     "straight": 944,
+     "sum": 10342
+    },
+    "builtTotal": 12307,
+    "winning": {
+     "straightFlush": 159,
+     "threeOfAKind": 124,
+     "flush": 592,
+     "straight": 764,
+     "sum": 3898
+    },
+    "decidedBy": {
+     "formation": 1586,
+     "sum": 3742,
+     "first": 209
+    },
+    "jokerEdge": {
+     "games": 390,
+     "won": 257
+    },
+    "shares": {
+     "firstPlayerWins": 0.43,
+     "secondPlayerWins": 0.451,
+     "averageTurns": 40.174,
+     "endings": {
+      "adjacent": 0.404,
+      "majority": 0.477,
+      "exhaustion": 0,
+      "draw": 0.119
+     },
+     "built": {
+      "straightFlush": 0.014300804420248638,
+      "threeOfAKind": 0.011050621597464857,
+      "flush": 0.05760949053384253,
+      "straight": 0.07670431461769725,
+      "sum": 0.8403347688307468
+     },
+     "winning": {
+      "straightFlush": 0.02871591114321835,
+      "threeOfAKind": 0.022394798627415568,
+      "flush": 0.10691710312443561,
+      "straight": 0.13798085605923785,
+      "sum": 0.7039913310456926
+     },
+     "decidedBy": {
+      "formation": 0.2864366985732346,
+      "sum": 0.6758172295466859,
+      "first": 0.03774607188007947
+     },
+     "jokerEdge": 0.658974358974359
+    }
+   }
+  },
+  "tarot-free-original": {
+   "deck": "tarot",
+   "jokerRule": "free",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     978,
+     1022
+    ],
+    "draws": 0,
+    "turns": 80577,
+    "endings": {
+     "adjacent": 913,
+     "majority": 1087,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 4204,
+     "threeOfAKind": 3875,
+     "flush": 7636,
+     "straight": 2213,
+     "sum": 6768
+    },
+    "builtTotal": 24696,
+    "winning": {
+     "straightFlush": 3491,
+     "threeOfAKind": 2617,
+     "flush": 3443,
+     "straight": 701,
+     "sum": 933
+    },
+    "decidedBy": {
+     "formation": 8219,
+     "sum": 2735,
+     "first": 231
+    },
+    "jokerEdge": {
+     "games": 1132,
+     "won": 894
+    },
+    "shares": {
+     "firstPlayerWins": 0.489,
+     "secondPlayerWins": 0.511,
+     "averageTurns": 40.2885,
+     "endings": {
+      "adjacent": 0.4565,
+      "majority": 0.5435,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.17022999676060901,
+      "threeOfAKind": 0.1569080012957564,
+      "flush": 0.3091998704243602,
+      "straight": 0.08960965338516359,
+      "sum": 0.27405247813411077
+     },
+     "winning": {
+      "straightFlush": 0.31211443898077784,
+      "threeOfAKind": 0.23397407241841753,
+      "flush": 0.3078229772016093,
+      "straight": 0.06267322306660707,
+      "sum": 0.0834152883325883
+     },
+     "decidedBy": {
+      "formation": 0.7348234242288779,
+      "sum": 0.2445239159588735,
+      "first": 0.020652659812248546
+     },
+     "jokerEdge": 0.7897526501766784
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     498,
+     502
+    ],
+    "draws": 0,
+    "turns": 39626,
+    "endings": {
+     "adjacent": 476,
+     "majority": 524,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 222,
+     "threeOfAKind": 242,
+     "flush": 419,
+     "straight": 1268,
+     "sum": 10068
+    },
+    "builtTotal": 12219,
+    "winning": {
+     "straightFlush": 204,
+     "threeOfAKind": 217,
+     "flush": 358,
+     "straight": 1021,
+     "sum": 3713
+    },
+    "decidedBy": {
+     "formation": 1748,
+     "sum": 3480,
+     "first": 285
+    },
+    "jokerEdge": {
+     "games": 551,
+     "won": 392
+    },
+    "shares": {
+     "firstPlayerWins": 0.498,
+     "secondPlayerWins": 0.502,
+     "averageTurns": 39.626,
+     "endings": {
+      "adjacent": 0.476,
+      "majority": 0.524,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.018168426221458384,
+      "threeOfAKind": 0.019805221376544724,
+      "flush": 0.03429085849905884,
+      "straight": 0.10377281283247401,
+      "sum": 0.823962681070464
+     },
+     "winning": {
+      "straightFlush": 0.037003446399419555,
+      "threeOfAKind": 0.039361509160166876,
+      "flush": 0.06493742064211863,
+      "straight": 0.1851986214402322,
+      "sum": 0.6734990023580628
+     },
+     "decidedBy": {
+      "formation": 0.31706874659894796,
+      "sum": 0.6312352621077453,
+      "first": 0.05169599129330673
+     },
+     "jokerEdge": 0.7114337568058077
+    }
+   },
+   "greedy-greedy": {
+    "games": 2000,
+    "wins": [
+     852,
+     1148
+    ],
+    "draws": 0,
+    "turns": 79795,
+    "endings": {
+     "adjacent": 903,
+     "majority": 1097,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 3347,
+     "threeOfAKind": 3441,
+     "flush": 8816,
+     "straight": 3044,
+     "sum": 5418
+    },
+    "builtTotal": 24066,
+    "winning": {
+     "straightFlush": 2653,
+     "threeOfAKind": 2438,
+     "flush": 4283,
+     "straight": 913,
+     "sum": 631
+    },
+    "decidedBy": {
+     "formation": 7635,
+     "sum": 2996,
+     "first": 287
+    },
+    "jokerEdge": {
+     "games": 960,
+     "won": 708
+    },
+    "shares": {
+     "firstPlayerWins": 0.426,
+     "secondPlayerWins": 0.574,
+     "averageTurns": 39.8975,
+     "endings": {
+      "adjacent": 0.4515,
+      "majority": 0.5485,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.13907587467796892,
+      "threeOfAKind": 0.14298180004986288,
+      "flush": 0.3663259370065653,
+      "straight": 0.1264854982132469,
+      "sum": 0.225130890052356
+     },
+     "winning": {
+      "straightFlush": 0.24299322220186848,
+      "threeOfAKind": 0.22330097087378642,
+      "flush": 0.3922879648287232,
+      "straight": 0.0836233742443671,
+      "sum": 0.05779446785125481
+     },
+     "decidedBy": {
+      "formation": 0.699303901813519,
+      "sum": 0.2744092324601575,
+      "first": 0.0262868657263235
+     },
+     "jokerEdge": 0.7375
+    }
+   }
+  },
+  "tarot-onePerBorder-original": {
+   "deck": "tarot",
+   "jokerRule": "onePerBorder",
+   "order": "original",
+   "strategist-strategist": {
+    "games": 2000,
+    "wins": [
+     943,
+     1055
+    ],
+    "draws": 2,
+    "turns": 80590,
+    "endings": {
+     "adjacent": 976,
+     "majority": 1022,
+     "exhaustion": 0,
+     "draw": 2
+    },
+    "built": {
+     "straightFlush": 4101,
+     "threeOfAKind": 4024,
+     "flush": 7524,
+     "straight": 2231,
+     "sum": 6789
+    },
+    "builtTotal": 24669,
+    "winning": {
+     "straightFlush": 3418,
+     "threeOfAKind": 2675,
+     "flush": 3432,
+     "straight": 719,
+     "sum": 897
+    },
+    "decidedBy": {
+     "formation": 8346,
+     "sum": 2574,
+     "first": 221
+    },
+    "jokerEdge": {
+     "games": 1181,
+     "won": 878
+    },
+    "shares": {
+     "firstPlayerWins": 0.4715,
+     "secondPlayerWins": 0.5275,
+     "averageTurns": 40.295,
+     "endings": {
+      "adjacent": 0.488,
+      "majority": 0.511,
+      "exhaustion": 0,
+      "draw": 0.001
+     },
+     "built": {
+      "straightFlush": 0.16624103125380033,
+      "threeOfAKind": 0.1631197048927804,
+      "flush": 0.3049981758482306,
+      "straight": 0.09043739105760266,
+      "sum": 0.27520369694758606
+     },
+     "winning": {
+      "straightFlush": 0.3067947221972893,
+      "threeOfAKind": 0.24010411991742214,
+      "flush": 0.3080513418903151,
+      "straight": 0.064536397091823,
+      "sum": 0.08051341890315053
+     },
+     "decidedBy": {
+      "formation": 0.7491248541423571,
+      "sum": 0.2310385064177363,
+      "first": 0.019836639439906652
+     },
+     "jokerEdge": 0.7434377646062659
+    }
+   },
+   "random-random": {
+    "games": 1000,
+    "wins": [
+     462,
+     537
+    ],
+    "draws": 1,
+    "turns": 39813,
+    "endings": {
+     "adjacent": 455,
+     "majority": 544,
+     "exhaustion": 0,
+     "draw": 1
+    },
+    "built": {
+     "straightFlush": 171,
+     "threeOfAKind": 255,
+     "flush": 452,
+     "straight": 1341,
+     "sum": 10098
+    },
+    "builtTotal": 12317,
+    "winning": {
+     "straightFlush": 155,
+     "threeOfAKind": 229,
+     "flush": 387,
+     "straight": 1087,
+     "sum": 3715
+    },
+    "decidedBy": {
+     "formation": 1785,
+     "sum": 3511,
+     "first": 277
+    },
+    "jokerEdge": {
+     "games": 522,
+     "won": 349
+    },
+    "shares": {
+     "firstPlayerWins": 0.462,
+     "secondPlayerWins": 0.537,
+     "averageTurns": 39.813,
+     "endings": {
+      "adjacent": 0.455,
+      "majority": 0.544,
+      "exhaustion": 0,
+      "draw": 0.001
+     },
+     "built": {
+      "straightFlush": 0.01388325079158886,
+      "threeOfAKind": 0.020703093285702686,
+      "flush": 0.03669724770642202,
+      "straight": 0.10887391410246001,
+      "sum": 0.8198424941138264
+     },
+     "winning": {
+      "straightFlush": 0.0278126682217836,
+      "threeOfAKind": 0.04109097434057061,
+      "flush": 0.0694419522698726,
+      "straight": 0.1950475506908308,
+      "sum": 0.6666068544769423
+     },
+     "decidedBy": {
+      "formation": 0.3202942759734434,
+      "sum": 0.6300017943656917,
+      "first": 0.049703929660864885
+     },
+     "jokerEdge": 0.6685823754789272
     }
    }
   },
@@ -5269,144 +5692,144 @@
    "deck": "tarot",
    "jokerRule": "onePerPlayer",
    "order": "original",
-   "greedy-greedy": {
+   "strategist-strategist": {
     "games": 2000,
     "wins": [
-     791,
-     978
+     833,
+     946
     ],
-    "draws": 231,
-    "turns": 80614,
+    "draws": 221,
+    "turns": 81019,
     "endings": {
-     "adjacent": 903,
-     "majority": 866,
+     "adjacent": 866,
+     "majority": 913,
      "exhaustion": 0,
-     "draw": 231
+     "draw": 221
     },
     "built": {
-     "straightFlush": 2874,
-     "threeOfAKind": 3290,
-     "flush": 8946,
-     "straight": 2975,
-     "sum": 6045
+     "straightFlush": 3883,
+     "threeOfAKind": 3674,
+     "flush": 7790,
+     "straight": 2249,
+     "sum": 6826
     },
-    "builtTotal": 24130,
+    "builtTotal": 24422,
     "winning": {
-     "straightFlush": 2332,
-     "threeOfAKind": 2342,
-     "flush": 4472,
-     "straight": 1015,
-     "sum": 732
+     "straightFlush": 3202,
+     "threeOfAKind": 2447,
+     "flush": 3698,
+     "straight": 752,
+     "sum": 856
     },
     "decidedBy": {
-     "formation": 7607,
-     "sum": 2990,
-     "first": 296
+     "formation": 8112,
+     "sum": 2596,
+     "first": 247
     },
     "jokerEdge": {
-     "games": 751,
-     "won": 497
+     "games": 976,
+     "won": 671
     },
     "shares": {
-     "firstPlayerWins": 0.3955,
-     "secondPlayerWins": 0.489,
-     "averageTurns": 40.307,
+     "firstPlayerWins": 0.4165,
+     "secondPlayerWins": 0.473,
+     "averageTurns": 40.5095,
      "endings": {
-      "adjacent": 0.4515,
-      "majority": 0.433,
+      "adjacent": 0.433,
+      "majority": 0.4565,
       "exhaustion": 0,
-      "draw": 0.1155
+      "draw": 0.1105
      },
      "built": {
-      "straightFlush": 0.11910484873601326,
-      "threeOfAKind": 0.13634479900538748,
-      "flush": 0.3707418151678409,
-      "straight": 0.12329050973891421,
-      "sum": 0.2505180273518442
+      "straightFlush": 0.15899598722463354,
+      "threeOfAKind": 0.15043812955531896,
+      "flush": 0.3189746949471788,
+      "straight": 0.09208909999181067,
+      "sum": 0.27950208828105805
      },
      "winning": {
-      "straightFlush": 0.21408243826310475,
-      "threeOfAKind": 0.21500045901037362,
-      "flush": 0.4105388781786468,
-      "straight": 0.09317910584779215,
-      "sum": 0.06719911870008262
+      "straightFlush": 0.29228662711090825,
+      "threeOfAKind": 0.22336832496576906,
+      "flush": 0.3375627567320858,
+      "straight": 0.0686444545869466,
+      "sum": 0.07813783660429027
      },
      "decidedBy": {
-      "formation": 0.6983383824474433,
-      "sum": 0.2744882034333976,
-      "first": 0.027173414119159092
+      "formation": 0.7404837973528069,
+      "sum": 0.23696942035600183,
+      "first": 0.022546782291191236
      },
-     "jokerEdge": 0.6617842876165113
+     "jokerEdge": 0.6875
     }
    },
    "random-random": {
     "games": 1000,
     "wins": [
-     426,
-     460
+     443,
+     439
     ],
-    "draws": 114,
-    "turns": 39948,
+    "draws": 118,
+    "turns": 39830,
     "endings": {
-     "adjacent": 435,
-     "majority": 451,
+     "adjacent": 449,
+     "majority": 433,
      "exhaustion": 0,
-     "draw": 114
+     "draw": 118
     },
     "built": {
-     "straightFlush": 138,
-     "threeOfAKind": 237,
-     "flush": 373,
-     "straight": 1210,
-     "sum": 10209
+     "straightFlush": 122,
+     "threeOfAKind": 219,
+     "flush": 413,
+     "straight": 1258,
+     "sum": 10079
     },
-    "builtTotal": 12167,
+    "builtTotal": 12091,
     "winning": {
-     "straightFlush": 127,
-     "threeOfAKind": 214,
-     "flush": 324,
-     "straight": 957,
-     "sum": 3821
+     "straightFlush": 110,
+     "threeOfAKind": 197,
+     "flush": 355,
+     "straight": 990,
+     "sum": 3740
     },
     "decidedBy": {
-     "formation": 1554,
-     "sum": 3630,
-     "first": 259
+     "formation": 1585,
+     "sum": 3538,
+     "first": 269
     },
     "jokerEdge": {
-     "games": 407,
-     "won": 246
+     "games": 426,
+     "won": 274
     },
     "shares": {
-     "firstPlayerWins": 0.426,
-     "secondPlayerWins": 0.46,
-     "averageTurns": 39.948,
+     "firstPlayerWins": 0.443,
+     "secondPlayerWins": 0.439,
+     "averageTurns": 39.83,
      "endings": {
-      "adjacent": 0.435,
-      "majority": 0.451,
+      "adjacent": 0.449,
+      "majority": 0.433,
       "exhaustion": 0,
-      "draw": 0.114
+      "draw": 0.118
      },
      "built": {
-      "straightFlush": 0.011342155009451797,
-      "threeOfAKind": 0.01947891838579765,
-      "flush": 0.03065669433714145,
-      "straight": 0.0994493301553382,
-      "sum": 0.8390729021122709
+      "straightFlush": 0.01009014969812257,
+      "threeOfAKind": 0.01811264576958068,
+      "flush": 0.034157637912496895,
+      "straight": 0.10404433049375568,
+      "sum": 0.8335952361260441
      },
      "winning": {
-      "straightFlush": 0.02333272092595995,
-      "threeOfAKind": 0.03931655337130259,
-      "flush": 0.05952599669300018,
-      "straight": 0.17582215689876907,
-      "sum": 0.7020025721109682
+      "straightFlush": 0.02040059347181009,
+      "threeOfAKind": 0.03653560830860534,
+      "flush": 0.06583827893175075,
+      "straight": 0.1836053412462908,
+      "sum": 0.6936201780415431
      },
      "decidedBy": {
-      "formation": 0.28550431747198235,
-      "sum": 0.6669116296160206,
-      "first": 0.04758405291199706
+      "formation": 0.2939540059347181,
+      "sum": 0.6561572700296736,
+      "first": 0.04988872403560831
      },
-     "jokerEdge": 0.6044226044226044
+     "jokerEdge": 0.6431924882629108
     }
    }
   },
@@ -5414,291 +5837,1139 @@
    "deck": "tarot",
    "jokerRule": "colorless",
    "order": "original",
-   "greedy-greedy": {
+   "strategist-strategist": {
     "games": 2000,
     "wins": [
-     877,
-     1123
+     950,
+     1050
     ],
     "draws": 0,
-    "turns": 80082,
+    "turns": 79633,
     "endings": {
-     "adjacent": 911,
-     "majority": 1089,
+     "adjacent": 922,
+     "majority": 1078,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 1407,
-     "threeOfAKind": 5817,
-     "flush": 8534,
-     "straight": 3260,
-     "sum": 5350
+     "straightFlush": 2882,
+     "threeOfAKind": 5214,
+     "flush": 9187,
+     "straight": 1987,
+     "sum": 4945
     },
-    "builtTotal": 24368,
+    "builtTotal": 24215,
     "winning": {
-     "straightFlush": 1184,
-     "threeOfAKind": 4253,
-     "flush": 3956,
-     "straight": 1063,
-     "sum": 647
+     "straightFlush": 2434,
+     "threeOfAKind": 3747,
+     "flush": 3817,
+     "straight": 628,
+     "sum": 506
     },
     "decidedBy": {
-     "formation": 7789,
-     "sum": 3046,
-     "first": 268
+     "formation": 7944,
+     "sum": 2934,
+     "first": 254
     },
     "jokerEdge": {
-     "games": 1012,
-     "won": 620
+     "games": 1059,
+     "won": 724
     },
     "shares": {
-     "firstPlayerWins": 0.4385,
-     "secondPlayerWins": 0.5615,
-     "averageTurns": 40.041,
+     "firstPlayerWins": 0.475,
+     "secondPlayerWins": 0.525,
+     "averageTurns": 39.8165,
      "endings": {
-      "adjacent": 0.4555,
-      "majority": 0.5445,
+      "adjacent": 0.461,
+      "majority": 0.539,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.05773965856861458,
-      "threeOfAKind": 0.23871470781352594,
-      "flush": 0.3502133946158897,
-      "straight": 0.13378200919238345,
-      "sum": 0.21955022980958636
+      "straightFlush": 0.11901713813751806,
+      "threeOfAKind": 0.21532108197398306,
+      "flush": 0.37939293826140824,
+      "straight": 0.08205657650216808,
+      "sum": 0.20421226512492258
      },
      "winning": {
-      "straightFlush": 0.10663784562730794,
-      "threeOfAKind": 0.38304962622714583,
-      "flush": 0.3563000990723228,
-      "straight": 0.09573989011978744,
-      "sum": 0.05827253895343601
+      "straightFlush": 0.2186489399928135,
+      "threeOfAKind": 0.336597197269134,
+      "flush": 0.34288537549407117,
+      "straight": 0.05641394178943586,
+      "sum": 0.045454545454545456
      },
      "decidedBy": {
-      "formation": 0.701522111141133,
-      "sum": 0.274340268395929,
-      "first": 0.024137620462937943
+      "formation": 0.7136183974128638,
+      "sum": 0.2635644987423644,
+      "first": 0.02281710384477183
      },
-     "jokerEdge": 0.6126482213438735
+     "jokerEdge": 0.6836638338054769
     }
    },
    "random-random": {
     "games": 1000,
     "wins": [
-     515,
-     485
+     484,
+     516
     ],
     "draws": 0,
-    "turns": 39759,
+    "turns": 39624,
     "endings": {
-     "adjacent": 477,
-     "majority": 523,
+     "adjacent": 453,
+     "majority": 547,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 32,
-     "threeOfAKind": 278,
-     "flush": 288,
-     "straight": 1495,
-     "sum": 10197
+     "straightFlush": 41,
+     "threeOfAKind": 292,
+     "flush": 243,
+     "straight": 1403,
+     "sum": 10243
     },
-    "builtTotal": 12290,
+    "builtTotal": 12222,
     "winning": {
-     "straightFlush": 30,
+     "straightFlush": 38,
      "threeOfAKind": 261,
-     "flush": 239,
-     "straight": 1221,
-     "sum": 3795
+     "flush": 212,
+     "straight": 1128,
+     "sum": 3870
     },
     "decidedBy": {
-     "formation": 1664,
-     "sum": 3607,
-     "first": 275
+     "formation": 1561,
+     "sum": 3691,
+     "first": 257
     },
     "jokerEdge": {
-     "games": 547,
-     "won": 394
+     "games": 536,
+     "won": 370
     },
     "shares": {
-     "firstPlayerWins": 0.515,
-     "secondPlayerWins": 0.485,
-     "averageTurns": 39.759,
+     "firstPlayerWins": 0.484,
+     "secondPlayerWins": 0.516,
+     "averageTurns": 39.624,
      "endings": {
-      "adjacent": 0.477,
-      "majority": 0.523,
+      "adjacent": 0.453,
+      "majority": 0.547,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.0026037428803905613,
-      "threeOfAKind": 0.022620016273393002,
-      "flush": 0.023433685923515052,
-      "straight": 0.12164361269324654,
-      "sum": 0.8296989422294548
+      "straightFlush": 0.0033546064473899523,
+      "threeOfAKind": 0.023891343478972343,
+      "flush": 0.019882179675994108,
+      "straight": 0.1147929962362952,
+      "sum": 0.8380788741613484
      },
      "winning": {
-      "straightFlush": 0.005409304002884962,
-      "threeOfAKind": 0.04706094482509917,
-      "flush": 0.0430941218896502,
-      "straight": 0.22015867291741795,
-      "sum": 0.6842769563649477
+      "straightFlush": 0.006897803594118715,
+      "threeOfAKind": 0.047377019422762755,
+      "flush": 0.038482483209293886,
+      "straight": 0.20475585405699764,
+      "sum": 0.702486839716827
      },
      "decidedBy": {
-      "formation": 0.3000360620266859,
-      "sum": 0.650378651280202,
-      "first": 0.04958528669311215
+      "formation": 0.2833545108005083,
+      "sum": 0.6699945543655836,
+      "first": 0.04665093483390815
      },
-     "jokerEdge": 0.720292504570384
+     "jokerEdge": 0.6902985074626866
+    }
+   },
+   "greedy-greedy": {
+    "games": 2000,
+    "wins": [
+     872,
+     1128
+    ],
+    "draws": 0,
+    "turns": 79945,
+    "endings": {
+     "adjacent": 919,
+     "majority": 1081,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1374,
+     "threeOfAKind": 5897,
+     "flush": 8415,
+     "straight": 3263,
+     "sum": 5303
+    },
+    "builtTotal": 24252,
+    "winning": {
+     "straightFlush": 1189,
+     "threeOfAKind": 4339,
+     "flush": 3858,
+     "straight": 1039,
+     "sum": 653
+    },
+    "decidedBy": {
+     "formation": 7811,
+     "sum": 3009,
+     "first": 258
+    },
+    "jokerEdge": {
+     "games": 944,
+     "won": 595
+    },
+    "shares": {
+     "firstPlayerWins": 0.436,
+     "secondPlayerWins": 0.564,
+     "averageTurns": 39.9725,
+     "endings": {
+      "adjacent": 0.4595,
+      "majority": 0.5405,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.05665512122711529,
+      "threeOfAKind": 0.24315520369454066,
+      "flush": 0.34698169223156855,
+      "straight": 0.13454560448622793,
+      "sum": 0.21866237836054758
+     },
+     "winning": {
+      "straightFlush": 0.10732984293193717,
+      "threeOfAKind": 0.3916771980501896,
+      "flush": 0.34825780826864056,
+      "straight": 0.09378949268821087,
+      "sum": 0.058945658061021845
+     },
+     "decidedBy": {
+      "formation": 0.705091171691641,
+      "sum": 0.27161942588914967,
+      "first": 0.023289402419209244
+     },
+     "jokerEdge": 0.6302966101694916
     }
    }
   },
   "sanity": {
    "deck": "classique",
-   "jokerRule": "free",
+   "jokerRule": "colorless",
    "order": "original",
-   "greedy-random": {
+   "strategist-random": {
     "games": 1000,
     "wins": [
-     982,
-     18
+     997,
+     3
     ],
     "draws": 0,
-    "turns": 37867,
+    "turns": 37410,
     "endings": {
-     "adjacent": 451,
-     "majority": 549,
+     "adjacent": 464,
+     "majority": 536,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 758,
-     "threeOfAKind": 594,
-     "flush": 2826,
-     "straight": 1172,
-     "sum": 5273
+     "straightFlush": 538,
+     "threeOfAKind": 964,
+     "flush": 2877,
+     "straight": 972,
+     "sum": 5020
     },
-    "builtTotal": 10623,
+    "builtTotal": 10371,
     "winning": {
-     "straightFlush": 630,
-     "threeOfAKind": 442,
-     "flush": 2035,
-     "straight": 598,
-     "sum": 588
+     "straightFlush": 435,
+     "threeOfAKind": 742,
+     "flush": 2093,
+     "straight": 415,
+     "sum": 452
     },
     "decidedBy": {
-     "formation": 3505,
-     "sum": 747,
-     "first": 41
+     "formation": 3564,
+     "sum": 548,
+     "first": 25
     },
     "jokerEdge": {
-     "games": 544,
-     "won": 322
+     "games": 549,
+     "won": 216
     },
     "shares": {
-     "firstPlayerWins": 0.982,
-     "secondPlayerWins": 0.018,
-     "averageTurns": 37.867,
+     "firstPlayerWins": 0.997,
+     "secondPlayerWins": 0.003,
+     "averageTurns": 37.41,
      "endings": {
-      "adjacent": 0.451,
-      "majority": 0.549,
+      "adjacent": 0.464,
+      "majority": 0.536,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.07135460792619787,
-      "threeOfAKind": 0.05591640779440836,
-      "flush": 0.2660265461733973,
-      "straight": 0.11032664972230066,
-      "sum": 0.4963757883836958
+      "straightFlush": 0.05187542184938772,
+      "threeOfAKind": 0.09295149937325234,
+      "flush": 0.27740815736187446,
+      "straight": 0.0937228811107897,
+      "sum": 0.4840420403046958
      },
      "winning": {
-      "straightFlush": 0.14675052410901468,
-      "threeOfAKind": 0.10295830421616585,
-      "flush": 0.47402748660610294,
-      "straight": 0.13929652923363614,
-      "sum": 0.13696715583508037
+      "straightFlush": 0.10514865844815083,
+      "threeOfAKind": 0.1793570219966159,
+      "flush": 0.505922165820643,
+      "straight": 0.10031423737007493,
+      "sum": 0.10925791636451535
      },
      "decidedBy": {
-      "formation": 0.8164453761938039,
-      "sum": 0.1740041928721174,
-      "first": 0.009550430934078733
+      "formation": 0.8614938361131255,
+      "sum": 0.13246313753927969,
+      "first": 0.006043026347594876
      },
-     "jokerEdge": 0.5919117647058824
+     "jokerEdge": 0.39344262295081966
     }
    },
-   "random-greedy": {
+   "random-strategist": {
     "games": 1000,
     "wins": [
-     16,
-     984
+     3,
+     997
     ],
     "draws": 0,
-    "turns": 37993,
+    "turns": 37516,
     "endings": {
-     "adjacent": 466,
-     "majority": 534,
+     "adjacent": 452,
+     "majority": 548,
      "exhaustion": 0,
      "draw": 0
     },
     "built": {
-     "straightFlush": 719,
-     "threeOfAKind": 623,
-     "flush": 2717,
-     "straight": 1174,
-     "sum": 5373
+     "straightFlush": 547,
+     "threeOfAKind": 938,
+     "flush": 2814,
+     "straight": 969,
+     "sum": 5137
     },
-    "builtTotal": 10606,
+    "builtTotal": 10405,
     "winning": {
-     "straightFlush": 622,
-     "threeOfAKind": 510,
-     "flush": 2057,
-     "straight": 562,
-     "sum": 503
+     "straightFlush": 471,
+     "threeOfAKind": 752,
+     "flush": 2161,
+     "straight": 409,
+     "sum": 327
     },
     "decidedBy": {
-     "formation": 3561,
-     "sum": 664,
-     "first": 29
+     "formation": 3631,
+     "sum": 472,
+     "first": 17
     },
     "jokerEdge": {
-     "games": 515,
-     "won": 278
+     "games": 525,
+     "won": 166
     },
     "shares": {
-     "firstPlayerWins": 0.016,
-     "secondPlayerWins": 0.984,
-     "averageTurns": 37.993,
+     "firstPlayerWins": 0.003,
+     "secondPlayerWins": 0.997,
+     "averageTurns": 37.516,
      "endings": {
-      "adjacent": 0.466,
-      "majority": 0.534,
+      "adjacent": 0.452,
+      "majority": 0.548,
       "exhaustion": 0,
       "draw": 0
      },
      "built": {
-      "straightFlush": 0.06779181595323402,
-      "threeOfAKind": 0.05874033565906091,
-      "flush": 0.2561757495757119,
-      "straight": 0.11069206109749198,
-      "sum": 0.5066000377145012
+      "straightFlush": 0.0525708793849111,
+      "threeOfAKind": 0.09014896684286401,
+      "flush": 0.27044690052859205,
+      "straight": 0.09312830370014416,
+      "sum": 0.4937049495434887
      },
      "winning": {
-      "straightFlush": 0.1462153267512929,
-      "threeOfAKind": 0.11988716502115655,
-      "flush": 0.4835448989186648,
-      "straight": 0.1321109543958627,
-      "sum": 0.11824165491302303
+      "straightFlush": 0.11432038834951457,
+      "threeOfAKind": 0.1825242718446602,
+      "flush": 0.5245145631067961,
+      "straight": 0.09927184466019418,
+      "sum": 0.07936893203883495
      },
      "decidedBy": {
-      "formation": 0.8370944992947814,
-      "sum": 0.15608838740009404,
-      "first": 0.0068171133051245884
+      "formation": 0.8813106796116504,
+      "sum": 0.1145631067961165,
+      "first": 0.00412621359223301
      },
-     "jokerEdge": 0.5398058252427185
+     "jokerEdge": 0.3161904761904762
     }
    }
+  }
+ },
+ "duels": {
+  "strategist": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "first": {
+    "games": 2000,
+    "wins": [
+     1035,
+     965
+    ],
+    "draws": 0,
+    "turns": 79662,
+    "endings": {
+     "adjacent": 969,
+     "majority": 1031,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 2065,
+     "threeOfAKind": 3917,
+     "flush": 11070,
+     "straight": 2294,
+     "sum": 4764
+    },
+    "builtTotal": 24110,
+    "winning": {
+     "straightFlush": 1676,
+     "threeOfAKind": 2987,
+     "flush": 5144,
+     "straight": 666,
+     "sum": 534
+    },
+    "decidedBy": {
+     "formation": 7179,
+     "sum": 3600,
+     "first": 228
+    },
+    "jokerEdge": {
+     "games": 1061,
+     "won": 748
+    },
+    "shares": {
+     "firstPlayerWins": 0.5175,
+     "secondPlayerWins": 0.4825,
+     "averageTurns": 39.831,
+     "endings": {
+      "adjacent": 0.4845,
+      "majority": 0.5155,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.08564910825383658,
+      "threeOfAKind": 0.1624637080049772,
+      "flush": 0.4591455827457486,
+      "straight": 0.09514724180837826,
+      "sum": 0.1975943591870593
+     },
+     "winning": {
+      "straightFlush": 0.15226673934768784,
+      "threeOfAKind": 0.27137276278731715,
+      "flush": 0.4673389661124739,
+      "straight": 0.06050695012264922,
+      "sum": 0.0485145816298719
+     },
+     "decidedBy": {
+      "formation": 0.6522213137094576,
+      "sum": 0.3270645952575634,
+      "first": 0.020714091032979012
+     },
+     "jokerEdge": 0.704995287464656
+    }
+   },
+   "second": {
+    "games": 2000,
+    "wins": [
+     721,
+     1279
+    ],
+    "draws": 0,
+    "turns": 79875,
+    "endings": {
+     "adjacent": 957,
+     "majority": 1043,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1992,
+     "threeOfAKind": 3987,
+     "flush": 10864,
+     "straight": 2238,
+     "sum": 5208
+    },
+    "builtTotal": 24289,
+    "winning": {
+     "straightFlush": 1745,
+     "threeOfAKind": 3076,
+     "flush": 5104,
+     "straight": 634,
+     "sum": 568
+    },
+    "decidedBy": {
+     "formation": 7441,
+     "sum": 3472,
+     "first": 214
+    },
+    "jokerEdge": {
+     "games": 1050,
+     "won": 652
+    },
+    "shares": {
+     "firstPlayerWins": 0.3605,
+     "secondPlayerWins": 0.6395,
+     "averageTurns": 39.9375,
+     "endings": {
+      "adjacent": 0.4785,
+      "majority": 0.5215,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.08201243361192309,
+      "threeOfAKind": 0.16414837992506895,
+      "flush": 0.44728066202807854,
+      "straight": 0.0921404751121907,
+      "sum": 0.2144180493227387
+     },
+     "winning": {
+      "straightFlush": 0.1568257391929541,
+      "threeOfAKind": 0.2764446841017345,
+      "flush": 0.4587040532039184,
+      "straight": 0.05697852071537701,
+      "sum": 0.051047002786015996
+     },
+     "decidedBy": {
+      "formation": 0.6687337107935653,
+      "sum": 0.31203379167790063,
+      "first": 0.019232497528534197
+     },
+     "jokerEdge": 0.6209523809523809
+    }
+   }
+  },
+  "strategist:joker": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "first": {
+    "games": 2000,
+    "wins": [
+     977,
+     1023
+    ],
+    "draws": 0,
+    "turns": 79950,
+    "endings": {
+     "adjacent": 945,
+     "majority": 1055,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1380,
+     "threeOfAKind": 4551,
+     "flush": 10686,
+     "straight": 2346,
+     "sum": 5335
+    },
+    "builtTotal": 24298,
+    "winning": {
+     "straightFlush": 1180,
+     "threeOfAKind": 3564,
+     "flush": 4997,
+     "straight": 705,
+     "sum": 669
+    },
+    "decidedBy": {
+     "formation": 7405,
+     "sum": 3490,
+     "first": 220
+    },
+    "jokerEdge": {
+     "games": 997,
+     "won": 719
+    },
+    "shares": {
+     "firstPlayerWins": 0.4885,
+     "secondPlayerWins": 0.5115,
+     "averageTurns": 39.975,
+     "endings": {
+      "adjacent": 0.4725,
+      "majority": 0.5275,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.05679479792575521,
+      "threeOfAKind": 0.18729936620297966,
+      "flush": 0.4397892830685653,
+      "straight": 0.09655115647378384,
+      "sum": 0.21956539632891597
+     },
+     "winning": {
+      "straightFlush": 0.10616284300494827,
+      "threeOfAKind": 0.32064777327935223,
+      "flush": 0.4495726495726496,
+      "straight": 0.06342780026990553,
+      "sum": 0.0601889338731444
+     },
+     "decidedBy": {
+      "formation": 0.6662168241115609,
+      "sum": 0.3139901034637877,
+      "first": 0.01979307242465137
+     },
+     "jokerEdge": 0.7211634904714143
+    }
+   },
+   "second": {
+    "games": 2000,
+    "wins": [
+     838,
+     1162
+    ],
+    "draws": 0,
+    "turns": 79721,
+    "endings": {
+     "adjacent": 906,
+     "majority": 1094,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1330,
+     "threeOfAKind": 4604,
+     "flush": 10709,
+     "straight": 2321,
+     "sum": 5197
+    },
+    "builtTotal": 24161,
+    "winning": {
+     "straightFlush": 1149,
+     "threeOfAKind": 3618,
+     "flush": 5010,
+     "straight": 651,
+     "sum": 614
+    },
+    "decidedBy": {
+     "formation": 7390,
+     "sum": 3433,
+     "first": 219
+    },
+    "jokerEdge": {
+     "games": 1039,
+     "won": 729
+    },
+    "shares": {
+     "firstPlayerWins": 0.419,
+     "secondPlayerWins": 0.581,
+     "averageTurns": 39.8605,
+     "endings": {
+      "adjacent": 0.453,
+      "majority": 0.547,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.055047390422581846,
+      "threeOfAKind": 0.1905550266959149,
+      "flush": 0.44323496544017216,
+      "straight": 0.09606390463970862,
+      "sum": 0.21509871280162246
+     },
+     "winning": {
+      "straightFlush": 0.10405723600796957,
+      "threeOfAKind": 0.3276580329650426,
+      "flush": 0.4537221517840971,
+      "straight": 0.05895671074080783,
+      "sum": 0.055605868502082954
+     },
+     "decidedBy": {
+      "formation": 0.6692628147074805,
+      "sum": 0.31090382177141823,
+      "first": 0.01983336352110125
+     },
+     "jokerEdge": 0.7016361886429259
+    }
+   }
+  },
+  "strategist:opening": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "first": {
+    "games": 2000,
+    "wins": [
+     938,
+     1062
+    ],
+    "draws": 0,
+    "turns": 79869,
+    "endings": {
+     "adjacent": 901,
+     "majority": 1099,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1495,
+     "threeOfAKind": 4100,
+     "flush": 10929,
+     "straight": 2794,
+     "sum": 4909
+    },
+    "builtTotal": 24227,
+    "winning": {
+     "straightFlush": 1249,
+     "threeOfAKind": 3188,
+     "flush": 5265,
+     "straight": 763,
+     "sum": 627
+    },
+    "decidedBy": {
+     "formation": 7287,
+     "sum": 3584,
+     "first": 221
+    },
+    "jokerEdge": {
+     "games": 991,
+     "won": 678
+    },
+    "shares": {
+     "firstPlayerWins": 0.469,
+     "secondPlayerWins": 0.531,
+     "averageTurns": 39.9345,
+     "endings": {
+      "adjacent": 0.4505,
+      "majority": 0.5495,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.06170801172245841,
+      "threeOfAKind": 0.1692326742890164,
+      "flush": 0.45110826763528294,
+      "straight": 0.1153258760886614,
+      "sum": 0.20262517026458085
+     },
+     "winning": {
+      "straightFlush": 0.11260367832672197,
+      "threeOfAKind": 0.28741435268662097,
+      "flush": 0.4746664262531554,
+      "straight": 0.06878831590335377,
+      "sum": 0.05652722683014785
+     },
+     "decidedBy": {
+      "formation": 0.6569599711503786,
+      "sum": 0.32311575910566176,
+      "first": 0.01992426974395961
+     },
+     "jokerEdge": 0.6841574167507568
+    }
+   },
+   "second": {
+    "games": 2000,
+    "wins": [
+     838,
+     1162
+    ],
+    "draws": 0,
+    "turns": 79833,
+    "endings": {
+     "adjacent": 951,
+     "majority": 1049,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1408,
+     "threeOfAKind": 4127,
+     "flush": 10865,
+     "straight": 2885,
+     "sum": 4944
+    },
+    "builtTotal": 24229,
+    "winning": {
+     "straightFlush": 1186,
+     "threeOfAKind": 3203,
+     "flush": 5344,
+     "straight": 755,
+     "sum": 589
+    },
+    "decidedBy": {
+     "formation": 7370,
+     "sum": 3518,
+     "first": 189
+    },
+    "jokerEdge": {
+     "games": 1000,
+     "won": 641
+    },
+    "shares": {
+     "firstPlayerWins": 0.419,
+     "secondPlayerWins": 0.581,
+     "averageTurns": 39.9165,
+     "endings": {
+      "adjacent": 0.4755,
+      "majority": 0.5245,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.05811217961946428,
+      "threeOfAKind": 0.170333071938586,
+      "flush": 0.4484295678732098,
+      "straight": 0.11907218622312106,
+      "sum": 0.20405299434561888
+     },
+     "winning": {
+      "straightFlush": 0.10706870091179922,
+      "threeOfAKind": 0.2891577141825404,
+      "flush": 0.48244109415906833,
+      "straight": 0.0681592488941049,
+      "sum": 0.05317324185248713
+     },
+     "decidedBy": {
+      "formation": 0.6653426017874876,
+      "sum": 0.3175950167012729,
+      "first": 0.017062381511239504
+     },
+     "jokerEdge": 0.641
+    }
+   }
+  },
+  "strategist:suited": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "first": {
+    "games": 2000,
+    "wins": [
+     964,
+     1036
+    ],
+    "draws": 0,
+    "turns": 79990,
+    "endings": {
+     "adjacent": 927,
+     "majority": 1073,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1849,
+     "threeOfAKind": 3935,
+     "flush": 10400,
+     "straight": 2830,
+     "sum": 5288
+    },
+    "builtTotal": 24302,
+    "winning": {
+     "straightFlush": 1522,
+     "threeOfAKind": 2988,
+     "flush": 5123,
+     "straight": 792,
+     "sum": 665
+    },
+    "decidedBy": {
+     "formation": 7464,
+     "sum": 3419,
+     "first": 207
+    },
+    "jokerEdge": {
+     "games": 974,
+     "won": 633
+    },
+    "shares": {
+     "firstPlayerWins": 0.482,
+     "secondPlayerWins": 0.518,
+     "averageTurns": 39.995,
+     "endings": {
+      "adjacent": 0.4635,
+      "majority": 0.5365,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.07608427289934985,
+      "threeOfAKind": 0.16192082956135298,
+      "flush": 0.4279483170109456,
+      "straight": 0.11645132087894,
+      "sum": 0.21759525964941157
+     },
+     "winning": {
+      "straightFlush": 0.13724075743913436,
+      "threeOfAKind": 0.26943192064923355,
+      "flush": 0.4619477006311993,
+      "straight": 0.07141568981064021,
+      "sum": 0.059963931469792606
+     },
+     "decidedBy": {
+      "formation": 0.673038773669973,
+      "sum": 0.30829576194770064,
+      "first": 0.01866546438232642
+     },
+     "jokerEdge": 0.6498973305954825
+    }
+   },
+   "second": {
+    "games": 2000,
+    "wins": [
+     830,
+     1170
+    ],
+    "draws": 0,
+    "turns": 79713,
+    "endings": {
+     "adjacent": 931,
+     "majority": 1069,
+     "exhaustion": 0,
+     "draw": 0
+    },
+    "built": {
+     "straightFlush": 1645,
+     "threeOfAKind": 3985,
+     "flush": 10424,
+     "straight": 2850,
+     "sum": 5172
+    },
+    "builtTotal": 24076,
+    "winning": {
+     "straightFlush": 1410,
+     "threeOfAKind": 3045,
+     "flush": 5092,
+     "straight": 801,
+     "sum": 623
+    },
+    "decidedBy": {
+     "formation": 7394,
+     "sum": 3362,
+     "first": 215
+    },
+    "jokerEdge": {
+     "games": 1026,
+     "won": 667
+    },
+    "shares": {
+     "firstPlayerWins": 0.415,
+     "secondPlayerWins": 0.585,
+     "averageTurns": 39.8565,
+     "endings": {
+      "adjacent": 0.4655,
+      "majority": 0.5345,
+      "exhaustion": 0,
+      "draw": 0
+     },
+     "built": {
+      "straightFlush": 0.06832530320651271,
+      "threeOfAKind": 0.16551752782854295,
+      "flush": 0.43296228609403553,
+      "straight": 0.11837514537298555,
+      "sum": 0.21481973749792324
+     },
+     "winning": {
+      "straightFlush": 0.12852064533770852,
+      "threeOfAKind": 0.2775499042931365,
+      "flush": 0.4641327135174551,
+      "straight": 0.07301066447908121,
+      "sum": 0.05678607237261872
+     },
+     "decidedBy": {
+      "formation": 0.6739586181751891,
+      "sum": 0.30644426214565673,
+      "first": 0.019597119679154135
+     },
+     "jokerEdge": 0.6500974658869396
+    }
+   }
+  }
+ },
+ "solo": {
+  "solo-classique-greedy": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "bot": "greedy",
+   "games": 2000,
+   "lines": {
+    "haut": {
+     "straightFlush": 2014,
+     "threeOfAKind": 3271,
+     "flush": 4044,
+     "straight": 1202,
+     "sum": 3469
+    },
+    "bas": {
+     "straightFlush": 2354,
+     "threeOfAKind": 3369,
+     "flush": 3685,
+     "straight": 1410,
+     "sum": 3182
+    }
+   },
+   "jokers": {
+    "straightFlush": 0,
+    "threeOfAKind": 3208,
+    "flush": 0,
+    "straight": 410,
+    "sum": 223
+   },
+   "value": {
+    "haut": 34705.09677419354,
+    "bas": 35888.1935483871
+   },
+   "optimum": {
+    "lines": 200,
+    "value": 3537.2580645161293,
+    "optimum": 4634.74193548387
+   }
+  },
+  "solo-classique-strategist": {
+   "deck": "classique",
+   "jokerRule": "colorless",
+   "order": "original",
+   "bot": "strategist",
+   "games": 2000,
+   "lines": {
+    "haut": {
+     "straightFlush": 2082,
+     "threeOfAKind": 3380,
+     "flush": 4037,
+     "straight": 1081,
+     "sum": 3420
+    },
+    "bas": {
+     "straightFlush": 2644,
+     "threeOfAKind": 3308,
+     "flush": 3867,
+     "straight": 1175,
+     "sum": 3006
+    }
+   },
+   "jokers": {
+    "straightFlush": 0,
+    "threeOfAKind": 3728,
+    "flush": 0,
+    "straight": 172,
+    "sum": 40
+   },
+   "value": {
+    "haut": 35174.83870967741,
+    "bas": 36944.32258064516
+   },
+   "optimum": {
+    "lines": 200,
+    "value": 3552.7741935483878,
+    "optimum": 4612.612903225806
+   }
+  },
+  "solo-rapide-greedy": {
+   "deck": "rapide",
+   "jokerRule": "free",
+   "order": "original",
+   "bot": "greedy",
+   "games": 2000,
+   "lines": {
+    "haut": {
+     "straightFlush": 2078,
+     "threeOfAKind": 4798,
+     "flush": 1989,
+     "straight": 1461,
+     "sum": 3674
+    },
+    "bas": {
+     "straightFlush": 2177,
+     "threeOfAKind": 5994,
+     "flush": 1986,
+     "straight": 926,
+     "sum": 2917
+    }
+   },
+   "jokers": {
+    "straightFlush": 0,
+    "threeOfAKind": 0,
+    "flush": 0,
+    "straight": 0,
+    "sum": 0
+   },
+   "value": {
+    "haut": 35787.5,
+    "bas": 39218.22727272727
+   },
+   "optimum": {
+    "lines": 200,
+    "value": 3758.6363636363626,
+    "optimum": 4645.636363636362
+   }
+  },
+  "solo-rapide-strategist": {
+   "deck": "rapide",
+   "jokerRule": "free",
+   "order": "original",
+   "bot": "strategist",
+   "games": 2000,
+   "lines": {
+    "haut": {
+     "straightFlush": 2516,
+     "threeOfAKind": 4336,
+     "flush": 2365,
+     "straight": 1496,
+     "sum": 3287
+    },
+    "bas": {
+     "straightFlush": 2414,
+     "threeOfAKind": 5534,
+     "flush": 2220,
+     "straight": 1014,
+     "sum": 2818
+    }
+   },
+   "jokers": {
+    "straightFlush": 0,
+    "threeOfAKind": 0,
+    "flush": 0,
+    "straight": 0,
+    "sum": 0
+   },
+   "value": {
+    "haut": 36948.045454545456,
+    "bas": 39334.681818181816
+   },
+   "optimum": {
+    "lines": 200,
+    "value": 3816.6363636363626,
+    "optimum": 4621.636363636362
+   }
+  }
+ },
+ "irl": {
+  "deck": "classique",
+  "jokerRule": "colorless",
+  "order": "original",
+  "games": 10,
+  "lines": {
+   "haut": {
+    "straightFlush": 22,
+    "threeOfAKind": 11,
+    "flush": 26,
+    "straight": 1,
+    "sum": 10
+   },
+   "bas": {
+    "straightFlush": 18,
+    "threeOfAKind": 19,
+    "flush": 18,
+    "straight": 4,
+    "sum": 11
+   }
+  },
+  "jokers": {
+   "straightFlush": 0,
+   "threeOfAKind": 20,
+   "flush": 0,
+   "straight": 0,
+   "sum": 0
+  },
+  "value": {
+   "haut": 212.3548387096774,
+   "bas": 205.0967741935484
+  },
+  "optimum": {
+   "lines": 20,
+   "value": 417.4516129032258,
+   "optimum": 465.0645161290322
   }
  }
 }

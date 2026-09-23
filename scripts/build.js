@@ -3,13 +3,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { SAMPLE_SIZES, SEED } from "../src/config/simulations.js";
 import { analyze, assertNarrative } from "../src/report/analysis.js";
-import {
-  assembleSimulations,
-  computeExact,
-  computeOuts,
-  computeStartingHands,
-  simulationTasks,
-} from "../src/report/data.js";
+import { computeExact, computeOuts, computeStartingHands } from "../src/report/data.js";
+import { assembleResults, simulationTasks } from "../src/report/tasks.js";
+import { tallyEssais } from "../src/irl/analysis.js";
 import { renderDocument, renderFragment } from "../src/report/html/page.js";
 import { renderMarkdown } from "../src/report/markdown.js";
 import { runPool } from "./lib/pool.js";
@@ -38,11 +34,25 @@ async function compute() {
   const tasks = simulationTasks(sizes);
   const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks, {
     onProgress: (done, total) => {
-      if (done % 50 === 0 || done === total) log(`  parties : ${done}/${total} lots (${elapsed()})`);
+      if (done % 100 === 0 || done === total) log(`  parties : ${done}/${total} lots (${elapsed()})`);
     },
   });
-  const simulations = assembleSimulations(tasks, results);
-  return { generatedAt: new Date().toISOString(), seed: SEED, quick, sizes, exact, outs, startingHands, simulations };
+  const { simulations, duels, solo } = assembleResults(tasks, results);
+  const irl = tallyEssais();
+  log(`  parties réelles : ${irl.games} photos, optimum de chaque ligne (${elapsed()})`);
+  return {
+    generatedAt: new Date().toISOString(),
+    seed: SEED,
+    quick,
+    sizes,
+    exact,
+    outs,
+    startingHands,
+    simulations,
+    duels,
+    solo,
+    irl,
+  };
 }
 
 mkdirSync(join(outDir, "artifact"), { recursive: true });

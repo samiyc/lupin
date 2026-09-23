@@ -10,17 +10,17 @@ As à 10 + 2 jokers) et le **tarot** (4 couleurs + les atouts, de 1 à 8, + 2 at
 ## Le verdict
 
 ```text
-╔═ LE VERDICT ═══════════════════════════════════════════════════════════╗
-║ ♠ 4 couleurs × 1-10 + 2 jokers : OUI, à une condition —                ║
-║   le joker vaut le chiffre qu'on veut, mais n'a PAS de couleur.        ║
-║ ♥ Avec cette règle, l'ordre d'origine reste juste : rien à réordonner. ║
-║ ♦ Ressemblance avec l'original : 90,8 %                                ║
-║   (ta version rapide, que tu connais bien : 90,1 %).                   ║
-║ ♣ Avec un joker « libre », aucun ordre ne tient et la Suite couleur    ║
-║   gagne 2,3 fois plus de bornes que dans l'original. À éviter.         ║
-║ ★ Tarot 5 × 1-8 + joker sans couleur : le plus fidèle (97,2 %),        ║
-║   mais il faut un tarot et lire les atouts comme une 5e couleur.       ║
-╚════════════════════════════════════════════════════════════════════════╝
+╔═ LE VERDICT ════════════════════════════════════════════════════════════════╗
+║ ♠ 4 couleurs × 1-10 + 2 jokers : OUI, à une condition —                     ║
+║   le joker vaut le chiffre qu'on veut, mais n'a PAS de couleur.             ║
+║ ♥ Avec cette règle, l'ordre d'origine reste juste : rien à réordonner.      ║
+║ ♦ Ressemblance avec l'original : 95,2 %, la plus haute de toutes            ║
+║   les variantes (ta version rapide : 93,1 %, le tarot : 85,7 %).            ║
+║ ♣ Avec un joker « libre », aucun ordre ne tient et la Suite couleur         ║
+║   gagne 1,7 fois plus de bornes que dans l'original. À éviter.              ║
+║ ★ Tes 140 colonnes jouées pour de vrai confirment le tableau, et tes trois  ║
+║   habitudes rendent le robot plus fort (58 % de victoires contre l'ancien). ║
+╚═════════════════════════════════════════════════════════════════════════════╝
 ```
 
 ## Les cinq combinaisons, de la plus forte à la plus faible
@@ -148,49 +148,51 @@ et la Suite, jamais la Couleur.
 
 ## Quatrième angle : des parties entières, jouées par des robots
 
-2 000 parties par variante entre deux robots « gourmands » : chacun pose la carte
+2 000 parties par variante entre deux robots « stratèges » : chacun pose la carte
 qui augmente le plus ses chances de gagner une borne, face à ce que l'adversaire
-est en train de construire. Deux vérifications avant de les croire :
+est en train de construire, et suit en plus tes trois habitudes (voir plus bas).
+La colonne « Ancien robot » donne la ressemblance obtenue avec la première version,
+sans tes habitudes. Deux vérifications avant de croire ces parties :
 
-- le robot gourmand bat un robot qui joue au hasard dans 98,3 % des parties ;
+- le robot stratège bat un robot qui joue au hasard dans 99,7 % des parties ;
 - deux robots au hasard retrouvent les probabilités exactes du premier angle
-  (Suite couleur 1,6 % en jeu, 1,8 % au calcul).
+  (Suite couleur 1,8 % en jeu, 1,8 % au calcul).
 
 **Même dans l'original, en jeu, la Couleur se construit plus souvent que la Suite**
-(37,2 % contre 13,9 %) : on court après ce qui rapporte. Les parties ne
+(42,1 % contre 13,8 %) : on court après ce qui rapporte. Les parties ne
 servent donc pas à classer les combinaisons, mais à mesurer si le jeu *ressemble* à
 l'original : on compare, rang par rang, la part des bornes gagnées par la 1re
 combinaison de l'ordre, la 2e, etc. 100 % = même profil que l'original.
 
 ```text
                          Bornes gagnées, par rang de la combinaison  Ressemb.
-Original 6×9             ████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░··  100,0 %
-Rapide 6×7               █████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒░░░░···   90,1 %
-4 coul., joker libre     ██████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░···   74,5 %
-4 coul., 1 joker/borne   ██████████▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░···   75,0 %
-4 coul., joker s. coul.  ████▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░··   90,8 %
-Tarot, joker libre       ██████████▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░··   84,9 %
-Tarot, joker s. coul.    ████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░··   97,2 %
+Original 6×9             ███████▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░·  100,0 %
+Rapide 6×7               █████████▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░·   93,1 %
+4 coul., joker libre     ████████████▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░···   82,9 %
+4 coul., 1 joker/borne   ████████████▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░···   84,1 %
+4 coul., joker s. coul.  ████████▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░··   95,2 %
+Tarot, joker libre       ████████████▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒░░░···   81,8 %
+Tarot, joker s. coul.    █████████▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░··   85,7 %
 
 ██ 1re   ▓▓ 2e   ▒▒ 3e   ░░ 4e   ·· Somme
 ```
 
 ```text
-┌─────────────────────────┬──────────┬───────────────────┬──────────────────────┬─────────────────┬───────────────┐
-│ Variante                │ Ressemb. │ Bornes à la somme │ Plus de jokers gagne │ 2e joueur gagne │ Cartes posées │
-├─────────────────────────┼──────────┼───────────────────┼──────────────────────┼─────────────────┼───────────────┤
-│ Original 6×9            │  100,0 % │            27,7 % │                    — │          56,8 % │          51,1 │
-│ Rapide 6×7              │   90,1 % │            25,1 % │                    — │          55,1 % │          40,0 │
-│ 4 coul., joker libre    │   74,5 % │            33,4 % │               74,8 % │          55,4 % │          40,0 │
-│ 4 coul., 1 joker/borne  │   75,0 % │            32,9 % │               76,3 % │          54,8 % │          40,0 │
-│ 4 coul., joker s. coul. │   90,8 % │            30,4 % │               65,6 % │          54,8 % │          39,9 │
-│ Tarot, joker libre      │   84,9 % │            27,4 % │               73,3 % │          56,1 % │          39,9 │
-│ Tarot, joker s. coul.   │   97,2 % │            27,4 % │               61,3 % │          56,1 % │          40,0 │
-└─────────────────────────┴──────────┴───────────────────┴──────────────────────┴─────────────────┴───────────────┘
+┌─────────────────────────┬──────────┬──────────────┬───────────────────┬──────────────────────┬─────────────────┬───────────────┐
+│ Variante                │ Ressemb. │ Ancien robot │ Bornes à la somme │ Plus de jokers gagne │ 2e joueur gagne │ Cartes posées │
+├─────────────────────────┼──────────┼──────────────┼───────────────────┼──────────────────────┼─────────────────┼───────────────┤
+│ Original 6×9            │  100,0 % │      100,0 % │            30,2 % │                    — │          56,9 % │          51,0 │
+│ Rapide 6×7              │   93,1 % │       89,7 % │            25,1 % │                    — │          54,1 % │          39,9 │
+│ 4 coul., joker libre    │   82,9 % │       75,2 % │            28,5 % │               77,9 % │          51,3 % │          40,2 │
+│ 4 coul., 1 joker/borne  │   84,1 % │       76,2 % │            27,5 % │               80,2 % │          52,5 % │          40,3 │
+│ 4 coul., joker s. coul. │   95,2 % │       91,0 % │            33,7 % │               68,8 % │          53,5 % │          39,7 │
+│ Tarot, joker libre      │   81,8 % │       84,6 % │            24,5 % │               79,0 % │          51,1 % │          40,3 │
+│ Tarot, joker s. coul.   │   85,7 % │       95,5 % │            26,4 % │               68,4 % │          52,5 % │          39,8 │
+└─────────────────────────┴──────────┴──────────────┴───────────────────┴──────────────────────┴─────────────────┴───────────────┘
 ```
 
-Le second joueur gagne un peu plus souvent partout, original compris (43,3 %
-pour le premier) : c'est le jeu, pas les cartes. Le joueur qui a posé le plus de
+Le second joueur gagne un peu plus souvent dans toutes les variantes du tableau, original
+compris (43,1 % pour le premier) : c'est le jeu, pas les cartes. Le joueur qui a posé le plus de
 jokers gagne souvent : 2 jokers sur 42 cartes pèsent lourd. Le joker sans couleur
 réduit cet avantage.
 
@@ -202,18 +204,101 @@ Ressemblance avec l'original, pour chaque règle de joker et chaque ordre :
 ┌────────────────────┬─────────────────┬────────────────────────────┬─────────────────────┬───────────────────┐
 │                    │ Ordre d'origine │ Brelan avant Suite couleur │ Suite avant Couleur │ Les deux échanges │
 ├────────────────────┼─────────────────┼────────────────────────────┼─────────────────────┼───────────────────┤
-│ Joker libre        │          74,5 % │                     73,9 % │              76,0 % │            74,6 % │
-│ 1 joker par borne  │          75,0 % │                     75,4 % │              76,0 % │            75,5 % │
-│ Joker sans couleur │        ★ 90,8 % │                     68,1 % │              89,3 % │            70,2 % │
+│ Joker libre        │          82,9 % │                     82,5 % │              70,7 % │            75,4 % │
+│ 1 joker par borne  │          84,1 % │                     83,2 % │              71,4 % │            76,8 % │
+│ Joker sans couleur │        ★ 95,2 % │                     83,1 % │              86,5 % │            76,5 % │
 └────────────────────┴─────────────────┴────────────────────────────┴─────────────────────┴───────────────────┘
 ```
 
-Changer l'ordre ne rattrape pas un joker libre (les résultats bougent de un ou deux
-points). C'est la règle du joker qui fait la différence. Et avec le joker sans
-couleur, échanger Brelan et Suite couleur coûte 23 points : gardez l'ordre d'origine.
+Aucun ordre ne rattrape un joker libre : le meilleur plafonne à 84,1 %. C'est la
+règle du joker qui fait la différence. Et avec le joker sans couleur, échanger Brelan
+et Suite couleur coûte 12 points : gardez l'ordre d'origine.
 
-Et « 1 joker maximum par joueur » ? Le second joker reste coincé en main : 12,0 %
+Et « 1 joker maximum par joueur » ? Le second joker reste coincé en main : 12,6 %
 des parties se terminent sans vainqueur. À éviter.
+
+## Cinquième angle : tes parties en vrai
+
+10 photos, 140 colonnes de 3 cartes, jouées seul avec le jeu de 52 cartes et le
+joker sans couleur (transcription : `data/irl/essais.json`). Pour comparer ce qui est
+comparable, les robots ont rejoué **le même protocole** : une moitié de 21 cartes, main de
+6, sept colonnes, personne à battre ; la ligne du haut à l'aveugle, celle du bas en
+voyant l'autre moitié (2 000 parties par robot).
+
+```text
+┌───────────────┬────────┬───────────────┬───────────────┬───────────────┬───────────────┬─────────────┐
+│ Combinaison   │    Toi │ Ta fourchette │ Stratège seul │ Gourmand seul │ Partie à deux │ 3 au hasard │
+├───────────────┼────────┼───────────────┼───────────────┼───────────────┼───────────────┼─────────────┤
+│ Suite couleur │ 28,6 % │   22 % – 37 % │        16,9 % │        15,6 % │        11,2 % │       0,3 % │
+│ Brelan        │ 21,4 % │   15 % – 29 % │        23,9 % │        23,7 % │        16,0 % │       1,7 % │
+│ Couleur       │ 31,4 % │   24 % – 40 % │        28,2 % │        27,6 % │        46,9 % │       3,9 % │
+│ Suite         │  3,6 % │     2 % – 8 % │         8,1 % │         9,3 % │         6,8 % │       8,9 % │
+│ Somme         │ 15,0 % │   10 % – 22 % │        22,9 % │        23,8 % │        19,1 % │      85,2 % │
+└───────────────┴────────┴───────────────┴───────────────┴───────────────┴───────────────┴─────────────┘
+```
+
+- **Tu fais bien plus de Suites couleur que le robot** : 28,6 % de tes colonnes (ta
+  fourchette à 95 % va de 22 % à 37 %), contre 16,9 % pour le robot stratège. Moins de
+  Sommes aussi : 15,0 % contre 22,9 %.
+- **Tu joues mieux que lui.** Avec les mêmes 21 cartes, le meilleur rangement possible (calculé
+  exactement) vaut 100 : tu atteins 90 %, le robot 77 %.
+- **Tes 20 jokers ont tous fini en Brelan** ; ceux du robot stratège aussi, à 95 %.
+- Les chiffres de la partie à deux ne sont pas comparables tels quels : là, on joue contre
+  quelqu'un, et une borne perdue n'appelle plus de belles cartes.
+
+Ligne du haut (à l'aveugle) et ligne du bas (en voyant l'autre moitié) :
+
+```text
+┌───────────────┬───────────┬──────────┬─────────────┬────────────┐
+│ Combinaison   │ Toi, haut │ Toi, bas │ Robot, haut │ Robot, bas │
+├───────────────┼───────────┼──────────┼─────────────┼────────────┤
+│ Suite couleur │    31,4 % │   25,7 % │      14,9 % │     18,9 % │
+│ Brelan        │    15,7 % │   27,1 % │      24,1 % │     23,6 % │
+│ Couleur       │    37,1 % │   25,7 % │      28,8 % │     27,6 % │
+│ Somme         │    14,3 % │   15,7 % │      24,4 % │     21,5 % │
+└───────────────┴───────────┴──────────┴─────────────┴────────────┘
+```
+
+Avec 10 lignes de chaque sorte (70 colonnes), tes écarts entre haut et bas restent
+dans le bruit : les fourchettes se recouvrent.
+
+**Ton impression, vérifiée par le robot sur le même protocole :**
+
+```text
+┌──────────────────────┬────────────────────┬────────────┐
+│ Robot stratège, seul │ 4 couleurs + joker │ Rapide 6×7 │
+├──────────────────────┼────────────────────┼────────────┤
+│ Suite couleur        │             16,9 % │     17,6 % │
+│ Brelan               │             23,9 % │     35,3 % │
+│ Couleur              │             28,2 % │     16,4 % │
+└──────────────────────┴────────────────────┴────────────┘
+```
+
+La Couleur est bien plus présente en 4 couleurs, et le Brelan en version rapide : c'est
+confirmé. Les Suites couleur, elles, sortent à peu près autant dans les deux : si elles te
+semblent plus faciles ici, c'est sans doute ta façon de jouer, pas le paquet.
+
+## Tes stratégies dans le robot
+
+Chaque habitude a été ajoutée seule, puis les trois ensemble, et le robot ainsi modifié a
+joué contre l'ancien (le « gourmand »), des deux côtés de la table :
+
+```text
+┌─────────────────────────────────────────┬─────────────────┬───────────────────┬─────────┐
+│ Habitude                                │ Parties gagnées │ Fourchette à 95 % │ Parties │
+├─────────────────────────────────────────┼─────────────────┼───────────────────┼─────────┤
+│ Garder le joker pour un Brelan          │          53,5 % │   51,9 % – 55,0 % │   4 000 │
+│ Ouvrir au milieu, une couleur à la fois │          52,5 % │   51,0 % – 54,0 % │   4 000 │
+│ Suite couleur plutôt que paire          │          53,3 % │   51,8 % – 54,9 % │   4 000 │
+│ Les trois ensemble                      │          57,9 % │   56,3 % – 59,4 % │   4 000 │
+└─────────────────────────────────────────┴─────────────────┴───────────────────┴─────────┘
+```
+
+**Était-ce déjà pris en compte ?** En partie : l'ancien robot comptait déjà les cartes
+encore cachées (d'où ton « tant que la couleur n'est pas épuisée ») et hésitait à dépenser
+un joker. Mais chacune de tes habitudes le rend plus fort, et les trois ensemble le font
+gagner 58 % des parties contre l'ancien. C'est donc lui, le « stratège », qui joue
+désormais toutes les parties de ce rapport.
 
 ## La règle retenue
 
@@ -223,8 +308,9 @@ des parties se terminent sans vainqueur. À éviter.
 ║ Joker    vaut le chiffre de votre choix, mais n'a pas de couleur               ║
 ║ Ordre    Suite couleur > Brelan > Couleur > Suite > Somme                      ║
 ║ Partie   7 bornes · 6 cartes en main · 4 bornes, ou 3 côte à côte, pour gagner ║
+║ Conseil  gardez le joker pour un Brelan                                        ║
 ║                                                                                ║
-║ Ressemblance avec l'original ███████████████████████████▎ 90,8 %               ║
+║ Ressemblance avec l'original ████████████████████████████▌ 95,2 %              ║
 ╚════════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -233,7 +319,11 @@ des parties se terminent sans vainqueur. À éviter.
 - Mains de 3 cartes : **toutes** comptées (calcul exact). Un joker prend la meilleure
   valeur possible pour sa ligne.
 - Mains de départ : 200 000 mains de 6 tirées au hasard par paquet.
-- Parties : 2 000 par variante, robot contre robot, graine 20260922 (rejouable à l'identique).
+- Parties : 2 000 par variante, robot stratège contre robot stratège, graine 20260922
+  (rejouable à l'identique).
+- Tes parties réelles : transcrites photo par photo ; chaque photo contient bien les 42 cartes.
+  Les robots rejouent ton protocole solo 2 000 fois ; le meilleur rangement possible
+  d'une ligne est calculé exactement (programmation dynamique sur les 21 cartes).
 - Simplification : une borne se règle quand les deux côtés ont 3 cartes. La
   revendication anticipée (« je prouve que tu ne peux plus me battre ») n'est pas simulée ;
   elle change le moment où l'on gagne une borne, pas les combinaisons que l'on construit.

@@ -13,12 +13,12 @@ export function verdict(f) {
     "♠ 4 couleurs × 1-10 + 2 jokers : OUI, à une condition —",
     "  le joker vaut le chiffre qu'on veut, mais n'a PAS de couleur.",
     "♥ Avec cette règle, l'ordre d'origine reste juste : rien à réordonner.",
-    `♦ Ressemblance avec l'original : ${pct(f.picks.classique.resemblance)}`,
-    `  (ta version rapide, que tu connais bien : ${pct(f.rapide.resemblance)}).`,
+    `♦ Ressemblance avec l'original : ${pct(f.picks.classique.resemblance)}, la plus haute de toutes`,
+    `  les variantes (ta version rapide : ${pct(f.rapide.resemblance)}, le tarot : ${pct(f.picks.tarot.resemblance)}).`,
     "♣ Avec un joker « libre », aucun ordre ne tient et la Suite couleur",
     `  gagne ${ratio} fois plus de bornes que dans l'original. À éviter.`,
-    `★ Tarot 5 × 1-8 + joker sans couleur : le plus fidèle (${pct(f.picks.tarot.resemblance)}),`,
-    "  mais il faut un tarot et lire les atouts comme une 5e couleur.",
+    `★ Tes ${f.irl.columns} colonnes jouées pour de vrai confirment le tableau, et tes trois`,
+    `  habitudes rendent le robot plus fort (${pct(f.duels.strategist.rate, 0)} de victoires contre l'ancien).`,
   ];
   return ["## Le verdict", "", ...fence(box(lines, { title: "LE VERDICT", inner: 70 })), ""];
 }

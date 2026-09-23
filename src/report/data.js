@@ -1,10 +1,9 @@
 import { DECKS, DECK_IDS, JOKER_RULES, JOKER_RULE_IDS } from "../config/decks.js";
 import { ORDERS } from "../config/formations.js";
-import { SEED, SIMULATIONS } from "../config/simulations.js";
+import { SEED } from "../config/simulations.js";
 import { enumerateTriples, inversions, rarityOrder } from "../core/combinatorics.js";
 import { createRng } from "../core/random.js";
 import { outsTable, sampleStartingHands } from "../core/starting-hand.js";
-import { mergeTallies } from "../sim/simulate.js";
 
 /**
  * Everything the reports print, computed here and nowhere else. The build
@@ -49,44 +48,4 @@ export function computeStartingHands(samples) {
       rng: createRng(SEED + offset),
     });
   });
-}
-
-/**
- * Work units for the pool: each simulation row, played greedy against greedy
- * and random against random, cut in chunks so threads stay balanced. Seeds
- * follow the task index, so the merged result does not depend on scheduling.
- */
-export function simulationTasks({ games, baselineGames }, chunk = 100) {
-  const tasks = [];
-  const add = (row, players, total) => {
-    for (let played = 0; played < total; played += chunk) {
-      tasks.push({ ...row, players, games: Math.min(chunk, total - played), seed: SEED + tasks.length * 7919 });
-    }
-  };
-  for (const row of SIMULATIONS) {
-    add(row, ["greedy", "greedy"], games);
-    add(row, ["random", "random"], baselineGames);
-  }
-  const sanity = SIMULATIONS.find((row) => row.deck === "classique");
-  add({ ...sanity, id: "sanity" }, ["greedy", "random"], baselineGames);
-  add({ ...sanity, id: "sanity" }, ["random", "greedy"], baselineGames);
-  return tasks;
-}
-
-const matchup = (players) => players.join("-");
-
-/** Merges task results back into one entry per row and matchup. */
-export function assembleSimulations(tasks, results) {
-  const groups = new Map();
-  tasks.forEach((task, i) => {
-    const key = `${task.id}|${matchup(task.players)}`;
-    if (!groups.has(key)) groups.set(key, { task, tallies: [] });
-    groups.get(key).tallies.push(results[i]);
-  });
-  const out = {};
-  for (const { task, tallies } of groups.values()) {
-    out[task.id] ??= { deck: task.deck, jokerRule: task.jokerRule, order: task.order };
-    out[task.id][matchup(task.players)] = mergeTallies(tallies);
-  }
-  return out;
 }

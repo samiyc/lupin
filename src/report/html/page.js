@@ -45,7 +45,7 @@ function numbers(f, data) {
     clSF: int(cl.straightFlush), cl3K: int(cl.threeOfAKind), clFL: int(cl.flush), clST: int(cl.straight),
     tarotCl3K: smartPct(tc.best.threeOfAKind / tc.total), tarotClFL: smartPct(tc.best.flush / tc.total),
     handFlush: pct(f.lenses.classique.hand.flush), handStraight: pct(f.lenses.classique.hand.straight),
-    greedyWin: pct(f.greedyWinRate),
+    greedyWin: pct(f.botWinRate),
     randomSF: pct(byId["classique-free-original"].randomBuilt.straightFlush),
     exactSF: pct(exactFree.best.straightFlush / exactFree.total),
     refFlushBuilt: pct(f.reference.built.flush), refStraightBuilt: pct(f.reference.built.straight),

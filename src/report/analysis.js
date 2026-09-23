@@ -1,5 +1,7 @@
 import { DECKS, JOKER_RULES } from "../config/decks.js";
 import { FORMATIONS, ORDERS, PATTERNS } from "../config/formations.js";
+import { PREVIOUS_BOT, PREVIOUS_BOT_ROWS, REFERENCE_BOT } from "../config/simulations.js";
+import { describeDuels, describePlay, describeSolo, playClaims } from "./analysis-play.js";
 
 /**
  * Turns `out/data.json` into the handful of findings the reports tell.
@@ -7,6 +9,8 @@ import { FORMATIONS, ORDERS, PATTERNS } from "../config/formations.js";
  * never compute a number of their own.
  */
 export const REFERENCE_SIM = "original-free-original";
+export const REFERENCE_MATCHUP = `${REFERENCE_BOT}-${REFERENCE_BOT}`;
+export const PREVIOUS_MATCHUP = `${PREVIOUS_BOT}-${PREVIOUS_BOT}`;
 
 /** Share of borders won by the 1st, 2nd … ranked formation, sum last. */
 export const rankProfile = (shares, order) => ORDERS[order].map((f) => shares[f]);
@@ -17,8 +21,22 @@ export function resemblance(profile, reference) {
   return 1 - distance;
 }
 
-function describeSim(id, sim, referenceProfile) {
-  const shares = sim["greedy-greedy"].shares;
+/** The same row as played by the previous reference bot, when it was. */
+function previousOf(sim, previousReference) {
+  const played = sim[PREVIOUS_MATCHUP];
+  if (!played || !previousReference) return null;
+  const profile = rankProfile(played.shares.winning, sim.order);
+  return {
+    profile,
+    resemblance: resemblance(profile, previousReference),
+    sumShare: played.shares.decidedBy.sum,
+    built: played.shares.built,
+    jokerEdge: played.shares.jokerEdge,
+  };
+}
+
+function describeSim(id, sim, { referenceProfile, previousReference }) {
+  const shares = sim[REFERENCE_MATCHUP].shares;
   const baseline = sim["random-random"]?.shares;
   const profile = rankProfile(shares.winning, sim.order);
   return {
@@ -26,7 +44,7 @@ function describeSim(id, sim, referenceProfile) {
     deck: sim.deck,
     jokerRule: sim.jokerRule,
     order: sim.order,
-    games: sim["greedy-greedy"].games,
+    games: sim[REFERENCE_MATCHUP].games,
     profile,
     builtProfile: rankProfile(shares.built, sim.order),
     built: shares.built,
@@ -40,6 +58,7 @@ function describeSim(id, sim, referenceProfile) {
     adjacentShare: shares.endings.adjacent,
     averageTurns: shares.averageTurns,
     randomBuilt: baseline?.built ?? null,
+    previous: previousOf(sim, previousReference),
   };
 }
 
@@ -72,10 +91,13 @@ export function agreesWith(values, order) {
 
 export function analyze(data) {
   const reference = data.simulations[REFERENCE_SIM];
-  const referenceProfile = rankProfile(reference["greedy-greedy"].shares.winning, "original");
+  const profiles = {
+    referenceProfile: rankProfile(reference[REFERENCE_MATCHUP].shares.winning, "original"),
+    previousReference: reference[PREVIOUS_MATCHUP] ? rankProfile(reference[PREVIOUS_MATCHUP].shares.winning, "original") : null,
+  };
   const sims = Object.entries(data.simulations)
     .filter(([id]) => id !== "sanity")
-    .map(([id, sim]) => describeSim(id, sim, referenceProfile));
+    .map(([id, sim]) => describeSim(id, sim, profiles));
   const byId = Object.fromEntries(sims.map((sim) => [sim.id, sim]));
   const picks = { classique: mostFaithful(sims, "classique"), tarot: mostFaithful(sims, "tarot") };
   const sanity = data.simulations.sanity;
@@ -85,7 +107,10 @@ export function analyze(data) {
     picks,
     reference: byId[REFERENCE_SIM],
     rapide: byId["rapide-free-original"],
-    greedyWinRate: (sanity["greedy-random"].shares.firstPlayerWins + sanity["random-greedy"].shares.secondPlayerWins) / 2,
+    botWinRate: (sanity[`${REFERENCE_BOT}-random`].shares.firstPlayerWins + sanity[`random-${REFERENCE_BOT}`].shares.secondPlayerWins) / 2,
+    duels: describeDuels(data.duels),
+    solo: describeSolo(data.solo),
+    irl: describePlay(data.irl),
     lenses: {
       original: lenses(data, "original", "free", byId[REFERENCE_SIM]),
       rapide: lenses(data, "rapide", "free", byId["rapide-free-original"]),
@@ -113,6 +138,11 @@ export function assertNarrative(findings) {
   check(agreesWith(l.classiqueColorless.triples.counts, "original"), "le joker sans couleur ne rétablit plus l'ordre");
   check(agreesWith(l.original.triples.counts, "original"), "l'original n'est plus cohérent");
   check(findings.byId["classique-onePerPlayer-original"].drawShare > 0.05, "1 joker par joueur ne bloque plus");
+  const byId = findings.byId;
+  check(byId["classique-colorless-original"].jokerEdge < byId["classique-free-original"].jokerEdge, "le joker sans couleur ne réduit plus l'avantage du joker");
+  check(findings.reference.built.flush > findings.reference.built.straight, "dans l'original, la Suite se construit plus que la Couleur");
+  check(PREVIOUS_BOT_ROWS.every((id) => byId[id].firstPlayerWins < 0.5), "le premier joueur gagne plus souvent dans le tableau");
+  for (const [condition, message] of playClaims(findings)) check(condition, message);
   return findings;
 }
 

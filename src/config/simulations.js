@@ -26,9 +26,71 @@ export const SIMULATIONS = Object.freeze([
   row("tarot", "colorless", "original"),
 ]);
 
+/**
+ * The bot every simulated statistic uses. It plays Sami's habits and beat
+ * the previous reference, `greedy`, head to head; the rows below are also
+ * played by the previous bot so the report can show both results.
+ */
+export const REFERENCE_BOT = "strategist";
+export const PREVIOUS_BOT = "greedy";
+export const PREVIOUS_BOT_ROWS = Object.freeze([
+  "original-free-original",
+  "rapide-free-original",
+  "classique-free-original",
+  "classique-onePerBorder-original",
+  "classique-colorless-original",
+  "tarot-free-original",
+  "tarot-colorless-original",
+]);
+
+/** Head to head on the recommended rules: each challenger against the previous bot. */
+export const DUEL_ROW = row("classique", "colorless", "original");
+export const DUEL_CHALLENGERS = Object.freeze([
+  "strategist",
+  "strategist:joker",
+  "strategist:opening",
+  "strategist:suited",
+]);
+
+/**
+ * Sami's solo test protocol (see `src/sim/solo.js`), replayed by bots: the
+ * plain greedy one and the one with his habits, on the recommended deck and
+ * on the quick 6 × 7 version he knows.
+ */
+const ALL_HABITS = Object.freeze(["joker", "opening", "suited"]);
+const solo = (deck, jokerRule, bot) => ({
+  id: `solo-${deck}-${bot}`,
+  deck,
+  jokerRule,
+  order: "original",
+  bot,
+  habits: bot === "greedy" ? null : ALL_HABITS,
+});
+
+export const SOLO_RUNS = Object.freeze([
+  solo("classique", "colorless", "greedy"),
+  solo("classique", "colorless", "strategist"),
+  solo("rapide", "free", "greedy"),
+  solo("rapide", "free", "strategist"),
+]);
+
 export const SAMPLE_SIZES = Object.freeze({
-  full: { games: 2000, baselineGames: 1000, startingHands: 200000 },
-  quick: { games: 150, baselineGames: 100, startingHands: 20000 },
+  full: {
+    games: 2000,
+    baselineGames: 1000,
+    duelGames: 2000,
+    soloGames: 2000,
+    soloOptimumGames: 100,
+    startingHands: 200000,
+  },
+  quick: {
+    games: 150,
+    baselineGames: 100,
+    duelGames: 100,
+    soloGames: 100,
+    soloOptimumGames: 4,
+    startingHands: 20000,
+  },
 });
 
 export const SEED = 20260922;

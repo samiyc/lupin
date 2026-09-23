@@ -78,7 +78,8 @@ export function simulate(spec, options) {
   return { ...tally, shares: shares(tally) };
 }
 
-function addInto(target, source) {
+/** Adds every number of `source` into `target`, recursively; tallies are plain sums. */
+export function addInto(target, source) {
   for (const [key, value] of Object.entries(source)) {
     if (typeof value === "number") target[key] += value;
     else addInto(target[key], value);
