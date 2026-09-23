@@ -27,11 +27,24 @@ function playerSlug(player) {
   return slug(player.kind === "human" ? player.name ?? "humain" : player.bot);
 }
 
-/** "2026-09-24_10-15-30_humain-vs-stratege.json", from the log's own data. */
+/**
+ * "4-3": borders won by each seat, first player first. The winner's number
+ * becomes "B" when the game was won by three adjacent borders ("B-2"). Empty
+ * for a log without a result.
+ */
+export function scoreTag(result) {
+  if (!result?.borders) return "";
+  const won = [0, 1].map((seat) => result.borders.filter((border) => border.winner === seat).length);
+  return won.map((count, seat) => (result.winType === "adjacent" && result.winner === seat ? "B" : String(count))).join("-");
+}
+
+/** "2026-09-24_10-15-30_humain-vs-stratege_4-3.json", from the log's own data. */
 export function replayFileName(log) {
   const stamp = log.startedAt.slice(0, 19).replace("T", "_").replaceAll(":", "-");
   const seats = [...log.players].sort((a, b) => a.seat - b.seat).map(playerSlug).join("-vs-");
-  return `${stamp}_${seats}.json`;
+  const score = scoreTag(log.result);
+  const suffix = score ? "_" + score : "";
+  return `${stamp}_${seats}${suffix}.json`;
 }
 
 /** What the replay list shows, without sending whole logs. */

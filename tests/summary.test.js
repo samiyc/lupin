@@ -97,3 +97,23 @@ describe("advice on a joker the strategist refuses", () => {
     assert.equal(summary.advice.refused[0].played.card, "JK");
   });
 });
+
+describe("thinking times", () => {
+  const { log } = stubbornJokerGame(3);
+  const timed = structuredClone(log);
+  timed.turns.forEach((entry, i) => {
+    if (entry.player === 0) entry.thinkMs = 1000 * (i % 7);
+  });
+
+  it("do not bother the replay", () => {
+    assert.equal(replayStates(timed).length, timed.turns.length + 1);
+  });
+
+  it("list the human's slowest moves first", () => {
+    const { thinking } = summarizeReplays([timed]);
+    assert.equal(thinking.moves, 21);
+    assert.equal(thinking.slowest[0].thinkMs, 6000);
+    assert.ok(thinking.slowest.every((move, i, all) => i === 0 || all[i - 1].thinkMs >= move.thinkMs));
+    assert.equal(summarizeReplays([log]).thinking.moves, 0);
+  });
+});

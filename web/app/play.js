@@ -1,6 +1,7 @@
 import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js";
 import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
+import { createClock, formatDuration, watchFocus } from "./clock.js";
 import { $, el, freshSeed, recall, remember, toast, wait } from "./dom.js";
 import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
@@ -14,11 +15,14 @@ import { tableView } from "./view.js";
  * Borders are settled only once every card is down, then revealed one by one
  * in the order they filled. The game's log is saved when it ends — never
  * after "Recommencer". One game at a time, so its state lives here.
+ *
+ * Each human move is timed (`thinkMs` in the log) by a clock that stops
+ * while the page is hidden or out of focus, or the "Jouer" tab is not shown.
  */
 const BOT_DELAY = 700;
 const REVEAL_DELAY = 650;
 
-const play = { game: null, generation: 0, visible: true };
+const play = { game: null, generation: 0, visible: true, syncFocus: () => {} };
 
 const alive = (id) => play.game !== null && id === play.generation;
 const active = () => play.game !== null && !play.game.state.over;
@@ -37,9 +41,21 @@ export function legalFor(index) {
   return new Set(legalMoves(play.game.state).filter((move) => move.card === card).map((move) => move.border));
 }
 
+function clockText({ clock, state }) {
+  const total = `Partie ${formatDuration(clock.active())}`;
+  const move = humanTurn() ? "Ce coup " + formatDuration(clock.sinceMark()) + " · " : "";
+  const paused = !state.over && !clock.isRunning() ? " · en pause" : "";
+  return `${move}${total}${paused}`;
+}
+
+function renderClock() {
+  if (play.game !== null && play.visible) $("clock").textContent = clockText(play.game);
+}
+
 export function render() {
   const { game } = play;
   if (game === null || !play.visible) return;
+  renderClock();
   const view = tableView(SPEC, snapshot(game.state), { bottom: game.human, handOrder: game.order, shown: game.shown, lastMove: game.lastMove });
   renderTable(view, {
     status: status(),
@@ -74,7 +90,9 @@ async function save(id) {
 
 async function finish(id) {
   const { game } = play;
+  game.clock.pause();
   finishLog(game.log, game.state);
+  game.log.result.activeMs = Math.round(game.clock.active());
   game.revealing = true;
   for (game.shown = 0; game.shown < game.state.resolved.length; game.shown += 1) {
     render();
@@ -95,7 +113,9 @@ async function botTurns(id) {
     const player = play.game.state.current;
     afterMove(player, playBot(play.game.log, play.game.state, play.game.bot));
   }
-  if (alive(id) && play.game.state.over) await finish(id);
+  if (!alive(id)) return;
+  if (humanTurn()) play.game.clock.mark();
+  else if (play.game.state.over) await finish(id);
 }
 
 /**
@@ -115,7 +135,10 @@ export function playCard(grip, border) {
   const index = locate(grip);
   if (index === null || !legalFor(index).has(border)) return;
   const { game } = play;
-  afterMove(game.human, playLogged(game.log, game.state, { card: game.order[index], border }));
+  const thinkMs = Math.round(game.clock.mark());
+  const entry = playLogged(game.log, game.state, { card: game.order[index], border });
+  entry.thinkMs = thinkMs;
+  afterMove(game.human, entry);
   botTurns(play.generation);
 }
 
@@ -139,7 +162,9 @@ export function start({ first, opponent, name }) {
     lastMove: null,
     revealing: false,
     saved: null,
+    clock: createClock(() => performance.now()),
   };
+  play.syncFocus();
   render();
   botTurns(play.generation);
 }
@@ -149,7 +174,10 @@ export function abandon() {
   play.generation += 1;
   clearDrag();
   play.game = null;
-  if (play.visible) clearTable("Partie abandonnée, rien n'a été enregistré.");
+  if (play.visible) {
+    clearTable("Partie abandonnée, rien n'a été enregistré.");
+    $("clock").textContent = "";
+  }
 }
 
 export const hasGame = () => play.game !== null;
@@ -157,6 +185,9 @@ export const hasGame = () => play.game !== null;
 /** Only the visible tab may draw on the shared table. */
 export function setVisible(visible) {
   play.visible = visible;
+  $("clock").textContent = "";
+  if (!visible) play.game?.clock.pause();
+  else play.syncFocus();
 }
 
 /**
@@ -206,6 +237,8 @@ export function wirePlayControls() {
     start({ first: form.get("first"), opponent: form.get("opponent"), name });
   });
   $("btn-new").addEventListener("click", () => openDialog(dialog));
+  play.syncFocus = watchFocus(() => (active() && play.visible ? play.game.clock : null), renderClock);
+  setInterval(renderClock, 1000);
   wireReset(dialog);
   $("sort-suit").addEventListener("click", () => reorderWith((order) => sortBySuit(SPEC, order)));
   $("sort-value").addEventListener("click", () => reorderWith((order) => sortByValue(SPEC, order)));

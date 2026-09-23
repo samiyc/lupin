@@ -46,4 +46,13 @@ if (refused.length > 0) lines.push("", `Jokers posés hors d'une paire (le Strat
 for (const move of refused) {
   lines.push(`  ${move.startedAt.slice(0, 16)} tour ${move.turn} : main ${move.hand.join(" ")} — joué ${move.played.card}→${move.played.border}`);
 }
+const { thinking } = summary;
+const seconds = (ms) => `${(ms / 1000).toFixed(0)} s`;
+if (thinking.moves > 0) {
+  lines.push("", `Temps de réflexion : ${thinking.moves} coups chronométrés, ${seconds(thinking.totalMs / thinking.moves)} en moyenne. Les plus longs :`);
+}
+for (const move of thinking.slowest.slice(0, 10)) {
+  const facing = move.side.theirs.length > 0 ? `en face ${move.side.theirs.join(" ")}` : "rien en face";
+  lines.push(`  ${seconds(move.thinkMs).padStart(5)}  ${move.startedAt.slice(0, 16)} tour ${move.turn} : main ${move.hand.join(" ")} — joué ${move.played.card}→${move.played.border} (${facing})`);
+}
 process.stdout.write(`${lines.join("\n")}\n`);

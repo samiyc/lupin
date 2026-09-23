@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { REPLAY_DIRS, isReplayDir, isSafeName, replayFileName, replayHeader } from "../scripts/lib/replay-files.js";
+import { REPLAY_DIRS, isReplayDir, isSafeName, replayFileName, replayHeader, scoreTag } from "../scripts/lib/replay-files.js";
 
 const log = {
   startedAt: "2026-09-24T10:15:30.123Z",
@@ -15,6 +15,17 @@ const log = {
 describe("replay file names", () => {
   it("are dated and name both seats, first player first", () => {
     assert.equal(replayFileName(log), "2026-09-24_10-15-30_sami-vs-stratege.json");
+  });
+
+  it("end with the score once the game is over, B for three adjacent borders", () => {
+    const borders = (...winners) => winners.map((winner) => ({ winner }));
+    const finished = { ...log, result: { winner: 0, winType: "majority", borders: borders(0, 1, 0, 0, 1, 1, 0) } };
+    assert.equal(replayFileName(finished), "2026-09-24_10-15-30_sami-vs-stratege_4-3.json");
+    assert.equal(scoreTag({ winner: 0, winType: "majority", borders: borders(0, 0, 1, 0, 0, 1, 0) }), "5-2");
+    assert.equal(scoreTag({ winner: 0, winType: "adjacent", borders: borders(0, 0, 0, 1, 0, 1, 1) }), "B-3");
+    assert.equal(scoreTag({ winner: 1, winType: "adjacent", borders: borders(0, 1, 1, 1, 0, 1, 0) }), "3-B");
+    assert.equal(scoreTag(null), "");
+    assert.ok(isSafeName(replayFileName(finished)));
   });
 
   it("are safe to serve and nothing else is", () => {
