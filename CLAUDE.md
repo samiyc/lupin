@@ -5,7 +5,8 @@ Guidance for Claude Code working in this repository.
 ## Project
 
 Schotten Totten adapted to a classic 52-card deck or a French tarot deck, plus
-the statistics that justify the adaptation. Three outputs: an exact /
+the statistics that justify the adaptation, and a web game to play it
+against bots (`npm run play`). Outputs: an exact /
 simulated statistics report (`out/statistiques.{md,html}`), a printable rules
 sheet (`regles/regles.{html,pdf}`, read by the owner's grandmother, so large
 type and plain French), and name proposals (`docs/noms.md`). The game is
@@ -24,6 +25,9 @@ identifiers are English. Node 20.10 on this machine; no Python.
 ## Commands
 
 ```bash
+npm run play                  # web game, http://127.0.0.1:4742/ (add ?debug for window.__lopin)
+npm run duel -- a b [n]       # bot line-up duel, both seats, 95 % interval
+npm run replays               # summary of replays/ + data/replays/
 npm run build                 # all statistics → out/ + rules stats box (thread pool, ~3 min)
 npm run build:quick           # small samples, for iterating on report layout
 node scripts/build.js --reports-only   # re-render reports from out/data.json
@@ -37,13 +41,16 @@ npm run check                 # lint + test; run before committing
 
 ```
 src/config/   decks.js (decks + joker rules), formations.js (orders),
-              simulations.js (what gets played, sample sizes, seed)
+              simulations.js (what gets played, sample sizes, seed),
+              bots.js (the public line-up + versions), rules.js (the sheet's rules)
 src/core/     cards, formations (classify, brute-force reference),
               evaluator (O(1) lookup tables), stand-ins (what a joker may
               become), combinatorics (3-card hands), starting-hand, random,
-              partition (exact best split of ≤ 21 cards into trios)
-src/sim/      game (rules engine), bots (random, greedy, strategist + one-habit
-              variants), strategist (Sami's three habits), potential (the bots'
+              partition (exact best split of ≤ 21 cards into trios),
+              notation ("7♥" ↔ id, shared by logs, real games and the page)
+src/sim/      game (rules engine, endMode early|final), bots (random, greedy,
+              strategist + one-habit variants, experimental), strategist (Sami's
+              three habits), experimental (the sandbox), potential (the bots'
               estimate), simulate (two-player tallies), solo (Sami's solo test
               protocol, same tally for bots and real games)
 src/irl/      cards (reads data/irl/essais.json), analysis (tallies the real
@@ -51,8 +58,15 @@ src/irl/      cards (reads data/irl/essais.json), analysis (tallies the real
 src/report/   data (exact + starting hands), tasks (pool tasks: rows, duels,
               solo), analysis + analysis-play (findings + narrative checks),
               ascii/ + markdown.js, html/ + page/, rules-stats (the rules box)
+src/replay/   log (write a game log, replay it frame by frame), summary
+web/          index.html, style.css, app/: main (tabs), play (Jouer), viewer +
+              panels (Observer, Replays), view + hand (PURE, tested), table
+              (DOM), drag (input), runner (games as the page plays them),
+              explain, replays-api, dom
 data/irl/     essais.json: the 10 real games, transcribed from the photos
-scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js
+data/replays/ kept replays (versioned); replays/ holds the rest (ignored)
+scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
+              play-server.js (+ lib/replay-files.js), duel.js, replays.js
 ```
 
 ## Rules that everything follows
@@ -83,6 +97,25 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js
   `PREVIOUS_BOT_ROWS` so the report shows old and new. Changing the reference
   bot moves every resemblance figure: rerun the build and let
   `assertNarrative` say which sentence no longer holds (it caught two).
+- **The engine runs in Node and in the browser.** `src/core`, `src/sim`,
+  `src/config` and `src/replay` must not import `node:*` (ESLint enforces it);
+  the page imports them directly as ES modules, no build step.
+- **The page stays thin.** What decides — the view model (`web/app/view.js`),
+  the hand order (`hand.js`) — is pure and tested under Node; the DOM layer
+  only draws and listens. Input goes through event delegation (the table is
+  redrawn on every change), and only the visible tab may draw on the table.
+- **The web game settles borders at the end** (`endMode: "final"`): all
+  cards are played, borders resolve in the order they filled, first victory
+  wins. `tests/final-mode.test.js` holds it to the simulations' early mode.
+- **Bots have names and versions** (`src/config/bots.js`). Any change of
+  behaviour bumps the version; replays record `id@version`. New ideas go into
+  `src/sim/experimental.js` first and are measured with `npm run duel`.
+  Every bot exposes `scoreMoves` (logged as its best candidates).
+- **Replays are `lopin-replay/1` JSON** with the full deck order;
+  `replayStates` rebuilds a game and rejects illegal moves or wrong draws.
+  The server writes `replays/` (ignored) and copies kept ones to
+  `data/replays/`; it serves only `web/`, `src/`, the rules' fonts and PDF, on
+  127.0.0.1. Names go through `scripts/lib/replay-files.js`.
 - **The rules sheet has a generated block.** Between `<!-- stats:début -->` and
   `<!-- stats:fin -->` in `regles/regles.html`, `scripts/build.js` writes the
   statistics table (`src/report/rules-stats.js`). Edit the rest of the sheet by

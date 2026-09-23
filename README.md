@@ -24,20 +24,37 @@ tableau. Les trois habitudes de jeu relevées pendant ces parties rendent le rob
 plus fort : c'est donc ce robot « stratège » qui joue toutes les parties simulées.
 Le détail est dans le rapport.
 
+## Jouer contre les robots
+
+```bash
+npm run play      # puis http://127.0.0.1:4742/
+```
+
+Dans le navigateur, contre le robot Basique, Stratège ou Expérimental, avec les
+règles de la fiche. Deux autres onglets : regarder deux robots s'affronter, et
+relire les parties enregistrées. Chaque partie contre un robot est enregistrée
+automatiquement. Mode d'emploi : `docs/jouer.md`.
+
 ## Les fichiers
 
 | Où | Quoi |
 |---|---|
 | `regles/regles.pdf` | **la fiche de règles à imprimer** (A4 recto-verso) |
+| `web/` | le jeu dans le navigateur (`npm run play`) |
 | `out/statistiques.html` | le rapport complet, interactif (s'ouvre d'un double-clic) |
 | `out/statistiques.md` | le même rapport en ASCII art |
 | `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
+| `data/replays/` | les replays gardés pour l'analyse (les autres vont dans `replays/`, hors git) |
+| `docs/jouer.md` | jouer, observer, replays, versions des robots |
 | `docs/noms.md` | propositions de noms |
 | `docs/methode.md` | méthode, hypothèses et limites des calculs |
 
 ## Commandes
 
 ```bash
+npm run play      # le jeu dans le navigateur, http://127.0.0.1:4742/
+npm run duel -- experimental stratege 2000   # deux robots face à face
+npm run replays   # bilan des parties enregistrées
 npm run build     # recalcule toutes les statistiques → out/ (environ 3 min)
 npm run pdf       # regles/regles.html → regles/regles.pdf (Edge ou Chrome)
 npm run check     # lint + tests, avant chaque commit
