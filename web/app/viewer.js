@@ -58,6 +58,18 @@ function prev() {
   render();
 }
 
+/** Back to the deal. */
+function first() {
+  [viewer.index, viewer.shown] = [0, 0];
+  render();
+}
+
+/** The final table, every border settled: the result at a glance. */
+function end() {
+  [viewer.index, viewer.shown] = [last(), settledCount()];
+  render();
+}
+
 function play() {
   pause();
   if (atEnd()) [viewer.index, viewer.shown] = [0, 0];
@@ -77,15 +89,26 @@ export function load(log, { autoplay = false } = {}) {
 export const loaded = () => viewer.log !== null;
 export const currentLog = () => viewer.log;
 
+const STEPS = { "btn-first": first, "btn-prev": prev, "btn-next": next, "btn-last": end };
+const KEYS = { Home: first, End: end };
+
+/** Home and End jump to either end while a game is loaded in the player. */
+function onKey(event) {
+  const step = KEYS[event.key];
+  if (!step || $("player").hidden || viewer.log === null || event.target.closest?.("input, select, dialog")) return;
+  event.preventDefault();
+  pause();
+  step();
+}
+
 export function wirePlayer() {
-  $("btn-next").addEventListener("click", () => {
-    pause();
-    next();
-  });
-  $("btn-prev").addEventListener("click", () => {
-    pause();
-    prev();
-  });
+  for (const [id, step] of Object.entries(STEPS)) {
+    $(id).addEventListener("click", () => {
+      pause();
+      step();
+    });
+  }
+  document.addEventListener("keydown", onKey);
   $("btn-toggle").addEventListener("click", () => {
     if (!viewer.timer) return play();
     pause();

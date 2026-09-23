@@ -114,8 +114,14 @@ export function wireSuitBar() {
   bar.addEventListener("keyup", () => highlight(null));
 }
 
+/** The pile, greyed out once empty: the last cards are the ones in hand. */
+function renderPile(pile) {
+  $("deck").classList.toggle("empty", pile === 0);
+  $("pile-text").replaceChildren(...(pile === 0 ? ["Pioche vide"] : [el("strong", {}, String(pile)), pile === 1 ? " carte" : " cartes"]));
+}
+
 function renderCounters(view, status) {
-  $("pile-count").textContent = String(view.pile);
+  renderPile(view.pile);
   $("turn").textContent = view.over ? "Partie terminée" : `Tour ${view.turn}`;
   $("status").textContent = status;
 }

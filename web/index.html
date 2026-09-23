@@ -22,7 +22,7 @@
 <main class="layout">
   <aside class="sidebar">
     <div class="counters">
-      <div class="deck" title="Pioche"><span class="card back" aria-hidden="true"></span><span><strong id="pile-count">30</strong> cartes</span></div>
+      <div class="deck" id="deck" title="Pioche"><span class="card back" aria-hidden="true"></span><span id="pile-text"><strong>30</strong> cartes</span></div>
       <p class="turn" id="turn">Tour 1</p>
       <p class="status" id="status" aria-live="polite"></p>
     </div>
@@ -48,9 +48,11 @@
 
     <section class="panel player" id="player" hidden>
       <div class="player-buttons">
-        <button type="button" id="btn-prev" aria-label="Coup précédent">⏮</button>
+        <button type="button" id="btn-first" aria-label="Début de la partie" title="Début (touche Début)">⏮</button>
+        <button type="button" id="btn-prev" aria-label="Coup précédent" title="Coup précédent">⏪</button>
         <button type="button" id="btn-toggle" aria-label="Lecture">▶</button>
-        <button type="button" id="btn-next" aria-label="Coup suivant">⏭</button>
+        <button type="button" id="btn-next" aria-label="Coup suivant" title="Coup suivant">⏩</button>
+        <button type="button" id="btn-last" aria-label="Fin de la partie" title="Fin, bornes réglées (touche Fin)">⏭</button>
       </div>
       <label>Vitesse
         <select id="speed">
