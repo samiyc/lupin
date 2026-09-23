@@ -34,3 +34,8 @@ yarn-error.log*
 # Heavy (about 4 MB each), and some carry the phone's GPS position in their
 # metadata. They stay on disk for analysis, out of the history.
 real life test/
+
+# ---- Replays -------------------------------------------------------------
+# Every game against a bot is logged here automatically; the ones worth
+# keeping for analysis are copied to data/replays/, which is versioned.
+replays/

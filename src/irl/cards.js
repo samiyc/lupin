@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { DECKS, JOKER_RULES } from "../config/decks.js";
-import { JOKER, cardOf } from "../core/cards.js";
+import { parseCard } from "../core/notation.js";
 
 /**
  * The real games transcribed from Sami's photos (`data/irl/essais.json`).
@@ -8,15 +8,7 @@ import { JOKER, cardOf } from "../core/cards.js";
  */
 const SOURCE = new URL("../../data/irl/essais.json", import.meta.url);
 
-export function parseCard(spec, text) {
-  if (text === "JK") return JOKER;
-  const suit = spec.suits.indexOf(text.slice(-1));
-  const value = Number(text.slice(0, -1));
-  if (suit < 0 || !Number.isInteger(value) || value < 1 || value > spec.values) {
-    throw new Error(`Carte illisible : « ${text} »`);
-  }
-  return cardOf(spec, suit, value);
-}
+export { parseCard };
 
 export const parseColumn = (spec, column) =>
   column.trim().split(/\s+/).map((text) => parseCard(spec, text));

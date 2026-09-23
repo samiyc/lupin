@@ -1,16 +1,21 @@
 import { isJoker, valueOf } from "../core/cards.js";
+import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
-import { HABITS, strategistMoves } from "./strategist.js";
+import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
 
 /**
- * Players for the simulation.
+ * Players for the simulation and the web game.
  *
  * `random` plays any legal card anywhere: it shows what the deck gives when
  * nobody chooses. `greedy` plays the card that most raises its chance of
  * winning one border, measured against what the opponent's side is likely
- * to become. `strategist` is `greedy` plus Sami's habits (`strategist.js`).
- * None looks ahead; the point is to play like someone who builds formations,
- * so the report can count which formations actually get built.
+ * to become. `strategist` is `greedy` plus Sami's habits (`strategist.js`);
+ * `experimental` is the strategist with its own settings (`experimental.js`).
+ * None looks ahead.
+ *
+ * Every bot is `{ name, scoreMoves(state, moves), choose(state, moves) }`.
+ * `scoreMoves` returns each candidate with its gain: the replay logs and the
+ * observer's "why this move" panel read it.
  */
 const TEMPERATURE = 0.35;
 const JOKER_COST = 0.08;
@@ -20,20 +25,24 @@ const VALUE_TO_CHANCE = 1 / (4 * TEMPERATURE);
 
 export const randomBot = (rng) => ({
   name: "random",
+  scoreMoves: (_state, moves) => moves.map((move) => ({ move, gain: 0 })),
   choose: (_state, moves) => moves[rng.int(moves.length)],
 });
 
 export const greedyBot = (rng) => ({
   name: "greedy",
+  scoreMoves: scoreGreedy,
   choose: (state, moves) => pickBest(scoreGreedy(state, moves), rng),
 });
 
 /** `greedy` plus some of Sami's habits; all three by default. */
-export const strategistBot = (rng, habits = HABITS) => {
+export const strategistBot = (rng, { habits = HABITS, strategy = STRATEGY, name } = {}) => {
   const set = new Set(habits);
+  const scoreMoves = (state, moves) => scoreStrategist(state, moves, { habits: set, strategy });
   return {
-    name: habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`,
-    choose: (state, moves) => pickBest(scoreStrategist(state, moves, set), rng),
+    name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
+    scoreMoves,
+    choose: (state, moves) => pickBest(scoreMoves(state, moves), rng),
   };
 };
 
@@ -75,7 +84,7 @@ function scoreGreedy(state, moves) {
   return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
 }
 
-function scoreStrategist(state, moves, habits) {
+function scoreStrategist(state, moves, { habits, strategy }) {
   const { mine, threat } = views(state);
   const player = state.current;
   const context = {
@@ -84,6 +93,7 @@ function scoreStrategist(state, moves, habits) {
     unseen: mine.unseen,
     mySides: state.borders.map((border) => border.sides[player]),
     habits,
+    strategy,
   };
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => moveGain(state, move, mine, threat[move.border]),
@@ -111,12 +121,14 @@ export function cardCost(spec, card) {
 
 export { VALUE_TO_CHANCE };
 
+/** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */
 export const BOTS = Object.freeze({
   random: randomBot,
   greedy: greedyBot,
   strategist: (rng) => strategistBot(rng),
+  experimental: (rng) => strategistBot(rng, { ...EXPERIMENT, name: "experimental" }),
   // One habit at a time, to weigh each against the plain greedy bot.
-  "strategist:joker": (rng) => strategistBot(rng, ["joker"]),
-  "strategist:opening": (rng) => strategistBot(rng, ["opening"]),
-  "strategist:suited": (rng) => strategistBot(rng, ["suited"]),
+  "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
+  "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
+  "strategist:suited": (rng) => strategistBot(rng, { habits: ["suited"] }),
 });

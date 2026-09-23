@@ -1,0 +1,11 @@
+/**
+ * The rules on the printed sheet, as ids: the 52-card deck without faces
+ * (4 × 1-10) plus two colourless jokers, the original order, 7 borders. The
+ * web game plays them with every border settled at the end of the game.
+ */
+export const OFFICIAL_RULES = Object.freeze({
+  deck: "classique",
+  jokerRule: "colorless",
+  order: "original",
+  endMode: "final",
+});

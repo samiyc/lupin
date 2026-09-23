@@ -15,7 +15,10 @@
     "check": "npm run lint && npm test",
     "build": "node scripts/build.js",
     "build:quick": "node scripts/build.js --quick",
-    "pdf": "node scripts/pdf.js"
+    "pdf": "node scripts/pdf.js",
+    "play": "node scripts/play-server.js",
+    "duel": "node scripts/duel.js",
+    "replays": "node scripts/replays.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

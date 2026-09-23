@@ -25,11 +25,11 @@ export function jokerCompletesTrips(spec, side) {
   return side.length === 2 && real.length === 2 && valueOf(spec, real[0]) === valueOf(spec, real[1]);
 }
 
-function openingBonus(spec, card, mySides) {
+function openingBonus({ spec, mySides, strategy }, card) {
   const value = valueOf(spec, card);
-  const middle = value > 1 && value < spec.values ? STRATEGY.openMiddle : 0;
+  const middle = value > 1 && value < spec.values ? strategy.openMiddle : 0;
   const opened = new Set(mySides.filter((side) => side.length > 0 && !isJoker(side[0])).map((side) => colorOf(spec, side[0])));
-  return middle + (opened.has(colorOf(spec, card)) ? 0 : STRATEGY.openNewSuit);
+  return middle + (opened.has(colorOf(spec, card)) ? 0 : strategy.openNewSuit);
 }
 
 function suitedConnector(spec, a, b) {
@@ -42,23 +42,26 @@ function suitedOutLeft(a, b, unseen, evaluator) {
   return unseen.entries.some(([card]) => !isJoker(card) && evaluator.formation([a, b, card]) === "straightFlush");
 }
 
-function suitedBonus({ spec, side, card, unseen, evaluator }) {
+function suitedBonus({ spec, side, card, unseen, evaluator, strategy }) {
   const [first] = side;
   if (side.length !== 1 || isJoker(first) || !suitedConnector(spec, first, card)) return 0;
-  return suitedOutLeft(first, card, unseen, evaluator) ? STRATEGY.suitedStart : 0;
+  return suitedOutLeft(first, card, unseen, evaluator) ? strategy.suitedStart : 0;
 }
 
 /**
  * `{ allowed, bonus }` for placing `card` on `side`. `context` carries
- * `{ spec, evaluator, mySides, unseen, habits }`, `habits` a subset of `HABITS`.
+ * `{ spec, evaluator, mySides, unseen, habits, strategy }`: `habits` a subset
+ * of `HABITS`, `strategy` the bonuses (`STRATEGY` unless an experiment says
+ * otherwise).
  */
-export function strategistAdjust(side, card, context) {
+export function strategistAdjust(side, card, input) {
+  const context = { strategy: STRATEGY, ...input };
   const { habits } = context;
   if (isJoker(card)) {
     return { allowed: !habits.has("joker") || jokerCompletesTrips(context.spec, side), bonus: 0 };
   }
   let bonus = 0;
-  if (habits.has("opening") && side.length === 0) bonus += openingBonus(context.spec, card, context.mySides);
+  if (habits.has("opening") && side.length === 0) bonus += openingBonus(context, card);
   if (habits.has("suited")) bonus += suitedBonus({ ...context, side, card });
   return { allowed: true, bonus };
 }

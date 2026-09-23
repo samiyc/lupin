@@ -4,13 +4,23 @@ import { getEvaluator } from "../core/evaluator.js";
 /**
  * The rules of a match, and nothing about how to play it.
  *
- * Simplification, stated in the report: a border is resolved once both sides
- * hold three cards. The real game also lets a player claim a border earlier by
- * proving the opponent cannot beat it; modelling proofs would not change which
- * formations get built, only when a border is settled.
+ * Two ways to settle borders, same winner:
+ *
+ * - `endMode: "early"` (the simulations): a border is resolved as soon as both
+ *   sides hold three cards, and the game stops at the first victory.
+ * - `endMode: "final"` (the web game): all 42 cards are played, then the
+ *   borders are resolved in the order they filled up, and the first player to
+ *   reach a victory in that order wins. Bots never look at who owns a border,
+ *   and a resolved border is full anyway, so both modes pick the same winner;
+ *   a test holds them to it.
+ *
+ * The real game also lets a player claim a border early by proving the
+ * opponent cannot beat it; that changes when a border is settled, not which
+ * formations get built, and it is not modelled.
  */
-export function createGame(spec, { order, jokerRule, rng }) {
-  const pile = rng.shuffle(buildDeck(spec));
+export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null }) {
+  const shuffled = deck ? [...deck] : rng.shuffle(buildDeck(spec));
+  const pile = [...shuffled];
   const borders = Array.from({ length: spec.borders }, () => ({
     sides: [[], []],
     completedAt: [Infinity, Infinity],
@@ -20,6 +30,8 @@ export function createGame(spec, { order, jokerRule, rng }) {
     spec,
     order,
     jokerRule,
+    endMode,
+    deck: shuffled,
     evaluator: getEvaluator(spec, order, jokerRule),
     pile,
     hands: [pile.splice(0, spec.handSize), pile.splice(0, spec.handSize)],
@@ -60,6 +72,8 @@ export function legalMoves(state) {
   return moves;
 }
 
+const allPlayed = (state) => state.pile.length === 0 && state.hands.every((hand) => hand.length === 0);
+
 /** Plays `move`, or passes when it is null (no legal move left). */
 export function applyMove(state, move) {
   const player = state.current;
@@ -72,6 +86,7 @@ export function applyMove(state, move) {
   }
   state.turn += 1;
   state.current = 1 - player;
+  if (!state.over && state.endMode === "final" && allPlayed(state)) resolveFinal(state);
 }
 
 function placeCard(state, player, { card, border }) {
@@ -82,8 +97,16 @@ function placeCard(state, player, { card, border }) {
   if (isJoker(card)) state.jokersPlayed[player] += 1;
   if (target.sides[player].length === 3) target.completedAt[player] = state.turn;
   if (state.pile.length > 0) hand.push(state.pile.pop());
-  if (target.sides.every((side) => side.length === 3)) resolveBorder(state, border);
+  if (state.endMode === "early" && isFull(target)) {
+    const winner = resolveBorder(state, border);
+    checkVictory(state, winner);
+  }
 }
+
+const isFull = (border) => border.sides.every((side) => side.length === 3);
+
+/** The turn a border's second side filled up: the order borders are settled in. */
+const filledAt = (border) => Math.max(...border.completedAt);
 
 function resolveBorder(state, index) {
   const border = state.borders[index];
@@ -91,8 +114,34 @@ function resolveBorder(state, index) {
   const formations = border.sides.map((side) => state.evaluator.formation(side));
   const winner = pickWinner(scores, border.completedAt);
   border.owner = winner;
-  state.resolved.push({ border: index, winner, formations, decidedBy: decidedBy(state, border, formations) });
-  checkVictory(state, winner);
+  state.resolved.push({
+    border: index,
+    winner,
+    formations,
+    sums: border.sides.map((side) => state.evaluator.sum(side)),
+    decidedBy: decidedBy(state, border, formations),
+    filledAt: filledAt(border),
+  });
+  return winner;
+}
+
+/**
+ * `endMode: "final"`: every full border is resolved in the order it filled
+ * up; the first victory reached along the way is the game's.
+ */
+export function resolveFinal(state) {
+  const full = state.borders
+    .map((border, index) => ({ border, index }))
+    .filter(({ border }) => isFull(border))
+    .sort((a, b) => filledAt(a.border) - filledAt(b.border));
+  state.finalResolved = true;
+  for (const { index } of full) {
+    const winner = resolveBorder(state, index);
+    if (state.winner === null) checkVictory(state, winner);
+  }
+  if (state.winner === null) decideByCount(state);
+  state.over = true;
+  return state;
 }
 
 function pickWinner(scores, completedAt) {
@@ -130,8 +179,13 @@ function finish(state, winner, winType) {
   return state;
 }
 
-/** Nobody can play: more borders wins, equal is a draw. */
+/** Nobody can play: settle what is left, then more borders wins, equal is a draw. */
 function endOnExhaustion(state) {
+  if (state.endMode === "final" && !state.finalResolved) return resolveFinal(state);
+  return decideByCount(state);
+}
+
+function decideByCount(state) {
   const count = (player) => state.borders.filter((b) => b.owner === player).length;
   const [zero, one] = [count(0), count(1)];
   if (zero === one) return finish(state, null, "draw");
@@ -139,8 +193,8 @@ function endOnExhaustion(state) {
 }
 
 /** Runs a match to its end; `bots[p].choose(state, moves)` picks a move. */
-export function playGame(spec, { order, jokerRule, rng, bots }) {
-  const state = createGame(spec, { order, jokerRule, rng });
+export function playGame(spec, { order, jokerRule, rng, bots, endMode = "early" }) {
+  const state = createGame(spec, { order, jokerRule, rng, endMode });
   const guard = spec.borders * 6 * 3;
   while (!state.over && state.turn < guard) {
     const moves = legalMoves(state);
