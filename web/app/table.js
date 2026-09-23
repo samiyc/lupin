@@ -30,7 +30,7 @@ function renderBottomHand(hand, { interactive, selected }) {
       draggable: interactive ? "true" : null,
       tabindex: interactive ? "0" : null,
       role: interactive ? "button" : null,
-      dataset: { index },
+      dataset: { index, card: card.id },
     }),
   );
   $("hand-bottom").replaceChildren(...cards);

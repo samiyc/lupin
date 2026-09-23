@@ -1,7 +1,7 @@
 import { $ } from "./dom.js";
 import { setupInput } from "./drag.js";
 import { wireObserve, wireReplays } from "./panels.js";
-import { hasGame, playInput, render as renderPlay, setVisible, wirePlayControls } from "./play.js";
+import { hasGame, openDialog, playInput, render as renderPlay, setVisible, wirePlayControls } from "./play.js";
 import { clearTable } from "./table.js";
 import { loaded, pause, render as renderViewer, wirePlayer } from "./viewer.js";
 
@@ -47,7 +47,7 @@ function show(mode) {
 
 document.querySelectorAll(".tabs [role=tab]").forEach((tab) => tab.addEventListener("click", () => show(tab.dataset.mode)));
 show("play");
-$("dialog-new").showModal();
+openDialog($("dialog-new"));
 
 // `?debug` exposes the play controls, to drive a game from the console or a
 // browser-automation tool. Off by default.

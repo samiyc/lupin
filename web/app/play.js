@@ -2,6 +2,7 @@ import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js"
 import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
 import { $, el, freshSeed, recall, remember, toast, wait } from "./dom.js";
+import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
 import { saveReplay } from "./replays-api.js";
 import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playBot, playerName } from "./runner.js";
@@ -97,8 +98,22 @@ async function botTurns(id) {
   if (alive(id) && play.game.state.over) await finish(id);
 }
 
-export function playCard(index, border) {
-  if (!legalFor(index).has(border)) return;
+/**
+ * Where the card of `grip` sits now: its own index if the card is still
+ * there, else wherever it went, else null. A grip without a card (a click on
+ * the current selection) is taken at its word.
+ */
+function locate({ index, card }) {
+  const { order } = play.game;
+  if (card === undefined || order[index] === card) return index;
+  const found = order.indexOf(card);
+  return found === -1 ? null : found;
+}
+
+export function playCard(grip, border) {
+  if (!active()) return;
+  const index = locate(grip);
+  if (index === null || !legalFor(index).has(border)) return;
   const { game } = play;
   afterMove(game.human, playLogged(game.log, game.state, { card: game.order[index], border }));
   botTurns(play.generation);
@@ -106,6 +121,7 @@ export function playCard(index, border) {
 
 export function start({ first, opponent, name }) {
   play.generation += 1;
+  clearDrag();
   const seed = freshSeed();
   const state = newGame(seed);
   const human = first === "me" ? 0 : 1;
@@ -131,6 +147,7 @@ export function start({ first, opponent, name }) {
 /** Drops the game in progress; nothing is saved. */
 export function abandon() {
   play.generation += 1;
+  clearDrag();
   play.game = null;
   if (play.visible) clearTable("Partie abandonnée, rien n'a été enregistré.");
 }
@@ -142,19 +159,33 @@ export function setVisible(visible) {
   play.visible = visible;
 }
 
+/**
+ * Escape closes a dialog without touching `returnValue`: without this reset,
+ * dismissing "Nouvelle partie" would replay the previous answer and start a
+ * game nobody asked for.
+ */
+export function openDialog(dialog) {
+  dialog.returnValue = "";
+  dialog.showModal();
+}
+
 function wireReset(newDialog) {
   const confirm = $("dialog-reset");
-  $("btn-reset").addEventListener("click", () => (active() ? confirm.showModal() : newDialog.showModal()));
+  $("btn-reset").addEventListener("click", () => openDialog(active() ? confirm : newDialog));
   confirm.addEventListener("close", () => {
     if (confirm.returnValue !== "reset") return;
     abandon();
-    newDialog.showModal();
+    openDialog(newDialog);
   });
 }
 
+/** Rearranges the hand; a selected card stays selected wherever it lands. */
 function reorderWith(transform) {
   if (!active()) return;
-  play.game.order = transform(play.game.order);
+  const { game } = play;
+  const picked = game.selected === null ? null : game.order[game.selected];
+  game.order = transform(game.order);
+  if (picked !== null) game.selected = game.order.indexOf(picked);
   render();
 }
 
@@ -174,7 +205,7 @@ export function wirePlayControls() {
     remember("lopin.name", name);
     start({ first: form.get("first"), opponent: form.get("opponent"), name });
   });
-  $("btn-new").addEventListener("click", () => dialog.showModal());
+  $("btn-new").addEventListener("click", () => openDialog(dialog));
   wireReset(dialog);
   $("sort-suit").addEventListener("click", () => reorderWith((order) => sortBySuit(SPEC, order)));
   $("sort-value").addEventListener("click", () => reorderWith((order) => sortByValue(SPEC, order)));
@@ -193,6 +224,9 @@ export const playInput = {
     render();
   },
   play: playCard,
-  reorder: (from, to) => reorderWith((order) => moveCard(order, from, to)),
+  reorder(grip, to) {
+    const from = active() ? locate(grip) : null;
+    if (from !== null) reorderWith((order) => moveCard(order, from, to));
+  },
   legalFor,
 };

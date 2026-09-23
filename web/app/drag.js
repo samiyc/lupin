@@ -7,15 +7,30 @@ import { $ } from "./dom.js";
  * - drag it onto another card of the hand to put it there;
  * - or click a card, then a border — or press 1 to 7 — and Escape to let go.
  *
- * `controller`: `{ enabled(), selected(), select(index|null), play(index,
- * border), reorder(from, to), legalFor(index) → Set of borders }`.
+ * `controller`: `{ enabled(), selected(), select(index|null), play(grip,
+ * border), reorder(grip, to), legalFor(index) → Set of borders }`. A `grip`
+ * is `{ index, card }`: the card id travels with its index, so the page can
+ * check the card is still where it was picked up.
+ *
+ * The card being dragged lives here, never in `dataTransfer`: a drop whose
+ * drag did not start on the hand (selected text, a file, another tab) carries
+ * data too, and `Number("")` is 0 — the first card of the hand.
  */
+let dragged = null;
+
+const handCard = (target) => (target instanceof Element ? target.closest(".hand.bottom .card") : null);
+
 const handIndex = (target) => {
-  const card = target.closest(".hand.bottom .card");
+  const card = handCard(target);
   return card ? Number(card.dataset.index) : null;
 };
 
-const bottomSide = (target) => target.closest(".border")?.querySelector(".side.bottom") ?? null;
+const gripOf = (target) => {
+  const card = handCard(target);
+  return card ? { index: Number(card.dataset.index), card: Number(card.dataset.card) } : null;
+};
+
+const bottomSide = (target) => (target instanceof Element ? target.closest(".border")?.querySelector(".side.bottom") ?? null : null);
 
 function markDropZones(legal) {
   document.querySelectorAll(".side.bottom").forEach((side) => {
@@ -23,22 +38,27 @@ function markDropZones(legal) {
   });
 }
 
-function clearDrag() {
+/** Forgets any drag in progress: on dragend, and whenever a game starts or ends. */
+export function clearDrag() {
+  dragged = null;
   document.querySelectorAll(".dragging, .drop-target").forEach((node) => node.classList.remove("dragging", "drop-target"));
   markDropZones(new Set());
 }
 
 function onDragStart(event, controller) {
-  const index = handIndex(event.target);
-  if (index === null || !controller.enabled()) return event.preventDefault();
-  event.dataTransfer.setData("text/plain", String(index));
+  const grip = gripOf(event.target);
+  if (grip === null || !controller.enabled()) return event.preventDefault();
+  dragged = grip;
+  // Firefox starts no drag without data; the page never reads it back.
+  event.dataTransfer.setData("text/plain", "");
   event.dataTransfer.effectAllowed = "move";
-  event.target.closest(".card").classList.add("dragging");
-  markDropZones(controller.legalFor(index));
+  handCard(event.target).classList.add("dragging");
+  markDropZones(controller.legalFor(grip.index));
   return undefined;
 }
 
 function onDragOver(event) {
+  if (dragged === null) return;
   const side = bottomSide(event.target);
   const overCard = handIndex(event.target) !== null;
   if ((side && side.classList.contains("drop-ok")) || overCard) {
@@ -49,15 +69,13 @@ function onDragOver(event) {
 
 function onDrop(event, controller) {
   event.preventDefault();
-  const from = Number(event.dataTransfer.getData("text/plain"));
+  const grip = dragged;
   const side = bottomSide(event.target);
   const to = handIndex(event.target);
   clearDrag();
-  if (side?.classList.contains("drop-ok") || (side && controller.legalFor(from).has(Number(side.dataset.border)))) {
-    controller.play(from, Number(side.dataset.border));
-  } else if (to !== null) {
-    controller.reorder(from, to);
-  }
+  if (grip === null) return;
+  if (side) controller.play(grip, Number(side.dataset.border));
+  else if (to !== null) controller.reorder(grip, to);
 }
 
 function onClick(event, controller) {
@@ -66,9 +84,7 @@ function onClick(event, controller) {
   if (index !== null) return controller.select(controller.selected() === index ? null : index);
   const border = event.target.closest(".border");
   const selected = controller.selected();
-  if (border && selected !== null && controller.legalFor(selected).has(Number(border.dataset.border))) {
-    controller.play(selected, Number(border.dataset.border));
-  }
+  if (border && selected !== null) controller.play({ index: selected }, Number(border.dataset.border));
   return undefined;
 }
 
@@ -85,7 +101,7 @@ function playOnDigit(event, controller) {
   const selected = controller.selected();
   const border = Number(event.key) - 1;
   if (selected === null || !Number.isInteger(border) || border < 0 || border > 6) return;
-  if (controller.legalFor(selected).has(border)) controller.play(selected, border);
+  controller.play({ index: selected }, border);
 }
 
 function onKey(event, controller) {
