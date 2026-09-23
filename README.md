@@ -1,6 +1,7 @@
 # Bornage — Schotten Totten en cartes classiques
 
-*(nom provisoire, voir `docs/noms.md`)*
+*Projet Lopin n°742 : 7 bornes, 42 cartes. Le choix du nom est expliqué dans
+`docs/noms.md`.*
 
 Adapter **Schotten Totten** (Reiner Knizia) à un jeu que tout le monde a dans un
 tiroir, un jeu de 52 cartes ou un jeu de tarot :

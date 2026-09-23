@@ -8,9 +8,15 @@ Schotten Totten adapted to a classic 52-card deck or a French tarot deck, plus
 the statistics that justify the adaptation. Three outputs: an exact /
 simulated statistics report (`out/statistiques.{md,html}`), a printable rules
 sheet (`regles/regles.{html,pdf}`, read by the owner's grandmother, so large
-type and plain French), and name proposals (`docs/noms.md`). "Bornage" is the
-provisional name; it appears only in the rules sheet's `<title>`, masthead and
-footers, and in the README.
+type and plain French), and name proposals (`docs/noms.md`). The game is
+called **Bornage** (rules sheet `<title>`, masthead, footers, README); the
+project folder is **`Lopin n°742`** (7 borders, 42 cards).
+
+The folder name holds a space and a non-ASCII `°`: keep going through
+`pathToFileURL` / `fileURLToPath` / `new URL(..., import.meta.url)` for every
+path, as the scripts do, and never build a `file://` URL by string
+concatenation. `real life test/` (the owner's photos of real games) is
+git-ignored on purpose: heavy, and some carry GPS metadata.
 
 Prose docs are in French, matching how the owner works. Code, comments and
 identifiers are English. Node 20.10 on this machine; no Python.

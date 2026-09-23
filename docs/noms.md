@@ -43,9 +43,11 @@ d'une recherche en ligne (septembre 2026).
 | **Querelle de clocher** | Rivalité de villages voisins, l'esprit du jeu | Trop long |
 | **Tapis vert** | La table de jeu, et un clin d'œil à « Green Line » | Fait penser au casino |
 
-## Et le dossier ?
+## Le choix
 
-Le dossier s'appelle toujours `7x42 Green Line Card Game` : le renommer est à toi
-de le faire une fois le nom choisi. La fiche de règles (`regles/regles.html`) porte
-**Bornage** en titre pour l'instant ; le nom n'y apparaît qu'à deux endroits, le
-`<title>` et le grand titre.
+- **Le jeu s'appelle Bornage.** C'est le nom de la fiche de règles
+  (`regles/regles.html`) : dans le `<title>`, le grand titre et les pieds de page.
+- **Le projet s'appelle Lopin n°742** : un lopin de terre, 7 bornes, 42 cartes.
+  C'est le nom du dossier. Le `°` ne gêne aucun outil du projet. Seule précaution :
+  ne pas le confondre avec son sosie `º` (indicateur ordinal), qui est un autre
+  caractère. Le clavier AZERTY tape toujours le bon.
