@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../../src/core/cards.js";
+import { suitOrder } from "./view.js";
 
 /**
  * The order the player keeps their hand in. The engine's hand is a bag of
@@ -38,9 +39,10 @@ export function moveCard(order, from, to) {
 
 const jokerLast = (spec, key) => (card) => (isJoker(card) ? Infinity : key(card));
 
-/** ♠ ♥ ♦ ♣, low to high inside a suit, jokers at the end. */
+/** ♠ ♥ ♣ ♦ (black and red alternating), low to high inside a suit, jokers at the end. */
 export function sortBySuit(spec, order) {
-  const key = jokerLast(spec, (card) => colorOf(spec, card) * 100 + valueOf(spec, card));
+  const rank = suitOrder(spec);
+  const key = jokerLast(spec, (card) => rank.indexOf(colorOf(spec, card)) * 100 + valueOf(spec, card));
   return [...order].sort((a, b) => key(a) - key(b));
 }
 

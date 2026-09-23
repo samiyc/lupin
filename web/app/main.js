@@ -2,7 +2,7 @@ import { $ } from "./dom.js";
 import { setupInput } from "./drag.js";
 import { wireObserve, wireReplays } from "./panels.js";
 import { hasGame, openDialog, playInput, render as renderPlay, setVisible, wirePlayControls } from "./play.js";
-import { clearTable } from "./table.js";
+import { clearTable, wireSuitBar } from "./table.js";
 import { loaded, pause, render as renderViewer, wirePlayer } from "./viewer.js";
 
 /**
@@ -16,6 +16,7 @@ wirePlayer();
 wirePlayControls();
 wireObserve();
 setupInput(playInput);
+wireSuitBar();
 
 const PANELS = {
   play: ["panel-play"],

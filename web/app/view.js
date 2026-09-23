@@ -10,9 +10,37 @@ import { formatCard } from "../../src/core/notation.js";
  *   first bot when observing); the stones read green or red from its side;
  * - `reveal` shows both hands (observer, replays) or hides the top one;
  * - `shown` is how many resolved borders to show: the end of a game reveals
- *   them one by one, in the order they filled.
+ *   them one by one, in the order they filled;
+ * - `suits` counts, suit by suit, the cards the bottom player can see.
  */
 const RED_SUITS = new Set(["♥", "♦"]);
+
+/**
+ * Suit indices with black and red alternating — ♠ ♥ ♣ ♦ for the classic
+ * deck — so two suits of one ink never sit side by side.
+ */
+export function suitOrder(spec) {
+  const colors = spec.suits.map((_, color) => color);
+  const blacks = colors.filter((color) => !RED_SUITS.has(spec.suits[color]));
+  const reds = colors.filter((color) => RED_SUITS.has(spec.suits[color]));
+  return Array.from({ length: Math.max(blacks.length, reds.length) }, (_, i) => [blacks[i], reds[i]])
+    .flat()
+    .filter((color) => color !== undefined);
+}
+
+/**
+ * For each suit, in `suitOrder`: how many of its cards the bottom player can
+ * see — both sides of the board, their own hand, and the other hand when it
+ * is revealed — out of how many the deck holds.
+ */
+export function suitCounts(spec, snap, { bottom, reveal }) {
+  const hands = reveal ? snap.hands : [snap.hands[bottom]];
+  const seen = [...snap.borders.flatMap((border) => border.sides.flat()), ...hands.flat()].filter((card) => !isJoker(card));
+  return suitOrder(spec).map((color) => {
+    const suit = spec.suits[color];
+    return { suit, red: RED_SUITS.has(suit), seen: seen.filter((card) => colorOf(spec, card) === color).length, total: spec.values };
+  });
+}
 
 export function cardView(spec, card) {
   if (isJoker(card)) return { id: card, text: "JK", value: "JK", suit: "★", red: false, joker: true };
@@ -62,7 +90,7 @@ function bottomHand(spec, snap, seat, handOrder) {
   return { seat, cards: (handOrder ?? snap.hands[seat]).map((card) => cardView(spec, card)) };
 }
 
-/** `{ turn, over, pile, current, top, bottom, borders, result }` for `snap`. */
+/** `{ turn, over, pile, current, top, bottom, borders, suits, result }` for `snap`. */
 export function tableView(spec, snap, options) {
   const { bottom, reveal, handOrder, shown, lastMove } = { ...DEFAULTS, ...options };
   const visible = snap.resolved.slice(0, shown);
@@ -75,6 +103,7 @@ export function tableView(spec, snap, options) {
     top: topHand(spec, snap, 1 - bottom, reveal),
     bottom: bottomHand(spec, snap, bottom, handOrder),
     borders: snap.borders.map((_, index) => borderView(spec, snap, index, context)),
+    suits: suitCounts(spec, snap, { bottom, reveal }),
     result: resultView(snap, bottom, visible.length === snap.resolved.length),
   };
 }

@@ -89,20 +89,42 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
   display: grid; grid-template-rows: auto 1fr; padding: 4px 6px; color: #16181a; box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
   user-select: none; position: relative;
 }
+/* Value and suit share the top-left corner: it is what stays visible when
+   cards overlap on a border. */
+.card .corner { display: flex; align-items: baseline; gap: 1px; line-height: 1; }
 .card .v { font: 700 1.15rem/1 var(--display); }
+.card .cs { font-size: 1rem; }
 .card .s { justify-self: end; align-self: end; font-size: 1.35rem; line-height: 1; }
 .card.red { color: var(--red); }
-.card.joker { border-style: dashed; place-items: center; grid-template-rows: 1fr; font: 700 0.7rem var(--body); letter-spacing: 0.05em; }
+.card.joker { border-style: dashed; }
+.card .j { place-self: center; font: 700 0.7rem var(--body); letter-spacing: 0.05em; }
 .card.back { background: repeating-linear-gradient(45deg, var(--felt) 0 5px, var(--felt-2) 5px 10px); border-color: var(--felt); }
 .card.small { --card-w: 34px; --card-h: 48px; }
 .hand .card[draggable="true"] { cursor: grab; }
 .card.selected { outline: 3px solid var(--focus); transform: translateY(-6px); }
 .card.dragging { opacity: 0.4; }
+/* Hovering a stacked card lifts it above the ones covering it. */
+.side .card { transition: transform 120ms ease, box-shadow 120ms ease; }
+.side .card:hover { z-index: 3; transform: scale(1.12); box-shadow: 0 6px 18px rgb(0 0 0 / 0.3); }
+
+/* Holding a suit button: that suit stays lit, everything else fades to grey.
+   A filter, not opacity: cards overlap, and a see-through card would let the
+   one under it bleed through. */
+.table[data-highlight] .card:not(.back) { filter: grayscale(1) contrast(0.35) brightness(1.35); }
+.table[data-highlight="♠"] .card[data-suit="♠"],
+.table[data-highlight="♥"] .card[data-suit="♥"],
+.table[data-highlight="♦"] .card[data-suit="♦"],
+.table[data-highlight="♣"] .card[data-suit="♣"] { filter: none; box-shadow: 0 0 0 3px var(--focus); }
 
 /* ── Table ───────────────────────────────── */
 .table { position: relative; display: grid; gap: 10px; }
 .seat-label { margin: 0; font-weight: 700; color: var(--ink-2); }
 .hand { display: flex; gap: 8px; min-height: var(--card-h); flex-wrap: wrap; }
+.top-row { display: flex; align-items: flex-start; gap: 12px; }
+.suit-bar { margin-left: auto; display: flex; gap: 6px; }
+.suit-bar button { background: var(--panel); color: var(--ink); border-color: var(--line); font-weight: 700; padding: 6px 10px; touch-action: none; user-select: none; }
+.suit-bar button.red { color: var(--red); }
+.suit-bar button:active { border-color: var(--focus); }
 .hand.bottom { padding: 8px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
 .hand-tools { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .hand-tools .seat-label { margin-right: auto; }

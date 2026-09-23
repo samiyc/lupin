@@ -9,11 +9,22 @@ import { WIN_TYPES } from "./view.js";
  */
 const SUIT_NAMES = { "♠": "pique", "♥": "cœur", "♦": "carreau", "♣": "trèfle" };
 
+/**
+ * A card shows its value and suit in the top-left corner — the part that
+ * stays visible when cards overlap on a border — and its suit, large, in the
+ * other corner. Hovering a stacked card lifts it whole (CSS).
+ */
+function cardFace(card) {
+  if (card.joker) return [el("span", { class: "corner" }, el("span", { class: "v" }, "JK")), el("span", { class: "j" }, "JOKER")];
+  const corner = el("span", { class: "corner" }, el("span", { class: "v" }, card.value), el("span", { class: "cs" }, card.suit));
+  return [corner, el("span", { class: "s" }, card.suit)];
+}
+
 export function cardElement(card, attrs = {}) {
   const label = card.joker ? "joker" : `${card.value} de ${SUIT_NAMES[card.suit]}`;
   const classes = ["card", card.red ? "red" : "", card.joker ? "joker" : "", attrs.class ?? ""].filter(Boolean).join(" ");
-  const body = card.joker ? ["JOKER"] : [el("span", { class: "v" }, card.value), el("span", { class: "s" }, card.suit)];
-  return el("div", { ...attrs, class: classes, "aria-label": label, title: label }, ...body);
+  const dataset = { ...attrs.dataset, suit: card.joker ? "joker" : card.suit };
+  return el("div", { ...attrs, dataset, class: classes, "aria-label": label }, ...cardFace(card));
 }
 
 const backElement = () => el("div", { class: "card back", "aria-hidden": "true" });
@@ -62,6 +73,47 @@ function borderElement(border, { legalBorders, lastMove }) {
   );
 }
 
+const SUIT_HINT = "Maintenir pour surligner ces cartes. Compte : les cartes de cette couleur visibles (plateau et main).";
+
+/** The ♠ ♥ ♣ ♦ buttons: built once, so a redraw never interrupts a press. */
+function renderSuitBar(suits) {
+  const bar = $("suit-bar");
+  bar.hidden = false;
+  if (bar.children.length !== suits.length) {
+    bar.replaceChildren(...suits.map(({ suit, red }) => el("button", { type: "button", class: red ? "red" : "", dataset: { suit }, title: SUIT_HINT })));
+  }
+  suits.forEach(({ suit, seen, total }, i) => {
+    const button = bar.children[i];
+    button.textContent = `${suit} ${seen}/${total}`;
+    button.setAttribute("aria-label", `${SUIT_NAMES[suit] ?? suit} : ${seen} cartes vues sur ${total}`);
+  });
+}
+
+const highlight = (suit) => {
+  if (suit) $("table").dataset.highlight = suit;
+  else delete $("table").dataset.highlight;
+};
+
+/** Holding a suit button (pointer, Enter or Space) lights that suit's cards. */
+export function wireSuitBar() {
+  const bar = $("suit-bar");
+  const suitOf = (event) => (event.target instanceof Element ? event.target.closest("button")?.dataset.suit : undefined);
+  bar.addEventListener("pointerdown", (event) => {
+    const suit = suitOf(event);
+    if (!suit) return;
+    event.target.setPointerCapture?.(event.pointerId);
+    highlight(suit);
+  });
+  for (const type of ["pointerup", "pointercancel", "lostpointercapture", "focusout"]) bar.addEventListener(type, () => highlight(null));
+  bar.addEventListener("keydown", (event) => {
+    if ((event.key === "Enter" || event.key === " ") && suitOf(event)) {
+      event.preventDefault();
+      highlight(suitOf(event));
+    }
+  });
+  bar.addEventListener("keyup", () => highlight(null));
+}
+
 function renderCounters(view, status) {
   $("pile-count").textContent = String(view.pile);
   $("turn").textContent = view.over ? "Partie terminée" : `Tour ${view.turn}`;
@@ -84,6 +136,8 @@ function renderBanner(result, names) {
 export function clearTable(message) {
   for (const id of ["hand-top", "board", "hand-bottom", "label-top", "label-bottom"]) $(id).replaceChildren();
   $("sorters").hidden = true;
+  $("suit-bar").hidden = true;
+  highlight(null);
   $("banner").hidden = true;
   $("status").textContent = message;
 }
@@ -100,6 +154,7 @@ export function renderTable(view, options) {
   renderTopHand(view.top);
   renderBottomHand(view.bottom, settings);
   $("board").replaceChildren(...view.borders.map((border) => borderElement(border, settings)));
+  renderSuitBar(view.suits);
   $("sorters").hidden = !settings.showTools;
   renderBanner(view.result, settings.names);
 }

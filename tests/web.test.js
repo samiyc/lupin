@@ -8,7 +8,7 @@ import { rulesOf, snapshot } from "../src/replay/log.js";
 import { BOTS } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "../web/app/hand.js";
-import { cardView, tableView } from "../web/app/view.js";
+import { cardView, suitCounts, suitOrder, tableView } from "../web/app/view.js";
 
 const spec = DECKS.classique;
 const at = (value, suit) => cardOf(spec, suit, value);
@@ -29,8 +29,33 @@ describe("the hand order", () => {
   it("sorts by suit or by value, jokers last", () => {
     const hand = [JOKER, at(5, 2), at(3, 0), at(5, 0)];
     assert.deepEqual(sortBySuit(spec, hand), [at(3, 0), at(5, 0), at(5, 2), JOKER]);
+    // Suits alternate black and red: ♠ ♥ ♣ ♦.
+    const suits = [at(2, 2), at(9, 3), at(4, 1), at(8, 0)];
+    assert.deepEqual(sortBySuit(spec, suits), [at(8, 0), at(4, 1), at(9, 3), at(2, 2)]);
     assert.deepEqual(sortByValue(spec, hand), [at(3, 0), at(5, 0), at(5, 2), JOKER]);
     assert.deepEqual(sortByValue(spec, [at(5, 2), at(3, 3)]), [at(3, 3), at(5, 2)]);
+  });
+});
+
+describe("the suit bar", () => {
+  it("alternates black and red", () => {
+    assert.deepEqual(suitOrder(spec).map((color) => spec.suits[color]), ["♠", "♥", "♣", "♦"]);
+    assert.deepEqual(suitOrder(DECKS.tarot).map((color) => DECKS.tarot.suits[color]), ["♠", "♥", "♣", "♦", "★"]);
+  });
+
+  it("counts what the bottom player can see, and the other hand only when revealed", () => {
+    const snap = {
+      borders: [{ sides: [[at(1, 1), at(2, 1)], [at(9, 1), JOKER]] }, { sides: [[], [at(3, 0)]] }],
+      hands: [[at(5, 1), at(6, 3)], [at(7, 1), at(8, 2)]],
+    };
+    const count = (counts, suit) => counts.find((line) => line.suit === suit).seen;
+    const mine = suitCounts(spec, snap, { bottom: 0, reveal: false });
+    assert.equal(count(mine, "♥"), 4);
+    assert.equal(count(mine, "♦"), 0);
+    assert.equal(count(mine, "♠"), 1);
+    assert.equal(mine[0].total, 10);
+    assert.equal(count(suitCounts(spec, snap, { bottom: 0, reveal: true }), "♥"), 5);
+    assert.equal(count(suitCounts(spec, snap, { bottom: 1, reveal: false }), "♦"), 1);
   });
 });
 
