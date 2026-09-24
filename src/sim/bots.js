@@ -1,7 +1,9 @@
 import { isJoker, valueOf } from "../core/cards.js";
+import { createRng } from "../core/random.js";
 import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
-import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS } from "./ideas.js";
+import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
+import { lookaheadBot } from "./lookahead.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
 
 /**
@@ -24,6 +26,8 @@ const JOKER_COST = 0.08;
 const CARD_COST = 0.02;
 /** Slope of the win chance at even odds: value units → win-chance units. */
 const VALUE_TO_CHANCE = 1 / (4 * TEMPERATURE);
+/** The estimate's settings; a bot may carry its own (`params`), to be tuned. */
+export const BOT_PARAMS = Object.freeze({ temperature: TEMPERATURE, jokerCost: JOKER_COST, cardCost: CARD_COST });
 
 export const randomBot = (rng) => ({
   name: "random",
@@ -41,9 +45,11 @@ export const greedyBot = (rng) => ({
  * `greedy` plus some of Sami's habits (all three by default), and optionally
  * some of his later ideas (`ideas.js`, none by default).
  */
-export const strategistBot = (rng, { habits = HABITS, strategy = STRATEGY, ideas = [], weights = IDEA_WEIGHTS, name } = {}) => {
-  const set = new Set(habits);
-  const tuning = { habits: set, strategy, ideas: new Set(ideas), weights };
+const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], weights: IDEA_WEIGHTS, params: BOT_PARAMS });
+
+export const strategistBot = (rng, options = {}) => {
+  const { habits, strategy, ideas, weights, params, name } = { ...STRATEGIST_DEFAULTS, ...options };
+  const tuning = { habits: new Set(habits), strategy, ideas: new Set(ideas), weights, params };
   const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { ...tuning, keepAll });
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
@@ -90,8 +96,14 @@ function scoreGreedy(state, moves) {
   return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
 }
 
+/** The bot's own odds of winning each border, as things stand. */
+function borderChances(state, player, { mine, threat }) {
+  const withHand = { ...mine, hand: state.hands[player] };
+  return state.borders.map((border, index) => winChance(sidePotential(border.sides[player], withHand), threat[index], mine.params));
+}
+
 /** What the ideas read on top of the strategist's context; nothing when none is on. */
-function ideasContext(state, player, { ideas, weights }) {
+function ideasContext(state, player, { ideas, weights }, seen) {
   if (ideas.size === 0) return {};
   return {
     ideas,
@@ -99,11 +111,14 @@ function ideasContext(state, player, { ideas, weights }) {
     hand: state.hands[player],
     theirSides: state.borders.map((border) => border.sides[1 - player]),
     boardCards: state.borders.flatMap((border) => border.sides.flat()),
+    chances: ideas.has("runs") || ideas.has("dump") ? borderChances(state, player, seen) : null,
   };
 }
 
-function scoreStrategist(state, moves, { habits, strategy, keepAll, ...tuning }) {
-  const { mine, threat } = views(state);
+function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...tuning }) {
+  const { threat, ...rest } = views(state);
+  const mine = { ...rest.mine, params };
+  const seen = { mine, threat };
   const player = state.current;
   const context = {
     spec: state.spec,
@@ -112,41 +127,55 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, ...tuning })
     mySides: state.borders.map((border) => border.sides[player]),
     habits,
     strategy,
-    ...ideasContext(state, player, tuning),
+    ...ideasContext(state, player, tuning, seen),
   };
+  const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
-    gainOf: (move) => moveGain(state, move, mine, threat[move.border]),
-    scale: VALUE_TO_CHANCE,
+    gainOf: (move) => moveGain(state, move, mine, threat[move.border]) * (factors?.[move.border] ?? 1),
+    scale: 1 / (4 * params.temperature),
     keepAll,
   });
 }
 
-const winChance = (mine, theirs) => 1 / (1 + Math.exp((theirs - mine) / TEMPERATURE));
+const winChance = (mine, theirs, params = BOT_PARAMS) => 1 / (1 + Math.exp((theirs - mine) / params.temperature));
 
 function moveGain(state, { card, border }, context, threat) {
   const hand = [...state.hands[state.current]];
   hand.splice(hand.indexOf(card), 1);
   const withHand = { ...context, hand };
   const side = state.borders[border].sides[state.current];
-  const before = winChance(sidePotential(side, withHand), threat);
-  const after = winChance(sidePotential([...side, card], withHand), threat);
-  return after - before - cardCost(state.spec, card);
+  const params = context.params ?? BOT_PARAMS;
+  const before = winChance(sidePotential(side, withHand), threat, params);
+  const after = winChance(sidePotential([...side, card], withHand), threat, params);
+  return after - before - cardCost(state.spec, card, params);
 }
 
 /** Spending a joker or a high card has a price: keep them for later. */
-export function cardCost(spec, card) {
-  if (isJoker(card)) return JOKER_COST;
-  return (CARD_COST * valueOf(spec, card)) / spec.values;
+export function cardCost(spec, card, params = BOT_PARAMS) {
+  if (isJoker(card)) return params.jokerCost;
+  return (params.cardCost * valueOf(spec, card)) / spec.values;
 }
 
 export { VALUE_TO_CHANCE };
+
+/**
+ * A strategist that looks ahead (`lookahead.js`): `settings` configure both the
+ * strategist that shortlists the moves and the one that plays the rollouts.
+ */
+const lookaheadOf = (settings, name) => (rng) => {
+  const base = strategistBot(rng, settings);
+  const policy = strategistBot(createRng(rng.int(2 ** 31)), settings);
+  return lookaheadBot(rng, { base, policy, ...settings.lookahead, name });
+};
 
 /** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */
 export const BOTS = Object.freeze({
   random: randomBot,
   greedy: greedyBot,
   strategist: (rng) => strategistBot(rng, { ideas: STRATEGIST_IDEAS, name: "strategist" }),
-  experimental: (rng) => strategistBot(rng, { ...EXPERIMENT, name: "experimental" }),
+  // Strategist 1.1 plus look-ahead: the line-up's Stratège 2. Too slow for the report's simulations.
+  lookahead: lookaheadOf({ ideas: STRATEGIST_IDEAS }, "lookahead"),
+  experimental: lookaheadOf(EXPERIMENT, "experimental"),
   // One habit at a time, to weigh each against the plain greedy bot.
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),

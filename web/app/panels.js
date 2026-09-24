@@ -2,8 +2,9 @@ import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js"
 import { $, el, freshSeed, toast } from "./dom.js";
 import { keepReplay, listReplays, loadReplay, saveReplay } from "./replays-api.js";
 import { generateBotGame, playerName } from "./runner.js";
+import { clearTable } from "./table.js";
 import { replayLabel } from "./view.js";
-import { currentLog, load, loaded } from "./viewer.js";
+import { currentLog, load, loaded, pause } from "./viewer.js";
 
 /**
  * The "Observer" and "Replays" panels. Both feed the same viewer: an
@@ -23,9 +24,19 @@ function seedFromInput() {
 export function wireObserve() {
   fillBotSelect($("observe-bottom"), DEFAULT_OPPONENT);
   fillBotSelect($("observe-top"), "basique");
-  $("btn-observe").addEventListener("click", () => {
-    const log = generateBotGame($("observe-bottom").value, $("observe-top").value, seedFromInput());
-    load(log, { autoplay: true });
+  $("btn-observe").addEventListener("click", async () => {
+    const button = $("btn-observe");
+    button.disabled = true;
+    pause();
+    clearTable("Les robots jouent…");
+    try {
+      const log = await generateBotGame($("observe-bottom").value, $("observe-top").value, seedFromInput(), (turn) => {
+        $("status").textContent = `Les robots jouent… tour ${turn} / 42`;
+      });
+      load(log, { autoplay: true });
+    } finally {
+      button.disabled = false;
+    }
   });
   $("btn-observe-save").addEventListener("click", async () => {
     if (!loaded()) return toast("Lance d'abord une partie.");

@@ -26,20 +26,37 @@ export const botEntry = (seat, id) => ({ seat, kind: "bot", bot: id, version: BO
 
 export const humanEntry = (seat, name) => ({ seat, kind: "human", name });
 
-/** Plays the bot's turn in `state`, logged with its best candidates. */
-export function playBot(log, state, player) {
+/** What the bot would play in `state` (null: it must pass), with its scored candidates. */
+export function botChoice(state, player) {
   const moves = legalMoves(state);
-  if (moves.length === 0) return playLogged(log, state, null);
+  if (moves.length === 0) return { move: null, scored: null };
   const scored = player.bot.scoreMoves(state, moves);
-  return playLogged(log, state, pickBest(scored, player.rng), scored);
+  return { move: pickBest(scored, player.rng), scored };
 }
 
-/** A whole bot-against-bot game, returned as a finished log. */
-export function generateBotGame(bottomId, topId, seed) {
+/** Plays the bot's turn in `state`, logged with its best candidates. */
+export function playBot(log, state, player) {
+  const { move, scored } = botChoice(state, player);
+  return playLogged(log, state, move, scored);
+}
+
+const yieldToPage = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+/**
+ * A whole bot-against-bot game, resolved as a finished log. It hands the page
+ * back between moves: a Stratège looking ahead thinks for a fraction of a
+ * second per move, and a whole game in one go would freeze the page.
+ * `onTurn(turn)` reports progress.
+ */
+export async function generateBotGame(bottomId, topId, seed, onTurn = () => {}) {
   const state = newGame(seed);
   const players = [botPlayer(bottomId, seed + 1), botPlayer(topId, seed + 2)];
   const log = startLog(state, { rules: RULES, players: [botEntry(0, bottomId), botEntry(1, topId)], seed });
-  while (!state.over) playBot(log, state, players[state.current]);
+  while (!state.over) {
+    playBot(log, state, players[state.current]);
+    onTurn(state.turn);
+    await yieldToPage();
+  }
   return finishLog(log, state);
 }
 

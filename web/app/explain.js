@@ -5,7 +5,8 @@ import { playerName } from "./runner.js";
 /**
  * The "why this move" panel of the observer and the replays: the hand, the
  * move and the border it went to, and the bot's best candidates — or, for a
- * human move, what the strategist would have played.
+ * human move, what the strategist would have played — its fast 1.1 core,
+ * without look-ahead, so a replay opens at once.
  */
 const gain = (value) => value.toFixed(3).replace(".", ",");
 
@@ -25,14 +26,14 @@ function candidateList(title, candidates, move) {
 }
 
 function adviceVerdict({ adviceGap, refused }) {
-  if (refused) return "Le Stratège ne pose jamais un joker hors d'une paire : pas d'écart mesurable.";
+  if (refused) return "Le Stratège 1.1 ne pose jamais un joker hors d'une paire : pas d'écart mesurable.";
   if (adviceGap === null || adviceGap === undefined) return null;
-  return adviceGap < 1e-9 ? "Même choix que le Stratège." : `Écart avec le meilleur coup du Stratège : ${gain(adviceGap)}`;
+  return adviceGap < 1e-9 ? "Même choix que le Stratège 1.1." : `Écart avec le meilleur coup du Stratège 1.1 : ${gain(adviceGap)}`;
 }
 
 function adviceParts(frame, move) {
   const verdict = adviceVerdict(frame);
-  return [...(verdict ? [el("p", {}, verdict)] : []), ...candidateList("Le Stratège aurait joué :", frame.advice, move)];
+  return [...(verdict ? [el("p", {}, verdict)] : []), ...candidateList("Le Stratège 1.1 aurait joué :", frame.advice, move)];
 }
 
 export function renderExplain(log, frame) {

@@ -13,6 +13,16 @@ export function el(tag, attrs = {}, ...children) {
   return node;
 }
 
+/**
+ * Escape closes a dialog without touching `returnValue`: without this reset,
+ * dismissing "Nouvelle partie" would replay the previous answer and start a
+ * game nobody asked for.
+ */
+export function openDialog(dialog) {
+  dialog.returnValue = "";
+  dialog.showModal();
+}
+
 let toastTimer = null;
 
 /** A short message in the corner, gone after a few seconds. */

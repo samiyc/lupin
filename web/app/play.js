@@ -2,11 +2,11 @@ import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js"
 import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
 import { createClock, formatDuration, watchFocus } from "./clock.js";
-import { $, el, freshSeed, recall, remember, toast, wait } from "./dom.js";
+import { $, el, freshSeed, openDialog, recall, remember, toast, wait } from "./dom.js";
 import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
 import { saveReplay } from "./replays-api.js";
-import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playBot, playerName } from "./runner.js";
+import { RULES, SPEC, botChoice, botEntry, botPlayer, humanEntry, newGame, playerName } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
 
@@ -19,7 +19,9 @@ import { tableView } from "./view.js";
  * Each human move is timed (`thinkMs` in the log) by a clock that stops
  * while the page is hidden or out of focus, or the "Jouer" tab is not shown.
  */
+/** How long a bot turn lasts at least; its thinking time counts toward it. */
 const BOT_DELAY = 700;
+const PAINT = 30;
 const REVEAL_DELAY = 650;
 
 const play = { game: null, generation: 0, visible: true, syncFocus: () => {} };
@@ -105,14 +107,22 @@ async function finish(id) {
   await save(id);
 }
 
+/** One bot move: paint "réfléchit…", think, then let the rest of `BOT_DELAY` pass. */
+async function botTurn(id) {
+  render();
+  const started = performance.now();
+  await wait(PAINT);
+  if (!alive(id)) return;
+  const { game } = play;
+  const { move, scored } = botChoice(game.state, game.bot);
+  await wait(Math.max(0, BOT_DELAY - (performance.now() - started)));
+  if (!alive(id)) return;
+  const player = game.state.current;
+  afterMove(player, playLogged(game.log, game.state, move, scored));
+}
+
 async function botTurns(id) {
-  while (alive(id) && active() && !humanTurn()) {
-    render();
-    await wait(BOT_DELAY);
-    if (!alive(id)) return;
-    const player = play.game.state.current;
-    afterMove(player, playBot(play.game.log, play.game.state, play.game.bot));
-  }
+  while (alive(id) && active() && !humanTurn()) await botTurn(id);
   if (!alive(id)) return;
   if (humanTurn()) play.game.clock.mark();
   else if (play.game.state.over) await finish(id);
@@ -188,16 +198,6 @@ export function setVisible(visible) {
   $("clock").textContent = "";
   if (!visible) play.game?.clock.pause();
   else play.syncFocus();
-}
-
-/**
- * Escape closes a dialog without touching `returnValue`: without this reset,
- * dismissing "Nouvelle partie" would replay the previous answer and start a
- * game nobody asked for.
- */
-export function openDialog(dialog) {
-  dialog.returnValue = "";
-  dialog.showModal();
 }
 
 function wireReset(newDialog) {

@@ -50,8 +50,9 @@ src/core/     cards, formations (classify, brute-force reference),
               notation ("7♥" ↔ id, shared by logs, real games and the page)
 src/sim/      game (rules engine, endMode early|final), bots (random, greedy,
               strategist + one-habit and one-idea variants, experimental),
-              strategist (Sami's three habits), ideas (his four later ideas,
-              two of them in strategist 1.1), experimental (the sandbox),
+              strategist (Sami's three habits), ideas (his later ideas, two of
+              them in strategist 1.1), lookahead (rollouts: the line-up's
+              Stratège 2), experimental (the sandbox),
               potential (the bots'
               estimate), simulate (two-player tallies), solo (Sami's solo test
               protocol, same tally for bots and real games)
@@ -64,7 +65,8 @@ src/replay/   log (write a game log, replay it frame by frame), summary
 web/          index.html, style.css, app/: main (tabs), play (Jouer), viewer +
               panels (Observer, Replays), view + hand (PURE, tested), table
               (DOM), drag (input), runner (games as the page plays them),
-              clock (PURE timer, paused out of focus), explain, replays-api, dom
+              clock (PURE timer, paused out of focus), steps (PURE replay
+              player moves), explain, replays-api, dom
 data/irl/     essais.json: the 10 real games, transcribed from the photos
 data/replays/ kept replays (versioned); replays/ holds the rest (ignored)
 scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
@@ -97,7 +99,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   `src/config/simulations.js`), version 1.1: the three habits plus the
   `middle` and `spread` ideas (`STRATEGIST_IDEAS`). It beats `greedy` head to
   head (~65 %; the habits alone, `strategist:habits`, ~58 %), so every
-  simulated statistic uses it; `greedy` is still played on
+  simulated statistic uses it. **The line-up's Stratège is 2.0**, engine
+  `lookahead`: the 1.1 shortlists 4 moves, and each is played out 16 times on
+  random deals of the unseen cards (common deals across candidates, seeded
+  by the turn so a position always scores the same). It beats the 1.1 ~74 %
+  of the time but thinks ~0.4 s a move, far too slow for the build, so the
+  report keeps the 1.1 and the replay advisor too; `greedy` is still played on
   `PREVIOUS_BOT_ROWS` so the report shows old and new. Changing the reference
   bot moves every resemblance figure: rerun the build and let
   `assertNarrative` say which sentence no longer holds (it caught two).
@@ -123,6 +130,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   abandoned game, and `play.js` re-locates the card before playing it. Reading
   the index back from `dataTransfer` played the wrong card: any foreign drop
   carries text too, and `Number("")` is 0.
+- **Anything that runs a look-ahead bot in the page yields between moves**
+  (`generateBotGame` is async): a whole observer game computed in one go
+  froze the page for several seconds.
+- **The replay list label is `replayLabel()`** in `view.js` (pure, tested),
+  fed by `replayHeader()` (borders won, `durationMs`). The second line must
+  fit on one line at the sidebar's width; it was measured in the browser.
 - **Dialogs are opened through `openDialog()`**, which resets `returnValue`:
   Escape closes a dialog without touching it, so dismissing "Nouvelle partie"
   replayed the previous answer.

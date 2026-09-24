@@ -16,7 +16,7 @@ import { colorOf, isJoker, valueOf } from "../core/cards.js";
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread"]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump"]);
 
 /**
  * What the strategist plays since 1.1.0, measured against strategist 1.0.0
@@ -36,6 +36,10 @@ export const IDEA_WEIGHTS = Object.freeze({
   middleWeak: 0.15,
   edges: 0.1,
   spread: 0.6,
+  weight: 0.15,
+  runs: 0.5,
+  dump: 0.1,
+  dumpBelow: 0.2,
 });
 
 /** Sorted gaps between values, and whether the cards share a suit. */
@@ -102,15 +106,60 @@ function spreadPenalty({ spec, mySides, weights }, card) {
 
 /**
  * The ideas' bonus for placing `card` on `border`. `context` is the
- * strategist's, plus `{ ideas: Set, hand, theirSides, boardCards, weights }`.
+ * strategist's, plus `{ ideas: Set, hand, theirSides, boardCards, weights,
+ * chances }` — `chances` only when an idea reads it.
  */
 export function ideasBonus(context, border, card) {
   const { ideas } = context;
   const mine = context.mySides[border];
   let bonus = 0;
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
+  if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
   if (mine.length > 0) return bonus;
   if (ideas.has("middle") || ideas.has("edges")) bonus += placeBonus(context, border, card);
   if (ideas.has("spread")) bonus += spreadPenalty(context, card);
   return bonus;
+}
+
+/**
+ * Round two, after the games against strategist 1.1 (docs/analyse-replays.md):
+ *
+ * - `weight`: a border counts in 1, 2 or 3 runs of three adjacent borders
+ *   (1-2-3-3-3-2-1 on seven); its gain is scaled by `1 + weight × (runs − 2)`.
+ * - `runs`: the same, but from the game in hand — a border is worth more when
+ *   the other borders of its runs look winnable (`chances`, the bot's own win
+ *   estimate per border), less when they look lost.
+ * - `dump`: on a border that looks lost, low cards are the ones to spend.
+ */
+/** How many runs of three adjacent borders go through each border. */
+export function runsThrough(count) {
+  return Array.from({ length: count }, (_, border) => [border - 2, border - 1, border].filter((start) => start >= 0 && start + 2 < count).length);
+}
+
+/** For each border, the summed odds of winning the other two borders of each of its runs. */
+function runStakes(chances) {
+  const stakes = chances.map(() => 0);
+  for (let start = 0; start + 2 < chances.length; start += 1) {
+    const run = [start, start + 1, start + 2];
+    for (const border of run) stakes[border] += run.filter((other) => other !== border).reduce((odds, other) => odds * chances[other], 1);
+  }
+  return stakes;
+}
+
+/** A multiplier on each border's gain; all 1 unless `weight` or `runs` is on. */
+export function borderFactors({ ideas, weights }, count, chances) {
+  const factors = Array.from({ length: count }, () => 1);
+  if (ideas.has("weight")) runsThrough(count).forEach((runs, border) => (factors[border] *= 1 + weights.weight * (runs - 2)));
+  if (ideas.has("runs") && chances) {
+    const stakes = runStakes(chances);
+    const mean = stakes.reduce((a, b) => a + b, 0) / count;
+    stakes.forEach((stake, border) => (factors[border] *= 1 + weights.runs * (stake - mean)));
+  }
+  return factors.map((factor) => Math.max(0.1, factor));
+}
+
+/** Low cards go to a border that looks lost. */
+export function dumpBonus({ spec, weights, chances }, border, card) {
+  if (isJoker(card) || !chances || chances[border] >= weights.dumpBelow) return 0;
+  return weights.dump * (1 - valueOf(spec, card) / spec.values);
 }

@@ -32,7 +32,7 @@ describe("scoreMoves", () => {
   });
   const moves = legalMoves(state);
 
-  for (const id of ["random", "greedy", "strategist", "experimental"]) {
+  for (const id of ["random", "greedy", "strategist", "lookahead", "experimental"]) {
     it(`${id} scores candidates, and its choice is among the best scored`, () => {
       const bot = BOTS[id](createRng(1));
       const scored = bot.scoreMoves(state, moves);
@@ -45,8 +45,8 @@ describe("scoreMoves", () => {
     });
   }
 
-  it("the experimental bot starts identical to the strategist", () => {
-    const strategist = BOTS.strategist(createRng(1)).scoreMoves(state, moves);
+  it("the experimental bot starts identical to the line-up's Stratège", () => {
+    const strategist = BOTS[engineOf("stratege")](createRng(1)).scoreMoves(state, moves);
     const experimental = BOTS.experimental(createRng(1)).scoreMoves(state, moves);
     assert.deepEqual(experimental, strategist);
   });

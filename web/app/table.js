@@ -146,6 +146,9 @@ export function clearTable(message) {
   highlight(null);
   $("banner").hidden = true;
   $("status").textContent = message;
+  $("turn").textContent = "";
+  $("deck").classList.remove("empty");
+  $("pile-text").textContent = "";
 }
 
 /**

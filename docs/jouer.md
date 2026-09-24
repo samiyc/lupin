@@ -47,19 +47,30 @@ adversaire et ton prénom.
   enregistrer.
 
 **Observer.** Deux robots de la gamme s'affrontent, avec les deux mains visibles.
-- Boutons début ⏮, coup précédent ⏪, lecture et pause, coup suivant ⏩, fin ⏭
+- Boutons début ⏮, coup précédent <, lecture et pause, coup suivant >, fin ⏭
   (les bornes réglées), et vitesse. Les touches Début et Fin font la même chose.
+  Depuis la fin, < revient au coup d'avant. La pioche est vide pendant les 12
+  derniers coups : c'est normal, il n'y a plus rien à piocher.
+- Le Stratège réfléchit une fraction de seconde par coup : la partie se calcule
+  coup par coup avant de démarrer (« Les robots jouent… tour 12 / 42 »).
 - La **graine** identifie la partie : remets la même pour la revoir.
 - Le panneau de droite dit ce que le robot avait en main, où il a joué, ce qu'il y
   avait en face, et ses meilleures options avec leur gain estimé.
 - « Enregistrer cette partie » la range dans `replays/`.
 
 **Replays.** La liste des parties récentes (`replays/`) et gardées
-(`data/replays/`).
+(`data/replays/`), cinq visibles à la fois.
+- Chaque partie tient sur deux lignes :
+  - « (W) Sami -vs- Stratège 2.0.0 » : le (W) est du côté du gagnant, et le
+    bouton est vert si tu as gagné, rouge sinon ;
+  - en dessous, le score (ou « 3 bornes connectées »), la durée et la date.
 - Même lecteur que l'Observer.
-- Pour chacun de tes coups, le panneau dit ce que le **Stratège** aurait joué et
-  l'écart avec son meilleur coup. Un joker posé hors d'une paire est signalé à
-  part : le Stratège ne le jouerait jamais, il n'y a donc pas d'écart à mesurer.
+- Pour chacun de tes coups, le panneau donne le temps que tu as mis (« Joue 5♥
+  sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 1.1**
+  aurait joué, et l'écart avec son meilleur coup. C'est le Stratège sans son
+  anticipation, assez rapide pour juger chaque coup. Un joker posé hors d'une
+  paire est signalé à part : il ne le jouerait jamais, il n'y a donc pas
+  d'écart à mesurer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
 
 `?debug` dans l'adresse expose les commandes du jeu dans la console
@@ -70,15 +81,16 @@ adversaire et ton prénom.
 | Robot | Version | Ce qu'il fait |
 |---|---|---|
 | **Basique** | 1.0.0 | Joue la carte qui vaut le plus à l'instant T, face à ce que l'adversaire construit. |
-| **Stratège** | 1.1.0 | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Depuis 1.1, deux idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide, jamais la même valeur seule sur deux bornes. C'est la référence des statistiques. |
-| **Expérimental** | 0.2.0 | Banc d'essai. Au départ identique au Stratège ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`). |
+| **Stratège** | 2.0.0 | **Il anticipe.** Il prend ses 4 meilleurs coups selon le Stratège 1.1 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie, en distribuant au hasard les cartes qu'il ne voit pas, et il garde le coup qui gagne le plus souvent. Il bat le 1.1 dans environ 74 % des parties. |
+| Stratège 1.1 | (cœur du 2.0) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus deux idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide, jamais la même valeur seule sur deux bornes. C'est lui qui joue les statistiques du rapport : le 2.0 est trop lent pour un million de parties. |
+| **Expérimental** | 0.3.0 | Banc d'essai. Au départ identique au Stratège 2.0 ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`, `src/sim/lookahead.js`). |
 
 **Versions.** Tout changement de comportement change le numéro :
 - dernier chiffre : un réglage ;
 - chiffre du milieu : une nouvelle règle ;
 - premier chiffre : une autre façon de penser.
 
-Chaque replay enregistre le robot et sa version (`stratege@1.1.0`), donc les
+Chaque replay enregistre le robot et sa version (`stratege@2.0.0`), donc les
 générations restent comparables. L'historique des versions et les mesures
 qui les justifient sont dans `docs/analyse-replays.md`.
 
@@ -86,8 +98,12 @@ qui les justifient sont dans `docs/analyse-replays.md`.
 
 ```bash
 npm run duel -- experimental stratege 2000   # 2 000 parties de chaque côté
-npm run duel -- idea:counter stratege 2000   # une idée seule (src/sim/ideas.js)
+npm run duel -- idea:counter strategist 2000 # une idée seule, contre le Stratège 1.1
 ```
+
+Un duel avec le Stratège 2.0 prend plusieurs minutes : il réfléchit à chaque
+coup. Les idées se mesurent donc d'abord contre son cœur, le Stratège 1.1
+(`strategist`).
 
 Le duel affiche le taux de victoire avec sa fourchette à 95 %. Si l'Expérimental
 gagne nettement, l'idée passe dans le Stratège, avec une nouvelle version.
@@ -122,7 +138,7 @@ npm run replays   # bilan de toutes les parties enregistrées
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de
 chaque côté et l'usage des jokers. Il donne aussi le pourcentage de tes coups
-identiques au meilleur choix du Stratège, tes plus grands écarts avec lui, et tes
+identiques au meilleur choix du Stratège 1.1, tes plus grands écarts avec lui, et tes
 coups les plus longs à jouer.
 C'est la matière pour améliorer le robot, ou ton jeu.
 

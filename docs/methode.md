@@ -85,7 +85,9 @@ Trois robots :
 Avec ses trois habitudes, le stratège battait le gourmand dans environ 58 % des
 parties (4 000 parties, des deux côtés de la table), et chaque habitude seule le
 rend déjà meilleur. Les deux idées de la version 1.1 le portent à environ 65 %.
-**C'est lui qui joue toutes les parties du rapport.** Le gourmand rejoue les variantes du tableau
+**C'est lui qui joue toutes les parties du rapport.** Le Stratège 2.0 du
+navigateur part de lui et rejoue la fin de partie avant chaque coup. Il est plus
+fort, mais bien trop lent pour le million de parties du rapport. Le gourmand rejoue les variantes du tableau
 principal, pour comparer l'ancien résultat au nouveau.
 
 2 000 parties robot stratège contre robot stratège par variante, réparties sur les

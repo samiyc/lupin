@@ -23,7 +23,8 @@ Les parties jouées pour de vrai (10 photos, 140 groupes de 3 cartes) confirment
 tableau. Les trois habitudes de jeu relevées pendant ces parties rendent le robot
 plus fort : c'est donc ce robot « stratège » qui joue toutes les parties simulées.
 Le détail est dans le rapport. Les 15 premières parties contre lui dans le
-navigateur lui ont apporté deux idées de plus (version 1.1) : voir
+navigateur lui ont apporté deux idées de plus (version 1.1). Dans le navigateur, le
+Stratège 2.0 fait mieux : il rejoue la fin de partie avant chaque coup. Voir
 `docs/analyse-replays.md`.
 
 ## Jouer contre les robots
