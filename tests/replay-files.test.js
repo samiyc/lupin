@@ -51,6 +51,17 @@ describe("replay file names", () => {
       turns: 2,
       winner: 0,
       winType: "adjacent",
+      borders: null,
+      durationMs: null,
     });
+  });
+
+  it("count the borders and the time played, the clock first, the wall clock else", () => {
+    const borders = [0, 1, 0, 0, 1, 1, 0].map((winner) => ({ winner }));
+    const timed = { ...log, endedAt: "2026-09-24T10:35:30.123Z", result: { winner: 0, winType: "majority", borders, activeMs: 1260000 } };
+    assert.deepEqual(replayHeader("recent", "x.json", timed).borders, [4, 3]);
+    assert.equal(replayHeader("recent", "x.json", timed).durationMs, 1260000);
+    const older = { ...timed, result: { ...timed.result, activeMs: undefined } };
+    assert.equal(replayHeader("recent", "x.json", older).durationMs, 1200000);
   });
 });

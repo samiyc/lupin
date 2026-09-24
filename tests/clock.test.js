@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { createClock, formatDuration } from "../web/app/clock.js";
+import { createClock, formatDuration, formatMinutes, formatThinking } from "../web/app/clock.js";
 
 describe("the game clock", () => {
   const fakeTime = () => {
@@ -40,5 +40,13 @@ describe("the game clock", () => {
     assert.equal(formatDuration(7400), "0:07");
     assert.equal(formatDuration(765000), "12:45");
     assert.equal(formatDuration(-5), "0:00");
+  });
+
+  it("says how long a move and a game took", () => {
+    assert.equal(formatThinking(45200), "45 s");
+    assert.equal(formatThinking(64000), "1 min 04 s");
+    assert.equal(formatThinking(150000), "2 min 30 s");
+    assert.equal(formatMinutes(1260000), "21 min");
+    assert.equal(formatMinutes(20000), "1 min");
   });
 });

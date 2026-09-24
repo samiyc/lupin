@@ -44,6 +44,16 @@ export function formatDuration(ms) {
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 
+/** "45 s", "2 min 30 s": how long a move took. */
+export function formatThinking(ms) {
+  const seconds = Math.round(Math.max(0, ms) / 1000);
+  if (seconds < 60) return `${seconds} s`;
+  return `${Math.floor(seconds / 60)} min ${String(seconds % 60).padStart(2, "0")} s`;
+}
+
+/** "21 min": how long a game took, never less than a minute. */
+export const formatMinutes = (ms) => `${Math.max(1, Math.round(ms / 60000))} min`;
+
 /**
  * Pauses `current()` (the clock of the game in progress, or null) whenever
  * the page loses focus or is hidden, and resumes it on return. `onChange`

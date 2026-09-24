@@ -68,7 +68,7 @@ button, select, input { font: inherit; }
 .rules-link { margin-left: auto; color: inherit; }
 
 /* ── Layout ──────────────────────────────── */
-.layout { display: grid; grid-template-columns: 250px 1fr; gap: 20px; padding: 16px 20px; align-items: start; }
+.layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 16px 20px; align-items: start; }
 .sidebar { display: grid; gap: 14px; position: sticky; top: 12px; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 8px; }
 .panel label { display: grid; gap: 2px; font-size: 0.9rem; color: var(--ink-2); }
@@ -167,10 +167,18 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .explain p { margin: 0; }
 .explain ol { margin: 0; padding-left: 1.3em; }
 .explain li.chosen { font-weight: 700; }
-.replay-list { display: grid; gap: 4px; max-height: 50vh; overflow: auto; }
+/* Five games in sight, then the list scrolls: the player's buttons stay on screen. */
+.replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.05rem; }
 .replay-list h3 { margin: 6px 0 2px; font-size: 0.85rem; color: var(--ink-2); }
-.replay-list button { text-align: left; background: transparent; color: var(--ink); border-color: var(--line); font-size: 0.85rem; }
-.replay-list button[aria-current="true"] { border-color: var(--felt); background: color-mix(in oklab, var(--felt) 12%, transparent); }
+.replay-list button { display: grid; align-content: center; gap: 1px; height: var(--replay-item); text-align: left; background: transparent; color: var(--ink); border-color: var(--line); font-size: 0.85rem; padding: 4px 6px; }
+.replay-list .replay-title, .replay-list .replay-detail { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.replay-list .replay-title { font-weight: 700; }
+.replay-list .replay-detail { font-size: 0.66rem; color: var(--ink-2); }
+.replay-list button.won { border-color: var(--won); background: color-mix(in oklab, var(--won) 10%, transparent); }
+.replay-list button.lost { border-color: var(--lost); background: color-mix(in oklab, var(--lost) 10%, transparent); }
+.replay-list button.won .replay-title { color: var(--won); }
+.replay-list button.lost .replay-title { color: var(--lost); }
+.replay-list button[aria-current="true"] { box-shadow: 0 0 0 2px var(--focus); }
 
 dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); max-width: 380px; }
 dialog h2 { margin-top: 0; font: 700 1.3rem var(--display); }

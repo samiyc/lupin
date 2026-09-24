@@ -47,6 +47,16 @@ export function replayFileName(log) {
   return `${stamp}_${seats}${suffix}.json`;
 }
 
+/** Borders won by each seat, or null without a result. */
+const bordersWon = (result) => (result?.borders ? [0, 1].map((seat) => result.borders.filter((border) => border.winner === seat).length) : null);
+
+/** Time played: the clock's `activeMs`, or the wall clock for older logs. */
+function durationOf(log) {
+  if (typeof log.result?.activeMs === "number") return log.result.activeMs;
+  const span = Date.parse(log.endedAt) - Date.parse(log.startedAt);
+  return Number.isFinite(span) ? span : null;
+}
+
 /** What the replay list shows, without sending whole logs. */
 export function replayHeader(dir, name, log) {
   return {
@@ -57,5 +67,7 @@ export function replayHeader(dir, name, log) {
     turns: log.turns.length,
     winner: log.result?.winner ?? null,
     winType: log.result?.winType ?? null,
+    borders: bordersWon(log.result),
+    durationMs: durationOf(log),
   };
 }

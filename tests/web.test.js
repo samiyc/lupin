@@ -9,7 +9,7 @@ import { BOTS } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "../web/app/hand.js";
 import { START, endOf, isAtEnd, stepBack, stepForward } from "../web/app/steps.js";
-import { cardView, suitCounts, suitOrder, tableView } from "../web/app/view.js";
+import { cardView, replayLabel, suitCounts, suitOrder, tableView } from "../web/app/view.js";
 
 const spec = DECKS.classique;
 const at = (value, suit) => cardOf(spec, suit, value);
@@ -136,5 +136,40 @@ describe("the replay player's steps", () => {
     const frames = replayStates(finishLog(log, game, "2026-09-24T10:05:00+02:00"));
     log.turns.forEach((entry, i) => assert.equal(tableView(spec, frames[i].state, { bottom: 0 }).pile, entry.pile, `turn ${i + 1}`));
     assert.equal(frames.filter((frame) => frame.state.pile === 0).length, 13, "the last twelve moves, and the end");
+  });
+});
+
+describe("the replay list", () => {
+  const nameOf = (player) => (player.kind === "human" ? player.name : `Stratège ${player.version}`);
+  const header = (overrides) => ({
+    startedAt: "2026-09-24T01:57:33+02:00",
+    players: [
+      { seat: 1, kind: "bot", bot: "stratege", version: "1.1.0" },
+      { seat: 0, kind: "human", name: "Sami" },
+    ],
+    winner: 0,
+    winType: "majority",
+    borders: [4, 3],
+    durationMs: 21 * 60000,
+    ...overrides,
+  });
+
+  it("puts (W) on the winner's side, first player first", () => {
+    assert.deepEqual(replayLabel(header(), nameOf), {
+      title: "(W) Sami -vs- Stratège 1.1.0",
+      detail: "Score:4-3. Durée:21min. 24/09/26 à 01h57",
+      outcome: "won",
+    });
+    const lost = replayLabel(header({ winner: 1, winType: "adjacent", borders: [3, 4] }), nameOf);
+    assert.equal(lost.title, "Sami -vs- Stratège 1.1.0 (W)");
+    assert.equal(lost.detail, "3 bornes connectées. Durée:21min. 24/09/26 à 01h57");
+    assert.equal(lost.outcome, "lost");
+  });
+
+  it("leaves bot games uncoloured, and skips what an old log lacks", () => {
+    const bots = header({ players: [{ seat: 0, kind: "bot", version: "1.1.0" }, { seat: 1, kind: "bot", version: "1.0.0" }], durationMs: null });
+    const label = replayLabel(bots, nameOf);
+    assert.equal(label.outcome, null);
+    assert.equal(label.detail, "Score:4-3. 24/09/26 à 01h57");
   });
 });

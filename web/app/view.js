@@ -1,6 +1,7 @@
 import { FORMATION_LABELS } from "../../src/config/formations.js";
 import { colorOf, isJoker, valueOf } from "../../src/core/cards.js";
 import { formatCard } from "../../src/core/notation.js";
+import { formatMinutes } from "./clock.js";
 
 /**
  * From a game snapshot (`snapshot()` in `src/replay/log.js`) to what the
@@ -106,6 +107,33 @@ export function tableView(spec, snap, options) {
     suits: suitCounts(spec, snap, { bottom, reveal }),
     result: resultView(snap, bottom, visible.length === snap.resolved.length),
   };
+}
+
+/** "24/09/26 à 01h57", read from the log's own local timestamp. */
+function shortDate(stamp) {
+  const [, year, month, day, hour, minute] = /^\d\d(\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d)/.exec(stamp) ?? [];
+  return year ? `${day}/${month}/${year} à ${hour}h${minute}` : stamp;
+}
+
+function outcomeOf(header) {
+  const human = header.players.find((player) => player.kind === "human");
+  if (!human || header.winner === null) return null;
+  return header.winner === human.seat ? "won" : "lost";
+}
+
+/**
+ * A replay list entry on two lines. `title`: both players, first player first,
+ * "(W)" on the winner's side. `detail`: the score (or "3 bornes connectées"),
+ * the time played and the date — short enough to hold on one line. `outcome`: "won" or "lost" for
+ * the human, null for a game between bots. `nameOf` names a player entry.
+ */
+export function replayLabel(header, nameOf) {
+  const [first, second] = [...header.players].sort((a, b) => a.seat - b.seat).map(nameOf);
+  const title = `${header.winner === 0 ? "(W) " : ""}${first} -vs- ${second}${header.winner === 1 ? " (W)" : ""}`;
+  const how = header.winType === "adjacent" ? "3 bornes connectées" : header.borders && `Score:${header.borders.join("-")}`;
+  const time = header.durationMs ? `Durée:${formatMinutes(header.durationMs).replace(" ", "")}` : null;
+  const detail = [how, time, shortDate(header.startedAt)].filter(Boolean).join(". ");
+  return { title, detail, outcome: outcomeOf(header) };
 }
 
 export const WIN_TYPES = Object.freeze({

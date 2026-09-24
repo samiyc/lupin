@@ -2,6 +2,7 @@ import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js"
 import { $, el, freshSeed, toast } from "./dom.js";
 import { keepReplay, listReplays, loadReplay, saveReplay } from "./replays-api.js";
 import { generateBotGame, playerName } from "./runner.js";
+import { replayLabel } from "./view.js";
 import { currentLog, load, loaded } from "./viewer.js";
 
 /**
@@ -37,15 +38,15 @@ export function wireObserve() {
   });
 }
 
-function resultText(header) {
-  if (header.winner === null) return "égalité";
-  return `${playerName(header.players.find((player) => player.seat === header.winner))} gagne`;
-}
-
+/** Two lines: who played (and who won), then score, time and date. Green or red for the human. */
 function replayButton(header) {
-  const date = new Date(header.startedAt).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
-  const who = [...header.players].sort((a, b) => a.seat - b.seat).map(playerName).join(" contre ");
-  return el("button", { type: "button", dataset: { name: header.name, dir: header.dir } }, `${date} · ${who} · ${resultText(header)}`);
+  const { title, detail, outcome } = replayLabel(header, playerName);
+  return el(
+    "button",
+    { type: "button", class: outcome, title: `${title}\n${detail}`, dataset: { name: header.name, dir: header.dir } },
+    el("span", { class: "replay-title" }, title),
+    el("span", { class: "replay-detail" }, detail),
+  );
 }
 
 function group(title, headers) {

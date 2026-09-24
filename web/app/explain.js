@@ -1,3 +1,4 @@
+import { formatThinking } from "./clock.js";
 import { $, el } from "./dom.js";
 import { playerName } from "./runner.js";
 
@@ -46,7 +47,8 @@ export function renderExplain(log, frame) {
   if (entry.pass) {
     parts.push(el("p", {}, "Passe : aucun coup possible."));
   } else {
-    parts.push(el("p", {}, `Joue ${entry.move.card} sur la borne ${entry.move.border} (${sideText(entry.side)}).`));
+    const took = typeof entry.thinkMs === "number" ? ` en ${formatThinking(entry.thinkMs)}` : "";
+    parts.push(el("p", {}, `Joue ${entry.move.card} sur la borne ${entry.move.border}${took} (${sideText(entry.side)}).`));
     parts.push(el("p", {}, entry.drew ? `Pioche : ${entry.drew}` : "Pioche vide."));
   }
   parts.push(...candidateList("Ses meilleures options :", entry.candidates, entry.move));
