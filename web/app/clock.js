@@ -38,6 +38,13 @@ export function createClock(now) {
   };
 }
 
+/** "Ce coup 0:12 · Partie 4:05 · en pause": the line under the turn number. */
+export function clockLine(clock, { humanTurn, over }) {
+  const move = humanTurn ? `Ce coup ${formatDuration(clock.sinceMark())} · ` : "";
+  const paused = !over && !clock.isRunning() ? " · en pause" : "";
+  return `${move}Partie ${formatDuration(clock.active())}${paused}`;
+}
+
 /** "0:07", "12:45": minutes and seconds. */
 export function formatDuration(ms) {
   const seconds = Math.floor(Math.max(0, ms) / 1000);

@@ -4,7 +4,7 @@ import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT, botTag, engineOf } from "../src/
 import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
-import { BOTS } from "../src/sim/bots.js";
+import { BOTS, engineFor } from "../src/sim/bots.js";
 import { createGame, legalMoves } from "../src/sim/game.js";
 
 describe("the bot line-up", () => {
@@ -45,9 +45,13 @@ describe("scoreMoves", () => {
     });
   }
 
-  it("the experimental bot starts identical to the line-up's Stratège", () => {
-    const strategist = BOTS[engineOf("stratege")](createRng(1)).scoreMoves(state, moves);
-    const experimental = BOTS.experimental(createRng(1)).scoreMoves(state, moves);
-    assert.deepEqual(experimental, strategist);
+  it("the experimental bot searches deeper from the same core: more candidates, more rollouts", () => {
+    const core = BOTS.strategist(createRng(1)).scoreMoves(state, moves);
+    const deep = engineFor("experimental:120")(createRng(1)).scoreMoves(state, moves);
+    const searched = deep.filter((entry) => entry.rollouts > 0);
+    assert.equal(searched.length, 8, "eight candidates, against the Stratège's four");
+    const shortlist = [...core].sort((x, y) => y.gain - x.gain).slice(0, 8).map(({ move }) => `${move.card}@${move.border}`);
+    for (const { move } of searched) assert.ok(shortlist.includes(`${move.card}@${move.border}`));
+    assert.ok(searched.some((entry) => entry.rollouts > 16), "rollouts go to the survivors");
   });
 });

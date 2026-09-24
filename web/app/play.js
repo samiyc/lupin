@@ -1,12 +1,13 @@
 import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js";
 import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
-import { createClock, formatDuration, watchFocus } from "./clock.js";
+import { clockLine, createClock, watchFocus } from "./clock.js";
 import { $, el, freshSeed, openDialog, recall, remember, toast, wait } from "./dom.js";
 import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
 import { saveReplay } from "./replays-api.js";
-import { RULES, SPEC, botChoice, botEntry, botPlayer, humanEntry, newGame, playerName } from "./runner.js";
+import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playerName } from "./runner.js";
+import { createThinker } from "./thinker.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
 
@@ -43,15 +44,8 @@ export function legalFor(index) {
   return new Set(legalMoves(play.game.state).filter((move) => move.card === card).map((move) => move.border));
 }
 
-function clockText({ clock, state }) {
-  const total = `Partie ${formatDuration(clock.active())}`;
-  const move = humanTurn() ? "Ce coup " + formatDuration(clock.sinceMark()) + " · " : "";
-  const paused = !state.over && !clock.isRunning() ? " · en pause" : "";
-  return `${move}${total}${paused}`;
-}
-
 function renderClock() {
-  if (play.game !== null && play.visible) $("clock").textContent = clockText(play.game);
+  if (play.game !== null && play.visible) $("clock").textContent = clockLine(play.game.clock, { humanTurn: humanTurn(), over: play.game.state.over });
 }
 
 export function render() {
@@ -114,7 +108,7 @@ async function botTurn(id) {
   await wait(PAINT);
   if (!alive(id)) return;
   const { game } = play;
-  const { move, scored } = botChoice(game.state, game.bot);
+  const { move, scored } = await game.thinker.decide(game.state, game.log);
   await wait(Math.max(0, BOT_DELAY - (performance.now() - started)));
   if (!alive(id)) return;
   const player = game.state.current;
@@ -124,7 +118,10 @@ async function botTurn(id) {
 async function botTurns(id) {
   while (alive(id) && active() && !humanTurn()) await botTurn(id);
   if (!alive(id)) return;
-  if (humanTurn()) play.game.clock.mark();
+  if (humanTurn()) {
+    play.game.clock.mark();
+    play.game.thinker.ponder(play.game.log);
+  }
   else if (play.game.state.over) await finish(id);
 }
 
@@ -155,6 +152,7 @@ export function playCard(grip, border) {
 export function start({ first, opponent, name }) {
   play.generation += 1;
   clearDrag();
+  play.game?.thinker.stop();
   const seed = freshSeed();
   const state = newGame(seed);
   const human = first === "me" ? 0 : 1;
@@ -165,6 +163,7 @@ export function start({ first, opponent, name }) {
     name,
     opponentName: playerName(botEntry(1 - human, opponent)),
     bot: botPlayer(opponent, seed + 1),
+    thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
     log: startLog(state, { rules: RULES, players, seed }),
     order: sortBySuit(SPEC, state.hands[human]),
     selected: null,
@@ -183,6 +182,7 @@ export function start({ first, opponent, name }) {
 export function abandon() {
   play.generation += 1;
   clearDrag();
+  play.game?.thinker.stop();
   play.game = null;
   if (play.visible) {
     clearTable("Partie abandonnée, rien n'a été enregistré.");
@@ -262,4 +262,6 @@ export const playInput = {
     if (from !== null) reorderWith((order) => moveCard(order, from, to));
   },
   legalFor,
+  /** For `?debug`: how the thinker reached its last answer (time pondered, rollouts, time thought). */
+  thinking: () => play.game?.thinker.last ?? null,
 };

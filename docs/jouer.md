@@ -89,7 +89,7 @@ adversaire et ton prénom.
 | **Basique** | 1.0.0 | Joue la carte qui vaut le plus à l'instant T, face à ce que l'adversaire construit. |
 | **Stratège** | 2.1.0 | **Il anticipe.** Il prend ses 4 meilleurs coups selon son cœur, le Stratège 1.2 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie en distribuant au hasard les cartes qu'il ne voit pas. Il garde le coup qui gagne le plus souvent, en tenant un peu compte de l'avis du cœur. Le 2.0 battait le cœur 1.1 dans 74 % des parties, et le 2.1 bat le 2.0 dans 55 %. |
 | Stratège 1.2 | (cœur du 2.1) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus trois idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide ; jamais la même valeur seule sur deux bornes ; ne jamais séparer deux cartes de même couleur qui se suivent (1.2). C'est lui qui joue les statistiques du rapport : le 2.1 est trop lent pour un million de parties. Le détail : `docs/strategie.md`. |
-| **Expérimental** | 0.4.0 | Banc d'essai. Au départ identique au Stratège 2.1 ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`, `src/sim/lookahead.js`). |
+| **Expérimental** | 0.5.0 | **Il cherche plus loin.** Même cœur que le Stratège 2.1, mais il part de 8 coups au lieu de 4. Il rejoue des fins de partie par rondes et élimine à chaque fois la moitié la moins bonne, jusqu'à 10 s par coup ; un coup évident part tout de suite. **Il réfléchit pendant ton tour** : il prépare sa réponse sans connaître ton coup, et tout ce temps compte à moitié. Si tu as réfléchi 20 s, il répond aussitôt. Avec 1 s par coup, il bat déjà le Stratège 2.1 dans 62 % des parties (`docs/validation.md`). C'est aussi le banc d'essai des idées (`src/sim/experimental.js`, `search.js`, `ponder.js`). |
 
 **Versions.** Tout changement de comportement change le numéro :
 - dernier chiffre : un réglage ;
@@ -103,16 +103,17 @@ qui les justifient sont dans `docs/analyse-replays.md`.
 **Tester une idée :**
 
 ```bash
-npm run duel -- experimental stratege 2000   # 2 000 parties de chaque côté
-npm run duel -- idea:counter strategist 2000 # une idée seule, contre le Stratège 1.1
+npm run duel -- idea:counter strategist            # une idée du cœur : moins d'une minute
+npm run duel -- experimental:400 stratege           # profil rapide : 5 min au plus
+npm run duel -- experimental:400 stratege --long    # profil long : 20 min au plus
 ```
 
-Un duel avec le Stratège 2.0 prend plusieurs minutes : il réfléchit à chaque
-coup. Les idées se mesurent donc d'abord contre son cœur, le Stratège 1.1
-(`strategist`).
-
-Le duel affiche le taux de victoire avec sa fourchette à 95 %. Si l'Expérimental
-gagne nettement, l'idée passe dans le Stratège, avec une nouvelle version.
+Le duel joue par rondes, les mêmes paquets des deux côtés, et s'arrête dès que
+le résultat est net ou que le temps du profil est écoulé. Il affiche le taux de
+victoire avec sa fourchette à 95 %. `experimental:N` est l'Expérimental avec N
+fins de partie par coup. Si l'Expérimental gagne nettement en profil long, l'idée
+passe dans le Stratège, avec une nouvelle version. Détails et durées :
+`docs/validation.md`.
 
 ## Les replays
 

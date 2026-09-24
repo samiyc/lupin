@@ -3,6 +3,7 @@ import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
+import { searchBot } from "./search.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
 
 /**
@@ -210,6 +211,13 @@ const lookaheadOf = (settings, name) => (rng) => {
   return lookaheadBot(rng, { base, policy, ...settings.lookahead, name });
 };
 
+/** The experimental bot: `settings`' strategist shortlists and plays the rollouts of a deeper search (`search.js`). */
+export const searchOf = (settings, overrides = {}) => (rng) => {
+  const base = strategistBot(rng, settings);
+  const policy = (seeded) => strategistBot(seeded, settings);
+  return searchBot(rng, { base, policy, ...settings.search, name: "experimental", ...overrides });
+};
+
 /** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */
 export const BOTS = Object.freeze({
   random: randomBot,
@@ -217,7 +225,7 @@ export const BOTS = Object.freeze({
   strategist: (rng) => strategistBot(rng, { ideas: STRATEGIST_IDEAS, name: "strategist" }),
   // Strategist 1.1 plus look-ahead: the line-up's Stratège 2. Too slow for the report's simulations.
   lookahead: lookaheadOf({ ideas: STRATEGIST_IDEAS }, "lookahead"),
-  experimental: lookaheadOf(EXPERIMENT, "experimental"),
+  experimental: searchOf(EXPERIMENT),
   // One habit at a time, to weigh each against the plain greedy bot.
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
@@ -228,3 +236,14 @@ export const BOTS = Object.freeze({
   // The three habits plus one idea at a time, to weigh each idea on its own.
   ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
 });
+
+/**
+ * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
+ * with a budget of N rollouts a move, to weigh depth against time in duels.
+ */
+export function engineFor(id) {
+  if (Object.hasOwn(BOTS, id)) return BOTS[id];
+  const budget = /^experimental:(\d+)$/.exec(id)?.[1];
+  if (budget) return searchOf(EXPERIMENT, { budget: Number(budget) });
+  throw new Error(`Moteur inconnu : « ${id} »`);
+}

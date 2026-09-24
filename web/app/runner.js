@@ -19,7 +19,7 @@ export function newGame(seed) {
 }
 
 export function botPlayer(id, seed) {
-  return { id, bot: BOTS[engineOf(id)](createRng(seed)), rng: createRng(seed ^ 0x5bd1e995) };
+  return { id, engine: engineOf(id), bot: BOTS[engineOf(id)](createRng(seed)), rng: createRng(seed ^ 0x5bd1e995) };
 }
 
 export const botEntry = (seat, id) => ({ seat, kind: "bot", bot: id, version: BOT_LINEUP[id].version, label: BOT_LINEUP[id].label });

@@ -26,7 +26,8 @@ identifiers are English. Node 20.10 on this machine; no Python.
 
 ```bash
 npm run play                  # web game, http://127.0.0.1:4742/ (add ?debug for window.__lopin)
-npm run duel -- a b [n]       # bot line-up duel, both seats, 95 % interval
+npm run duel -- a b [--long]  # duel, mirrored decks, stops when clear; quick ≤ 5 min, long ≤ 20
+npm run fingerprint -- a,b n  # hash of every move in seeded games: optimisations must keep it
 npm run replays               # summary of replays/ + data/replays/
 npm run build                 # all statistics → out/ + rules stats box (thread pool, ~3 min)
 npm run build:quick           # small samples, for iterating on report layout
@@ -138,6 +139,17 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   each asserting what the core and Stratège 2 must NOT play. A rule that lost
   in duels stays `todo` with its number; `docs/strategie.md` is the ledger.
   Turn numbers are the logs' (the player's counter now matches them).
+- **Time budget: a whole task in under 30 min** (`docs/validation.md`). Sort
+  ideas with the quick duel profile (on the core when possible), run `--long`
+  once for a version, rebuild the report only when `strategist` changes its
+  moves. Speed work must keep `npm run fingerprint` unchanged.
+- **The experimental bot searches deeper** (`src/sim/search.js`): 8 candidates,
+  successive halving on common deals, early stop on a clear leader; a rollout
+  budget in Node (`experimental:N`), a clock in the page. There it runs in a
+  worker (`web/app/think-worker.js` via `thinker.js`) and ponders during the
+  human's turn (`src/sim/ponder.js`): it searches its reply averaged over the
+  human's possible moves (guessing their exact move fails: it names a card the
+  bot cannot see), then warm-starts the real search and credits half the time.
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

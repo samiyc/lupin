@@ -1,6 +1,7 @@
 import { FORMATIONS } from "../config/formations.js";
+import { buildDeck } from "../core/cards.js";
 import { createRng } from "../core/random.js";
-import { BOTS } from "./bots.js";
+import { engineFor } from "./bots.js";
 import { playGame } from "./game.js";
 
 const zeroCounts = () => Object.fromEntries(FORMATIONS.map((f) => [f, 0]));
@@ -58,16 +59,21 @@ function record(tally, state) {
 }
 
 /**
- * Plays `games` matches between `players` (ids from `BOTS`) and returns the
- * raw tallies. Player 0 always starts. Tallies are plain sums, so chunks
+ * Plays `games` matches between `players` (ids from `engineFor`) and returns
+ * the raw tallies. Player 0 always starts. Tallies are plain sums, so chunks
  * played on several threads merge with `mergeTallies`.
+ *
+ * With `deals`, game g is dealt from its own seed (`deals` + g) whatever the
+ * bots draw: a duel plays the same decks with the seats swapped, and the luck
+ * of the cards cancels out, as in duplicate bridge.
  */
-export function playBatch(spec, { order, jokerRule, games, seed, players }) {
+export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null }) {
   const rng = createRng(seed);
-  const bots = players.map((id) => BOTS[id](rng));
+  const bots = players.map((id) => engineFor(id)(rng));
   const tally = emptyTally();
   for (let g = 0; g < games; g += 1) {
-    record(tally, playGame(spec, { order, jokerRule, rng, bots }));
+    const deck = deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec));
+    record(tally, playGame(spec, { order, jokerRule, rng, bots, deck }));
   }
   return tally;
 }

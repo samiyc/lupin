@@ -193,8 +193,8 @@ function decideByCount(state) {
 }
 
 /** Runs a match to its end; `bots[p].choose(state, moves)` picks a move. */
-export function playGame(spec, { order, jokerRule, rng, bots, endMode = "early" }) {
-  const state = createGame(spec, { order, jokerRule, rng, endMode });
+export function playGame(spec, { order, jokerRule, rng, bots, endMode = "early", deck = null }) {
+  const state = createGame(spec, { order, jokerRule, rng, endMode, deck });
   const guard = spec.borders * 6 * 3;
   while (!state.over && state.turn < guard) {
     const moves = legalMoves(state);

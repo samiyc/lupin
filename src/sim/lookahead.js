@@ -43,7 +43,7 @@ export function determinize(state, player, rng) {
 }
 
 /** Plays `game` to its end with `policy` on both sides; returns the winner (or null). */
-function playOut(game, policy) {
+export function playOut(game, policy) {
   const guard = game.spec.borders * 6 * 3;
   while (!game.over && game.turn < guard) {
     const moves = legalMoves(game);
