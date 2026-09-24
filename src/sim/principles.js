@@ -74,12 +74,12 @@ function connectorPenalty(context, border, card) {
   return left ? -context.weights.connector : 0;
 }
 
-const BONUSES = { trips: tripsBonus, ends: endsPenalty, reserve: reservePenalty, connector: connectorPenalty };
+const BONUSES = Object.entries({ trips: tripsBonus, ends: endsPenalty, reserve: reservePenalty, connector: connectorPenalty });
 
 /** The principles' bonus for placing `card` on `border`, in value units. */
 export function principlesBonus(context, border, card) {
   let bonus = 0;
-  for (const [name, bonusOf] of Object.entries(BONUSES)) {
+  for (const [name, bonusOf] of BONUSES) {
     if (context.ideas.has(name)) bonus += bonusOf(context, border, card);
   }
   return bonus;

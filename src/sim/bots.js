@@ -78,13 +78,15 @@ function jokerGate(state, player) {
 function views(state) {
   const player = state.current;
   const shared = { valuer: createValuer(state), unseen: unseenCards(state, player) };
-  const mine = { ...shared, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player) };
+  // Each view gets its own memo: the same pair is judged many times in one scoring.
+  const mine = { ...shared, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map() };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     ...shared,
     hand: [],
     draws: state.spec.handSize + Math.floor(state.pile.length / 2),
     jokerAllowed: jokerGate(state, 1 - player),
+    memo: new Map(),
   };
   const threat = state.borders.map((border) => sidePotential(border.sides[1 - player], theirs));
   return { mine, threat };
@@ -127,6 +129,7 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...t
     mySides: state.borders.map((border) => border.sides[player]),
     habits,
     strategy,
+    memo: new Map(),
     ...ideasContext(state, player, tuning, seen),
   };
   const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
@@ -168,10 +171,20 @@ function wholeGains(state, { mine, threat }) {
 
 const winChance = (mine, theirs, params = BOT_PARAMS) => 1 / (1 + Math.exp((theirs - mine) / params.temperature));
 
-function moveGain(state, { card, border }, context, threat) {
+/** The view without `card` in hand, built once per card and scoring (`context.memo`). */
+function withoutCard(state, context, card) {
+  const key = `hand-${card}`;
+  const cached = context.memo?.get(key);
+  if (cached) return cached;
   const hand = [...state.hands[state.current]];
   hand.splice(hand.indexOf(card), 1);
-  const withHand = { ...context, hand };
+  const view = { ...context, hand };
+  context.memo?.set(key, view);
+  return view;
+}
+
+function moveGain(state, { card, border }, context, threat) {
+  const withHand = withoutCard(state, context, card);
   const side = state.borders[border].sides[state.current];
   const params = context.params ?? BOT_PARAMS;
   const before = winChance(sidePotential(side, withHand), threat, params);

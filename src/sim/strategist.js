@@ -26,11 +26,20 @@ export function jokerCompletesTrips(spec, side) {
   return side.length === 2 && real.length === 2 && valueOf(spec, real[0]) === valueOf(spec, real[1]);
 }
 
-function openingBonus({ spec, mySides, strategy }, card) {
+/** The suits the player has already opened a border with: once per scoring when the context has a memo. */
+function openedSuits({ spec, mySides, memo }) {
+  const cached = memo?.get("opened");
+  if (cached) return cached;
+  const opened = new Set(mySides.filter((side) => side.length > 0 && !isJoker(side[0])).map((side) => colorOf(spec, side[0])));
+  memo?.set("opened", opened);
+  return opened;
+}
+
+function openingBonus(context, card, strategy) {
+  const { spec } = context;
   const value = valueOf(spec, card);
   const middle = value > 1 && value < spec.values ? strategy.openMiddle : 0;
-  const opened = new Set(mySides.filter((side) => side.length > 0 && !isJoker(side[0])).map((side) => colorOf(spec, side[0])));
-  return middle + (opened.has(colorOf(spec, card)) ? 0 : strategy.openNewSuit);
+  return middle + (openedSuits(context).has(colorOf(spec, card)) ? 0 : strategy.openNewSuit);
 }
 
 function suitedConnector(spec, a, b) {
@@ -38,15 +47,20 @@ function suitedConnector(spec, a, b) {
   return colorOf(spec, a) === colorOf(spec, b) && gap >= 1 && gap <= 2;
 }
 
-/** Is a card that turns `a`, `b` into a straight flush still among `unseen`? */
-function suitedOutLeft(a, b, unseen, evaluator) {
-  return unseen.entries.some(([card]) => !isJoker(card) && evaluator.formation([a, b, card]) === "straightFlush");
+/** Is a card that turns `a`, `b` into a straight flush still among the unseen? */
+function suitedOutLeft({ unseen, evaluator, memo }, a, b) {
+  const key = `sf:${a},${b}`;
+  const cached = memo?.get(key);
+  if (cached !== undefined) return cached;
+  const left = unseen.entries.some(([card]) => !isJoker(card) && evaluator.formation([a, b, card]) === "straightFlush");
+  memo?.set(key, left);
+  return left;
 }
 
-function suitedBonus({ spec, side, card, unseen, evaluator, strategy }) {
+function suitedBonus(context, side, card, strategy) {
   const [first] = side;
-  if (side.length !== 1 || isJoker(first) || !suitedConnector(spec, first, card)) return 0;
-  return suitedOutLeft(first, card, unseen, evaluator) ? strategy.suitedStart : 0;
+  if (side.length !== 1 || isJoker(first) || !suitedConnector(context.spec, first, card)) return 0;
+  return suitedOutLeft(context, first, card) ? strategy.suitedStart : 0;
 }
 
 /**
@@ -56,15 +70,15 @@ function suitedBonus({ spec, side, card, unseen, evaluator, strategy }) {
  * experiment says otherwise). With a non-empty `ideas` set it also carries
  * what `ideasBonus` (`ideas.js`) reads.
  */
-export function strategistAdjust(side, card, input, border) {
-  const context = { strategy: STRATEGY, ...input };
+export function strategistAdjust(side, card, context, border) {
   const { habits } = context;
+  const strategy = context.strategy ?? STRATEGY;
   if (isJoker(card)) {
     return { allowed: !habits.has("joker") || jokerCompletesTrips(context.spec, side), bonus: 0 };
   }
   let bonus = 0;
-  if (habits.has("opening") && side.length === 0) bonus += openingBonus(context, card);
-  if (habits.has("suited")) bonus += suitedBonus({ ...context, side, card });
+  if (habits.has("opening") && side.length === 0) bonus += openingBonus(context, card, strategy);
+  if (habits.has("suited")) bonus += suitedBonus(context, side, card, strategy);
   if (context.ideas?.size > 0) bonus += ideasBonus(context, border, card);
   return { allowed: true, bonus };
 }

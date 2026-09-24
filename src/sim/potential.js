@@ -44,7 +44,7 @@ export function unseenCards(state, player) {
   return { entries, total: entries.reduce((sum, [, count]) => sum + count, 0) };
 }
 
-/** `context`: { valuer, hand, unseen, draws, jokerAllowed(side) }. */
+/** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? }. */
 export function sidePotential(side, context) {
   if (side.length >= 3) return context.valuer.value(side);
   if (side.length === 2) return pairPotential(side, context);
@@ -54,10 +54,10 @@ export function sidePotential(side, context) {
 
 const usable = (card, jokerOk) => jokerOk || !isJoker(card);
 
-function pairPotential(side, context) {
+function pairPotential(side, context, hand = context.hand) {
   const jokerOk = context.jokerAllowed(side);
   let best = -Infinity;
-  for (const card of context.hand) {
+  for (const card of hand) {
     if (usable(card, jokerOk)) best = Math.max(best, context.valuer.value3(side, card));
   }
   return Math.max(best, drawPotential(side, context, jokerOk));
@@ -66,8 +66,24 @@ function pairPotential(side, context) {
 /**
  * Completing from the draw: the average over unseen cards, plus the best
  * upside of any formation weighted by the chance of drawing one of its outs.
+ *
+ * It depends only on the two cards (the unseen cards and the draws are fixed
+ * for one scoring), yet one scoring asks for the same pair dozens of times:
+ * a context may carry a `memo` Map, fresh for each scoring, to answer once.
  */
-function drawPotential(side, { valuer, unseen, draws }, jokerOk) {
+function drawPotential(side, context, jokerOk) {
+  const { memo } = context;
+  if (!memo) return drawPotentialOf(side, context, jokerOk);
+  const key = side[0] < side[1] ? `${side[0]},${side[1]},${jokerOk}` : `${side[1]},${side[0]},${jokerOk}`;
+  let value = memo.get(key);
+  if (value === undefined) {
+    value = drawPotentialOf(side, context, jokerOk);
+    memo.set(key, value);
+  }
+  return value;
+}
+
+function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
   const outs = new Array(5).fill(0);
   const bestOf = new Array(5).fill(0);
   let mean = 0;
@@ -95,11 +111,12 @@ function drawPotential(side, { valuer, unseen, draws }, jokerOk) {
 function singlePotential(side, context) {
   const jokerOk = context.jokerAllowed(side);
   let best = context.valuer.single(side[0]);
-  context.hand.forEach((card, i) => {
-    if (!usable(card, jokerOk)) return;
-    const rest = context.hand.filter((_, j) => j !== i);
-    const pair = pairPotential([...side, card], { ...context, hand: rest });
-    best = Math.max(best, PAIR_DISCOUNT * pair);
-  });
+  // The hand minus the card being paired, passed along rather than copied into a new context.
+  const { hand } = context;
+  for (let i = 0; i < hand.length; i += 1) {
+    if (!usable(hand[i], jokerOk)) continue;
+    const rest = hand.slice(0, i).concat(hand.slice(i + 1));
+    best = Math.max(best, PAIR_DISCOUNT * pairPotential([side[0], hand[i]], context, rest));
+  }
   return best;
 }
