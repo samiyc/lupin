@@ -80,12 +80,14 @@ Trois robots :
   reste possible. Depuis la version 1.1, il suit aussi deux idées tirées des
   parties de Sami contre les robots (`docs/analyse-replays.md`) : les trois bornes
   du milieu seulement pour un départ solide, et jamais la même valeur seule sur
-  deux bornes.
+  deux bornes. Depuis la version 1.2, une troisième : ne jamais séparer deux cartes
+  de même couleur qui se suivent (`docs/strategie.md`).
 
 Avec ses trois habitudes, le stratège battait le gourmand dans environ 58 % des
 parties (4 000 parties, des deux côtés de la table), et chaque habitude seule le
-rend déjà meilleur. Les deux idées de la version 1.1 le portent à environ 65 %.
-**C'est lui qui joue toutes les parties du rapport.** Le Stratège 2.0 du
+rend déjà meilleur. Les deux idées de la version 1.1 le portent à environ 65 %, la
+troisième (1.2) à environ 69 %.
+**C'est lui qui joue toutes les parties du rapport.** Le Stratège 2.1 du
 navigateur part de lui et rejoue la fin de partie avant chaque coup. Il est plus
 fort, mais bien trop lent pour le million de parties du rapport. Le gourmand rejoue les variantes du tableau
 principal, pour comparer l'ancien résultat au nouveau.

@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
 
 /**
  * Sami's strategy ideas from his games against the web bots
@@ -16,14 +17,15 @@ import { colorOf, isJoker, valueOf } from "../core/cards.js";
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump"]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", ...PRINCIPLES]);
 
 /**
- * What the strategist plays since 1.1.0, measured against strategist 1.0.0
- * over 24 000 games (docs/analyse-replays.md): `spread` alone wins 54.5 %,
- * with `middle` 55.6 %. `counter` and `edges` changed nothing measurable.
+ * What the strategist plays. 1.1: measured against 1.0 over 24 000 games
+ * (docs/analyse-replays.md), `spread` alone wins 54.5 %, with `middle` 55.6 %;
+ * `counter` and `edges` changed nothing measurable. 1.2 adds `connector`
+ * (principles.js): 53.9 % against 1.1 (docs/strategie.md).
  */
-export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread"]);
+export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"]);
 
 /**
  * `spread` is worth a veto: at 0.15 it won 55.2 %, at 0.6 56.9 %, and no
@@ -40,6 +42,7 @@ export const IDEA_WEIGHTS = Object.freeze({
   runs: 0.5,
   dump: 0.1,
   dumpBelow: 0.2,
+  ...PRINCIPLE_WEIGHTS,
 });
 
 /** Sorted gaps between values, and whether the cards share a suit. */
@@ -115,6 +118,7 @@ export function ideasBonus(context, border, card) {
   let bonus = 0;
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
   if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
+  bonus += principlesBonus(context, border, card);
   if (mine.length > 0) return bonus;
   if (ideas.has("middle") || ideas.has("edges")) bonus += placeBonus(context, border, card);
   if (ideas.has("spread")) bonus += spreadPenalty(context, card);

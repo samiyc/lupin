@@ -112,7 +112,8 @@ const HABIT_LABELS = {
   "strategist:opening": "Ouvrir au milieu, une couleur à la fois",
   "strategist:suited": "Suite couleur plutôt que paire",
   "strategist:habits": "Les trois ensemble",
-  strategist: "Les trois, plus tes deux idées",
+  "strategist:1.1": "Plus tes deux idées (1.1)",
+  strategist: "Plus la paire de même couleur (1.2)",
 };
 
 export function strategies(f) {
@@ -126,7 +127,9 @@ export function strategies(f) {
     "Chaque habitude a été ajoutée seule, puis les trois ensemble, puis deux de tes idées tirées",
     "des parties contre les robots : les trois bornes du milieu réservées à un départ solide",
     "(Brelan en main, ou deux cartes de même couleur qui se suivent, bouts libres), et jamais",
-    "la même valeur seule sur deux bornes. Le robot ainsi modifié a joué contre l'ancien",
+    "la même valeur seule sur deux bornes. Puis une troisième, tirée des parties contre le",
+    "Stratège 2 : ne jamais séparer deux cartes de même couleur qui se suivent tant que les",
+    "deux bouts restent possibles. Le robot ainsi modifié a joué contre l'ancien",
     "(le « gourmand »), des deux côtés de la table :",
     "",
     ...fence(table(["Habitude", "Parties gagnées", "Fourchette à 95 %", "Parties"], rows, RIGHT)),
@@ -134,8 +137,9 @@ export function strategies(f) {
     "**Était-ce déjà pris en compte ?** En partie : l'ancien robot comptait déjà les cartes",
     "encore cachées (d'où ton « tant que la couleur n'est pas épuisée ») et hésitait à dépenser",
     "un joker. Mais chacune de tes habitudes le rend plus fort : les trois ensemble le font",
-    `gagner ${pct(f.duels["strategist:habits"].rate, 0)} des parties contre l'ancien, et ${pct(f.duels.strategist.rate, 0)} avec tes deux idées.`,
-    "C'est donc lui, le « stratège » version 1.1, qui joue désormais toutes les parties de ce rapport.",
+    `gagner ${pct(f.duels["strategist:habits"].rate, 0)} des parties contre l'ancien, ${pct(f.duels["strategist:1.1"].rate, 0)} avec tes deux idées,`,
+    `et ${pct(f.duels.strategist.rate, 0)} avec la paire gardée entière. C'est donc lui, le « stratège » version 1.2,`,
+    "qui joue désormais toutes les parties de ce rapport.",
     "",
   ];
 }

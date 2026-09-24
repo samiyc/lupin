@@ -14,7 +14,7 @@ import { unseenCards } from "./potential.js";
  * The deals are seeded from the bot's seed and the turn: scoring the same
  * position twice gives the same answer, so a logged choice can be re-scored.
  */
-export const LOOKAHEAD = Object.freeze({ candidates: 4, rollouts: 16 });
+export const LOOKAHEAD = Object.freeze({ candidates: 4, rollouts: 16, prior: 0.3 });
 
 /** A deep enough copy of a game to play on without touching the original. */
 export function cloneState(state) {
@@ -63,12 +63,15 @@ function shortlist(scored, count) {
 }
 
 /**
- * `base`: the bot whose scores pick the candidates; `policy`: the bot that
- * plays the rollouts (both usually the strategist). A candidate's gain becomes
- * its share of won rollouts (0 to 1); the others rank below every candidate,
- * in their base order.
+ * `base`: the bot whose scores pick the candidates; `policy(rng)`: builds the
+ * bot that plays the rollouts (both usually the strategist) — rebuilt on the
+ * turn's seed at every scoring, so its tie-breaks repeat too. A candidate's gain becomes
+ * its share of won rollouts (0 to 1), plus `prior` times its base score — 16
+ * rollouts separate moves only so finely, and the base score carries the
+ * habits and ideas; the others rank below every candidate, in base order.
  */
-export function lookaheadBot(rng, { base, policy, candidates = LOOKAHEAD.candidates, rollouts = LOOKAHEAD.rollouts, name = "lookahead" }) {
+export function lookaheadBot(rng, { base, policy, name = "lookahead", ...settings }) {
+  const { candidates, rollouts, prior } = { ...LOOKAHEAD, ...settings };
   const seed = rng.int(2 ** 31);
   const scoreMoves = (state, moves, options = {}) => {
     const scored = base.scoreMoves(state, moves, options);
@@ -77,15 +80,16 @@ export function lookaheadBot(rng, { base, policy, candidates = LOOKAHEAD.candida
     const picked = shortlist(scored, candidates);
     const points = picked.map(() => 0);
     const deals = createRng(seed ^ Math.imul(state.turn + 1, 2654435761));
+    const rollout = policy(createRng(deals.int(2 ** 31)));
     for (let r = 0; r < rollouts; r += 1) {
       const deal = determinize(state, player, deals);
       picked.forEach(({ move }, i) => {
         const game = cloneState(deal);
         applyMove(game, move);
-        points[i] += pointsFor(playOut(game, policy), player);
+        points[i] += pointsFor(playOut(game, rollout), player);
       });
     }
-    const judged = new Map(picked.map((entry, i) => [entry, points[i] / rollouts]));
+    const judged = new Map(picked.map((entry, i) => [entry, points[i] / rollouts + prior * entry.gain]));
     return scored.map((entry) => ({ ...entry, gain: judged.has(entry) ? judged.get(entry) : -1 + entry.gain / 100 }));
   };
   return {

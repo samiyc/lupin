@@ -191,3 +191,16 @@ export function replayStates(log, { advisor = null } = {}) {
   });
   return frames;
 }
+
+/**
+ * The live game just before logged turn `turn` (1-based) is played: what the
+ * player to move had in front of them. Unlike `replayStates`' snapshots it
+ * carries the evaluator, so a bot can be asked what it would play there — the
+ * strategy tests replay Sami's reported positions this way.
+ */
+export function stateAt(log, turn) {
+  const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
+  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null });
+  log.turns.slice(0, turn - 1).forEach((entry, index) => replayTurn(state, entry, index));
+  return state;
+}

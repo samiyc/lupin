@@ -70,7 +70,8 @@ const HABITS = [
   ["strategist:opening", "Ouvrir au milieu, une couleur à la fois"],
   ["strategist:suited", "Suite couleur plutôt que paire"],
   ["strategist:habits", "Les trois ensemble"],
-  ["strategist", "Les trois, plus tes deux idées"],
+  ["strategist:1.1", "Plus tes deux idées (1.1)"],
+  ["strategist", "Plus la paire de même couleur (1.2)"],
 ];
 
 /** Win rate against the previous bot, with a bar from 50 % (a draw of skill). */

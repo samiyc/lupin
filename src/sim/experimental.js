@@ -8,8 +8,8 @@ import { HABITS, STRATEGY } from "./strategist.js";
  * then measured with `npm run duel -- experimental stratege`. What wins moves
  * into the strategist, with a new strategist version.
  *
- * Current experiment: none — identical to Stratège 2.0.0, the strategist
- * 1.1 looking ahead (`lookahead.js`). The ideas it tried (`ideas.js`) and
+ * Current experiment: none — identical to Stratège 2.1.0, the strategist
+ * 1.2 looking ahead (`lookahead.js`). The ideas it tried (`ideas.js`) and
  * what they measured are in docs/analyse-replays.md.
  */
 export const EXPERIMENT = Object.freeze({

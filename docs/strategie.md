@@ -1,0 +1,148 @@
+# La stratégie des robots, et tes principes
+
+Ce que Sami a relevé en relisant ses parties contre les robots, principe par
+principe. Chaque principe donne :
+- où il se voit (replay et coup du journal) ;
+- sa traduction dans le code ;
+- son test ;
+- ce qu'il a donné en duel.
+
+**Règle de décision** (choix de Sami) : **la mesure tranche**.
+- Un principe qui fait gagner le robot entre dans le Stratège.
+- Un principe neutre ou perdant reste dans le code comme interrupteur, mais pas
+  dans le Stratège.
+- Son test de cas reste alors « à faire » (`todo`), avec la raison.
+
+## Comment le Stratège choisit un coup
+
+Le Stratège 2 a deux étages :
+1. **Le cœur** (`strategist`, version 1.2) note chaque coup possible. Il estime ce
+   que devient la borne jouée, face à ce que l'adversaire y construit.
+   - Estimation : `sidePotential` dans `src/sim/potential.js`, `moveGain` dans
+     `src/sim/bots.js`.
+   - La note reçoit ensuite des bonus : les trois habitudes
+     (`src/sim/strategist.js`), les idées (`src/sim/ideas.js`) et les principes
+     (`src/sim/principles.js`).
+2. **L'anticipation** (`src/sim/lookahead.js`) prend les 4 meilleurs coups du
+   cœur. Pour chacun, elle rejoue 16 fois la fin de la partie, en distribuant au
+   hasard les cartes invisibles, puis garde celui qui gagne le plus souvent.
+
+Depuis la version 2.1, l'anticipation garde aussi une part de l'avis du cœur :
+la note d'un candidat est sa part de fins de partie gagnées, plus 0,3 fois sa note
+du cœur (`prior`). Seize fins de partie départagent mal deux coups proches, et la
+note du cœur porte les habitudes et les principes. Mesure : 54,1 % contre la même
+version sans cette part (800 parties, ±3,5).
+
+**Conséquence importante.** Une règle du cœur agit de deux façons sur le 2 :
+- elle choisit les 4 candidats ;
+- elle fait jouer les fins de partie simulées, où le cœur tient les deux côtés.
+
+Mais une fois les candidats choisis, seules les fins de partie tranchent. Le
+Stratège 2 peut donc encore jouer un coup que son cœur évite : un 10 au milieu,
+par exemple.
+
+**Protocole des duels.**
+
+| Duel | Parties | Fourchette | Durée |
+|---|---|---|---|
+| Cœur contre cœur | 8 000 (4 000 de chaque côté) | ±1,1 point | quelques secondes |
+| Finalistes, cœur contre cœur | 24 000 | ±0,6 point | — |
+| Stratège 2 contre Stratège 2 | 800 | ±3,5 points | environ 20 minutes |
+
+## Les principes
+
+### 1. Une paire de même couleur ne se sépare pas — `connector` ✅ retenu (1.2)
+
+- **Replay** : 12-05, coup 5. Le 8♠ est seul sur la borne 4, le 9♠ en main. Le
+  robot ouvre la borne 5 avec le 9♠.
+- **Pourquoi c'est grave** : 8♠ 9♠ ouvre 7-8-9 et 8-9-10 à pique, le meilleur score
+  possible. Ce sont les meilleures cartes de la main. Garder le 9♠ en main est
+  acceptable, et cache la Suite couleur à l'adversaire. Le poser ailleurs la
+  détruit.
+- **À ne pas confondre** : 9♥ 10♥ n'attend qu'une seule carte, le 8♥.
+- **Code** : une pénalité pour poser une carte loin de sa voisine de même couleur
+  restée seule sur une autre borne, tant que les deux bouts sont encore possibles.
+- **Cause** : l'estimation ne mesure que la borne jouée. Elle ne voit pas que le
+  9♠ valait une Suite couleur à la borne 4.
+- **Mesure** : 53,9 % contre le Stratège 1.1 (24 000 parties, ±0,6). Le Stratège
+  2.1, qui l'embarque, bat le 2.0 dans 55,4 % des parties (800 parties, ±3,4).
+- **Test** : réussi par le cœur et par le Stratège 2.
+
+### 2. Les Brelans se jouent — `trips` ✗ non retenu
+
+- **Replay** : 11-28, coups 2 à 16. Le robot a 2♠ 2♥ JK en main dès le départ, puis
+  3♠ 3♣ et deux jokers. Il ne joue aucun Brelan.
+- **Principe** : jouer un Brelan vide la main et fait piocher.
+  - Brelans sur les bornes 2, 3, 5 et 6.
+  - Suites couleur au milieu, sur les bornes 3, 4 et 5.
+  - Suites et Sommes aux bords, sur les bornes 1 et 7.
+- **Rappel** : le joker n'a pas de couleur, il n'aide jamais une Suite couleur.
+- **Code** : un bonus pour une carte qui rejoint sa jumelle seule, ou qui ouvre une
+  borne 2, 3, 5 ou 6 quand la main tient déjà le Brelan.
+- **Mesure** : 51,2 % seul (±1,1), mais 52,6 % avec `connector` contre 53,9 %
+  sans. Il affaiblit le cœur.
+- **Test** : « à faire ». Piste : le bonus s'applique aussi à des Brelans faibles ;
+  ta nuance sur les petites valeurs (principe 6) n'est pas encore codée.
+
+### 3. Pas de bout au milieu — `ends` ✗ non retenu
+
+- **Replay** : 11-28, coup 8. Le 10♥ ouvre la borne 4.
+- **Principe** : 10 est un bout, comme 1. Sa Suite couleur ne peut venir que de
+  8-9. Au milieu, il faut deux cartes de même couleur qui se suivent, de 2-3 à
+  8-9, et leurs deux voisines ne doivent pas être déjà en jeu. Si ces cartes
+  partent chez l'adversaire, on se rabat sur une Couleur simple.
+- **Code** : une pénalité pour un 1 ou un 10 qui ouvre les bornes 3, 4 ou 5. La
+  règle `middle` du Stratège 1.1 couvre déjà le cas des deux cartes qui se
+  suivent.
+- **Mesure** : 49,9 %, neutre. Avec `connector`, 53,3 % contre 53,9 %.
+- **Test** : le cœur l'évite déjà, grâce à `middle`. Le Stratège 2.1 le joue
+  encore 4 fois sur 10 (10 graines essayées) : les fins de partie choisissent parmi
+  les 4 candidats, et le 10♥ y figure. « À faire » pour lui.
+
+### 4. Garder des bornes libres — `reserve` ✗ non retenu
+
+- **Replay** : 12-05, coup 13. Les 7 bornes du robot sont occupées.
+- **Principe** : garder deux bornes vides en début et milieu de partie, une seule
+  vers la fin. La pioche peut apporter un Brelan ou une Suite couleur qui ne
+  s'accorde avec aucune borne déjà ouverte.
+- **Code** : une pénalité pour ouvrir une borne quand il en resterait moins de deux
+  libres (moins d'une quand la pioche passe sous 10 cartes).
+- **Mesure** : 50,3 %, neutre. Au poids essayé, il ne change pas ce coup-là.
+- **Test** : « à faire ».
+
+### 5. Garder l'estimation entière — `whole` (mesuré, non retenu)
+
+- **Principe** (pas de replay précis) : juger un coup sur tout le plateau. Une
+  carte qui quitte la main emporte ce qu'elle promettait aux autres bornes.
+- **Mesure** : 51,3 % seul. Avec `connector`, 54,4 % contre 53,9 % : l'écart est
+  dans le bruit, et le calcul est plus lourd.
+- **Suite** : c'est la cause générale du principe 1. Il reste un interrupteur, à
+  remesurer avec le Stratège 2.
+
+### 6. Le Brelan avec un joker : bord ou milieu ? — cas « à faire »
+
+- **Replay** : 12-50, coup 10. La main est 4♠ 1♥ 8♥ 1♦ 2♦ JK. Le robot ouvre la
+  borne 5 avec le 1♥, pour un Brelan 1-1-JK.
+- **Principe** : un Brelan faible ne doit pas bloquer une borne du milieu.
+  - **Mieux** : 2♦ vers le 2♠ de la borne 1, pour vider la main. On garde les 8,
+    utiles pour départager une Couleur contre une Couleur.
+  - **Sinon** : 8♥ vers le 8♣ de la borne 6, si les 6♣ et 9♣ sont déjà joués. La
+    Suite couleur est alors impossible, et le Brelan devient la meilleure ligne de
+    cette borne.
+- **Code** : `ends` (1 au milieu) et `trips` (rejoindre la jumelle) couvrent ce cas.
+- **Test** : « à faire ». `trips` affaiblit le cœur, et `ends` seul ne suffit pas à
+  changer ce coup.
+
+## Les tests
+
+- **`tests/strategy-cases.test.js`** : chaque cas est rejoué depuis
+  `tests/fixtures/replays/`, et vérifié pour le cœur et pour le Stratège 2 (graine
+  fixe).
+  - On vérifie ce que le robot **ne doit pas** faire, pas un coup unique.
+  - Un cas encore raté est `todo` : il s'affiche dans `npm test` sans le faire
+    échouer.
+- **`tests/ideas.test.js`** : chaque principe sur une position construite à la
+  main.
+
+Les numéros de coup sont ceux des journaux. Le compteur du lecteur de replays
+affichait le tour suivant ; il affiche maintenant le coup montré.

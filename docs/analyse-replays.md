@@ -176,3 +176,38 @@ donc **4 × 16**.
 - **Pistes pour le robot** :
   - des fins de partie jouées par un robot plus rapide, pour en jouer davantage ;
   - un calcul dans un worker, pour réfléchir plus longtemps sans figer la page.
+
+# Troisième série : 3 parties contre le Stratège 2.0
+
+Les 3 parties du 24 septembre 2026, de 11h28 à 13h, contre le **Stratège 2.0.0**.
+
+| Partie | Sami joue | Résultat | Bornes | Durée | Réflexion par coup |
+|---|---|---|---|---|---|
+| 11h28 | premier | gagnée, 3 bornes côte à côte | 4-3 | 8 min | 22 s |
+| 12h05 | second | gagnée, 3 bornes côte à côte | 4-3 | 17 min | 49 s |
+| 12h50 | premier | perdue, 3 bornes côte à côte | 3-4 | 12 min | 34 s |
+
+Trois parties serrées, toutes en 4-3, et **Sami en gagne 2**. Il réfléchit deux à
+trois fois plus longtemps qu'en première série (14 s par coup) : le robot est plus
+dur à lire.
+
+En relisant ces parties, Sami a relevé cinq erreurs du robot. Elles sont devenues
+des tests (`tests/strategy-cases.test.js`), et chacune a été codée puis mesurée.
+Le détail est dans **`docs/strategie.md`**.
+
+| Erreur relevée | Règle | Mesure | Décision |
+|---|---|---|---|
+| Le 9♠ quitte le 8♠ (12h05, coup 5) | `connector` | 53,9 % contre le cœur 1.1 | **retenue**, cœur 1.2 |
+| Aucun Brelan joué (11h28) | `trips` | l'affaiblit (52,6 % contre 53,9 %) | à faire |
+| Un 10 au milieu (11h28, coup 8) | `ends` | neutre | à faire pour le 2.1 ; le cœur l'évite déjà |
+| Les 7 bornes occupées dès le coup 13 (12h05) | `reserve` | neutre | à faire |
+| 1-1-JK au milieu (12h50, coup 10) | `ends` + `trips` | voir plus haut | à faire |
+
+Deux changements dans l'anticipation :
+- **le nouveau cœur 1.2** : le Stratège 2.1 bat le 2.0 dans 55,4 % des parties
+  (800 parties, ±3,4) ;
+- **une part de l'avis du cœur gardée** dans la note des candidats (`prior`
+  0,3) : 54,1 % de plus contre la même version sans elle (±3,5).
+
+**Le Stratège 2.1.0** réunit les deux. Le rapport et la fiche sont rejoués avec le
+cœur 1.2.

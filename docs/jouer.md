@@ -30,8 +30,9 @@ adversaire et ton prénom.
   Survole une carte d'une pile pour la voir en entier.
 - **Compter les couleurs** : en haut à droite, un bouton par couleur donne le
   nombre de cartes de cette couleur que tu vois, sur le plateau et dans ta main,
-  sur 10 (« ♥ 6/10 »). Maintiens un bouton, à la souris ou avec Entrée : les
-  cartes de cette couleur s'allument, les autres passent en gris.
+  sur 10 (« ♥ 6/10 »), puis les jokers sur 2 (« JK 1/2 »). Maintiens un bouton,
+  à la souris ou avec Entrée : les cartes de cette couleur (ou les jokers)
+  s'allument, les autres passent en gris.
 - **À gauche** : la pioche (grisée une fois vide), le numéro du tour et un
   chronomètre discret : le temps du coup en cours et celui de la partie. Il
   s'arrête quand la fenêtre n'est plus active, pour une note prise ailleurs par
@@ -53,6 +54,11 @@ adversaire et ton prénom.
   derniers coups : c'est normal, il n'y a plus rien à piocher.
 - Le Stratège réfléchit une fraction de seconde par coup : la partie se calcule
   coup par coup avant de démarrer (« Les robots jouent… tour 12 / 42 »).
+- Les deux mains sont triées par couleur à la distribution, et les cartes piochées
+  arrivent à droite, comme en jeu. « Trier : par couleur / par valeur » range les
+  deux mains à partir du coup affiché.
+- Le compteur affiche le tour du coup montré, comme les journaux et le panneau de
+  droite.
 - La **graine** identifie la partie : remets la même pour la revoir.
 - Le panneau de droite dit ce que le robot avait en main, où il a joué, ce qu'il y
   avait en face, et ses meilleures options avec leur gain estimé.
@@ -61,12 +67,12 @@ adversaire et ton prénom.
 **Replays.** La liste des parties récentes (`replays/`) et gardées
 (`data/replays/`), cinq visibles à la fois.
 - Chaque partie tient sur deux lignes :
-  - « (W) Sami -vs- Stratège 2.0.0 » : le (W) est du côté du gagnant, et le
+  - « (W) Sami -vs- Stratège 2.1.0 » : le (W) est du côté du gagnant, et le
     bouton est vert si tu as gagné, rouge sinon ;
   - en dessous, le score (ou « 3 bornes connectées »), la durée et la date.
 - Même lecteur que l'Observer.
 - Pour chacun de tes coups, le panneau donne le temps que tu as mis (« Joue 5♥
-  sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 1.1**
+  sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 1.2**
   aurait joué, et l'écart avec son meilleur coup. C'est le Stratège sans son
   anticipation, assez rapide pour juger chaque coup. Un joker posé hors d'une
   paire est signalé à part : il ne le jouerait jamais, il n'y a donc pas
@@ -81,16 +87,16 @@ adversaire et ton prénom.
 | Robot | Version | Ce qu'il fait |
 |---|---|---|
 | **Basique** | 1.0.0 | Joue la carte qui vaut le plus à l'instant T, face à ce que l'adversaire construit. |
-| **Stratège** | 2.0.0 | **Il anticipe.** Il prend ses 4 meilleurs coups selon le Stratège 1.1 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie, en distribuant au hasard les cartes qu'il ne voit pas, et il garde le coup qui gagne le plus souvent. Il bat le 1.1 dans environ 74 % des parties. |
-| Stratège 1.1 | (cœur du 2.0) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus deux idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide, jamais la même valeur seule sur deux bornes. C'est lui qui joue les statistiques du rapport : le 2.0 est trop lent pour un million de parties. |
-| **Expérimental** | 0.3.0 | Banc d'essai. Au départ identique au Stratège 2.0 ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`, `src/sim/lookahead.js`). |
+| **Stratège** | 2.1.0 | **Il anticipe.** Il prend ses 4 meilleurs coups selon son cœur, le Stratège 1.2 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie en distribuant au hasard les cartes qu'il ne voit pas. Il garde le coup qui gagne le plus souvent, en tenant un peu compte de l'avis du cœur. Le 2.0 battait le cœur 1.1 dans 74 % des parties, et le 2.1 bat le 2.0 dans 55 %. |
+| Stratège 1.2 | (cœur du 2.1) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus trois idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide ; jamais la même valeur seule sur deux bornes ; ne jamais séparer deux cartes de même couleur qui se suivent (1.2). C'est lui qui joue les statistiques du rapport : le 2.1 est trop lent pour un million de parties. Le détail : `docs/strategie.md`. |
+| **Expérimental** | 0.4.0 | Banc d'essai. Au départ identique au Stratège 2.1 ; on y teste une idée (`src/sim/experimental.js`, `src/sim/ideas.js`, `src/sim/lookahead.js`). |
 
 **Versions.** Tout changement de comportement change le numéro :
 - dernier chiffre : un réglage ;
 - chiffre du milieu : une nouvelle règle ;
 - premier chiffre : une autre façon de penser.
 
-Chaque replay enregistre le robot et sa version (`stratege@2.0.0`), donc les
+Chaque replay enregistre le robot et sa version (`stratege@2.1.0`), donc les
 générations restent comparables. L'historique des versions et les mesures
 qui les justifient sont dans `docs/analyse-replays.md`.
 

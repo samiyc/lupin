@@ -50,9 +50,10 @@ src/core/     cards, formations (classify, brute-force reference),
               notation ("7♥" ↔ id, shared by logs, real games and the page)
 src/sim/      game (rules engine, endMode early|final), bots (random, greedy,
               strategist + one-habit and one-idea variants, experimental),
-              strategist (Sami's three habits), ideas (his later ideas, two of
-              them in strategist 1.1), lookahead (rollouts: the line-up's
-              Stratège 2), experimental (the sandbox),
+              strategist (Sami's three habits), ideas (his later ideas),
+              principles (his rules from reading Stratège 2 replays), the
+              ones kept listed in STRATEGIST_IDEAS; lookahead (rollouts: the
+              line-up's Stratège 2), experimental (the sandbox),
               potential (the bots'
               estimate), simulate (two-player tallies), solo (Sami's solo test
               protocol, same tally for bots and real games)
@@ -96,15 +97,17 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   a browser script. `out/artifact/statistiques.html` is the same page without
   the doctype/html/head/body skeleton, for publishing as an Artifact.
 - **The reference bot is `strategist`** (`REFERENCE_BOT` in
-  `src/config/simulations.js`), version 1.1: the three habits plus the
-  `middle` and `spread` ideas (`STRATEGIST_IDEAS`). It beats `greedy` head to
-  head (~65 %; the habits alone, `strategist:habits`, ~58 %), so every
-  simulated statistic uses it. **The line-up's Stratège is 2.0**, engine
-  `lookahead`: the 1.1 shortlists 4 moves, and each is played out 16 times on
-  random deals of the unseen cards (common deals across candidates, seeded
-  by the turn so a position always scores the same). It beats the 1.1 ~74 %
-  of the time but thinks ~0.4 s a move, far too slow for the build, so the
-  report keeps the 1.1 and the replay advisor too; `greedy` is still played on
+  `src/config/simulations.js`), version 1.2: the three habits plus the
+  `middle`, `spread` and `connector` ideas (`STRATEGIST_IDEAS`). Earlier
+  generations stay as engines for the report (`strategist:habits` = 1.0,
+  `strategist:1.1`). **The line-up's Stratège is 2.1**, engine `lookahead`:
+  the 1.2 shortlists 4 moves, each is played out 16 times on random deals of
+  the unseen cards, and a candidate scores its won share plus `prior` (0.3)
+  times its core score. Deals and the rollout policy are re-seeded from the
+  turn at every scoring, so a position always scores the same — a policy
+  that kept its own rng made `choose` disagree with `scoreMoves`. It thinks
+  ~0.4 s a move, far too slow for the build, so the report keeps the core and
+  the replay advisor too; `greedy` is still played on
   `PREVIOUS_BOT_ROWS` so the report shows old and new. Changing the reference
   bot moves every resemblance figure: rerun the build and let
   `assertNarrative` say which sentence no longer holds (it caught two).
@@ -130,9 +133,17 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   abandoned game, and `play.js` re-locates the card before playing it. Reading
   the index back from `dataTransfer` played the wrong card: any foreign drop
   carries text too, and `Number("")` is 0.
+- **Sami's strategy cases are tests** (`tests/strategy-cases.test.js`):
+  positions replayed with `stateAt(log, turn)` from `tests/fixtures/replays/`,
+  each asserting what the core and Stratège 2 must NOT play. A rule that lost
+  in duels stays `todo` with its number; `docs/strategie.md` is the ledger.
+  Turn numbers are the logs' (the player's counter now matches them).
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.
+- **The replay player keeps hands in order with `followHands()`** (`hand.js`):
+  sorted at the deal, drawn cards appended, a sort applied from the position
+  it was asked at. Both hands, via `handOrder` / `topOrder` of `tableView`.
 - **The replay list label is `replayLabel()`** in `view.js` (pure, tested),
   fed by `replayHeader()` (borders won, `durationMs`). The second line must
   fit on one line at the sidebar's width; it was measured in the browser.

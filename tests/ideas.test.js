@@ -73,3 +73,43 @@ describe("the ideas", () => {
     assert.equal(ideasBonus(empty, 1, at(6, HEART)), -IDEA_WEIGHTS.exposed);
   });
 });
+
+describe("Sami's principles (principles.js)", () => {
+  const withPile = (context, pile) => ({ ...context, pile });
+
+  it("trips: a card joins its lone twin, or opens a trips border, when the hand holds the three", () => {
+    const hand = [at(2, HEART), JOKER, at(9, SPADE)];
+    const context = contextOf({ ideas: ["trips"], hand, mine: { 4: [at(2, SPADE)] } });
+    assert.equal(ideasBonus(context, 4, at(2, HEART)), IDEA_WEIGHTS.trips, "2♥ joins the lone 2♠");
+    assert.equal(ideasBonus(context, 0, at(9, SPADE)), 0);
+    const trio = contextOf({ ideas: ["trips"], hand: [at(8, HEART), at(8, SPADE), JOKER] });
+    assert.equal(ideasBonus(trio, 5, at(8, HEART)), IDEA_WEIGHTS.trips, "border 6 is a trips border");
+    assert.equal(ideasBonus(trio, 0, at(8, HEART)), 0, "border 1 is not");
+  });
+
+  it("ends: no 1 or 10 opens a middle border", () => {
+    const context = contextOf({ ideas: ["ends"], hand: [at(10, HEART), at(1, SPADE), at(5, SPADE)] });
+    assert.equal(ideasBonus(context, 3, at(10, HEART)), -IDEA_WEIGHTS.ends);
+    assert.equal(ideasBonus(context, 2, at(1, SPADE)), -IDEA_WEIGHTS.ends);
+    assert.equal(ideasBonus(context, 0, at(10, HEART)), 0, "an edge border is fine");
+    assert.equal(ideasBonus(context, 3, at(5, SPADE)), 0);
+  });
+
+  it("reserve: two free borders while the pile is thick, one near the end", () => {
+    const five = { 0: [at(1, SPADE)], 1: [at(2, SPADE)], 2: [at(3, SPADE)], 3: [at(4, SPADE)], 4: [at(5, SPADE)] };
+    const early = withPile(contextOf({ ideas: ["reserve"], mine: five }), 20);
+    assert.equal(ideasBonus(early, 5, at(9, HEART)), -IDEA_WEIGHTS.reserve, "one free border would be left");
+    assert.equal(ideasBonus(withPile(early, 4), 5, at(9, HEART)), 0, "near the end one is enough");
+    assert.equal(ideasBonus(early, 0, at(9, HEART)), 0, "joining a started border keeps them free");
+  });
+
+  it("connector: a card does not leave its suited neighbour alone while both ends are open", () => {
+    const context = contextOf({ ideas: ["connector"], hand: [at(9, SPADE)], mine: { 3: [at(8, SPADE)] } });
+    assert.equal(ideasBonus(context, 4, at(9, SPADE)), -IDEA_WEIGHTS.connector, "9♠ leaves the 8♠");
+    assert.equal(ideasBonus(context, 3, at(9, SPADE)), 0, "9♠ joins it");
+    const closed = contextOf({ ideas: ["connector"], hand: [at(9, SPADE)], mine: { 3: [at(8, SPADE)] }, theirs: { 1: [at(7, SPADE)] } });
+    assert.equal(ideasBonus(closed, 4, at(9, SPADE)), 0, "7♠ already played: one end left, no pair worth keeping");
+    const hearts = contextOf({ ideas: ["connector"], hand: [at(10, HEART)], mine: { 3: [at(9, HEART)] } });
+    assert.equal(ideasBonus(hearts, 4, at(10, HEART)), 0, "9♥ 10♥ has a single out, the 8♥");
+  });
+});

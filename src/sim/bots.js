@@ -1,5 +1,4 @@
 import { isJoker, valueOf } from "../core/cards.js";
-import { createRng } from "../core/random.js";
 import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
@@ -111,6 +110,7 @@ function ideasContext(state, player, { ideas, weights }, seen) {
     hand: state.hands[player],
     theirSides: state.borders.map((border) => border.sides[1 - player]),
     boardCards: state.borders.flatMap((border) => border.sides.flat()),
+    pile: state.pile.length,
     chances: ideas.has("runs") || ideas.has("dump") ? borderChances(state, player, seen) : null,
   };
 }
@@ -130,11 +130,40 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...t
     ...ideasContext(state, player, tuning, seen),
   };
   const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
+  const gainOf = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
-    gainOf: (move) => moveGain(state, move, mine, threat[move.border]) * (factors?.[move.border] ?? 1),
+    gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1),
     scale: 1 / (4 * params.temperature),
     keepAll,
   });
+}
+
+/**
+ * `whole` (ideas.js): a move judged on the whole board. A card leaving the
+ * hand also takes away what it promised the other borders — the 9♠ that would
+ * have joined the 8♠ — which `moveGain` never counts. Gain = Σ over my borders
+ * of the win chance after, minus before, minus the card's cost.
+ */
+function wholeGains(state, { mine, threat }) {
+  const player = state.current;
+  const sides = state.borders.map((border) => border.sides[player]);
+  const hand = state.hands[player];
+  const worth = (side, context, index) => winChance(sidePotential(side, context), threat[index], mine.params);
+  const sum = (values) => values.reduce((a, b) => a + b, 0);
+  const before = sum(sides.map((side, index) => worth(side, { ...mine, hand }, index)));
+  const perCard = new Map();
+  for (const card of new Set(hand)) {
+    const rest = [...hand];
+    rest.splice(rest.indexOf(card), 1);
+    const context = { ...mine, hand: rest };
+    const each = sides.map((side, index) => worth(side, context, index));
+    perCard.set(card, { context, each, total: sum(each) });
+  }
+  return ({ card, border }) => {
+    const { context, each, total } = perCard.get(card);
+    const after = total - each[border] + worth([...sides[border], card], context, border);
+    return after - before - cardCost(state.spec, card, mine.params);
+  };
 }
 
 const winChance = (mine, theirs, params = BOT_PARAMS) => 1 / (1 + Math.exp((theirs - mine) / params.temperature));
@@ -164,7 +193,7 @@ export { VALUE_TO_CHANCE };
  */
 const lookaheadOf = (settings, name) => (rng) => {
   const base = strategistBot(rng, settings);
-  const policy = strategistBot(createRng(rng.int(2 ** 31)), settings);
+  const policy = (seeded) => strategistBot(seeded, settings);
   return lookaheadBot(rng, { base, policy, ...settings.lookahead, name });
 };
 
@@ -180,8 +209,9 @@ export const BOTS = Object.freeze({
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
   "strategist:suited": (rng) => strategistBot(rng, { habits: ["suited"] }),
-  // The three habits without the ideas: strategist 1.0.0, for the report.
+  // Earlier generations, for the report: the three habits alone (1.0), plus the first two ideas (1.1).
   "strategist:habits": (rng) => strategistBot(rng, { name: "strategist:habits" }),
+  "strategist:1.1": (rng) => strategistBot(rng, { ideas: ["middle", "spread"], name: "strategist:1.1" }),
   // The three habits plus one idea at a time, to weigh each idea on its own.
   ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
 });

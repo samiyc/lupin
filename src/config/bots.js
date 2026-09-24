@@ -15,13 +15,13 @@ export const BOT_LINEUP = Object.freeze({
   }),
   stratege: Object.freeze({
     engine: "lookahead",
-    version: "2.0.0",
+    version: "2.1.0",
     label: "Stratège",
     description: "Les habitudes et les idées de Sami, et avant chaque coup il rejoue la fin de partie pour ses meilleures options.",
   }),
   experimental: Object.freeze({
     engine: "experimental",
-    version: "0.3.0",
+    version: "0.4.0",
     label: "Expérimental",
     description: "Banc d'essai des nouvelles idées. Pour l'instant identique au Stratège.",
   }),
@@ -31,7 +31,7 @@ export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 
 export const DEFAULT_OPPONENT = "stratege";
 
-/** "stratege@2.0.0": how a bot is named in replays. */
+/** "stratege@2.1.0": how a bot is named in replays. */
 export const botTag = (id) => `${id}@${BOT_LINEUP[id].version}`;
 
 export function engineOf(id) {

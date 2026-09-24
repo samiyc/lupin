@@ -41,7 +41,7 @@ describe("looking ahead", () => {
 
   it("rates its candidates by won rollouts, the same way every time", () => {
     const rng = createRng(5);
-    const bot = lookaheadBot(rng, { base: BOTS.strategist(rng), policy: BOTS.strategist(createRng(6)), candidates: 3, rollouts: 4 });
+    const bot = lookaheadBot(rng, { base: BOTS.strategist(rng), policy: (seeded) => BOTS.strategist(seeded), candidates: 3, rollouts: 4, prior: 0 });
     const moves = legalMoves(state);
     const first = bot.scoreMoves(state, moves);
     assert.deepEqual(bot.scoreMoves(state, moves), first);

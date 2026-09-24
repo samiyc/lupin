@@ -10,7 +10,7 @@ import { REPLAY_DIRS, isSafeName } from "./lib/replay-files.js";
 /**
  * `npm run replays`: what the saved games say — `replays/` and
  * `data/replays/` together. Human moves are weighed against the strategist
- * 1.1 (the Stratège 2 without its look-ahead: fast enough for every move).
+ * 1.2 (the Stratège 2 without its look-ahead: fast enough for every move).
  */
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 
@@ -37,13 +37,13 @@ lines.push("", ...formationLines("Combinaisons de l'humain", summary.formations.
 lines.push("", ...formationLines("Combinaisons des robots", summary.formations.bot));
 lines.push("", ...formationLines("Lignes avec un joker (humain)", summary.jokers.human));
 const { moves, agreed, examples } = summary.advice;
-lines.push("", `Coups humains identiques au meilleur choix du Stratège 1.1 : ${agreed} / ${moves} (${pct(agreed, moves)})`);
-if (examples.length > 0) lines.push("Les plus grands écarts avec le Stratège 1.1 :");
+lines.push("", `Coups humains identiques au meilleur choix du Stratège 1.2 : ${agreed} / ${moves} (${pct(agreed, moves)})`);
+if (examples.length > 0) lines.push("Les plus grands écarts avec le Stratège 1.2 :");
 for (const example of examples.slice(0, 10)) {
   lines.push(`  ${example.startedAt.slice(0, 16)} tour ${example.turn} (écart ${example.gap.toFixed(3)}) : main ${example.hand.join(" ")} — joué ${example.played.card}→${example.played.border}, conseillé ${example.advised.card}→${example.advised.border}`);
 }
 const { refused } = summary.advice;
-if (refused.length > 0) lines.push("", `Jokers posés hors d'une paire (le Stratège 1.1 ne le fait jamais) : ${refused.length}`);
+if (refused.length > 0) lines.push("", `Jokers posés hors d'une paire (le Stratège 1.2 ne le fait jamais) : ${refused.length}`);
 for (const move of refused) {
   lines.push(`  ${move.startedAt.slice(0, 16)} tour ${move.turn} : main ${move.hand.join(" ")} — joué ${move.played.card}→${move.played.border}`);
 }
