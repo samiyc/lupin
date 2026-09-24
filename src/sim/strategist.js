@@ -70,15 +70,21 @@ function suitedBonus(context, side, card, strategy) {
  * experiment says otherwise). With a non-empty `ideas` set it also carries
  * what `ideasBonus` (`ideas.js`) reads.
  */
-export function strategistAdjust(side, card, context, border) {
+/** The habits' bonus for a real card (jokers are only allowed or not). */
+function habitsBonus(context, side, card) {
   const { habits } = context;
   const strategy = context.strategy ?? STRATEGY;
-  if (isJoker(card)) {
-    return { allowed: !habits.has("joker") || jokerCompletesTrips(context.spec, side), bonus: 0 };
-  }
   let bonus = 0;
   if (habits.has("opening") && side.length === 0) bonus += openingBonus(context, card, strategy);
   if (habits.has("suited")) bonus += suitedBonus(context, side, card, strategy);
+  return bonus;
+}
+
+export function strategistAdjust(side, card, context, border) {
+  if (isJoker(card)) {
+    return { allowed: !context.habits.has("joker") || jokerCompletesTrips(context.spec, side), bonus: 0 };
+  }
+  let bonus = habitsBonus(context, side, card);
   if (context.ideas?.size > 0) bonus += ideasBonus(context, border, card);
   return { allowed: true, bonus };
 }
