@@ -7,7 +7,7 @@ import { WIN_TYPES } from "./view.js";
  * and the game state from drifting apart. Input is handled by `drag.js`,
  * through event delegation, so redraws do not lose it.
  */
-const SUIT_NAMES = { "♠": "pique", "♥": "cœur", "♦": "carreau", "♣": "trèfle" };
+const SUIT_NAMES = { "♠": "pique", "♥": "cœur", "♦": "carreau", "♣": "trèfle", joker: "joker" };
 
 /**
  * A card shows its value and suit in the top-left corner — the part that
@@ -82,9 +82,9 @@ function renderSuitBar(suits) {
   if (bar.children.length !== suits.length) {
     bar.replaceChildren(...suits.map(({ suit, red }) => el("button", { type: "button", class: red ? "red" : "", dataset: { suit }, title: SUIT_HINT })));
   }
-  suits.forEach(({ suit, seen, total }, i) => {
+  suits.forEach(({ suit, label, seen, total }, i) => {
     const button = bar.children[i];
-    button.textContent = `${suit} ${seen}/${total}`;
+    button.textContent = `${label} ${seen}/${total}`;
     button.setAttribute("aria-label", `${SUIT_NAMES[suit] ?? suit} : ${seen} cartes vues sur ${total}`);
   });
 }

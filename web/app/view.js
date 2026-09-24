@@ -10,6 +10,8 @@ import { formatMinutes } from "./clock.js";
  * - `bottom` is the seat drawn at the bottom (the human, or seat 1 of the
  *   first bot when observing); the stones read green or red from its side;
  * - `reveal` shows both hands (observer, replays) or hides the top one;
+ * - `handOrder` and `topOrder` are the order each hand is shown in (the
+ *   player's own, or `followHands` in the replay player);
  * - `shown` is how many resolved borders to show: the end of a game reveals
  *   them one by one, in the order they filled;
  * - `suits` counts, suit by suit, the cards the bottom player can see.
@@ -30,17 +32,20 @@ export function suitOrder(spec) {
 }
 
 /**
- * For each suit, in `suitOrder`: how many of its cards the bottom player can
- * see — both sides of the board, their own hand, and the other hand when it
- * is revealed — out of how many the deck holds.
+ * For each suit, in `suitOrder`, then the jokers: how many of its cards the
+ * bottom player can see — both sides of the board, their own hand, and the
+ * other hand when it is revealed — out of how many the deck holds.
  */
 export function suitCounts(spec, snap, { bottom, reveal }) {
   const hands = reveal ? snap.hands : [snap.hands[bottom]];
-  const seen = [...snap.borders.flatMap((border) => border.sides.flat()), ...hands.flat()].filter((card) => !isJoker(card));
-  return suitOrder(spec).map((color) => {
+  const cards = [...snap.borders.flatMap((border) => border.sides.flat()), ...hands.flat()];
+  const seen = cards.filter((card) => !isJoker(card));
+  const suits = suitOrder(spec).map((color) => {
     const suit = spec.suits[color];
-    return { suit, red: RED_SUITS.has(suit), seen: seen.filter((card) => colorOf(spec, card) === color).length, total: spec.values };
+    return { suit, label: suit, red: RED_SUITS.has(suit), seen: seen.filter((card) => colorOf(spec, card) === color).length, total: spec.values };
   });
+  if (!spec.jokers) return suits;
+  return [...suits, { suit: "joker", label: "JK", red: false, seen: cards.filter(isJoker).length, total: spec.jokers }];
 }
 
 export function cardView(spec, card) {
@@ -80,10 +85,10 @@ function resultView(snap, bottom, complete) {
   return { outcome: snap.winner === bottom ? "bottom" : "top", winType: snap.winType };
 }
 
-const DEFAULTS = Object.freeze({ bottom: 0, reveal: false, handOrder: null, shown: Infinity, lastMove: null });
+const DEFAULTS = Object.freeze({ bottom: 0, reveal: false, handOrder: null, topOrder: null, shown: Infinity, lastMove: null });
 
-function topHand(spec, snap, seat, reveal) {
-  const cards = reveal ? snap.hands[seat].map((card) => cardView(spec, card)) : [];
+function topHand(spec, snap, seat, { reveal, topOrder }) {
+  const cards = reveal ? (topOrder ?? snap.hands[seat]).map((card) => cardView(spec, card)) : [];
   return { seat, hidden: !reveal, count: snap.hands[seat].length, cards };
 }
 
@@ -93,7 +98,7 @@ function bottomHand(spec, snap, seat, handOrder) {
 
 /** `{ turn, over, pile, current, top, bottom, borders, suits, result }` for `snap`. */
 export function tableView(spec, snap, options) {
-  const { bottom, reveal, handOrder, shown, lastMove } = { ...DEFAULTS, ...options };
+  const { bottom, reveal, handOrder, topOrder, shown, lastMove } = { ...DEFAULTS, ...options };
   const visible = snap.resolved.slice(0, shown);
   const context = { bottom, visible, justRevealed: visible.at(-1) ?? null, lastMove };
   return {
@@ -101,7 +106,7 @@ export function tableView(spec, snap, options) {
     over: snap.over,
     pile: snap.pile,
     current: snap.current === bottom ? "bottom" : "top",
-    top: topHand(spec, snap, 1 - bottom, reveal),
+    top: topHand(spec, snap, 1 - bottom, { reveal, topOrder }),
     bottom: bottomHand(spec, snap, bottom, handOrder),
     borders: snap.borders.map((_, index) => borderView(spec, snap, index, context)),
     suits: suitCounts(spec, snap, { bottom, reveal }),

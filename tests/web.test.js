@@ -7,7 +7,7 @@ import { createRng } from "../src/core/random.js";
 import { finishLog, playLogged, replayStates, rulesOf, snapshot, startLog } from "../src/replay/log.js";
 import { BOTS } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
-import { moveCard, sortBySuit, sortByValue, syncOrder } from "../web/app/hand.js";
+import { followHands, moveCard, sortBySuit, sortByValue, syncOrder } from "../web/app/hand.js";
 import { START, endOf, isAtEnd, stepBack, stepForward } from "../web/app/steps.js";
 import { cardView, replayLabel, suitCounts, suitOrder, tableView } from "../web/app/view.js";
 
@@ -25,6 +25,24 @@ describe("the hand order", () => {
     assert.deepEqual(moveCard([1, 2, 3, 4], 0, 2), [2, 3, 1, 4]);
     assert.deepEqual(moveCard([1, 2, 3, 4], 3, 0), [4, 1, 2, 3]);
     assert.deepEqual(moveCard([1, 2, 3], 5, 0), [1, 2, 3]);
+  });
+
+  it("follows a logged hand: sorted at the deal, new cards on the right, re-sorted where asked", () => {
+    const hands = [
+      [at(9, 1), at(2, 0), JOKER],
+      [at(9, 1), JOKER, at(5, 3)],
+      [at(9, 1), at(5, 3), at(1, 2)],
+      [at(9, 1), at(1, 2), at(4, 0)],
+    ];
+    assert.deepEqual(followHands(spec, hands), [
+      [at(2, 0), at(9, 1), JOKER],
+      [at(9, 1), JOKER, at(5, 3)],
+      [at(9, 1), at(5, 3), at(1, 2)],
+      [at(9, 1), at(1, 2), at(4, 0)],
+    ]);
+    const sorted = followHands(spec, hands, new Map([[2, sortByValue]]));
+    assert.deepEqual(sorted[2], [at(1, 2), at(5, 3), at(9, 1)]);
+    assert.deepEqual(sorted[3], [at(1, 2), at(9, 1), at(4, 0)]);
   });
 
   it("sorts by suit or by value, jokers last", () => {
@@ -57,6 +75,8 @@ describe("the suit bar", () => {
     assert.equal(mine[0].total, 10);
     assert.equal(count(suitCounts(spec, snap, { bottom: 0, reveal: true }), "♥"), 5);
     assert.equal(count(suitCounts(spec, snap, { bottom: 1, reveal: false }), "♦"), 1);
+    const joker = mine.at(-1);
+    assert.deepEqual([joker.label, joker.seen, joker.total], ["JK", 1, 2], "the joker on the board, out of the deck's two");
   });
 });
 

@@ -117,7 +117,8 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .table[data-highlight="♠"] .card[data-suit="♠"],
 .table[data-highlight="♥"] .card[data-suit="♥"],
 .table[data-highlight="♦"] .card[data-suit="♦"],
-.table[data-highlight="♣"] .card[data-suit="♣"] { filter: none; box-shadow: 0 0 0 3px var(--focus); }
+.table[data-highlight="♣"] .card[data-suit="♣"],
+.table[data-highlight="joker"] .card[data-suit="joker"] { filter: none; box-shadow: 0 0 0 3px var(--focus); }
 
 /* ── Table ───────────────────────────────── */
 .table { position: relative; display: grid; gap: 10px; }

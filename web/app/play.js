@@ -212,7 +212,7 @@ function wireReset(newDialog) {
 
 /** Rearranges the hand; a selected card stays selected wherever it lands. */
 function reorderWith(transform) {
-  if (!active()) return;
+  if (!active() || !play.visible) return;
   const { game } = play;
   const picked = game.selected === null ? null : game.order[game.selected];
   game.order = transform(game.order);

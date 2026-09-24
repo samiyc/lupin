@@ -46,6 +46,23 @@ export function sortBySuit(spec, order) {
   return [...order].sort((a, b) => key(a) - key(b));
 }
 
+/**
+ * The order of one player's hand through a whole logged game, as the replay
+ * player shows it: sorted at the deal, then each position keeps the previous
+ * order and appends the new card on the right, as in a live game. `sorts`
+ * maps a position index to a sort (`sortBySuit`, `sortByValue`) applied there;
+ * without an entry for 0, the deal is sorted by suit.
+ */
+export function followHands(spec, hands, sorts = new Map()) {
+  const orders = [];
+  hands.forEach((hand, index) => {
+    const sort = sorts.get(index) ?? (index === 0 ? sortBySuit : null);
+    const kept = index === 0 ? hand : syncOrder(orders[index - 1], hand);
+    orders.push(sort ? sort(spec, kept) : kept);
+  });
+  return orders;
+}
+
 /** Low to high, suits side by side for each value, jokers at the end. */
 export function sortByValue(spec, order) {
   const key = jokerLast(spec, (card) => valueOf(spec, card) * 10 + colorOf(spec, card));
