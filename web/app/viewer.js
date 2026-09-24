@@ -3,6 +3,7 @@ import { replayStates } from "../../src/replay/log.js";
 import { BOTS } from "../../src/sim/bots.js";
 import { $ } from "./dom.js";
 import { renderExplain } from "./explain.js";
+import { START, endOf, isAtEnd, stepBack, stepForward } from "./steps.js";
 import { SPEC, playerName } from "./runner.js";
 import { renderTable } from "./table.js";
 import { tableView } from "./view.js";
@@ -17,7 +18,10 @@ const viewer = { log: null, frames: [], index: 0, shown: 0, timer: null };
 
 const last = () => viewer.frames.length - 1;
 const settledCount = () => viewer.frames[last()]?.state.resolved.length ?? 0;
-const atEnd = () => viewer.index === last() && viewer.shown >= settledCount();
+const atEnd = () => isAtEnd(viewer, last(), settledCount());
+const moveTo = ({ index, shown }) => {
+  [viewer.index, viewer.shown] = [index, shown];
+};
 
 function lastMoveOf(frame) {
   const entry = frame.entry;
@@ -46,33 +50,31 @@ export function pause() {
 }
 
 function next() {
-  if (viewer.index < last()) viewer.index += 1;
-  else if (viewer.shown < settledCount()) viewer.shown += 1;
+  moveTo(stepForward(viewer, last(), settledCount()));
   if (atEnd()) pause();
   render();
 }
 
 function prev() {
-  if (viewer.index === last() && viewer.shown > 0) viewer.shown = 0;
-  else if (viewer.index > 0) viewer.index -= 1;
+  moveTo(stepBack(viewer));
   render();
 }
 
 /** Back to the deal. */
 function first() {
-  [viewer.index, viewer.shown] = [0, 0];
+  moveTo(START);
   render();
 }
 
 /** The final table, every border settled: the result at a glance. */
 function end() {
-  [viewer.index, viewer.shown] = [last(), settledCount()];
+  moveTo(endOf(last(), settledCount()));
   render();
 }
 
 function play() {
   pause();
-  if (atEnd()) [viewer.index, viewer.shown] = [0, 0];
+  if (atEnd()) moveTo(START);
   viewer.timer = setInterval(next, Number($("speed").value));
   render();
 }
@@ -81,7 +83,7 @@ export function load(log, { autoplay = false } = {}) {
   pause();
   viewer.log = log;
   viewer.frames = replayStates(log, { advisor: BOTS.strategist(createRng(1)) });
-  [viewer.index, viewer.shown] = [0, 0];
+  moveTo(START);
   if (autoplay) play();
   else render();
 }

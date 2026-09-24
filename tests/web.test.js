@@ -4,10 +4,11 @@ import { DECKS } from "../src/config/decks.js";
 import { OFFICIAL_RULES } from "../src/config/rules.js";
 import { JOKER, cardOf } from "../src/core/cards.js";
 import { createRng } from "../src/core/random.js";
-import { rulesOf, snapshot } from "../src/replay/log.js";
+import { finishLog, playLogged, replayStates, rulesOf, snapshot, startLog } from "../src/replay/log.js";
 import { BOTS } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "../web/app/hand.js";
+import { START, endOf, isAtEnd, stepBack, stepForward } from "../web/app/steps.js";
 import { cardView, suitCounts, suitOrder, tableView } from "../web/app/view.js";
 
 const spec = DECKS.classique;
@@ -100,5 +101,40 @@ describe("the table view", () => {
       assert.ok(border.formations.top && border.formations.bottom);
     }
     assert.equal(after.result.outcome, snap.winner === 0 ? "bottom" : "top");
+  });
+});
+
+describe("the replay player's steps", () => {
+  const LAST = 42;
+  const SETTLED = 7;
+
+  it("walks forward move by move, then settles the borders one by one", () => {
+    assert.deepEqual(stepForward(START, LAST, SETTLED), { index: 1, shown: 0 });
+    assert.deepEqual(stepForward({ index: 41, shown: 0 }, LAST, SETTLED), { index: 42, shown: 0 });
+    assert.deepEqual(stepForward({ index: 42, shown: 3 }, LAST, SETTLED), { index: 42, shown: 4 });
+    assert.deepEqual(stepForward(endOf(LAST, SETTLED), LAST, SETTLED), endOf(LAST, SETTLED));
+    assert.ok(isAtEnd(endOf(LAST, SETTLED), LAST, SETTLED));
+  });
+
+  it("steps back one move, even from the settled end", () => {
+    assert.deepEqual(stepBack(endOf(LAST, SETTLED)), { index: 41, shown: 0 });
+    assert.deepEqual(stepBack({ index: 42, shown: 0 }), { index: 41, shown: 0 });
+    assert.deepEqual(stepBack(START), START);
+  });
+
+  it("shows the pile each logged turn saw, down to an empty pile for the last twelve", () => {
+    const { spec: logSpec, order, jokerRule, endMode } = rulesOf(OFFICIAL_RULES);
+    const rng = createRng(11);
+    const game = createGame(logSpec, { order, jokerRule, endMode, rng });
+    const players = [
+      { seat: 0, kind: "bot", bot: "stratege", version: "test" },
+      { seat: 1, kind: "bot", bot: "basique", version: "test" },
+    ];
+    const log = startLog(game, { rules: OFFICIAL_RULES, players, seed: 11, startedAt: "2026-09-24T10:00:00+02:00" });
+    const bots = [BOTS.strategist(rng), BOTS.greedy(rng)];
+    while (!game.over) playLogged(log, game, bots[game.current].choose(game, legalMoves(game)));
+    const frames = replayStates(finishLog(log, game, "2026-09-24T10:05:00+02:00"));
+    log.turns.forEach((entry, i) => assert.equal(tableView(spec, frames[i].state, { bottom: 0 }).pile, entry.pile, `turn ${i + 1}`));
+    assert.equal(frames.filter((frame) => frame.state.pile === 0).length, 13, "the last twelve moves, and the end");
   });
 });
