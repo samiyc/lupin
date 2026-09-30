@@ -18,7 +18,8 @@ import { HABITS, STRATEGY } from "./strategist.js";
 export const EXPERIMENT = Object.freeze({
   habits: HABITS,
   strategy: Object.freeze({ ...STRATEGY }),
-  ideas: STRATEGIST_IDEAS,
+  // 0.6: its core also knows which borders are already decided (certainty.js).
+  ideas: Object.freeze([...STRATEGIST_IDEAS, "certain"]),
   weights: Object.freeze({ ...IDEA_WEIGHTS }),
   search: Object.freeze({ ...SEARCH, budget: 400 }),
 });

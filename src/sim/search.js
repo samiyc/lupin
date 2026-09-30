@@ -1,5 +1,6 @@
 import { createRng } from "../core/random.js";
 import { applyMove } from "./game.js";
+import { STATUS, boardStatus } from "./certainty.js";
 import { cloneState, determinize, playOut } from "./lookahead.js";
 
 /**
@@ -15,10 +16,16 @@ import { cloneState, determinize, playOut } from "./lookahead.js";
  * the other by more than `confidence` standard errors: an obvious move is
  * played fast.
  *
+ * Pruning (`prune`, since 0.6): a border already lost for the mover
+ * (`certainty.js`) gets one candidate at most — whatever lands there changes
+ * nothing — and after every step a candidate whose best plausible rating is
+ * below the leader's worst plausible one (`hopeless` standard errors) is
+ * dropped at once, instead of waiting for the end of its halving round.
+ *
  * A search is a plain object advanced by `step()`, so the page can run it
  * a little at a time — in a worker, and during the human's turn.
  */
-export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3 });
+export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5 });
 
 export const moveKey = (move) => (move ? `${move.card}@${move.border}` : "pass");
 
@@ -41,6 +48,29 @@ const pointsFor = (winner, player) => {
 
 const rating = (arm, prior) => arm.points / Math.max(1, arm.plays) + prior * arm.entry.gain;
 
+const errorOf = (arm) => Math.sqrt(0.25 / Math.max(1, arm.plays));
+
+/** Survivors whose best plausible rating still reaches the leader's worst plausible one. */
+function stillInRace(alive, prior, hopeless) {
+  if (alive.length <= 2 || alive.some((arm) => arm.plays < 16)) return alive;
+  const leader = alive.reduce((a, b) => (rating(b, prior) > rating(a, prior) ? b : a));
+  const floor = rating(leader, prior) - hopeless * errorOf(leader);
+  const kept = alive.filter((arm) => arm === leader || rating(arm, prior) + hopeless * errorOf(arm) >= floor);
+  return kept.length >= 2 ? kept : alive;
+}
+
+/** The shortlist, with at most one move onto each border already lost for the mover. */
+function withoutDominated(state, ranked) {
+  const statuses = boardStatus(state, state.current);
+  const seen = new Set();
+  return ranked.filter(({ move }) => {
+    if (statuses[move.border] !== STATUS.lost) return true;
+    if (seen.has(move.border)) return false;
+    seen.add(move.border);
+    return true;
+  });
+}
+
 /** Is the leader clearly ahead of the runner-up (normal approximation)? */
 function settled([first, second], prior, confidence) {
   if (!second || first.plays < 16) return !second;
@@ -56,9 +86,10 @@ function settled([first, second], prior, confidence) {
  * same answer.
  */
 export function createSearch(state, scored, { policy, seed, warm = null, ...settings }) {
-  const { candidates, firstPhase, prior, confidence } = { ...SEARCH, ...settings };
+  const { candidates, firstPhase, prior, confidence, prune, hopeless } = { ...SEARCH, ...settings };
   const player = state.current;
-  const ranked = [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain);
+  const sorted = [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain);
+  const ranked = prune ? withoutDominated(state, sorted) : sorted;
   const arms = ranked.slice(0, candidates).map((entry) => armFor(entry, { warm, ...settings }));
   const deals = createRng(seed);
   const rollout = policy(createRng(deals.int(2 ** 31)));
@@ -78,6 +109,7 @@ export function createSearch(state, scored, { policy, seed, warm = null, ...sett
         arm.plays += 1;
       }
       rollouts += alive.length;
+      if (prune) alive = stillInRace(alive, prior, hopeless);
       if (alive.every((arm) => arm.plays >= phase) && alive.length > 2) {
         alive = byRating(alive).slice(0, Math.ceil(alive.length / 2));
         phase *= 2;
@@ -102,7 +134,7 @@ function searchScores(scored, arms, alive, prior) {
     const arm = rated.get(entry);
     if (!arm) return { ...entry, gain: -2 + entry.gain / 100 };
     const survivor = alive.includes(arm);
-    return { ...entry, gain: rating(arm, prior) - (survivor ? 0 : 1), rollouts: arm.plays };
+    return { ...entry, gain: rating(arm, prior) - (survivor ? 0 : 1), rating: rating(arm, prior), rollouts: arm.plays };
   });
 }
 

@@ -21,7 +21,10 @@
     "replays": "node scripts/replays.js",
     "fingerprint": "node scripts/fingerprint.js",
     "duel:long": "node scripts/duel.js --long",
-    "luck": "node scripts/luck.js"
+    "luck": "node scripts/luck.js",
+    "selfplay": "node scripts/selfplay.js",
+    "mine": "node scripts/mine.js",
+    "time-study": "node scripts/time-study.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

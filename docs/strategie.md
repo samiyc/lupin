@@ -146,3 +146,60 @@ par exemple.
 
 Les numéros de coup sont ceux des journaux. Le compteur du lecteur de replays
 affichait le tour suivant ; il affiche maintenant le coup montré.
+
+## Les motifs gagnants prouvés (Expérimental 0.6)
+
+Sami demandait des conditions **déterministes** qui disent, sans calculer toute la
+partie, qu'un coup est gagnant ou inutile sur une borne. Le sûr, ce sont les
+**certitudes** : la « revendication » de la règle officielle de Schotten Totten,
+calculée par énumération (`src/sim/certainty.js`).
+
+- **Borne gagnée d'avance** : mon côté est complet, et aucune façon de finir le
+  côté adverse ne le bat. On essaie toutes les cartes que je ne vois pas. En cas
+  d'égalité, gagne celui qui a complété en premier, c'est-à-dire moi.
+- **Borne perdue d'avance** : leur côté est complet, et aucune façon de finir le
+  mien ne le bat, même avec ma main et toutes les cartes que je ne vois pas.
+
+Ce sont des théorèmes, pas des estimations. Le test rejoue 60 parties entières et
+vérifie plus de 500 affirmations « gagnée » ou « perdue » faites en cours de
+partie : aucune n'est contredite par la fin.
+
+**Ce que l'auto-jeu en dit** (`npm run selfplay` puis `npm run mine`) : 1 136
+parties de l'Expérimental 0.5 contre lui-même, en 19 minutes, soit 47 712
+décisions.
+
+| Motif | Fréquence | Ce que faisait le 0.5 |
+|---|---|---|
+| Une borne perdue d'avance est jouable | 30 % des décisions | il y joue 42 % des fois, et **y gâche une carte qui n'est pas la moins chère 28 % des fois** |
+| Un coup gagne une borne à coup sûr | 35 % des décisions | il le prend 45 % des fois : ce n'est pas toujours urgent, la borne peut attendre |
+| Coup « évident » (le choisi devance le suivant de plus de 15 points) | 13 % des décisions | médiane de l'écart : 4,5 points. La plupart des coups sont serrés, et c'est là que le temps de recherche compte |
+
+**Ce qui en est tiré** :
+1. **`certain`, dans le cœur de l'Expérimental.** Sur une borne perdue d'avance, un
+   coup ne change rien : il est jugé au prix de la carte jetée, donc la moins chère
+   part. Mesure : 52,8 % contre le cœur 1.2 (8 000 parties, ±1,1). Le Stratège ne
+   l'a pas encore, pour ne pas relancer le rapport. C'est le prochain candidat pour
+   son cœur (1.3).
+2. **L'élagage de la recherche** (`search.js`, `prune`) :
+   - une seule candidate par borne perdue d'avance, puisque les autres ne font que
+     jeter une carte plus chère ;
+   - après chaque donne, un candidat dont la meilleure note plausible reste sous la
+     pire note plausible du meneur (2,5 écarts-types) sort de la course, sans
+     attendre la fin de sa ronde.
+
+   Le temps économisé va aux coups serrés.
+
+   **Un piège trouvé en route** : avec les certitudes aussi dans les fins de partie
+   simulées, le 0.6 faisait 35 % de simulations en moins par seconde. Elles ne
+   servent qu'à choisir le vrai coup, et les deux versions tournent maintenant à
+   la même vitesse (296 simulations par seconde).
+
+**Mesure du 0.6 contre le 0.5**, à budget égal (400 simulations par coup, profil
+rapide) : 50 % sur 48 parties avant la correction de vitesse, puis **58 %** sur
+72 parties (fourchette 47 – 69 %). Une tendance, pas encore une preuve : entre
+deux robots aussi forts, 5 minutes ne suffisent pas. Le 0.6 reste le banc
+d'essai. `npm run duel -- experimental:400 experimental:0.5 --long` tranchera en
+20 minutes.
+3. **« Gagner une borne à coup sûr » n'est pas une priorité prouvée.** Le robot fort
+   ne la prend qu'une fois sur deux. Elle reste une information pour le cœur, pas
+   une règle.

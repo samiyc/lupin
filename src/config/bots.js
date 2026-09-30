@@ -21,7 +21,7 @@ export const BOT_LINEUP = Object.freeze({
   }),
   experimental: Object.freeze({
     engine: "experimental",
-    version: "0.5.0",
+    version: "0.6.0",
     label: "Expérimental",
     description: "Le cœur du Stratège, qui cherche plus loin : jusqu'à 10 s par coup, et il réfléchit pendant ton tour.",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).

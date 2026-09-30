@@ -150,6 +150,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   human's turn (`src/sim/ponder.js`): it searches its reply averaged over the
   human's possible moves (guessing their exact move fails: it names a card the
   bot cannot see), then warm-starts the real search and credits half the time.
+- **Certainties are theorems** (`src/sim/certainty.js`): a border is `won` /
+  `lost` for a player when no finish of the other side (enumerated over every
+  card they cannot see) changes it. Tested over whole games. The experimental
+  core uses them (`certain`: a move onto a lost border is worth the card
+  thrown away) and its search prunes on them (`prune`). `npm run selfplay`
+  (20 min max, `selfplay/`, ignored) and `npm run mine` measure the patterns.
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

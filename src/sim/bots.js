@@ -1,4 +1,5 @@
 import { isJoker, valueOf } from "../core/cards.js";
+import { withCertainties } from "./certainty.js";
 import { EXPERIMENT } from "./experimental.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
@@ -134,7 +135,8 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...t
     ...ideasContext(state, player, tuning, seen),
   };
   const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
-  const gainOf = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
+  const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
+  const gainOf = context.ideas?.has("certain") ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params)) : plainGain;
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1),
     scale: 1 / (4 * params.temperature),
@@ -214,7 +216,9 @@ const lookaheadOf = (settings, name) => (rng) => {
 /** The experimental bot: `settings`' strategist shortlists and plays the rollouts of a deeper search (`search.js`). */
 export const searchOf = (settings, overrides = {}) => (rng) => {
   const base = strategistBot(rng, settings);
-  const policy = (seeded) => strategistBot(seeded, settings);
+  // Certainties choose the real move; in the rollouts they cost a third of the speed for nothing measurable.
+  const rollouts = { ...settings, ideas: (settings.ideas ?? []).filter((idea) => idea !== "certain") };
+  const policy = (seeded) => strategistBot(seeded, rollouts);
   return searchBot(rng, { base, policy, ...settings.search, name: "experimental", ...overrides });
 };
 
@@ -242,6 +246,7 @@ export const BOTS = Object.freeze({
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
 export function engineFor(id) {
+  if (id === "experimental:0.5") return searchOf({ ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false } });
   if (Object.hasOwn(BOTS, id)) return BOTS[id];
   const budget = /^experimental:(\d+)$/.exec(id)?.[1];
   if (budget) return searchOf(EXPERIMENT, { budget: Number(budget) });
