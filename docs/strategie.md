@@ -357,3 +357,45 @@ se trompent surtout ailleurs, en milieu de partie, où la politique joue les deu
 camps sans rien savoir de la main adverse. La suite de la feuille de route est
 donc de **modéliser l'adversaire** : pondérer les donnes par ce qu'il a joué.
 `certainLite` reste disponible, et pourra être remesuré avec ce modèle.
+
+## La soirée du 30/09 : tous les leviers au banc
+
+Protocole (`docs/validation.md`) : tri en 10 minutes à 200 simulations, puis
+confirmation en 20 minutes à 400 simulations, toujours à la règle de la page et
+contre le 0.7. La version ne monte que si la borne basse de la fourchette par
+paires dépasse 50 %.
+
+**Tri** (288 parties chacun, 240 pour le modèle) :
+
+| Candidat | Idée | Score | Fourchette par paires |
+| --- | --- | --- | --- |
+| `ismcts` | recherche en arbre sur 3 coups (levier 4) | 54,5 % | 50,3 – 58,7 % |
+| `experimental+sample=0.05` | simulations qui tirent leur coup, peu | 52,8 % | 47,6 – 58,0 % |
+| `experimental+model=0.02+tries=24` | modèle de l'adversaire (levier 5) | 51,7 % | 46,1 – 57,2 % |
+| `experimental+lite` | borne perdue vue d'un coup d'œil | 51,4 % | 46,4 – 56,4 % |
+| `experimental+candidates=12` | 12 coups examinés au lieu de 8 | 50,0 % | 44,8 – 55,2 % |
+| `experimental+prior=0.15` | moins de poids au cœur | 49,3 % | 44,1 – 54,5 % |
+| `experimental+sample=0.15` | simulations qui tirent leur coup, beaucoup | 47,2 % | 42,0 – 52,4 % |
+| `experimental+prior=0.6` | plus de poids au cœur | 45,8 % | 40,9 – 50,8 % |
+
+**Confirmation** (400 simulations, 20 minutes, 288 parties) :
+- `ismcts` : **49,0 %** (43,7 – 54,2 %). Le 54,5 % du tri était de la chance :
+  sur huit idées triées, une sort au-dessus de 54 % par hasard seul. C'est ce
+  que la confirmation sert à attraper.
+- `experimental+sample=0.05` : **51,4 %** (45,8 – 56,9 %).
+- les trois petites tendances ensemble (`experimental+sample=0.05+model=0.02+tries=24+lite`,
+  240 parties) : **44,6 %** (39,0 – 50,1 %). Elles ne s'additionnent pas ; réunies,
+  elles nuisent.
+
+**Le modèle de l'adversaire** devine mal la main cachée
+(`npm run model`) : +4,3 % de cartes justes au mieux (2,52 sur 6 au lieu de
+2,42). Un seul coup de l'adversaire, lu par un cœur qui n'est pas le sien, trahit trop
+peu de sa main.
+
+**Ce qu'on en retient.** Aucun levier ne dépasse l'écart que 300 parties
+savent mesurer, environ ±5 points. Les leviers bon marché sont épuisés.
+- Si le 0.7 peut encore progresser de beaucoup, ce sera par un changement de
+  fond : une vraie évaluation apprise par auto-jeu au lieu du cœur écrit à la
+  main, ou une recherche en arbre plus profonde et bien plus rapide.
+- Sinon, la marge restante est plus petite que ce qu'un duel de 20 minutes
+  sait voir.

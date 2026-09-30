@@ -184,7 +184,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     </div>
     <div class="takeaway">
       <h3>Honnêtement</h3>
-      <p>Les six leviers réunis visent <span class="num">1 540 – 1 810</span>, recouvrement déduit. Deux sont déjà mesurés, et plus bas qu'espéré : plus de simulations ne rapporte rien, de meilleures simulations +3 points de victoire au mieux. Le cap de 2000 s'éloigne ; ce qui reste à essayer est dans la recherche (modèle de l'adversaire, arbre) plus que dans la vitesse. Le jalon réaliste est <b>1 600</b> ; 2000 reste le cap, pas une promesse.</p>
+      <p>Après la soirée du 30/09, les six leviers réunis ne visent plus que <span class="num">1 460 – 1 610</span>, recouvrement déduit : quatre ont été mesurés, et aucun n'a dépassé l'écart qu'un duel de 20 minutes sait voir (±5 points). Le jalon de <b>1 600</b> demande un changement de fond (une évaluation apprise, ou une recherche en arbre bien plus profonde) ; 2000 reste le cap, pas une promesse.</p>
     </div>
   </section>
 
@@ -195,8 +195,8 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     </header>
     <ol class="steps">
       <li><span class="v">0.8</span><div><h3>De meilleures simulations — deux candidats écartés</h3><p>Des simulations à la règle de revendication : <span class="num">47,9 %</span> (42,2 – 53,7 %) contre le 0.7. Des simulations qui voient une borne perdue d'un coup d'œil, meilleures sur les fins de partie (<code>npm run policy</code> : 90,0 % des délicates contre 87,5 %) : <span class="num">53,1 %</span> (47,4 – 58,8 %). La borne basse reste sous 50 % : <b>le 0.7 reste en place</b>.</p></div></li>
-      <li><span class="v">0.8</span><div><h3>Modéliser l'adversaire — la suite</h3><p>Les simulations se trompent surtout en milieu de partie, où la main adverse est tirée au hasard. Pondérer les donnes par ce que tu as joué, puis remesurer les simulations améliorées avec ce modèle. C'est aussi la base du vrai jeu caché. <b>Deux lots.</b></p></div></li>
-      <li><span class="v">1.0</span><div><h3>Chercher plus d'un coup d'avance</h3><p>ISMCTS, avec des workers si le débit manque. <b>Trois à quatre lots.</b> Comparé à temps égal, pas à budget égal.</p></div></li>
+      <li><span class="v">0.8</span><div><h3>Soirée du 30/09 — tous les leviers au banc</h3><p>Huit candidats triés en 10 minutes, trois confirmés en 20 : recherche en arbre (ISMCTS) <span class="num">49,0 %</span>, simulations tirées <span class="num">51,4 %</span>, modèle de l'adversaire et certitudes combinés <span class="num">44,6 %</span>. <b>Aucun ne passe : le 0.7 reste en place.</b></p></div></li>
+      <li><span class="v">1.0</span><div><h3>La suite : un changement de fond</h3><p>Les leviers bon marché sont épuisés. Restent une évaluation apprise par auto-jeu au lieu du cœur écrit à la main, ou une recherche en arbre bien plus profonde et plus rapide. Chacun est un chantier de plusieurs soirées.</p></div></li>
       <li><span class="v">—</span><div><h3>Le répertoire d'ouvertures</h3><p>Peu cher, à glisser entre deux versions. Un duel long décide.</p></div></li>
     </ol>
     <p class="limits"><b>La règle de décision ne change pas</b> : un duel long (240 parties, 20 minutes, jeux miroirs). Une version n'entre dans la page que si la fourchette à 95 % reste au-dessus de 50 %.</p>
@@ -289,16 +289,16 @@ const LEVERS = [
     gain: "Le plus gros levier mesurable : l'anticipation avec un bon cœur a valu +180 (Stratège 2.0).",
     measure: "Fait en 0.8 : npm run policy, puis duels longs à la règle de la page. Simulations à la revendication 47,9 % ; borne perdue vue d'un coup d'œil 53,1 % (47,4 – 58,8 %).",
     decision: "Deux candidats écartés : la borne basse reste sous 50 %. Le second reste disponible, à remesurer avec le modèle de l'adversaire." },
-  { id: "ismcts", title: "Chercher plus d'un coup d'avance (ISMCTS)", low: 80, high: 250, cost: "3 – 4 lots", status: "à faire",
+  { id: "ismcts", title: "Chercher plus d'un coup d'avance (ISMCTS)", low: 0, high: 60, cost: "3 – 4 lots", status: "essayé",
     principle: "Aujourd'hui : un coup, puis des simulations. Un arbre de recherche sur information cachée explore aussi tes réponses, et les siennes ensuite.",
     gain: "Grand mais incertain : c'est ce qui sépare les bons programmes de jeux à information cachée des moyens. Il faut aussi beaucoup de vitesse.",
-    measure: "Duel long à temps égal (10 s), pas à budget égal : un arbre coûte plus cher par simulation.",
-    decision: "Gardé à 55 % ou plus à temps égal ; sinon il reste une branche d'essai." },
-  { id: "model", title: "Modéliser l'adversaire", low: 30, high: 100, cost: "2 lots", status: "à faire",
+    measure: "Fait le 30/09 (moteur ismcts, 3 coups de profondeur) : 54,5 % au tri à 200 simulations, puis 49,0 % (43,7 – 54,2 %) en confirmation à 400.",
+    decision: "Écarté dans sa forme simple. Il reste la piste la plus prometteuse s'il devient beaucoup plus profond et plus rapide." },
+  { id: "model", title: "Modéliser l'adversaire", low: 0, high: 30, cost: "2 lots", status: "essayé",
     principle: "Aujourd'hui, tes cartes cachées sont tirées au hasard. Or tes coups trahissent ta main : tu n'as pas joué ce 9 sur ta suite, tu ne l'as donc probablement pas. Pondérer les donnes par ce que tu as joué.",
     gain: "Moyen, et c'est la base du vrai jeu caché : pour bluffer, il faut savoir ce que l'autre croit.",
-    measure: "D'abord : le modèle devine-t-il mieux les mains réelles de l'auto-jeu que le hasard ? Puis un duel long.",
-    decision: "Prédiction nettement meilleure que le hasard, puis 53 % ou plus en duel." },
+    measure: "Fait le 30/09 : npm run model, +4,3 % de cartes justes au mieux ; tri 51,7 % ; combiné aux simulations tirées et à certainLite, 44,6 % en confirmation.",
+    decision: "Écarté : un seul coup adverse trahit trop peu de sa main. À reprendre avec tout l'historique des coups." },
   { id: "book", title: "Un répertoire d'ouvertures", low: 0, high: 30, cost: "1 lot", status: "à faire",
     principle: "Les premiers coups se ressemblent d'une partie à l'autre. Les chercher une fois, longuement, et les ranger.",
     gain: "Petit : les ouvertures sont déjà bien jouées. Mais c'est là que la recherche est la plus lente, donc du temps gagné pour la suite.",
