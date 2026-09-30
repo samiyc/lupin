@@ -22,3 +22,6 @@ export const keepReplay = (name) => call(`/api/replays/recent/${encodeURICompone
 
 /** The Elo table (`/api/elo`): `[{ player, elo, margin, games, human }]`, strongest first. */
 export const fetchElo = () => call("/api/elo");
+
+/** The "Stats" tab (`/api/stats`): `{ lines, formations, elo }`. */
+export const fetchStats = () => call("/api/stats");

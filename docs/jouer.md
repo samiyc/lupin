@@ -16,10 +16,13 @@ dans l'ordre où elles se sont complétées. Le premier à avoir 4 bornes, ou 3 
 côte, gagne. C'est le même vainqueur qu'avec la règle officielle, où l'on revendique
 en cours de partie ; un test le vérifie.
 
-## Les quatre onglets
+## Les cinq onglets
+
+Dans l'ordre : Jouer, Observer, Puzzles, Replays, Stats.
 
 **Jouer.** « Nouvelle partie » : choisis de jouer premier ou second, ton
-adversaire et ton prénom.
+adversaire et ton prénom. Chaque robot est décrit en une ligne chiffrée : ce
+qu'il examine, son rythme, et son Elo lu dans tes replays (`/api/elo`).
 - **Poser une carte** : glisse-la de ta main vers une borne. Autre façon : clique
   la carte, puis la borne, ou tape 1 à 7. Échap annule la sélection.
 - **Jouer à l'avance** : pendant que le robot réfléchit, sélectionne une carte
@@ -83,15 +86,6 @@ adversaire et ton prénom.
   paire est signalé à part : il ne le jouerait jamais, il n'y a donc pas
   d'écart à mesurer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
-- **Classement Elo**, sous la liste : toi et chaque version de robot, avec sa
-  marge à 95 %.
-  - Le Basique vaut 1000.
-  - Le calcul prend toutes tes parties enregistrées (y compris `replays/OLD/`) et
-    les duels entre robots de `data/elo-duels.json`, en un seul ajustement
-    (modèle de Bradley-Terry, `src/replay/elo.js`). Un robot que tu n'as pas
-    affronté est donc quand même placé par rapport à toi.
-  - Les Expérimental y sont mesurés à 1 s par coup, plus faibles qu'avec les
-    10 s de la page.
 
 **Puzzles.** Des fins de partie, pioche vide, où toutes les cartes sont connues :
 la main adverse, ce sont les cartes vues nulle part.
@@ -102,10 +96,27 @@ la main adverse, ce sont les cartes vues nulle part.
   faux pas est signalé, avec le coup qu'il fallait jouer.
 - **Boutons** : « Révéler le coup gagnant », « Recommencer ce puzzle », « Puzzle
   suivant ».
+- **Ordre** : au hasard, au démarrage comme au « Puzzle suivant » ; ceux que tu
+  n'as pas encore résolus passent d'abord.
 - **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
   navigateur.
 - **Source** : les 50 puzzles viennent de l'auto-jeu de l'Expérimental. Pour en
   générer d'autres : `npm run selfplay`, puis `npm run puzzles`.
+
+**Stats.** Tout est tiré de tes replays, anciens compris (`/api/stats`,
+`src/replay/stats.js`).
+- **Classement Elo** : toi et chaque version de robot, avec sa marge à 95 %.
+  - Le Basique vaut 1000.
+  - Le calcul prend toutes tes parties enregistrées (y compris `replays/OLD/`) et
+    les duels entre robots de `data/elo-duels.json`, en un seul ajustement
+    (modèle de Bradley-Terry, `src/replay/elo.js`). Un robot que tu n'as pas
+    affronté est donc quand même placé par rapport à toi.
+  - Les Expérimental y sont mesurés à 1 s par coup, plus faibles qu'avec les
+    10 s de la page.
+- **Tes parties**, par adversaire et version : parties, victoires, en premier et
+  en second, durée moyenne, réflexion moyenne par coup.
+- **Les combinaisons qui gagnent les bornes** : la part de chacune des cinq dans
+  les bornes gagnées, pour toi et pour les robots.
 
 `?debug` dans l'adresse expose les commandes du jeu dans la console
 (`window.__lopin`), pour piloter une partie par script.

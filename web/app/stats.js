@@ -1,0 +1,75 @@
+import { FORMATIONS, FORMATION_LABELS } from "../../src/config/formations.js";
+import { $, el } from "./dom.js";
+import { fetchStats } from "./replays-api.js";
+
+/**
+ * The "Stats" tab: the Elo table, then each human's record against each bot
+ * version (wins, seats, time), then which formations won the borders — all
+ * from the saved games (`/api/stats`, `src/replay/stats.js`).
+ */
+const pct = (part, whole) => (whole ? `${Math.round((100 * part) / whole)} %` : "—");
+const name = (player) => player.replace("@", " ");
+const minutes = (ms) => (ms ? `${Math.round(ms / 60000)} min` : "—");
+const seconds = (ms) => (ms ? `${Math.round(ms / 1000)} s` : "—");
+
+function table(headers, rows) {
+  return el("div", { class: "scroll" }, el("table", {}, el("thead", {}, el("tr", {}, ...headers.map((h) => el("th", {}, h)))), el("tbody", {}, ...rows)));
+}
+
+function eloBlock(elo) {
+  const top = Math.max(...elo.map((row) => row.elo + row.margin));
+  const rows = elo.map((row) =>
+    el(
+      "tr",
+      { class: row.human ? "human" : "" },
+      el("td", {}, name(row.player)),
+      el("td", { class: "num" }, String(row.elo)),
+      el("td", { class: "num" }, `±${row.margin}`),
+      el("td", { class: "bar-cell" }, el("span", { class: "bar", style: `width:${(100 * (row.elo - 900)) / (top - 900)}%` })),
+      el("td", { class: "num" }, String(row.games)),
+    ),
+  );
+  return [el("h3", {}, "Classement Elo"), table(["Joueur", "Elo", "Marge", "", "Parties"], rows), el("p", { class: "hint" }, "Basique = 1000. Tes parties et les duels entre robots, en un seul ajustement (npm run elo).")];
+}
+
+function recordBlock(lines) {
+  const rows = lines
+    .sort((a, b) => b.games - a.games)
+    .map((line) =>
+      el(
+        "tr",
+        {},
+        el("td", {}, `${line.human} contre ${name(line.opponent)}`),
+        el("td", { class: "num" }, String(line.games)),
+        el("td", { class: "num" }, `${line.won} (${pct(line.won, line.games)})`),
+        el("td", { class: "num" }, `${line.first.won}/${line.first.games}`),
+        el("td", { class: "num" }, `${line.second.won}/${line.second.games}`),
+        el("td", { class: "num" }, minutes(line.timedGames && line.activeMs / line.timedGames)),
+        el("td", { class: "num" }, seconds(line.timedMoves && line.thinkMs / line.timedMoves)),
+      ),
+    );
+  return [el("h3", {}, "Tes parties"), table(["Match", "Parties", "Gagnées", "En premier", "En second", "Durée", "Réflexion / coup"], rows)];
+}
+
+function formationBlock(formations) {
+  const totals = { human: Object.values(formations.human).reduce((a, b) => a + b, 0), bot: Object.values(formations.bot).reduce((a, b) => a + b, 0) };
+  const rows = FORMATIONS.map((formation) =>
+    el(
+      "tr",
+      {},
+      el("td", {}, FORMATION_LABELS[formation]),
+      ...["human", "bot"].map((side) => el("td", { class: "bar-cell" }, el("span", { class: `bar ${side}`, style: `width:${totals[side] ? (100 * formations[side][formation]) / totals[side] : 0}%` }), el("span", { class: "num" }, ` ${pct(formations[side][formation], totals[side])}`))),
+    ),
+  );
+  return [el("h3", {}, "Les combinaisons qui gagnent les bornes"), table(["Combinaison", `Toi (${totals.human} bornes)`, `Robots (${totals.bot} bornes)`], rows)];
+}
+
+export async function renderStats() {
+  const view = $("stats-view");
+  try {
+    const { elo, lines, formations } = await fetchStats();
+    view.replaceChildren(el("h2", {}, "Statistiques"), ...eloBlock(elo), ...recordBlock(lines), ...formationBlock(formations));
+  } catch (error) {
+    view.replaceChildren(el("p", { class: "hint" }, `Statistiques indisponibles (${error.message}). La page est-elle servie par npm run play ?`));
+  }
+}

@@ -1,7 +1,8 @@
 import { formatCard, parseCard } from "../../src/core/notation.js";
 import { snapshot, stateAt } from "../../src/replay/log.js";
 import { applyMove, legalMoves } from "../../src/sim/game.js";
-import { $, recall, remember } from "./dom.js";
+import { createRng } from "../../src/core/random.js";
+import { $, freshSeed, recall, remember } from "./dom.js";
 import { sortBySuit, syncOrder } from "./hand.js";
 import { SPEC } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
@@ -15,7 +16,23 @@ import { tableView } from "./view.js";
  * (web/data/puzzles.json); the solved ones are remembered in the browser.
  */
 const SOLVED_KEY = "lopin.puzzles.solved";
-const puzzle = { list: [], index: 0, game: null, visible: false, worker: null, requests: 0 };
+const puzzle = { list: [], index: 0, order: [], cursor: 0, game: null, visible: false, worker: null, requests: 0 };
+
+/** A random order, the puzzles not yet solved first: the next one is never predictable. */
+function shuffleOrder() {
+  const rng = createRng(freshSeed());
+  const solved = solvedIds();
+  const indices = puzzle.list.map((_, i) => i);
+  const fresh = rng.shuffle(indices.filter((i) => !solved.has(puzzle.list[i].id)));
+  puzzle.order = [...fresh, ...rng.shuffle(indices.filter((i) => solved.has(puzzle.list[i].id)))];
+  puzzle.cursor = 0;
+}
+
+function next() {
+  puzzle.cursor += 1;
+  if (puzzle.cursor >= puzzle.order.length) shuffleOrder();
+  start(puzzle.order[puzzle.cursor]);
+}
 
 const text = (move) => `${formatCard(SPEC, move.card)}→${move.border + 1}`;
 const solvedIds = () => new Set(JSON.parse(recall(SOLVED_KEY, "[]")));
@@ -185,7 +202,10 @@ export async function showPuzzles(visible) {
     puzzle.list = response?.ok ? (await response.json()).puzzles : [];
   }
   if (puzzle.list.length === 0) return clearTable("Aucun puzzle : lance npm run puzzles.");
-  if (!puzzle.game) return start(0);
+  if (!puzzle.game) {
+    shuffleOrder();
+    return start(puzzle.order[0]);
+  }
   return render();
 }
 
@@ -193,5 +213,5 @@ export function wirePuzzles() {
   puzzle.worker = new Worker(new URL("./solve-worker.js", import.meta.url), { type: "module" });
   $("btn-puzzle-reveal").addEventListener("click", reveal);
   $("btn-puzzle-retry").addEventListener("click", () => start(puzzle.index));
-  $("btn-puzzle-next").addEventListener("click", () => start((puzzle.index + 1) % puzzle.list.length));
+  $("btn-puzzle-next").addEventListener("click", next);
 }

@@ -14,15 +14,16 @@
   <nav class="tabs" role="tablist" aria-label="Mode">
     <button type="button" role="tab" id="tab-play" data-mode="play" aria-selected="true">Jouer</button>
     <button type="button" role="tab" id="tab-observe" data-mode="observe" aria-selected="false">Observer</button>
-    <button type="button" role="tab" id="tab-replays" data-mode="replays" aria-selected="false">Replays</button>
     <button type="button" role="tab" id="tab-puzzles" data-mode="puzzles" aria-selected="false">Puzzles</button>
+    <button type="button" role="tab" id="tab-replays" data-mode="replays" aria-selected="false">Replays</button>
+    <button type="button" role="tab" id="tab-stats" data-mode="stats" aria-selected="false">Stats</button>
   </nav>
   <a class="rules-link" href="/regles/regles.pdf" target="_blank" rel="noopener">Règles</a>
 </header>
 
 <main class="layout">
   <aside class="sidebar">
-    <div class="counters">
+    <div class="counters" id="counters">
       <div class="deck" id="deck" title="Pioche"><span class="card back" aria-hidden="true"></span><span id="pile-text"><strong>30</strong> cartes</span></div>
       <p class="turn" id="turn">Tour 1</p>
       <p class="clock" id="clock" title="Temps de jeu, arrêté quand la fenêtre n'est pas active"></p>
@@ -46,7 +47,6 @@
     <section class="panel" id="panel-replays" hidden>
       <div id="replay-list" class="replay-list"></div>
       <button type="button" id="btn-keep" class="quiet" hidden>Garder pour l'analyse</button>
-      <div id="elo" class="elo" aria-live="polite"></div>
     </section>
 
     <section class="panel" id="panel-puzzles" hidden>
@@ -96,9 +96,11 @@
     </div>
     <div class="banner" id="banner" hidden></div>
   </section>
+
+  <section class="stats-view" id="stats-view" hidden aria-live="polite"></section>
 </main>
 
-<dialog id="dialog-new">
+<dialog id="dialog-new" autofocus>
   <form method="dialog" id="form-new">
     <h2>Nouvelle partie</h2>
     <fieldset>
@@ -117,7 +119,7 @@
   </form>
 </dialog>
 
-<dialog id="dialog-reset">
+<dialog id="dialog-reset" autofocus>
   <form method="dialog">
     <h2>Recommencer ?</h2>
     <p>La partie en cours sera abandonnée et ne sera pas enregistrée.</p>

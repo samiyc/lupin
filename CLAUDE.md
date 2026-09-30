@@ -159,7 +159,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
 - **Elo** (`src/replay/elo.js`, pure): Bradley-Terry fitted on human replays
   and `data/elo-duels.json` together, anchored on Basique = 1000, one virtual
   draw per player against the anchor so a lone win stays finite. Served by
-  `/api/elo` (`scripts/lib/elo-data.js`) and shown in the Replays tab;
+  `/api/elo` (`scripts/lib/elo-data.js`) and shown in the Stats tab, beside
+  `/api/stats` (`src/replay/stats.js`, pure: record per opponent, formation
+  shares of won borders);
   `npm run elo -- --duels` refreshes the duel lines it has engines for.
 - **Endgames are solved exactly** once the pile is empty (`src/sim/endgame.js`):
   negamax with memory, keyed on the ORDER sides filled (only order matters),

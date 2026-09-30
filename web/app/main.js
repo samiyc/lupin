@@ -3,6 +3,7 @@ import { setupInput } from "./drag.js";
 import { wireObserve, wireReplays } from "./panels.js";
 import { hasGame, playInput, render as renderPlay, setVisible, wirePlayControls } from "./play.js";
 import { puzzleInput, render as renderPuzzle, showPuzzles, wirePuzzles } from "./puzzles.js";
+import { renderStats } from "./stats.js";
 import { clearTable, wireSuitBar } from "./table.js";
 import { loaded, pause, render as renderViewer, wirePlayer } from "./viewer.js";
 
@@ -31,6 +32,7 @@ const PANELS = {
   observe: ["panel-observe", "player", "explain"],
   replays: ["panel-replays", "player", "explain"],
   puzzles: ["panel-puzzles"],
+  stats: [],
 };
 
 const EMPTY_MESSAGES = {
@@ -38,9 +40,11 @@ const EMPTY_MESSAGES = {
   observe: "Choisis deux robots et lance une partie.",
   replays: "Choisis une partie dans la liste.",
   puzzles: "Chargement des puzzles…",
+  stats: "",
 };
 
 function redraw(tab) {
+  if (tab === "stats") return renderStats();
   if (tab === "puzzles") return renderPuzzle();
   const live = tab === "play" ? hasGame() : loaded();
   if (!live) return clearTable(EMPTY_MESSAGES[tab]);
@@ -54,6 +58,10 @@ function show(tab) {
   const visible = new Set(PANELS[tab]);
   for (const id of new Set(Object.values(PANELS).flat())) $(id).hidden = !visible.has(id);
   pause();
+  // Stats take the table's place: no board, no pile, no turn counter.
+  $("table").hidden = tab === "stats";
+  $("counters").hidden = tab === "stats";
+  $("stats-view").hidden = tab !== "stats";
   setVisible(tab === "play");
   showPuzzles(tab === "puzzles");
   redraw(tab);

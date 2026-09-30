@@ -172,6 +172,19 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .explain li.chosen { font-weight: 700; }
 /* Five games in sight, then the list scrolls: the player's buttons stay on screen. */
 .replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.05rem; }
+/* Stats tab */
+.stats-view { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.stats-view h2 { margin: 0; font: 700 1.6rem var(--display); }
+.stats-view h3 { margin: 14px 0 0; font-size: 1rem; }
+.stats-view table { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: var(--panel); }
+.stats-view th, .stats-view td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.stats-view th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-2); }
+.stats-view td.num { font-variant-numeric: tabular-nums; }
+.stats-view tr.human td { font-weight: 700; color: var(--felt); }
+.stats-view .bar-cell { min-width: 140px; }
+.stats-view .bar { display: inline-block; height: 10px; border-radius: 3px; background: var(--felt-2); vertical-align: middle; }
+.stats-view .bar.human { background: var(--focus); }
+.stats-view .scroll { overflow-x: auto; }
 .elo h3 { margin: 10px 0 4px; font-size: 0.85rem; color: var(--ink-2); }
 .elo table { width: 100%; border-collapse: collapse; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
 .elo td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
@@ -189,6 +202,10 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .replay-list button[aria-current="true"] { box-shadow: 0 0 0 2px var(--focus); }
 
 dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); max-width: 380px; }
+/* The dialog takes the focus when it opens, so no field starts outlined; Tab reaches them. */
+dialog:focus, dialog:focus-visible { outline: none; }
+dialog .opponent { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; align-items: baseline; }
+dialog .opponent .facts { grid-column: 2; color: var(--ink-2); line-height: 1.35; }
 dialog h2 { margin-top: 0; font: 700 1.3rem var(--display); }
 dialog fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 10px; display: grid; gap: 4px; }
 dialog .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
