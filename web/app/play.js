@@ -1,12 +1,14 @@
-import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js";
+import { BOT_LINEUP } from "../../src/config/bots.js";
 import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
 import { clockLine, createClock, watchFocus } from "./clock.js";
-import { $, el, freshSeed, openDialog, recall, remember, toast, wait } from "./dom.js";
+import { $, freshSeed, toast, wait } from "./dom.js";
 import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
 import { saveReplay } from "./replays-api.js";
 import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playerName } from "./runner.js";
+import { wireGameDialogs } from "./play-dialogs.js";
+import { keepSelection, planPremove, resolvePremove } from "./premove.js";
 import { createThinker } from "./thinker.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
@@ -35,7 +37,8 @@ function status() {
   const { game } = play;
   if (game.revealing) return "Les bornes se règlent…";
   if (game.state.over) return game.saved ?? "Partie terminée.";
-  return humanTurn() ? "À toi de jouer." : `${game.opponentName} réfléchit…`;
+  if (humanTurn()) return "À toi de jouer.";
+  return game.premove ? `${game.opponentName} réfléchit… Ton coup est prêt (Échap l'annule).` : `${game.opponentName} réfléchit…`;
 }
 
 export function legalFor(index) {
@@ -60,16 +63,39 @@ export function render() {
     selected: game.selected,
     legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
     lastMove: game.lastMove,
+    premove: game.premove?.border ?? null,
     showTools: true,
   });
 }
 
 function afterMove(player, entry) {
   const { game } = play;
+  const previous = game.order;
   game.order = syncOrder(game.order, game.state.hands[game.human]);
   game.lastMove = entry.move ? { border: entry.move.border - 1, side: player === game.human ? "bottom" : "top" } : null;
-  game.selected = null;
+  game.selected = keepSelection(game.selected, previous, game.order, player === game.human);
+  if (player === game.human) game.premove = null;
   render();
+}
+
+const PREMOVE_DELAY = 250;
+
+/** During the bot's turn: the card at `index` is programmed for `border` (premove.js). */
+function programMove(index, border) {
+  if (index === null) return;
+  play.game.premove = planPremove(play.game.order, index, border);
+  play.game.selected = index;
+  render();
+}
+
+/** The human's turn has come: a move programmed during the bot's turn goes now, if still legal. */
+async function playPremove(id) {
+  const outcome = resolvePremove(play.game.premove, play.game.order, legalFor);
+  play.game.premove = null;
+  if (outcome?.cancel) play.game.selected = outcome.index;
+  if (!outcome || outcome.cancel) return render();
+  await wait(PREMOVE_DELAY);
+  if (alive(id) && humanTurn()) playCard(outcome, outcome.border);
 }
 
 async function save(id) {
@@ -121,6 +147,7 @@ async function botTurns(id) {
   if (humanTurn()) {
     play.game.clock.mark();
     play.game.thinker.ponder(play.game.log);
+    await playPremove(id);
   }
   else if (play.game.state.over) await finish(id);
 }
@@ -140,6 +167,7 @@ function locate({ index, card }) {
 export function playCard(grip, border) {
   if (!active()) return;
   const index = locate(grip);
+  if (!humanTurn()) return programMove(index, border);
   if (index === null || !legalFor(index).has(border)) return;
   const { game } = play;
   const thinkMs = Math.round(game.clock.mark());
@@ -167,6 +195,7 @@ export function start({ first, opponent, name }) {
     log: startLog(state, { rules: RULES, players, seed }),
     order: sortBySuit(SPEC, state.hands[human]),
     selected: null,
+    premove: null,
     shown: 0,
     lastMove: null,
     revealing: false,
@@ -200,16 +229,6 @@ export function setVisible(visible) {
   else play.syncFocus();
 }
 
-function wireReset(newDialog) {
-  const confirm = $("dialog-reset");
-  $("btn-reset").addEventListener("click", () => openDialog(active() ? confirm : newDialog));
-  confirm.addEventListener("close", () => {
-    if (confirm.returnValue !== "reset") return;
-    abandon();
-    openDialog(newDialog);
-  });
-}
-
 /** Rearranges the hand; a selected card stays selected wherever it lands. */
 function reorderWith(transform) {
   if (!active() || !play.visible) return;
@@ -222,24 +241,9 @@ function reorderWith(transform) {
 
 /** The dialogs and buttons of the "Jouer" panel. */
 export function wirePlayControls() {
-  $("opponents").append(
-    ...BOT_IDS.map((id) =>
-      el("label", {}, el("input", { type: "radio", name: "opponent", value: id, checked: id === DEFAULT_OPPONENT }), ` ${BOT_LINEUP[id].label} `, el("small", {}, BOT_LINEUP[id].description)),
-    ),
-  );
-  $("player-name").value = recall("lopin.name", "Joueur");
-  const dialog = $("dialog-new");
-  dialog.addEventListener("close", () => {
-    if (dialog.returnValue !== "start") return;
-    const form = new FormData($("form-new"));
-    const name = String(form.get("name") ?? "").trim() || "Joueur";
-    remember("lopin.name", name);
-    start({ first: form.get("first"), opponent: form.get("opponent"), name });
-  });
-  $("btn-new").addEventListener("click", () => openDialog(dialog));
+  wireGameDialogs({ start, abandon, active });
   play.syncFocus = watchFocus(() => (active() && play.visible ? play.game.clock : null), renderClock);
   setInterval(renderClock, 1000);
-  wireReset(dialog);
   $("sort-suit").addEventListener("click", () => reorderWith((order) => sortBySuit(SPEC, order)));
   $("sort-value").addEventListener("click", () => reorderWith((order) => sortByValue(SPEC, order)));
 }
@@ -254,6 +258,7 @@ export const playInput = {
   selected: () => play.game?.selected ?? null,
   select(index) {
     play.game.selected = index;
+    if (index === null) play.game.premove = null;
     render();
   },
   play: playCard,

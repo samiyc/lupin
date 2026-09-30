@@ -141,6 +141,8 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .side.top { justify-content: flex-end; }
 .side .card + .card { margin-top: calc(var(--overlap) - var(--card-h)); }
 .side.drop-ok { background: color-mix(in oklab, var(--won) 18%, transparent); outline: 2px dashed var(--won); }
+/* A move programmed during the bot's turn (premove.js). */
+.side.premove { outline: 2px dashed var(--focus); background: color-mix(in oklab, var(--focus) 16%, transparent); }
 .side.drop-target { background: color-mix(in oklab, var(--won) 32%, transparent); }
 .card.last { box-shadow: 0 0 0 3px var(--focus); }
 .formation { margin: 0; font-size: 0.75rem; color: var(--ink-2); min-height: 1em; text-align: center; }

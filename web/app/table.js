@@ -47,9 +47,9 @@ function renderBottomHand(hand, { interactive, selected }) {
   $("hand-bottom").replaceChildren(...cards);
 }
 
-function sideElement(cards, position, border, { legal, lastMove }) {
+function sideElement(cards, position, border, { legal, lastMove, premove = false }) {
   const drawn = cards.map((card, i) => cardElement(card, { class: lastMove && i === cards.length - 1 && position === lastMove ? "last" : "" }));
-  const classes = ["side", position, legal ? "drop-ok" : ""].filter(Boolean).join(" ");
+  const classes = ["side", position, legal ? "drop-ok" : "", premove ? "premove" : ""].filter(Boolean).join(" ");
   return el("div", { class: classes, dataset: { border: border.index, position } }, ...drawn);
 }
 
@@ -59,7 +59,7 @@ function stoneElement(border) {
   return el("div", { class: classes, title: titles[border.stone.state] }, String(border.number));
 }
 
-function borderElement(border, { legalBorders, lastMove }) {
+function borderElement(border, { legalBorders, lastMove, premove }) {
   const legal = legalBorders.has(border.index);
   const lastSide = border.lastMove ? lastMove.side : null;
   return el(
@@ -68,7 +68,7 @@ function borderElement(border, { legalBorders, lastMove }) {
     el("p", { class: "formation" }, border.formations?.top ?? ""),
     sideElement(border.top, "top", border, { legal: false, lastMove: lastSide }),
     stoneElement(border),
-    sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide }),
+    sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide, premove: premove === border.index }),
     el("p", { class: "formation" }, border.formations?.bottom ?? ""),
   );
 }

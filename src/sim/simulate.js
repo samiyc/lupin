@@ -65,14 +65,15 @@ function record(tally, state) {
  *
  * With `deals`, game g is dealt from its own seed (`deals` + g) whatever the
  * bots draw: a duel plays the same decks with the seats swapped, and the luck
- * of the cards cancels out, as in duplicate bridge.
+ * of the cards cancels out, as in duplicate bridge. With `deck`, every game
+ * is dealt that one deck: how good it is for each seat (`npm run luck`).
  */
-export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null }) {
+export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null, deck: fixed = null }) {
   const rng = createRng(seed);
   const bots = players.map((id) => engineFor(id)(rng));
   const tally = emptyTally();
   for (let g = 0; g < games; g += 1) {
-    const deck = deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec));
+    const deck = fixed ?? (deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec)));
     record(tally, playGame(spec, { order, jokerRule, rng, bots, deck }));
   }
   return tally;

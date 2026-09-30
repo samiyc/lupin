@@ -22,6 +22,11 @@ en cours de partie ; un test le vérifie.
 adversaire et ton prénom.
 - **Poser une carte** : glisse-la de ta main vers une borne. Autre façon : clique
   la carte, puis la borne, ou tape 1 à 7. Échap annule la sélection.
+- **Jouer à l'avance** : pendant que le robot réfléchit, sélectionne une carte
+  puis clique une borne (ou tape 1 à 7). La borne est entourée de pointillés, et
+  le coup part tout seul dès que c'est ton tour, s'il est encore légal ; sinon la
+  carte reste sélectionnée. Échap annule. Une carte sélectionnée le reste quand le
+  robot joue : seul ton propre coup efface la sélection.
 - **Ranger ta main** : glisse une carte sur une autre, ou utilise « Trier par
   couleur » (♠ ♥ ♣ ♦, noir et rouge en alternance, jokers à la fin) ou « par
   valeur ». Tu peux ranger ta main même pendant le tour du robot.
@@ -141,6 +146,7 @@ pioche : un fichier abîmé est refusé.
 
 ```bash
 npm run replays   # bilan de toutes les parties enregistrées
+npm run luck      # la chance de chaque paquet : rejoué 16 fois entre robots égaux (~10 min)
 ```
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de

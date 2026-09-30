@@ -211,3 +211,34 @@ Deux changements dans l'anticipation :
 
 **Le Stratège 2.1.0** réunit les deux. Le rapport et la fiche sont rejoués avec le
 cœur 1.2.
+
+# Quatrième série : 25 parties contre l'Expérimental 0.5
+
+Du 24 au 30 septembre 2026. Sami en gagne **8 sur 25** (32 %) : 4 sur 13 en
+premier, 4 sur 12 en second. Contre le Stratège, il en gagnait 80 %.
+
+## Était-ce la pioche ? (`npm run luck`)
+
+Dans ce jeu, les cartes que reçoit chaque place sont fixées par le paquet. Les
+joueurs piochent chacun leur tour, dans une pile dont l'ordre ne dépend pas des
+coups joués. La chance d'une partie est donc tout entière dans son paquet.
+
+`npm run luck` rejoue chaque paquet 16 fois entre deux Stratège 2.1. La part que
+gagne ta place est **la chance de ce paquet pour toi** : 50 %, c'est neutre ;
+100 %, c'est un paquet gagné d'avance entre joueurs égaux.
+
+| Contre | Parties | Gagnées | Chance moyenne des victoires | Chance moyenne des défaites |
+|---|---|---|---|---|
+| Expérimental 0.5 | 25 | 8 | **83 %** | 56 % |
+| Stratège 1.0 | 15 | 12 | 35 % | 46 % |
+
+**Ton impression est confirmée.**
+- Contre l'Expérimental, toutes tes victoires tombent sur des paquets à 50 % ou
+  plus.
+- Tu en as aussi perdu cinq à 94 % ou plus, des paquets qui gagnent presque à
+  coup sûr entre joueurs égaux : le robot est plus fort que le niveau Stratège 2.1.
+- À l'inverse, contre le Stratège 1.0, tu gagnais même avec des paquets à 0 ou 6 %.
+
+**Ce que ce calcul coûte** : 50 paquets × 16 parties, 10 minutes, soit plus que
+prévu. Les parties du Stratège 2.1 sont lentes quand 23 threads se partagent le
+processeur.

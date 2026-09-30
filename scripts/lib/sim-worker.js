@@ -16,6 +16,6 @@ parentPort.on("message", (task) => {
   const tally =
     task.kind === "solo"
       ? playSoloBatch(spec, { ...common, habits: task.habits, optimumGames: task.optimumGames })
-      : playBatch(spec, { ...common, players: task.players, deals: task.deals ?? null });
+      : playBatch(spec, { ...common, players: task.players, deals: task.deals ?? null, deck: task.fixedDeck ?? null });
   parentPort.postMessage(tally);
 });
