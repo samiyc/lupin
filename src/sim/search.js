@@ -1,7 +1,7 @@
 import { createRng } from "../core/random.js";
 import { applyMove } from "./game.js";
 import { STATUS, boardStatus } from "./certainty.js";
-import { exactApplies, exactScores } from "./exact.js";
+import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { cloneState, determinize, playOut } from "./lookahead.js";
 
 /**
@@ -25,8 +25,20 @@ import { cloneState, determinize, playOut } from "./lookahead.js";
  *
  * A search is a plain object advanced by `step()`, so the page can run it
  * a little at a time — in a worker, and during the human's turn.
+ *
+ * `rolloutMode` (since 0.8): the rule the simulated games settle borders by.
+ * `null` keeps `determinize`'s own (`final` under the claim rule); `early`
+ * settles a border as soon as it is full and stops at the first victory —
+ * what the claim rule does with full borders, and shorter games.
  */
-export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5 });
+export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5, rolloutMode: null });
+
+/** One deal of the unseen cards, played out under `rolloutMode` when one is set. */
+export function dealFor(state, player, rng, rolloutMode) {
+  const deal = determinize(state, player, rng);
+  if (rolloutMode) deal.endMode = rolloutMode;
+  return deal;
+}
 
 export const moveKey = (move) => (move ? `${move.card}@${move.border}` : "pass");
 
@@ -87,7 +99,7 @@ function settled([first, second], prior, confidence) {
  * same answer.
  */
 export function createSearch(state, scored, { policy, seed, warm = null, ...settings }) {
-  const { candidates, firstPhase, prior, confidence, prune, hopeless } = { ...SEARCH, ...settings };
+  const { candidates, firstPhase, prior, confidence, prune, hopeless, rolloutMode } = { ...SEARCH, ...settings };
   const player = state.current;
   const sorted = [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain);
   const ranked = prune ? withoutDominated(state, sorted) : sorted;
@@ -102,7 +114,7 @@ export function createSearch(state, scored, { policy, seed, warm = null, ...sett
     /** One deal, played out after every surviving candidate. */
     step() {
       if (alive.length <= 1) return;
-      const deal = determinize(state, player, deals);
+      const deal = dealFor(state, player, deals, rolloutMode);
       for (const arm of alive) {
         const game = cloneState(deal);
         applyMove(game, arm.entry.move);
@@ -153,7 +165,7 @@ export function searchBot(rng, { base, policy, budget = 400, stop = null, name =
     return search;
   };
   // `exact` (0.7): a small enough endgame is solved rather than searched (`exact.js`).
-  const solved = (state, moves) => exact && moves.length > 1 && exactApplies(state);
+  const solved = (state, moves) => exact && moves.length > 1 && exactApplies(state, settings.exactCards ?? EXACT.maxCards);
   const scoreMoves = (state, moves, options = {}) => {
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
     // Every move, the jokers the core refuses included: the solver owes them a value.
@@ -168,6 +180,8 @@ export function searchBot(rng, { base, policy, budget = 400, stop = null, name =
     searchFor,
     /** Will this position be solved exactly rather than searched? The page asks, to skip its search. */
     solves: solved,
+    /** The rule of its simulated games, for pondering to deal the same way. */
+    rolloutMode: settings.rolloutMode ?? null,
     scoreMoves,
     choose: (state, moves) => {
       if (moves.length <= 1) return moves[0];

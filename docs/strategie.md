@@ -307,3 +307,30 @@ meilleur maintenant, et que le coup fort restera possible.
   la feuille de route (`out/roadmap-experimental.html`), pas un acquis du 0.6.
 - À refaire sur un auto-jeu du 0.7 : avec la revendication, finir tôt ferme la
   borne et peut arrêter la partie.
+
+## Expérimental 0.8 : ce qui n'a pas marché
+
+La 0.8 travaille la **qualité des simulations**, pas leur nombre : 4 000
+simulations par coup ne battent pas 400 (`docs/validation.md`). Chaque candidat
+est jugé par un duel long **à la règle de la page** (`npm run duel -- … --long
+--page`), et gardé seulement si la borne basse de la fourchette à 95 % dépasse
+50 %.
+
+**Candidat 1 : des simulations à la règle de la revendication**
+(`experimental:0.8-early`).
+- Les simulations réglaient les bornes à la fin (`final`). Elles les règlent
+  maintenant dès qu'elles sont pleines et s'arrêtent à la première victoire
+  (`early`), comme la revendication le fait pour les bornes pleines. Réglage de
+  recherche `rolloutMode`, appliqué aussi pendant la réflexion au tour adverse.
+- Solveur exact jusqu'à 9 cartes au lieu de 8.
+- Banc d'essai : coup gagnant trouvé 33 fois sur 60 au lieu de 30, même vitesse.
+- **Duel long contre le 0.7** : 288 parties en 18 minutes, **47,9 %** (fourchette
+  42,2 – 53,7 %). Aucune différence : écarté.
+- À noter : dans tous les duels à la règle `early` (toutes les lignes Elo), les
+  simulations tournaient déjà en `early`. Ce candidat ne changeait donc que le jeu
+  dans la page.
+
+**Au passage**, les moteurs figés `experimental:0.5` et `experimental:0.6`
+héritaient du solveur exact du 0.7, parce qu'ils copiaient les réglages courants.
+Ils énumèrent maintenant chaque réglage qui les distingue (`FROZEN`, dans
+`src/sim/bots.js`).

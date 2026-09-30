@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { createRng } from "../src/core/random.js";
 import { stateAt } from "../src/replay/log.js";
-import { rolloutPolicyOf } from "../src/sim/bots.js";
+import { BOT_PARAMS, rolloutPolicyOf } from "../src/sim/bots.js";
 import { bestMoves, solveEndgame } from "../src/sim/endgame.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { legalMoves } from "../src/sim/game.js";
@@ -20,8 +20,14 @@ import { legalMoves } from "../src/sim/game.js";
  * the first run pays for the solver (about 4 minutes), later ones take
  * seconds. A new policy is measured here before any duel.
  */
+const withParams = (changes) => rolloutPolicyOf({ ...EXPERIMENT, params: { ...BOT_PARAMS, ...changes } });
 const POLICIES = {
   "0.7": rolloutPolicyOf(EXPERIMENT),
+  "certainLite": rolloutPolicyOf({ ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] }),
+  "température 0,25": withParams({ temperature: 0.25 }),
+  "température 0,5": withParams({ temperature: 0.5 }),
+  "coût des cartes 0,04": withParams({ cardCost: 0.04 }),
+  "coût des jokers 0,12": withParams({ jokerCost: 0.12 }),
 };
 const MAX_CARDS = 9;
 const SEEDS = [1, 2, 3];

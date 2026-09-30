@@ -96,12 +96,32 @@ export const boardStatus = (state, player) => state.borders.map((_, index) => bo
 const WASTE = 0.02;
 
 /**
+ * Lost at a glance, for the rollouts (`certainLite`, 0.8): the other side is
+ * complete, mine holds two cards, and no single card I could still get
+ * finishes mine above it (a tie goes to them). One card to try per
+ * possibility, where `borderStatus` enumerates every finish — what made the
+ * 0.6 a third slower.
+ */
+function liteStatuses(state, player) {
+  const pool = unseenCards(state, player).entries.map(([card]) => card).concat(state.hands[player]);
+  return state.borders.map((border) => {
+    const [mine, theirs] = [border.sides[player], border.sides[1 - player]];
+    if (border.owner !== null || theirs.length < 3 || mine.length !== 2) return STATUS.open;
+    const target = state.evaluator.score(theirs);
+    const jokerOk = jokerRoom(state, player, mine) > 0;
+    const beaten = pool.some((card) => (jokerOk || !isJoker(card)) && state.evaluator.score3(mine[0], mine[1], card) > target);
+    return beaten ? STATUS.open : STATUS.lost;
+  });
+}
+
+/**
  * `gainOf` with every move onto a border already lost for the mover rated by
  * the card thrown away (`costOf(card)`) instead: whatever lands there changes
- * nothing, so the cheapest card is the one to spend. The `certain` idea.
+ * nothing, so the cheapest card is the one to spend. The `certain` idea, or
+ * `certainLite` with `lite`.
  */
-export function withCertainties(state, gainOf, costOf) {
-  const statuses = boardStatus(state, state.current);
+export function withCertainties(state, gainOf, costOf, { lite = false } = {}) {
+  const statuses = lite ? liteStatuses(state, state.current) : boardStatus(state, state.current);
   if (!statuses.includes(STATUS.lost)) return gainOf;
   return (move) => (statuses[move.border] === STATUS.lost ? -WASTE - costOf(move.card) : gainOf(move));
 }

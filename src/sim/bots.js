@@ -126,6 +126,12 @@ function ideasContext(state, player, { ideas, weights }, seen) {
   };
 }
 
+/** Which certainty idea is on, if any: `certain` enumerates, `certainLite` glances (`certainty.js`). */
+function certaintyOf(ideas) {
+  if (ideas?.has("certain")) return { lite: false };
+  return ideas?.has("certainLite") ? { lite: true } : null;
+}
+
 function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...tuning }) {
   const { threat, ...rest } = views(state);
   const mine = { ...rest.mine, params };
@@ -143,7 +149,8 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...t
   };
   const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
-  const gainOf = context.ideas?.has("certain") ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params)) : plainGain;
+  const certainty = certaintyOf(context.ideas);
+  const gainOf = certainty ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params), certainty) : plainGain;
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1),
     scale: 1 / (4 * params.temperature),
@@ -236,6 +243,18 @@ export const searchOf = (settings, overrides = {}) => (rng) => {
   return searchBot(rng, { base, policy: rolloutPolicyOf(settings), ...settings.search, name: "experimental", ...overrides });
 };
 
+/**
+ * Earlier and candidate versions of the experimental bot, for duels. Each
+ * spells out every search setting it differs by, so a later change to
+ * EXPERIMENT cannot leak into it.
+ */
+const FROZEN = {
+  // Lot 3 of 0.8, set aside: 47.9 % against 0.7 (docs/strategie.md).
+  "experimental:0.8-early": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, rolloutMode: "early", exactCards: 9 } }),
+  "experimental:0.6": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false, rolloutMode: null } }),
+  "experimental:0.5": searchOf({ ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false, exact: false, rolloutMode: null } }),
+};
+
 /** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */
 export const BOTS = Object.freeze({
   random: randomBot,
@@ -260,8 +279,7 @@ export const BOTS = Object.freeze({
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
 export function engineFor(id) {
-  if (id === "experimental:0.6") return searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false } });
-  if (id === "experimental:0.5") return searchOf({ ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false } });
+  if (Object.hasOwn(FROZEN, id)) return FROZEN[id];
   if (Object.hasOwn(BOTS, id)) return BOTS[id];
   const budget = /^experimental:(\d+)$/.exec(id)?.[1];
   if (budget) return searchOf(EXPERIMENT, { budget: Number(budget) });

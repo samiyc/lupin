@@ -5,7 +5,7 @@ import { legalMoves } from "../src/sim/game.js";
 import { hardestPuzzles, midGames, moveText } from "./lib/bench-positions.js";
 
 /**
- * `npm run bench [-- budget seeds]`: the yardstick of the experimental
+ * `npm run bench [-- budget seeds engine]`: the yardstick of the experimental
  * search, next to `npm run fingerprint`.
  *
  * - On the 20 hardest puzzles: does the search find a winning move (the
@@ -17,11 +17,12 @@ import { hardestPuzzles, midGames, moveText } from "./lib/bench-positions.js";
  * thread, and the medians are printed: the PC's noise is smoothed, and an
  * optimisation shows as a lower time for the same answers.
  */
-const [budget = 400, seedCount = 3] = process.argv.slice(2).map(Number);
+const [budgetArg, seedArg, engineId = "experimental"] = process.argv.slice(2);
+const [budget, seedCount] = [Number(budgetArg) || 400, Number(seedArg) || 3];
 const seeds = Array.from({ length: seedCount }, (_, i) => i + 1);
 
 function searchOnce(state, seed) {
-  const bot = engineFor("experimental")(createRng(seed));
+  const bot = engineFor(engineId)(createRng(seed));
   const started = performance.now();
   const search = bot.searchFor(state, legalMoves(state), {});
   while (!search.done() && search.rollouts() < budget) search.step();
@@ -42,7 +43,7 @@ function measure(position) {
 /** What the bot itself plays (0.7: the exact solver once the endgame is small enough): right or wrong, and how fast. */
 function botChoice(position) {
   const started = performance.now();
-  const move = engineFor("experimental")(createRng(1)).choose(position.state, legalMoves(position.state));
+  const move = engineFor(engineId)(createRng(1)).choose(position.state, legalMoves(position.state));
   const ms = performance.now() - started;
   return { right: position.solutions.has(moveText(position.state, move)), ms };
 }
@@ -68,7 +69,7 @@ function report(title, rows, extra = () => []) {
 }
 
 const started = performance.now();
-console.log(`# Banc d'essai de l'Expérimental — budget ${budget} simulations, ${seeds.length} graines`);
+console.log(`# Banc d'essai — ${engineId}, budget ${budget} simulations, ${seeds.length} graines`);
 const puzzles = await hardestPuzzles(20);
 const puzzleRows = puzzles.map((position) => ({ ...measure(position), solver: solverMs(position), bot: botChoice(position) }));
 const botCells = (row) => (row ? [row.solver.toFixed(0), `${row.bot.right ? "oui" : "non"} (${row.bot.ms.toFixed(0)} ms)`] : ["Solveur ms", "Coup du robot"]);
