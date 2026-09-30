@@ -67,6 +67,8 @@ en premier, comme au bridge en « duplicate ».
 | trier une idée du Stratège 2 ou de l'Expérimental | `npm run duel -- experimental:400 stratege` | ≤ 5 min |
 | décider une nouvelle version | `npm run duel -- A B --long` | ≤ 20 min |
 | régénérer rapport et fiche | `npm run build && npm run pdf` | 4 min |
+| savoir si plus de temps de réflexion aide | `npm run time-study` | 8 min |
+| faire jouer l'Expérimental contre lui-même | `npm run selfplay` | 20 min au plus |
 
 **Règle de conduite.**
 1. Une idée se trie d'abord en `--quick`, sur le cœur si possible (secondes plutôt
@@ -82,3 +84,37 @@ en premier, comme au bridge en « duplicate ».
 - Mesure : 96 parties en 6 minutes, profil rapide avec donnes en miroir.
 - Dans le navigateur, il dispose de 10 s par coup, et il réfléchit aussi pendant
   ton tour (`docs/jouer.md`).
+
+## Plus de temps = meilleur ? (`npm run time-study`)
+
+Des parties entières à 30 s par coup ne tiennent pas en 20 minutes : il en
+faudrait des centaines pour voir une différence. La question se pose donc **coup
+par coup**, sur 160 positions tirées de l'auto-jeu.
+
+La recherche peut s'arrêter à tout moment. Une seule recherche va donc jusqu'à
+une référence de 60 s, et on note le coup qu'elle jouerait à 5, 10, 15, 20 et
+30 s.
+- Les temps sont convertis en simulations au débit mesuré dans le navigateur :
+  164 simulations par seconde.
+- Les notes de la référence disent ce que coûte un autre coup.
+- Durée totale de l'étude : 7,6 minutes.
+
+| Temps par coup | Même coup que la référence (60 s) | Perte moyenne par coup | Arrêt anticipé (coup évident) |
+|---|---|---|---|
+| 5 s | 90,0 % | 0,11 point de victoire | 27 % |
+| **10 s** | **92,5 %** | **0,05** | 36 % |
+| 15 s | 94,4 % | 0,03 | 37 % |
+| 20 s | 95,6 % | 0,03 | 41 % |
+| 30 s | 97,5 % | 0,01 | 44 % |
+
+**Lecture.**
+- Sur une partie de 21 coups, passer de 5 à 10 s gagne environ 1 point de
+  probabilité de victoire.
+- De 10 à 30 s, moins d'un point : le bruit reprend le dessus sur des coups déjà
+  bien jugés.
+- Un tiers des coups sont évidents : la recherche s'arrête d'elle-même avant la
+  limite.
+- **La limite reste à 10 s.** Plus de temps n'apporterait presque rien.
+- Limite de la méthode : la « perte » est estimée par la référence elle-même, qui
+  a son propre bruit. Un duel 10 s contre 20 s demanderait plus d'une heure pour
+  la confirmer.

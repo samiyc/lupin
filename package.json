@@ -24,7 +24,8 @@
     "luck": "node scripts/luck.js",
     "selfplay": "node scripts/selfplay.js",
     "mine": "node scripts/mine.js",
-    "time-study": "node scripts/time-study.js"
+    "time-study": "node scripts/time-study.js",
+    "puzzles": "node scripts/puzzles.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
