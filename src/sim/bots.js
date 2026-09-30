@@ -284,13 +284,17 @@ export const BOTS = Object.freeze({
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
+/** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
+const ismctsOf = ({ sample, ...tree }, budget) => (rng) =>
+  ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), ...tree, ...budget });
+
 export function engineFor(id) {
   const [name, at] = id.split("@");
   const budget = at === undefined ? {} : { budget: Number(at) };
   const settings = experimentalSettings(name);
   if (settings) return searchOf(settings, budget);
   const tree = ismctsSettings(name);
-  if (tree) return (rng) => ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf(EXPERIMENT), ...tree, ...budget });
+  if (tree) return ismctsOf(tree, budget);
   if (Object.hasOwn(BOTS, id)) return BOTS[id];
   const rollouts = /^experimental:(\d+)$/.exec(id)?.[1];
   if (rollouts) return searchOf(EXPERIMENT, { budget: Number(rollouts) });

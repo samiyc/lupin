@@ -11,12 +11,18 @@ import { modelledDeal } from "../src/sim/model.js";
  * hidden hand better than chance? In self-play (selfplay/), at moves 10, 16,
  * 22 and 28, the opponent's true hand is known: count how many of its cards
  * each deal gets right, uniform deals against modelled ones, for a few
- * temperatures. No gain here, no duel.
+ * temperatures and numbers of tries. No gain here, no duel.
  */
 const TURNS = [10, 16, 22, 28];
 const GAMES = 150;
 const DEALS = 12;
-const TEMPERATURES = [0.05, 0.15, 0.4];
+const TRIALS = [
+  { temperature: 0.4, tries: 8 },
+  { temperature: 0.15, tries: 8 },
+  { temperature: 0.05, tries: 8 },
+  { temperature: 0.02, tries: 8 },
+  { temperature: 0.02, tries: 24 },
+];
 const source = new URL("../selfplay/experimental_80.json", import.meta.url);
 
 /** Cards of `dealt` found in `truth`, each card counted once per copy. */
@@ -55,8 +61,8 @@ console.log(`# Modèle de l'adversaire — ${positions.length} positions, ${DEAL
 console.log("| Donnes | Cartes justes sur 6 | Gain sur le hasard |");
 console.log("| --- | --- | --- |");
 console.log(`| au hasard | ${uniform.toFixed(3)} | — |`);
-for (const temperature of TEMPERATURES) {
-  const modelled = meanOverlap(positions, (state, rng) => modelledDeal(state, state.current, rng, { judge, temperature }));
-  console.log(`| modèle, T = ${temperature} | ${modelled.toFixed(3)} | ${(100 * (modelled / uniform - 1)).toFixed(1)} % |`);
+for (const { temperature, tries } of TRIALS) {
+  const modelled = meanOverlap(positions, (state, rng) => modelledDeal(state, state.current, rng, { judge, temperature, tries }));
+  console.log(`| modèle, T = ${temperature}, ${tries} essais | ${modelled.toFixed(3)} | ${(100 * (modelled / uniform - 1)).toFixed(1)} % |`);
 }
 console.log(`\nDurée : ${((performance.now() - started) / 1000).toFixed(0)} s`);

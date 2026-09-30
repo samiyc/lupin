@@ -5,7 +5,7 @@ import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
 import { BOTS, engineFor, pickSampled } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
-import { runIsmcts } from "../src/sim/ismcts.js";
+import { createIsmcts } from "../src/sim/ismcts.js";
 import { likelihood, modelledDeal } from "../src/sim/model.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
@@ -65,9 +65,12 @@ describe("ISMCTS", () => {
     const state = position(4, 9);
     const moves = legalMoves(state);
     const base = strategistBot(createRng(1), EXPERIMENT);
-    const ranked = runIsmcts(state, moves, { base, policy: rolloutPolicyOf(EXPERIMENT), seed: 7, budget: 60 });
-    assert.equal(ranked.reduce((sum, entry) => sum + entry.visits, 0), 60);
-    assert.ok(moves.some((move) => move.card === ranked[0].move.card && move.border === ranked[0].move.border));
+    const search = createIsmcts(state, base.scoreMoves(state, moves), { policy: rolloutPolicyOf(EXPERIMENT), seed: 7 });
+    for (let i = 0; i < 60; i += 1) search.step();
+    const visits = search.scored().filter((entry) => entry.gain >= 0);
+    assert.equal(search.rollouts(), 60);
+    assert.equal(visits.reduce((sum, entry) => sum + entry.gain, 0), 60, "every iteration visits one root move");
+    assert.ok(moves.includes(search.best()));
   });
 
   it("plays whole games as an engine", () => {

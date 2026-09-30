@@ -72,38 +72,66 @@ function iterate(root, ctx) {
   }
 }
 
-/** The search itself, from `state`: every root move with its visits, most visited first. */
-export function runIsmcts(state, moves, { base, policy, seed, ...settings }) {
-  const { budget, candidates, widen, depth, exploration } = { ...ISMCTS, ...settings };
+/**
+ * A search from `state`, advanced one iteration at a time by `step()` — the
+ * same interface as `createSearch` (search.js), so the page's worker runs it
+ * against its clock. `scored`: the core's `scoreMoves` output; the root
+ * shortlist is its `candidates` best. A root move's gain is its visits.
+ */
+export function createIsmcts(state, scored, { policy, seed, ...settings }) {
+  const { candidates, widen, depth, exploration } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
-  const rootMoves = shortlist(base, state, candidates).filter((move) => moves.some((m) => m.card === move?.card && m.border === move?.border));
+  const rootMoves = [...scored]
+    .sort((a, b) => b.gain - a.gain)
+    .slice(0, candidates)
+    .map(({ move }) => move);
   const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration };
   const root = newNode();
-  for (let i = 0; i < budget; i += 1) iterate(root, ctx);
-  return rootMoves.map((move) => ({ move, visits: root.children.get(moveKey(move))?.visits ?? 0 })).sort((a, b) => b.visits - a.visits);
+  let iterations = 0;
+  const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
+  const rated = () => scored.map((entry) => ({ ...entry, gain: rootMoves.includes(entry.move) ? visits(entry.move) : -1 + entry.gain / 100 }));
+  return {
+    step() {
+      iterate(root, ctx);
+      iterations += 1;
+    },
+    done: () => rootMoves.length <= 1,
+    rollouts: () => iterations,
+    scored: rated,
+    best: () => rated().reduce((a, b) => (b.gain > a.gain ? b : a)).move,
+  };
 }
 
 /** The ISMCTS bot: the core shortlists at the root, the rollout policy plays the rest; small endgames are solved. */
-export function ismctsBot(rng, { base, policy, name = "ismcts", ...settings }) {
+export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, ...settings }) {
   const seed = rng.int(2 ** 31);
+  const searchFor = (state, moves, options, extra = {}) =>
+    createIsmcts(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
+  const run = (search) => {
+    while (!search.done() && search.rollouts() < budget) search.step();
+    return search;
+  };
+  const solves = (state, moves) => moves.length > 1 && exactApplies(state);
+  const bestOf = (scored) => scored.reduce((a, b) => (b.gain > a.gain ? b : a)).move;
   const scoreMoves = (state, moves, options = {}) => {
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
-    if (exactApplies(state)) return exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }));
-    const visits = new Map(runIsmcts(state, moves, { base, policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings }).map((entry) => [moveKey(entry.move), entry.visits]));
-    return base.scoreMoves(state, moves, options).map((entry) => ({ ...entry, gain: visits.has(moveKey(entry.move)) ? visits.get(moveKey(entry.move)) : -1 + entry.gain / 100 }));
+    if (solves(state, moves)) return exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }));
+    return run(searchFor(state, moves, options)).scored();
   };
-  const bestOf = (scored) => scored.reduce((a, b) => (b.gain > a.gain ? b : a)).move;
-  return { name, base, policy, scoreMoves, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
+  return { name, base, policy, searchFor, solves, scoreMoves, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
 }
 
-/** The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`, `+widen=6`, `+exploration=1` — or null. */
+/**
+ * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
+ * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts) — or null.
+ */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
   if (base !== "ismcts") return null;
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      if (!["depth", "widen", "exploration", "candidates"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

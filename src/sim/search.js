@@ -38,7 +38,7 @@ import { modelledDeal } from "./model.js";
 export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5, rolloutMode: null, opponentModel: null });
 
 /** What `dealFor` needs to model the opponent, built once per search: the policy's judgement and a temperature. */
-export const modelOf = (policy, temperature) => (temperature ? { judge: policy(createRng(0)), temperature } : null);
+export const modelOf = (policy, temperature, tries = 8) => (temperature ? { judge: policy(createRng(0)), temperature, tries } : null);
 
 /** One deal of the unseen cards — modelled when `model` is set — played out under `rolloutMode` when one is set. */
 export function dealFor(state, player, rng, { rolloutMode = null, model = null } = {}) {
@@ -107,7 +107,7 @@ function settled([first, second], prior, confidence) {
  */
 export function createSearch(state, scored, { policy, seed, warm = null, ...settings }) {
   const { candidates, firstPhase, prior, confidence, prune, hopeless, rolloutMode, opponentModel } = { ...SEARCH, ...settings };
-  const dealing = { rolloutMode, model: modelOf(policy, opponentModel) };
+  const dealing = { rolloutMode, model: modelOf(policy, opponentModel, settings.modelTries) };
   const player = state.current;
   const sorted = [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain);
   const ranked = prune ? withoutDominated(state, sorted) : sorted;
@@ -191,6 +191,7 @@ export function searchBot(rng, { base, policy, budget = 400, stop = null, name =
     /** The rule of its simulated games, for pondering to deal the same way. */
     rolloutMode: settings.rolloutMode ?? null,
     opponentModel: settings.opponentModel ?? null,
+    modelTries: settings.modelTries,
     scoreMoves,
     choose: (state, moves) => {
       if (moves.length <= 1) return moves[0];

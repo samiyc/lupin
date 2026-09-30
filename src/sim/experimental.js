@@ -50,6 +50,7 @@ const VARIANTS = {
   candidates: (settings, value) => ({ ...settings, search: { ...settings.search, candidates: Number(value) } }),
   lite: (settings) => ({ ...settings, ideas: [...settings.ideas, "certainLite"] }),
   model: (settings, value) => ({ ...settings, search: { ...settings.search, opponentModel: Number(value) } }),
+  tries: (settings, value) => ({ ...settings, search: { ...settings.search, modelTries: Number(value) } }),
 };
 
 function applyVariant(settings, change) {

@@ -48,7 +48,7 @@ export function createPonder(state, bot, { now = () => performance.now(), limitM
   const rng = createRng(seed);
   const humanCore = bot.policy(createRng(seed ^ 0x9e3779b9));
   const rollout = bot.policy(createRng(seed ^ 0x85ebca6b));
-  const dealing = { rolloutMode: bot.rolloutMode, model: modelOf(bot.policy, bot.opponentModel) };
+  const dealing = { rolloutMode: bot.rolloutMode, model: modelOf(bot.policy, bot.opponentModel, bot.modelTries) };
   let spentMs = 0;
   let rollouts = 0;
   const step = () => {
