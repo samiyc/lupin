@@ -11,7 +11,7 @@ import { wireGameDialogs } from "./play-dialogs.js";
 import { keepSelection, planPremove, resolvePremove } from "./premove.js";
 import { createThinker } from "./thinker.js";
 import { clearTable, renderTable } from "./table.js";
-import { tableView } from "./view.js";
+import { settledAtEnd, tableView } from "./view.js";
 
 /**
  * "Jouer": the human against a bot of the line-up, on the official rules.
@@ -116,7 +116,7 @@ async function finish(id) {
   finishLog(game.log, game.state);
   game.log.result.activeMs = Math.round(game.clock.active());
   game.revealing = true;
-  for (game.shown = 0; game.shown < game.state.resolved.length; game.shown += 1) {
+  for (game.shown = 0; game.shown < settledAtEnd(game.state).length; game.shown += 1) {
     render();
     await wait(REVEAL_DELAY);
     if (!alive(id)) return;

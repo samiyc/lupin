@@ -1,7 +1,10 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { DECKS } from "../src/config/decks.js";
-import { OFFICIAL_RULES } from "../src/config/rules.js";
+import { OFFICIAL_RULES as PAGE_RULES } from "../src/config/rules.js";
+
+// Written against a full game: every card played, borders settled at the end.
+const OFFICIAL_RULES = { ...PAGE_RULES, endMode: "final" };
 import { JOKER, cardOf } from "../src/core/cards.js";
 import { createRng } from "../src/core/random.js";
 import { finishLog, playLogged, replayStates, rulesOf, snapshot, startLog } from "../src/replay/log.js";

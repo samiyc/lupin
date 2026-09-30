@@ -11,10 +11,26 @@ n'écoute que sur ta machine (127.0.0.1). Live Server ne suffit pas : il ne peut
 pas écrire de fichier. `Ctrl+C` arrête le serveur.
 
 Les règles sont celles de la fiche : le jeu de 52 cartes sans figures (As à 10),
-les 2 jokers sans couleur et 7 bornes. Les bornes se règlent **en fin de partie**,
-dans l'ordre où elles se sont complétées. Le premier à avoir 4 bornes, ou 3 côte à
-côte, gagne. C'est le même vainqueur qu'avec la règle officielle, où l'on revendique
-en cours de partie ; un test le vérifie.
+les 2 jokers sans couleur et 7 bornes. Le premier à avoir 4 bornes, ou 3 côte à
+côte, gagne.
+- **Revendiquer** (règle officielle, `endMode: "claim"`) : au début de chaque tour,
+  le joueur prend toute borne où ses 3 cartes sont posées et que l'adversaire ne
+  peut plus battre. La preuve ne s'appuie que sur les cartes de la table : sa propre
+  main compte parmi ce que l'adversaire pourrait tenir. La page revendique pour
+  toi, automatiquement. Une borne revendiquée ne prend plus de carte.
+  - La fiche imprimée n'en parle pas : elle règle une borne dès que ses deux
+    côtés ont 3 cartes, ce que ce mode respecte. La revendication d'une borne
+    inachevée reste une finesse du jeu en ligne. Le verso de la fiche n'a plus
+    de place, et elle est écrite en gros caractères.
+- **La partie s'arrête dès la victoire**, sans jouer les cartes restantes : 97 %
+  des parties entre robots finissent avant la dernière carte, en 37 coups en
+  moyenne au lieu de 42.
+- **Les bornes jamais revendiquées** se règlent en fin de partie, dans l'ordre où
+  elles se sont complétées.
+- **Les anciens replays** gardent leur règle, `final` (toutes les bornes réglées à
+  la fin), et se relisent à l'identique. Sur 1000 parties, les deux règles
+  désignent le même vainqueur 91 fois sur 100 : une borne fermée change les coups
+  possibles, donc parfois l'issue.
 
 ## Les cinq onglets
 
@@ -45,7 +61,9 @@ qu'il examine, son rythme, et son Elo lu dans tes replays (`/api/elo`).
   chronomètre discret : le temps du coup en cours et celui de la partie. Il
   s'arrête quand la fenêtre n'est plus active, pour une note prise ailleurs par
   exemple, et reprend à ton retour.
-- **En fin de partie** : les bornes se règlent une à une. Chacune glisse vers son
+- **En cours de partie** : une borne revendiquée passe au vert si elle est à toi,
+  au rouge sinon, avec sa combinaison. Le bandeau de fin s'affiche dès la victoire.
+- **En fin de partie** : les bornes qui restent se règlent une à une. Chacune glisse vers son
   gagnant, verte si elle est à toi, rouge sinon, et la combinaison s'affiche de
   chaque côté.
 - **Enregistrement** : la partie s'enregistre toute seule dans `replays/`. Le nom

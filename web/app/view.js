@@ -12,8 +12,10 @@ import { formatMinutes } from "./clock.js";
  * - `reveal` shows both hands (observer, replays) or hides the top one;
  * - `handOrder` and `topOrder` are the order each hand is shown in (the
  *   player's own, or `followHands` in the replay player);
- * - `shown` is how many resolved borders to show: the end of a game reveals
- *   them one by one, in the order they filled;
+ * - `shown` is how many borders settled at the end to show: the end of a
+ *   game reveals them one by one, in the order they filled. A border claimed
+ *   during the game (`claimedAt`) is always shown, from the move it was
+ *   claimed at;
  * - `suits` counts, suit by suit, the cards the bottom player can see.
  */
 const RED_SUITS = new Set(["♥", "♦"]);
@@ -92,6 +94,11 @@ function topHand(spec, snap, seat, { reveal, topOrder }) {
   return { seat, hidden: !reveal, count: snap.hands[seat].length, cards };
 }
 
+const isClaimed = (entry) => entry.claimedAt !== undefined;
+
+/** The borders settled when the game ended, revealed one by one. */
+export const settledAtEnd = (snap) => snap.resolved.filter((entry) => !isClaimed(entry));
+
 function bottomHand(spec, snap, seat, handOrder) {
   return { seat, cards: (handOrder ?? snap.hands[seat]).map((card) => cardView(spec, card)) };
 }
@@ -99,8 +106,11 @@ function bottomHand(spec, snap, seat, handOrder) {
 /** `{ turn, over, pile, current, top, bottom, borders, suits, result }` for `snap`. */
 export function tableView(spec, snap, options) {
   const { bottom, reveal, handOrder, topOrder, shown, lastMove } = { ...DEFAULTS, ...options };
-  const visible = snap.resolved.slice(0, shown);
-  const context = { bottom, visible, justRevealed: visible.at(-1) ?? null, lastMove };
+  const claimed = snap.resolved.filter(isClaimed);
+  const revealed = settledAtEnd(snap).slice(0, shown);
+  const visible = [...claimed, ...revealed];
+  const justRevealed = revealed.at(-1) ?? claimed.findLast((entry) => entry.claimedAt === snap.turn) ?? null;
+  const context = { bottom, visible, justRevealed, lastMove };
   return {
     turn: Math.min(snap.turn + 1, 42),
     over: snap.over,

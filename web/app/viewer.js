@@ -7,7 +7,7 @@ import { START, endOf, isAtEnd, stepBack, stepForward } from "./steps.js";
 import { followHands, sortBySuit, sortByValue } from "./hand.js";
 import { SPEC, playerName } from "./runner.js";
 import { renderTable } from "./table.js";
-import { tableView } from "./view.js";
+import { settledAtEnd, tableView } from "./view.js";
 
 /**
  * The player of logged games, shared by "Observer" (a bot game generated on
@@ -29,7 +29,7 @@ function turnText(frame) {
 }
 
 const last = () => viewer.frames.length - 1;
-const settledCount = () => viewer.frames[last()]?.state.resolved.length ?? 0;
+const settledCount = () => (viewer.frames[last()] ? settledAtEnd(viewer.frames[last()].state).length : 0);
 const atEnd = () => isAtEnd(viewer, last(), settledCount());
 const moveTo = ({ index, shown }) => {
   [viewer.index, viewer.shown] = [index, shown];

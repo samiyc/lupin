@@ -49,7 +49,7 @@ src/core/     cards, formations (classify, brute-force reference),
               become), combinatorics (3-card hands), starting-hand, random,
               partition (exact best split of ≤ 21 cards into trios),
               notation ("7♥" ↔ id, shared by logs, real games and the page)
-src/sim/      game (rules engine, endMode early|final), bots (random, greedy,
+src/sim/      game (rules engine, endMode early|final|claim), settle, bots (random, greedy,
               strategist + one-habit and one-idea variants, experimental),
               strategist (Sami's three habits), ideas (his later ideas),
               principles (his rules from reading Stratège 2 replays), the
@@ -119,9 +119,18 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   the hand order (`hand.js`) — is pure and tested under Node; the DOM layer
   only draws and listens. Input goes through event delegation (the table is
   redrawn on every change), and only the visible tab may draw on the table.
-- **The web game settles borders at the end** (`endMode: "final"`): all
-  cards are played, borders resolve in the order they filled, first victory
-  wins. `tests/final-mode.test.js` holds it to the simulations' early mode.
+- **The web game plays the printed claim rule** (`endMode: "claim"`,
+  `OFFICIAL_RULES`): at the start of their turn a player claims every border
+  `isClaimable` proves (their side complete, no finish of the other side
+  beats it using only cards off the table — their own hand counts as possibly
+  the opponent's). A claimed border is closed; the game stops at the first
+  victory; unclaimed full borders settle at the end in fill order.
+  Settlement lives in `src/sim/settle.js`. `determinize` switches rollouts to
+  `final`, since proving claims per simulated move costs speed. It can change
+  the winner vs `final` (91 % agreement over 1000 games), so tests written
+  against a full 42-card game pin `endMode: "final"`; old replays keep theirs.
+  The view shows claimed entries (`claimedAt`) at once and reveals only the
+  end-settled ones (`settledAtEnd`) one by one.
 - **Bots have names and versions** (`src/config/bots.js`). Any change of
   behaviour bumps the version; replays record `id@version`. New ideas go into
   `src/sim/experimental.js` or `src/sim/ideas.js` first and are measured with

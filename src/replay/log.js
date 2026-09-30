@@ -113,7 +113,8 @@ export function finishLog(log, state, endedAt = localTimestamp()) {
       sums: entry.sums,
       winner: entry.winner,
       decidedBy: entry.decidedBy,
-      filledAt: entry.filledAt + 1,
+      filledAt: entry.filledAt === null ? null : entry.filledAt + 1,
+      ...(entry.claimedAt === undefined ? {} : { claimedAt: entry.claimedAt }),
     })),
   };
   return log;

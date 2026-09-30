@@ -1,5 +1,8 @@
 import { buildDeck, isJoker } from "../core/cards.js";
 import { getEvaluator } from "../core/evaluator.js";
+import { checkVictory, claimBorders, decideByCount, isFull, resolveBorder, resolveFinal } from "./settle.js";
+
+export { resolveFinal };
 
 /**
  * The rules of a match, and nothing about how to play it.
@@ -14,9 +17,12 @@ import { getEvaluator } from "../core/evaluator.js";
  *   and a resolved border is full anyway, so both modes pick the same winner;
  *   a test holds them to it.
  *
- * The real game also lets a player claim a border early by proving the
- * opponent cannot beat it; that changes when a border is settled, not which
- * formations get built, and it is not modelled.
+ * - `endMode: "claim"` (the web game since 0.7, the printed rule): at the
+ *   start of their turn a player claims every border they can prove the
+ *   opponent can no longer beat, from the cards on the table alone
+ *   (`isClaimable`). A claimed border takes no more cards, and the game stops
+ *   at the first victory. Borders never claimed settle at the end, as in
+ *   `final`. It changes which moves are legal, so it can change the winner.
  */
 export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null }) {
   const shuffled = deck ? [...deck] : rng.shuffle(buildDeck(spec));
@@ -86,7 +92,9 @@ export function applyMove(state, move) {
   }
   state.turn += 1;
   state.current = 1 - player;
-  if (!state.over && state.endMode === "final" && allPlayed(state)) resolveFinal(state);
+  if (state.over || state.endMode === "early") return;
+  if (state.endMode === "claim") claimBorders(state, state.current);
+  if (!state.over && allPlayed(state)) resolveFinal(state);
 }
 
 function placeCard(state, player, { card, border }) {
@@ -103,93 +111,10 @@ function placeCard(state, player, { card, border }) {
   }
 }
 
-const isFull = (border) => border.sides.every((side) => side.length === 3);
-
-/** The turn a border's second side filled up: the order borders are settled in. */
-const filledAt = (border) => Math.max(...border.completedAt);
-
-function resolveBorder(state, index) {
-  const border = state.borders[index];
-  const scores = border.sides.map((side) => state.evaluator.score(side));
-  const formations = border.sides.map((side) => state.evaluator.formation(side));
-  const winner = pickWinner(scores, border.completedAt);
-  border.owner = winner;
-  state.resolved.push({
-    border: index,
-    winner,
-    formations,
-    sums: border.sides.map((side) => state.evaluator.sum(side)),
-    decidedBy: decidedBy(state, border, formations),
-    filledAt: filledAt(border),
-  });
-  return winner;
-}
-
-/**
- * `endMode: "final"`: every full border is resolved in the order it filled
- * up; the first victory reached along the way is the game's.
- */
-export function resolveFinal(state) {
-  const full = state.borders
-    .map((border, index) => ({ border, index }))
-    .filter(({ border }) => isFull(border))
-    .sort((a, b) => filledAt(a.border) - filledAt(b.border));
-  state.finalResolved = true;
-  for (const { index } of full) {
-    const winner = resolveBorder(state, index);
-    if (state.winner === null) checkVictory(state, winner);
-  }
-  if (state.winner === null) decideByCount(state);
-  state.over = true;
-  return state;
-}
-
-function pickWinner(scores, completedAt) {
-  if (scores[0] !== scores[1]) return scores[0] > scores[1] ? 0 : 1;
-  return completedAt[0] < completedAt[1] ? 0 : 1;
-}
-
-function decidedBy(state, border, formations) {
-  if (formations[0] !== formations[1]) return "formation";
-  const sums = border.sides.map((side) => state.evaluator.sum(side));
-  return sums[0] === sums[1] ? "first" : "sum";
-}
-
-function checkVictory(state, player) {
-  const owned = state.borders.map((border) => border.owner === player);
-  if (longestRun(owned) >= state.spec.adjacent) return finish(state, player, "adjacent");
-  if (owned.filter(Boolean).length >= state.spec.majority) finish(state, player, "majority");
-  return state;
-}
-
-function longestRun(flags) {
-  let best = 0;
-  let run = 0;
-  for (const flag of flags) {
-    run = flag ? run + 1 : 0;
-    best = Math.max(best, run);
-  }
-  return best;
-}
-
-function finish(state, winner, winType) {
-  state.winner = winner;
-  state.winType = winType;
-  state.over = true;
-  return state;
-}
-
 /** Nobody can play: settle what is left, then more borders wins, equal is a draw. */
 function endOnExhaustion(state) {
-  if (state.endMode === "final" && !state.finalResolved) return resolveFinal(state);
+  if (state.endMode !== "early" && !state.finalResolved) return resolveFinal(state);
   return decideByCount(state);
-}
-
-function decideByCount(state) {
-  const count = (player) => state.borders.filter((b) => b.owner === player).length;
-  const [zero, one] = [count(0), count(1)];
-  if (zero === one) return finish(state, null, "draw");
-  return finish(state, zero > one ? 0 : 1, "exhaustion");
 }
 
 /** Runs a match to its end; `bots[p].choose(state, moves)` picks a move. */
