@@ -399,3 +399,56 @@ savent mesurer, environ ±5 points. Les leviers bon marché sont épuisés.
   main, ou une recherche en arbre plus profonde et bien plus rapide.
 - Sinon, la marge restante est plus petite que ce qu'un duel de 20 minutes
   sait voir.
+
+## Expérimental 0.8 : la recherche en arbre, à 800 simulations (01/10)
+
+**La question** (`evol-exp-070-prompt.md`) : les 400 simulations par coup des
+duels brident-elles les nouveaux algorithmes, comme un plafond de verre ?
+Personne ne l'avait mesuré pour eux : le duel 4000 contre 400 ne portait que sur
+le 0.7, qui ne gagne rien à chercher plus.
+
+| Candidat, contre le 0.7 au même budget | 400 simulations | 800 simulations |
+| --- | --- | --- |
+| ISMCTS (arbre sur 3 coups) | 49,0 % (43,7 – 54,2) | **56,3 % (51,2 – 62,7)**, 288 parties en deux duels |
+| TLC, simulations qui tirent leur coup | 51,4 % (45,8 – 56,9) | 50,0 % (35,6 – 64,4), tri |
+
+- **Le plafond existait pour l'arbre.** À 400, ISMCTS fait jeu égal. À 800, il
+  gagne 56 % : son arbre s'approfondit avec les itérations, là où la recherche
+  du 0.7 plafonne. Les deux duels de 20 minutes, sur des donnes différentes
+  (`--offset 1`), donnent 55,6 % et 56,9 %. Mis en commun, la fourchette par
+  paires est de 51,2 – 62,7 % : il passe la règle.
+- **À vitesse égale** : 549 itérations par seconde pour ISMCTS, 508 simulations
+  pour le 0.7. Dans les 10 s de la page, il en fait 3 000 à 4 500, au-delà des 800
+  mesurés.
+- **Expérimental 0.8.0 = ISMCTS à 800 itérations** (moteur `ismcts@800`), Elo
+  **1504 ± 40**. Le navigateur a trouvé une régression que les tests ne voyaient
+  pas : la page cherchait le moteur dans `BOTS`. C'est corrigé (`engineFor`) et
+  couvert par un test.
+
+**La mixture d'experts** (moteur `mix:A,B,C`, un expert par phase) :
+- ISMCTS au milieu seulement, et le 0.7 au début et à la fin : 62,5 % contre le
+  0.7 au tri (48 parties), mais **45,8 % (38,4 – 53,3) contre ISMCTS partout**.
+  L'arbre vaut aussi en début et en fin de partie.
+- Et le calcul « en trop » est faible : habitudes et idées ne pèsent que 13 à
+  16 % du temps du cœur, dans chaque phase. Les couper par phase ne ferait gagner
+  que de la vitesse, qui n'est pas la limite.
+
+**Les cas difficiles** (`npm run hard-cases`, `npm run cases`) :
+- 20 minutes pour 5 cas nets seulement. Quand le 0.7 hésite, ses coups se valent
+  presque toujours pour de bon : 24 fins de partie par coup ne les départagent pas.
+- Et la référence vient des simulations de l'Expérimental : elle juge avec son
+  regard, et ISMCTS y fait 0 %, alors qu'il gagne plus de parties.
+- Un étalon de cas difficiles a besoin d'une vérité indépendante : le solveur en
+  fin de partie (puzzles, `npm run policy`), ou des parties entières.
+
+**Le répertoire d'ouvertures** (`npm run openings`, `data/openings/`, ignoré par
+git) :
+- Clé canonique sur les 24 permutations de couleurs et le miroir des bornes :
+  aucun doublon de couleur, 85 µs par lecture.
+- Coût : 24 s par ouverture à 2 000 simulations, soit ~56 h pour tout le 1er
+  coup (~191 000 ouvertures, 2,2 Mo). Le temps de calcul est la limite, pas la
+  taille : 500 Mo ne serviraient qu'aux coups suivants, bien plus nombreux.
+- Son coup diffère de celui du jeu en direct dans 35 % des ouvertures, sans preuve
+  qu'il soit meilleur. Pour le 0.7, chercher plus ne rapportait rien. Pour
+  ISMCTS, qui gagne avec le budget, un répertoire calculé à 5 000 itérations
+  reste à essayer.

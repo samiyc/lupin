@@ -1,0 +1,296 @@
+<title>Au-delà du 0.7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:opsz,wght@6..96,600;6..96,700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Same identity as the 0.6 review (out/presentation-lots.html): felt band, paper page, brass accents. */
+:root {
+  --felt: #1f5e45;
+  --felt-deep: #164a36;
+  --felt-ink: #eef4ef;
+  --felt-soft: #b9d3c4;
+  --paper: #f6f7f3;
+  --card: #ffffff;
+  --card-edge: #d4dbd5;
+  --ink: #16181a;
+  --ink-2: #454d48;
+  --ink-3: #66716a;
+  --line: #dce2dc;
+  --wash: #edf1ec;
+  --red: #c62839;
+  --brass: #9b7614;
+  --brass-wash: #f5ecd2;
+  --ok: #1d7a45;
+  --bad: #c62839;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+    --paper: #12211b; --card: #1a2d25; --card-edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+    --line: #2b3f35; --wash: #172a22; --red: #ff7a86; --brass: #e2c15a; --brass-wash: #2e2a17; --ok: #62d394; --bad: #ff7a86;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+  --paper: #12211b; --card: #1a2d25; --card-edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+  --line: #2b3f35; --wash: #172a22; --red: #ff7a86; --brass: #e2c15a; --brass-wash: #2e2a17; --ok: #62d394; --bad: #ff7a86;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+.prose { max-width: 68ch; }
+.prose p { margin: 0 0 0.9em; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; line-height: 1.12; margin: 0; }
+h2 { font-size: clamp(1.6rem, 3.2vw, 2.2rem); }
+h3 { font: 700 1.05rem/1.3 var(--body); }
+.eyebrow { font: 600 0.72rem/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--brass); }
+.num { font-variant-numeric: tabular-nums; font-family: var(--mono); }
+a { color: var(--felt); }
+:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--wash); padding: 1px 5px; border-radius: 4px; }
+
+.band { background: var(--felt); color: var(--felt-ink); padding-block: 44px 36px; }
+.band h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); }
+.band p { color: var(--felt-soft); max-width: 62ch; margin: 12px 0 0; }
+.band .eyebrow { color: var(--felt-soft); }
+.verdicts { list-style: none; padding: 0; margin: 26px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.verdicts li { border-top: 2px solid var(--felt-soft); padding-top: 8px; font-size: 0.95rem; min-width: 0; }
+.verdicts b { display: block; font: 600 0.7rem/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--felt-soft); }
+
+.toc { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line); }
+.toc ol { list-style: none; margin: 0; padding-block: 10px; padding-inline: 0; display: flex; gap: 6px 18px; flex-wrap: wrap; font-size: 0.88rem; }
+.toc a { text-decoration: none; color: var(--ink-2); }
+.toc a:hover { color: var(--felt); text-decoration: underline; }
+.toc .n { font-family: var(--mono); color: var(--brass); margin-right: 4px; }
+
+section.part { padding-block: 48px 16px; border-bottom: 1px solid var(--line); scroll-margin-top: 56px; }
+.part header { display: grid; gap: 8px; margin-bottom: 18px; }
+.ask { font-style: italic; color: var(--ink-2); border-left: 3px solid var(--brass); padding-left: 12px; margin: 4px 0 14px; max-width: 68ch; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.figure { background: var(--card); border: 1px solid var(--card-edge); border-radius: 10px; padding: 16px; min-width: 0; }
+.figure .caption { font-size: 0.85rem; color: var(--ink-3); margin: 10px 0 0; }
+.takeaway { background: var(--brass-wash); border-radius: 8px; padding: 12px 16px; margin: 18px 0 0; max-width: 72ch; }
+.takeaway h3 { margin-bottom: 4px; }
+.takeaway p { margin: 0; }
+.limits { font-size: 0.9rem; color: var(--ink-3); max-width: 72ch; margin: 12px 0 24px; }
+.limits b { color: var(--ink-2); }
+
+svg { display: block; width: 100%; height: auto; }
+svg text { fill: var(--ink-3); font: 11px var(--mono); }
+svg .name { fill: var(--ink-2); font: 12px var(--body); }
+.tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--paper); font: 12px/1.4 var(--mono); padding: 6px 8px; border-radius: 6px; z-index: 20; max-width: 260px; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 0.72rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+.pill { display: inline-block; font: 600 0.72rem var(--mono); padding: 1px 7px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { background: color-mix(in oklab, var(--ok) 18%, transparent); color: var(--ok); }
+.pill.mid { background: var(--brass-wash); color: var(--brass); }
+.pill.bad { background: color-mix(in oklab, var(--bad) 16%, transparent); color: var(--bad); }
+
+/* The levers */
+.levers { display: grid; gap: 12px; }
+.lever { background: var(--card); border: 1px solid var(--card-edge); border-radius: 10px; padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 14px; }
+.lever input { grid-row: span 2; width: 20px; height: 20px; margin-top: 4px; accent-color: var(--felt); }
+.lever .head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.lever .head h3 { font-size: 1.1rem; }
+.lever dl { grid-column: 2; display: grid; grid-template-columns: 12ch minmax(0, 1fr); gap: 4px 12px; margin: 6px 0 0; font-size: 0.93rem; }
+.lever dt { font: 600 0.72rem/1.9 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.lever dd { margin: 0; color: var(--ink-2); min-width: 0; }
+@media (max-width: 560px) { .lever dl { grid-template-columns: minmax(0, 1fr); } .lever dt { line-height: 1.2; margin-top: 6px; } }
+.total { position: sticky; bottom: 0; background: var(--felt-deep); color: var(--felt-ink); border-radius: 10px; padding: 12px 16px; margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px 20px; align-items: baseline; }
+.total b { font: 700 1.5rem var(--display); }
+.total span { color: var(--felt-soft); font-size: 0.9rem; }
+
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: step; }
+.steps li { display: grid; grid-template-columns: 9ch minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.steps .v { font: 700 1.2rem var(--display); color: var(--felt); }
+.steps p { margin: 2px 0 0; color: var(--ink-2); font-size: 0.95rem; }
+footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
+</style>
+<style>
+.ways { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 12px; }
+.way { background: var(--card); border: 1px solid var(--card-edge); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.way[hidden] { display: none !important; }
+.way h3 { font-size: 1.08rem; }
+.way .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.way dl { display: grid; grid-template-columns: 11ch minmax(0, 1fr); gap: 4px 10px; margin: 0; font-size: 0.92rem; }
+.way dt { font: 600 0.7rem/1.9 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.way dd { margin: 0; color: var(--ink-2); min-width: 0; }
+.meters { display: grid; grid-template-columns: 9ch minmax(0, 1fr) 3ch; gap: 4px 8px; align-items: center; font-size: 0.8rem; color: var(--ink-3); }
+.meters span.bar { display: block; height: 8px; border-radius: 4px; background: var(--wash); position: relative; overflow: hidden; }
+.meters span.bar i { position: absolute; inset: 0 auto 0 0; background: var(--felt); border-radius: 4px; }
+.meters span.bar.cost i { background: var(--brass); }
+.meters span.bar.risk i { background: var(--bad); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+.chip { font: 600 0.8rem var(--body); border: 1px solid var(--card-edge); background: var(--paper); color: var(--ink-2); border-radius: 999px; padding: 4px 11px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
+.order { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.order li { display: grid; grid-template-columns: 3ch minmax(0, 1fr); gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.order li::before { counter-increment: step; content: counter(step); font: 700 1.3rem var(--display); color: var(--felt); }
+.order p { margin: 2px 0 0; color: var(--ink-2); font-size: 0.95rem; }
+</style>
+
+<div class="band">
+  <div class="wrap">
+    <p class="eyebrow">Lopin n°742 · Bornage · 1er octobre 2026</p>
+    <h1>Au-delà du 0.7</h1>
+    <p>Tes idées pour dépasser l'Expérimental 0.7 — plus de budget, des cas difficiles, une mixture d'experts, un répertoire d'ouvertures — mesurées cette nuit, et comparées aux deux grandes voies qui restent : l'auto-jeu et la recherche en arbre profonde. Chaque chiffre vient d'une commande du projet.</p>
+    <ul class="verdicts">
+      <li><b>Plafond de verre</b>Réel pour l'arbre : ISMCTS fait <span class="num">49 %</span> à 400 simulations, <span class="num">56 %</span> à 800. C'est l'<b>Expérimental 0.8.0</b>, Elo <span class="num">1504</span>.</li>
+      <li><b>Mixture d'experts</b><span class="num">45,8 %</span> contre ISMCTS partout : l'arbre vaut aussi en début et en fin de partie. Écartée.</li>
+      <li><b>Cas difficiles</b>5 cas nets en 20 minutes : quand le 0.7 hésite, ses coups se valent presque toujours pour de bon.</li>
+      <li><b>Ouvertures</b><span class="num">85 µs</span> par lecture, 2,2 Mo pour tout le 1er coup, mais <span class="num">56 h</span> de calcul.</li>
+    </ul>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Sommaire">
+  <div class="wrap">
+    <ol>
+      <li><a href="#plafond"><span class="n">1</span>Plafond de verre</a></li>
+      <li><a href="#voies"><span class="n">2</span>Les six voies</a></li>
+      <li><a href="#ordre"><span class="n">3</span>Dans quel ordre</a></li>
+      <li><a href="#chiffres"><span class="n">4</span>Les chiffres</a></li>
+    </ol>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="part" id="plafond">
+    <header>
+      <p class="eyebrow">1 · Plafond de verre</p>
+      <h2>Le budget bride-t-il les nouveaux algorithmes ?</h2>
+    </header>
+    <div class="cols">
+      <div class="prose">
+        <p>Le duel 4000 contre 400 ne portait que sur le 0.7, dont la recherche plafonne. <b>Personne n'avait essayé plus de budget pour les nouveaux algorithmes.</b></p>
+        <p>À 800 simulations chacun, sur deux duels de 20 minutes aux donnes différentes, ISMCTS gagne <b>55,6 %</b> puis <b>56,9 %</b>. Mis en commun, 288 parties, fourchette par paires <b>51,2 – 62,7 %</b> : il passe la règle. Son arbre s'approfondit avec les itérations, là où la recherche du 0.7 plafonne.</p>
+        <p>TLC (des simulations qui tirent leur coup) ne bouge pas : 51,4 % à 400, 50,0 % à 800. Le budget n'aide que ce qui sait s'en servir.</p>
+        <p>Dans la page, les 10 s donnent 3 000 à 4 500 itérations à ISMCTS, à la même vitesse que le 0.7 (549 contre 508 par seconde) : au-delà des 800 mesurés.</p>
+      </div>
+      <div class="figure">
+        <svg id="ceiling" viewBox="0 0 520 260" role="img" aria-label="Score contre l'Expérimental 0.7 à budget égal, selon le budget de simulations"></svg>
+        <p class="caption">Score de chaque candidat contre le 0.7 au même budget, avec la fourchette à 95 % par paires. La ligne pointillée marque 50 % : au-dessus, le candidat gagne plus qu'il ne perd.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="part" id="voies">
+    <header>
+      <p class="eyebrow">2 · Les six voies</p>
+      <h2>Tes idées, l'auto-jeu, la recherche profonde</h2>
+    </header>
+    <div class="chips" role="group" aria-label="Filtrer">
+      <button type="button" class="chip" aria-pressed="true" data-filter="all">Toutes</button>
+      <button type="button" class="chip" aria-pressed="false" data-filter="toi">Tes idées</button>
+      <button type="button" class="chip" aria-pressed="false" data-filter="autre">Les autres voies</button>
+      <button type="button" class="chip" aria-pressed="false" data-filter="mesure">Déjà mesurées</button>
+    </div>
+    <div class="ways" id="ways"></div>
+  </section>
+
+  <section class="part" id="ordre">
+    <header>
+      <p class="eyebrow">3 · Dans quel ordre</p>
+      <h2>La recommandation</h2>
+    </header>
+    <ol class="order">
+      <li><div><h3>Pousser l'arbre</h3><p>ismcts+depth=4, puis 1 600 itérations, contre le 0.8. Si le gain continue de grandir avec le budget, des workers dans la page : les 24 fils du PC donnent dix fois plus d'itérations dans les mêmes 10 s.</p></div></li>
+      <li><div><h3>Apprendre l'évaluation par auto-jeu</h3><p>Ajuster les poids du cœur sur l'issue de milliers de parties, puis valider par duel. C'est ce qui améliore ce que l'arbre évalue.</p></div></li>
+      <li><div><h3>Un répertoire d'ouvertures par ISMCTS</h3><p>Le 1er coup d'abord, calculé à 5 000 itérations, une tranche par nuit. Le lire coûte 85 µs.</p></div></li>
+      <li><div><h3>Des cas difficiles à vérité indépendante</h3><p>Les fins de partie résolues par le solveur, et les positions des parties perdues contre toi, comme banc d'essai de chaque version.</p></div></li>
+    </ol>
+  </section>
+
+  <section class="part" id="chiffres">
+    <header>
+      <p class="eyebrow">4 · Les chiffres</p>
+      <h2>Les mesures de la nuit</h2>
+    </header>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Mesure</th><th>Commande</th><th>Résultat</th></tr></thead>
+        <tbody>
+          <tr><td>ISMCTS contre le 0.7, 800 simulations, donnes 0</td><td><code>npm run duel -- ismcts@800 experimental@800 --long --page</code></td><td>55,6 % (48,4 – 62,7), 144 parties</td></tr>
+          <tr><td>La même chose, donnes 1</td><td><code>… --offset 1</code></td><td>56,9 % (49,9 – 64,0), 144 parties</td></tr>
+          <tr><td>Mis en commun</td><td><code>—</code></td><td>56,3 % (51,2 – 62,7), 288 parties : Expérimental 0.8.0</td></tr>
+          <tr><td>TLC contre le 0.7, 800 simulations</td><td><code>npm run duel -- experimental+sample=0.05@800 experimental@800 --screen --page</code></td><td>50,0 % (35,6 – 64,4), 48 parties</td></tr>
+          <tr><td>Mixture contre ISMCTS</td><td><code>npm run duel -- mix:experimental@800,ismcts@800,experimental@800 ismcts@800 --long --page --offset 2</code></td><td>45,8 % (38,4 – 53,3), 144 parties</td></tr>
+          <tr><td>Vitesse, 800 itérations</td><td><code>(mesure ponctuelle)</code></td><td>ISMCTS 549 /s, 0.7 508 /s</td></tr>
+          <tr><td>Coût des règles du cœur</td><td><code>(mesure ponctuelle)</code></td><td>13 à 16 % du temps, dans chaque phase</td></tr>
+          <tr><td>Cas difficiles</td><td><code>npm run hard-cases, npm run cases</code></td><td>5 cas nets en 20 min</td></tr>
+          <tr><td>Répertoire d'ouvertures</td><td><code>npm run openings -- 15 2000</code></td><td>714 ouvertures, 24 s chacune, 85 µs par lecture, 35 % de coups différents</td></tr>
+          <tr><td>Classement</td><td><code>npm run elo</code></td><td>0.8.0 : 1504 ± 40 ; 0.7.0 : 1462 ± 36</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Suite de l'évolution 0.7 (docs/Prompt/evol-exp-070-prompt.md). Détails dans <code>docs/strategie.md</code> et <code>docs/validation.md</code>.</div>
+</footer>
+
+<script>
+const WAYS = [{"kind":"toi","measured":true,"title":"Plus de budget pour l'arbre (plafond de verre)","gain":4,"cost":2,"risk":2,"principle":"Donner aux nouveaux algorithmes le budget que la page leur donne déjà, au lieu des 400 simulations des duels.","evidence":"ISMCTS : 49,0 % à 400, 56,3 % (51,2 – 62,7) à 800. TLC : 51,4 % puis 50,0 %.","verdict":"<b>Adopté : Expérimental 0.8.0</b> (ISMCTS à 800), Elo 1504 ± 40. Le gain grandit avec le budget : c'est la piste à pousser."},{"kind":"toi","measured":true,"title":"Cas difficiles, à chaque montée de version","gain":2,"cost":3,"risk":3,"principle":"Relever les positions où le robot hésite, les trancher hors ligne en profondeur, et en faire un banc d'essai que chaque version doit mieux réussir.","evidence":"20 minutes pour 5 cas nets. Leur référence vient des simulations de l'Expérimental : ISMCTS y fait 0 %, alors qu'il gagne plus de parties.","verdict":"À réorienter : il faut une vérité indépendante, comme le solveur en fin de partie, ou les positions des parties perdues."},{"kind":"toi","measured":true,"title":"Mixture d'experts par phase","gain":1,"cost":2,"risk":2,"principle":"Un moteur spécialisé par phase (tours 1-14, 15-29, 30+), chacun ne calculant que ce qui sert là.","evidence":"ISMCTS au milieu seulement : 62,5 % contre le 0.7 au tri, mais 45,8 % (38,4 – 53,3) contre ISMCTS partout. Les règles du cœur ne pèsent que 13 à 16 % du temps, dans chaque phase.","verdict":"Écartée : l'arbre est bon partout, et le calcul par phase coûte peu."},{"kind":"toi","measured":true,"title":"Répertoire d'ouvertures","gain":2,"cost":4,"risk":2,"principle":"Chercher une fois, longuement, les premiers coups, et les ranger sous une clé canonique (24 couleurs × miroir), sans doublon et en lecture rapide.","evidence":"85 µs par lecture ; 24 s par ouverture à 2000 simulations, soit ~56 h pour les ~191 000 premiers coups (2,2 Mo) ; 35 % de coups différents du jeu en direct.","verdict":"La taille n'est pas le problème, le calcul l'est. À refaire avec ISMCTS, qui gagne avec le budget, une tranche par nuit."},{"kind":"autre","measured":false,"title":"Auto-jeu : une évaluation apprise","gain":4,"cost":4,"risk":3,"principle":"Régler les poids du cœur, ou apprendre une valeur de position, sur l'issue de milliers de parties d'auto-jeu (régression, puis CMA-ES validé en duel). Les simulations deviennent meilleures sans être plus nombreuses.","evidence":"Indirect : c'est la politique des simulations qui limite (94,3 % des coups gagnants gardés en fin de partie, 87,5 % sur les délicats). Les réglages à la main plafonnent à +3 points.","verdict":"La voie la plus prometteuse après l'arbre, et la seule qui améliore ce que l'arbre évalue. Plusieurs soirées de travail."},{"kind":"autre","measured":true,"title":"Recherche en arbre plus profonde","gain":5,"cost":3,"risk":3,"principle":"Pousser ISMCTS : 4 ou 5 coups de profondeur, élargissement progressif, et plusieurs workers dans la page, puisque maintenant le débit paie.","evidence":"L'arbre à 3 coups gagne avec le budget (49 % puis 56 %). Plus profond et plus rapide n'est pas encore mesuré.","verdict":"<b>La prochaine étape</b> : <code>ismcts+depth=4</code> à 1 600 itérations contre le 0.8, puis des workers dans la page."}];
+const CEILING = {"ismcts":[{"budget":400,"score":49,"low":43.7,"high":54.2},{"budget":800,"score":56.3,"low":51.2,"high":62.7}],"tlc":[{"budget":400,"score":51.4,"low":45.8,"high":56.9},{"budget":800,"score":50,"low":35.6,"high":64.4}]};
+
+const waysNode = document.getElementById("ways");
+const meter = (label, value, kind) => '<span>' + label + '</span><span class="bar ' + kind + '"><i style="width:' + (value * 20) + '%"></i></span><span class="num">' + value + '/5</span>';
+for (const way of WAYS) {
+  const card = document.createElement("article");
+  card.className = "way";
+  card.dataset.kind = way.kind;
+  card.dataset.measured = String(way.measured);
+  card.innerHTML =
+    '<div class="tags"><span class="pill ' + (way.kind === "toi" ? "mid" : "ok") + '">' + (way.kind === "toi" ? "ton idée" : "autre voie") + '</span>' +
+    (way.measured ? '<span class="pill ok">mesurée</span>' : '<span class="pill bad">pas encore mesurée</span>') + '</div>' +
+    '<h3>' + way.title + '</h3>' +
+    '<div class="meters">' + meter("Gain", way.gain, "") + meter("Coût", way.cost, "cost") + meter("Risque", way.risk, "risk") + '</div>' +
+    '<dl><dt>Principe</dt><dd>' + way.principle + '</dd><dt>Mesuré</dt><dd>' + way.evidence + '</dd><dt>Verdict</dt><dd>' + way.verdict + '</dd></dl>';
+  waysNode.append(card);
+}
+document.querySelectorAll(".chip").forEach((chip) => chip.addEventListener("click", () => {
+  document.querySelectorAll(".chip").forEach((other) => other.setAttribute("aria-pressed", String(other === chip)));
+  const filter = chip.dataset.filter;
+  waysNode.querySelectorAll(".way").forEach((card) => {
+    const show = filter === "all" || (filter === "mesure" ? card.dataset.measured === "true" : card.dataset.kind === filter);
+    card.hidden = !show;
+  });
+}));
+
+/* The ceiling chart: score against budget, one line per candidate. */
+const svg = document.getElementById("ceiling");
+const NS = "http://www.w3.org/2000/svg";
+const make = (tag, attrs, text) => { const n = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v); if (text !== undefined) n.textContent = text; return n; };
+const budgets = [400, 800];
+const X = (b) => 120 + (budgets.indexOf(b) * 300);
+const Y = (p) => 230 - ((p - 30) / 40) * 210;
+for (const p of [30, 40, 50, 60, 70]) {
+  svg.append(make("line", { x1: 60, x2: 500, y1: Y(p), y2: Y(p), stroke: "var(--line)", "stroke-dasharray": p === 50 ? "4 4" : "none" }));
+  svg.append(make("text", { x: 52, y: Y(p) + 4, "text-anchor": "end" }, p + " %"));
+}
+for (const b of budgets) svg.append(make("text", { x: X(b), y: 252, "text-anchor": "middle" }, b + " simulations"));
+const colors = { ismcts: "var(--felt)", tlc: "var(--brass)" };
+for (const [name, series] of Object.entries(CEILING)) {
+  const pts = series.map((s) => [X(s.budget) + (name === "tlc" ? 10 : -10), s]);
+  svg.append(make("polyline", { points: pts.map(([x, s]) => x + "," + Y(s.score)).join(" "), fill: "none", stroke: colors[name], "stroke-width": 2 }));
+  for (const [x, s] of pts) {
+    svg.append(make("line", { x1: x, x2: x, y1: Y(s.low), y2: Y(s.high), stroke: colors[name], "stroke-width": 3, opacity: 0.4 }));
+    svg.append(make("circle", { cx: x, cy: Y(s.score), r: 5, fill: colors[name] }));
+    svg.append(make("text", { x: x + (name === "tlc" ? 8 : -8), y: Y(s.score) - 8, "text-anchor": name === "tlc" ? "start" : "end", fill: colors[name] }, s.score.toFixed(1).replace(".", ",") + " %"));
+  }
+}
+svg.append(make("text", { x: 70, y: 16, fill: "var(--felt)" }, "ISMCTS"));
+svg.append(make("text", { x: 140, y: 16, fill: "var(--brass)" }, "TLC (tirent leur coup)"));
+</script>

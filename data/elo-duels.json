@@ -56,6 +56,13 @@
       "wins": 41,
       "games": 72,
       "source": "duel rapide du 30/09 : fin de partie exacte (docs/strategie.md)"
+    },
+    {
+      "a": "experimental@0.8.0",
+      "b": "experimental@0.7.0",
+      "wins": 162,
+      "games": 288,
+      "source": "deux duels longs du 01/10, 800 simulations, règle de la page, donnes 0 et 1 : ISMCTS (docs/strategie.md)"
     }
   ]
 }

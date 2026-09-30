@@ -184,6 +184,18 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   evaluator, skips the paired card by index and keys its memo by number;
   `bots.js` builds `boardCards` without `flat()` and keeps `withoutCard` views
   in their own Map. ×1.8 on the experimental bot, every fingerprint identical.
+- **Expérimental 0.8 is an ISMCTS** (`src/sim/ismcts.js`, lineup engine
+  `ismcts@800`): every iteration deals the unseen cards, walks a 3-ply tree
+  (UCB1 on availability, the core's shortlist), then rolls out with the 0.7
+  policy. `createIsmcts` has `createSearch`'s interface, so the worker and
+  pondering run it unchanged. It beat the 0.7 only once both had 800
+  rollouts (56.3 %, 51.2-62.7 over two runs, `--offset 1`); at 400 it was
+  49 %. The `experimental` engine id is still the 0.7 search (bench, policy,
+  cases, duels); `experimental:0.7` names it explicitly.
+- **Engine ids stack**: `experimental+sample=0.05+prior=0.15`, `@N` budgets,
+  `ismcts+depth=2`, `mix:A,B,C` (one expert per phase, `src/sim/mix.js`).
+  Screen with `--screen` (10 min), confirm with `--long` (20 min), always
+  `--page`; pool two runs with `--offset K` (pair statistics printed).
 - **The experimental bot solves small endgames** (0.7, `src/sim/exact.js`):
   pile empty and at most 8 cards, it asks the solver instead of searching,
   root moves in the core's order with `keepAll` (a joker the core refuses may

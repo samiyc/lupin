@@ -33,7 +33,12 @@ import { runPool } from "./lib/pool.js";
  */
 const args = process.argv.slice(2);
 const [a = "experimental", b = "stratege"] = args.filter((arg) => !arg.startsWith("--") && !/^\d+$/.test(arg));
-const exact = Number(args[args.indexOf("--games") + 1]) || Number(args.find((arg) => /^\d+$/.test(arg))) || null;
+const valueOf = (flag) => (args.includes(flag) ? Number(args[args.indexOf(flag) + 1]) : 0);
+const exact = valueOf("--games") || null;
+// `--offset K` deals other decks (and seeds the bots otherwise): a second run to pool with the first.
+const offset = valueOf("--offset");
+const base = SEED + 1_000_003 * offset;
+const offsetNote = offset ? ` (donnes décalées de ${offset})` : "";
 const profileName = ["long", "screen"].find((name) => args.includes(`--${name}`)) ?? "quick";
 const profile = PROFILES[profileName];
 const profileLabel = exact ? `${exact} parties` : profileName;
@@ -81,7 +86,7 @@ while (!verdict.stop) {
   for (const players of [[engine(a), engine(b)], [engine(b), engine(a)]]) {
     for (let t = 0; t < tasksPerSeat; t += 1) {
       tally.tasks += 1;
-      tasks.push({ ...DUEL_ROW, endMode, keepWinners: true, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: SEED + 104729 * tally.tasks, deals: SEED + 7 * 104729 * (round + t) });
+      tasks.push({ ...DUEL_ROW, endMode, keepWinners: true, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
     }
   }
   const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks);
@@ -100,6 +105,13 @@ while (!verdict.stop) {
 }
 
 const share = (tally.first + tally.second) / (2 * tally.games);
+
+/** n, mean and standard deviation of the pair scores: what pooling two runs needs. */
+function pairStats(pairs) {
+  const mean = pairs.reduce((sum, p) => sum + p, 0) / pairs.length;
+  const sd = Math.sqrt(pairs.reduce((sum, p) => sum + (p - mean) ** 2, 0) / Math.max(1, pairs.length - 1));
+  return `n = ${pairs.length}, moyenne ${mean.toFixed(4)}, écart-type ${sd.toFixed(4)}`;
+}
 function conclusion() {
   if (verdict.low > 0.5) return `  → ${a} est nettement meilleur.`;
   if (verdict.high < 0.5) return `  → ${b} est nettement meilleur.`;
@@ -110,6 +122,7 @@ process.stdout.write(
     `${tag(a)} contre ${tag(b)} — ${2 * tally.games} parties (${tally.games} de chaque côté), règle ${endMode}, profil ${profileLabel}, ${((Date.now() - started) / 1000).toFixed(1)} s`,
     `  ${a} gagne ${pct(share)}  (fourchette à 95 % par paires : ${pct(verdict.low)} – ${pct(verdict.high)} ; partie par partie : ${pct(verdict.wilson[0])} – ${pct(verdict.wilson[1])})`,
     `  en commençant : ${pct(tally.first / tally.games)} · en second : ${pct(tally.second / tally.games)}`,
+    `  paires : ${pairStats(tally.pairs)}${offsetNote}`,
     conclusion(),
     "",
   ].join("\n"),

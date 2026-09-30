@@ -32,6 +32,8 @@ export const EXPERIMENT = Object.freeze({
  * `@N` for a budget of N rollouts (`experimental:0.8-lite@200`).
  */
 const FROZEN = {
+  // The 0.7, as the page played it until the 0.8 (an ISMCTS, src/sim/ismcts.js).
+  "experimental:0.7": EXPERIMENT,
   // Lot 4 of 0.8, set aside: rollouts seeing a lost border at a glance, 53.1 % (47.4-58.8).
   "experimental:0.8-lite": { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] },
   // Lot 3 of 0.8, set aside: 47.9 % against 0.7 (docs/strategie.md).

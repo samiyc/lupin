@@ -2,7 +2,7 @@ import { BOT_LINEUP, botTag, engineOf } from "../../src/config/bots.js";
 import { OFFICIAL_RULES } from "../../src/config/rules.js";
 import { createRng } from "../../src/core/random.js";
 import { finishLog, playLogged, rulesOf, startLog } from "../../src/replay/log.js";
-import { BOTS, pickBest } from "../../src/sim/bots.js";
+import { engineFor, pickBest } from "../../src/sim/bots.js";
 import { createGame, legalMoves } from "../../src/sim/game.js";
 
 /**
@@ -19,7 +19,7 @@ export function newGame(seed) {
 }
 
 export function botPlayer(id, seed) {
-  return { id, engine: engineOf(id), bot: BOTS[engineOf(id)](createRng(seed)), rng: createRng(seed ^ 0x5bd1e995) };
+  return { id, engine: engineOf(id), bot: engineFor(engineOf(id))(createRng(seed)), rng: createRng(seed ^ 0x5bd1e995) };
 }
 
 export const botEntry = (seat, id) => ({ seat, kind: "bot", bot: id, version: BOT_LINEUP[id].version, label: BOT_LINEUP[id].label });

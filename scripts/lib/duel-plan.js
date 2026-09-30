@@ -26,7 +26,7 @@ export const PROFILES = Object.freeze({
 });
 
 /** Engines that search at every move: seconds a game instead of milliseconds. */
-export const isSlowEngine = (engine) => /^(lookahead|experimental|ismcts)/.test(engine);
+export const isSlowEngine = (engine) => /^(lookahead|experimental|ismcts|mix)/.test(engine);
 
 const PEEK_Z = 2.576;
 const FINAL_Z = 1.96;

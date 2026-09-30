@@ -10,7 +10,7 @@ import { createGame, legalMoves } from "../src/sim/game.js";
 describe("the bot line-up", () => {
   it("has the three majors, each on an existing engine", () => {
     assert.deepEqual(BOT_IDS, ["basique", "stratege", "experimental"]);
-    for (const id of BOT_IDS) assert.ok(engineOf(id) in BOTS, id);
+    for (const id of BOT_IDS) assert.doesNotThrow(() => engineFor(engineOf(id)), id);
     assert.ok(BOT_IDS.includes(DEFAULT_OPPONENT));
   });
 
@@ -53,5 +53,13 @@ describe("scoreMoves", () => {
     const shortlist = [...core].sort((x, y) => y.gain - x.gain).slice(0, 8).map(({ move }) => `${move.card}@${move.border}`);
     for (const { move } of searched) assert.ok(shortlist.includes(`${move.card}@${move.border}`));
     assert.ok(searched.some((entry) => entry.rollouts > 16), "rollouts go to the survivors");
+  });
+});
+
+describe("the page's line-up", () => {
+  it("builds every bot the way the page does, whatever its engine id", async () => {
+    // The page once looked engines up in BOTS directly, and broke when Expérimental 0.8 became `ismcts@800`.
+    const { botPlayer } = await import("../web/app/runner.js");
+    for (const id of BOT_IDS) assert.equal(typeof botPlayer(id, 1).bot.choose, "function", id);
   });
 });

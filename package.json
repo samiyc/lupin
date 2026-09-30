@@ -31,7 +31,10 @@
     "puzzles:immediate": "node scripts/immediate-puzzles.js",
     "hiding": "node scripts/hiding.js",
     "policy": "node scripts/policy.js",
-    "model": "node scripts/model.js"
+    "model": "node scripts/model.js",
+    "hard-cases": "node scripts/hard-cases.js",
+    "cases": "node scripts/cases.js",
+    "openings": "node scripts/openings.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

@@ -40,3 +40,7 @@ real life test/
 # keeping for analysis are copied to data/replays/, which is versioned.
 /replays/
 /selfplay/
+
+# ---- Opening repertoire (npm run openings) ------------------------------
+# Up to 500 MB, rebuilt on demand.
+/data/openings/

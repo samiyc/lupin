@@ -1,6 +1,6 @@
 /**
  * The bot line-up players see: in the web game, the replays and `npm run
- * duel`. Each entry names a bot engine (`BOTS` in `src/sim/bots.js`).
+ * duel`. Each entry names a bot engine id (`engineFor` in `src/sim/bots.js`).
  *
  * Versioning: any change of behaviour bumps the version — patch for a tuned
  * number, minor for a new rule, major for a new way of thinking. Every replay
@@ -24,11 +24,13 @@ export const BOT_LINEUP = Object.freeze({
     pace: "≈ 0,5 s par coup",
   }),
   experimental: Object.freeze({
-    engine: "experimental",
-    version: "0.7.0",
+    // 0.8: a tree search over hidden information (src/sim/ismcts.js), measured at 800 iterations a move.
+    // The 0.7 search is still the `experimental` engine id, for duels and the bench.
+    engine: "ismcts@800",
+    version: "0.8.0",
     label: "Expérimental",
-    description: "Le cœur du Stratège, qui cherche plus loin",
-    examines: "8 coups, les moins bons éliminés par rondes ; la fin de partie calculée exactement",
+    description: "Le cœur du Stratège, qui cherche en arbre",
+    examines: "ses 8 meilleurs coups, tes réponses et les siennes, sur 3 coups d'avance ; la fin de partie calculée exactement",
     pace: "jusqu'à 10 s, et pendant ton tour",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
