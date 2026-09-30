@@ -172,6 +172,19 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   `/api/stats` (`src/replay/stats.js`, pure: record per opponent, formation
   shares of won borders);
   `npm run elo -- --duels` refreshes the duel lines it has engines for.
+- **Speed (0.7)**: `npm run bench` searches the 20 hardest endgame puzzles
+  and 12 mid-game positions, several seeds, medians. Rollouts are 93 % the
+  strategist core; `potential.js` now counts unseen cards in a flat array (in
+  deck order: the float sums downstream depend on it), caches the valuer per
+  evaluator, skips the paired card by index and keys its memo by number;
+  `bots.js` builds `boardCards` without `flat()` and keeps `withoutCard` views
+  in their own Map. ×1.8 on the experimental bot, every fingerprint identical.
+- **The experimental bot solves small endgames** (0.7, `src/sim/exact.js`):
+  pile empty and at most 8 cards, it asks the solver instead of searching,
+  root moves in the core's order with `keepAll` (a joker the core refuses may
+  be the only win), first win kept. The page's worker goes through
+  `bot.solves()`, since it calls `searchFor` itself. The solver key includes
+  border owners: under the claim rule a claimed border is closed.
 - **Endgames are solved exactly** once the pile is empty (`src/sim/endgame.js`):
   negamax with memory, keyed on the ORDER sides filled (only order matters),
   cut at the first win. ~0.2 s at 8 cards, seconds at 9-10: in the page it
@@ -179,6 +192,13 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   through at most half the moves (strong games are rarely delicate: 30 %
   gave 19 of 4 544) into `web/data/puzzles.json`. The table's input is
   routed to the tab on show (`main.js`): play or puzzles.
+- **"Gain immédiat" puzzles** (`kind: "immediate"`, `npm run puzzles:immediate`,
+  `src/sim/immediate.js`): under the claim rule, a move after which the mover's
+  provable borders already make a win, and the opponent has not won first —
+  proofs rest on the table alone, so the hidden hand cannot matter. The page
+  hides that hand and ends the puzzle on the first move (`puzzle-kinds.js`);
+  the bench skips them (the solver cannot see through a pile), and
+  `npm run puzzles` keeps them when it rewrites the file.
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

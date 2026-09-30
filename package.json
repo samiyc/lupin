@@ -26,7 +26,9 @@
     "mine": "node scripts/mine.js",
     "time-study": "node scripts/time-study.js",
     "puzzles": "node scripts/puzzles.js",
-    "elo": "node scripts/elo.js"
+    "elo": "node scripts/elo.js",
+    "bench": "node scripts/bench.js",
+    "puzzles:immediate": "node scripts/immediate-puzzles.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

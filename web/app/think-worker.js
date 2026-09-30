@@ -38,11 +38,20 @@ function searchReply(state, moves, { warm, spentMs }) {
   return { move: search.best(), scored: search.scored(), pondered: Math.round(spentMs), rollouts: search.rollouts(), thoughtMs: Math.round(now() - started) };
 }
 
+/** A small endgame, solved exactly (Expérimental 0.7): no search, no clock. */
+function solvedReply(state, moves) {
+  const started = now();
+  const scored = bot.scoreMoves(state, moves);
+  const best = scored.reduce((a, b) => (b.gain > a.gain ? b : a));
+  return { move: best.move, scored, pondered: 0, rollouts: 0, thoughtMs: Math.round(now() - started) };
+}
+
 function decide(log) {
   const state = current(log);
   const moves = legalMoves(state);
   const taken = ponder?.take() ?? { warm: null, spentMs: 0 };
   ponder = null;
+  if (bot.solves?.(state, moves)) return solvedReply(state, moves);
   if (moves.length > 1) return searchReply(state, moves, taken);
   return { move: moves[0] ?? null, scored: bot.scoreMoves(state, moves), pondered: 0, rollouts: 0, thoughtMs: 0 };
 }

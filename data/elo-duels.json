@@ -49,6 +49,13 @@
       "wins": 121,
       "games": 240,
       "source": "duel long du 30/09 (docs/strategie.md)"
+    },
+    {
+      "a": "experimental@0.7.0",
+      "b": "experimental@0.6.0",
+      "wins": 41,
+      "games": 72,
+      "source": "duel rapide du 30/09 : fin de partie exacte (docs/strategie.md)"
     }
   ]
 }

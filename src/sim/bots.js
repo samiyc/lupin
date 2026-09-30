@@ -81,7 +81,7 @@ function views(state) {
   const player = state.current;
   const shared = { valuer: createValuer(state), unseen: unseenCards(state, player) };
   // Each view gets its own memo: the same pair is judged many times in one scoring.
-  const mine = { ...shared, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map() };
+  const mine = { ...shared, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map() };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     ...shared,
@@ -105,6 +105,13 @@ function borderChances(state, player, { mine, threat }) {
   return state.borders.map((border, index) => winChance(sidePotential(border.sides[player], withHand), threat[index], mine.params));
 }
 
+/** Every card on the board, border by border, side by side — without `flat()`, which a rollout paid for on every move. */
+function boardCards(state) {
+  const cards = [];
+  for (const border of state.borders) for (const side of border.sides) for (const card of side) cards.push(card);
+  return cards;
+}
+
 /** What the ideas read on top of the strategist's context; nothing when none is on. */
 function ideasContext(state, player, { ideas, weights }, seen) {
   if (ideas.size === 0) return {};
@@ -113,7 +120,7 @@ function ideasContext(state, player, { ideas, weights }, seen) {
     weights,
     hand: state.hands[player],
     theirSides: state.borders.map((border) => border.sides[1 - player]),
-    boardCards: state.borders.flatMap((border) => border.sides.flat()),
+    boardCards: boardCards(state),
     pile: state.pile.length,
     chances: ideas.has("runs") || ideas.has("dump") ? borderChances(state, player, seen) : null,
   };
@@ -174,15 +181,14 @@ function wholeGains(state, { mine, threat }) {
 
 const winChance = (mine, theirs, params = BOT_PARAMS) => 1 / (1 + Math.exp((theirs - mine) / params.temperature));
 
-/** The view without `card` in hand, built once per card and scoring (`context.memo`). */
+/** The view without `card` in hand, built once per card and scoring (`context.withoutCard`, keyed by the card). */
 function withoutCard(state, context, card) {
-  const key = `hand-${card}`;
-  const cached = context.memo?.get(key);
+  const cached = context.withoutCard?.get(card);
   if (cached) return cached;
   const hand = [...state.hands[state.current]];
   hand.splice(hand.indexOf(card), 1);
   const view = { ...context, hand };
-  context.memo?.set(key, view);
+  context.withoutCard?.set(card, view);
   return view;
 }
 
@@ -246,6 +252,7 @@ export const BOTS = Object.freeze({
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
 export function engineFor(id) {
+  if (id === "experimental:0.6") return searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false } });
   if (id === "experimental:0.5") return searchOf({ ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false } });
   if (Object.hasOwn(BOTS, id)) return BOTS[id];
   const budget = /^experimental:(\d+)$/.exec(id)?.[1];

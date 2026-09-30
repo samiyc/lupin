@@ -25,10 +25,10 @@ export const BOT_LINEUP = Object.freeze({
   }),
   experimental: Object.freeze({
     engine: "experimental",
-    version: "0.6.0",
+    version: "0.7.0",
     label: "Expérimental",
     description: "Le cœur du Stratège, qui cherche plus loin",
-    examines: "8 coups, les moins bons éliminés par rondes",
+    examines: "8 coups, les moins bons éliminés par rondes ; la fin de partie calculée exactement",
     pace: "jusqu'à 10 s, et pendant ton tour",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),

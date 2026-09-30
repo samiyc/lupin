@@ -209,3 +209,66 @@ ou d'une meilleure politique dans les fins de partie simulées.
 3. **« Gagner une borne à coup sûr » n'est pas une priorité prouvée.** Le robot fort
    ne la prend qu'une fois sur deux. Elle reste une information pour le cœur, pas
    une règle.
+
+## Expérimental 0.7 : plus vite, et la fin de partie exacte
+
+Le 0.7 applique les deux pistes laissées par le 0.6 : plus de simulations par
+seconde, et une fin de partie calculée au lieu d'être simulée. Tout est mesuré
+par `npm run bench`, le nouveau banc d'essai. Il cherche sur les 20 puzzles les
+plus difficiles et sur 12 positions de milieu de partie, avec 3 graines, et donne
+des médianes.
+
+**Plus vite, sans changer un seul coup.** Le profil montre que 93 % du temps de
+recherche passe dans le cœur du Stratège qui joue les fins de partie simulées :
+le potentiel des bornes (45 %), la vue de la table (18 %), le décompte des cartes
+invisibles (10 %). Quatre corrections, sans toucher au jugement :
+- les cartes invisibles comptées dans un tableau plutôt qu'en reconstruisant le
+  paquet ;
+- l'évaluateur de valeurs gardé d'un coup à l'autre ;
+- la main sans la carte appariée lue par index au lieu d'être copiée ;
+- des clés numériques pour les mémoires, et plus de `flat()` à chaque coup.
+
+| Mesure | Avant | Après |
+| --- | --- | --- |
+| Stratège contre Basique, par partie | 8,2 ms | 4,9 ms |
+| Expérimental (200 simulations) contre Stratège, par partie | 11,0 s | 6,2 s |
+| Milieu de partie, tour 8 | ≈ 200 simul./s | ≈ 345 simul./s |
+| Milieu de partie, médiane | 310 simul./s | 548 simul./s |
+
+Les quatre empreintes (`npm run fingerprint`) sont identiques avant et après :
+mêmes coups, **1,8 fois plus vite**. Dans les 10 s de la page, c'est 1,8 fois
+plus de fins de partie rejouées.
+
+**La fin de partie exacte.** Sur les 20 puzzles les plus difficiles, la recherche
+ne trouve le coup gagnant que **30 fois sur 60**, et toujours 0/3 ou 3/3 selon le
+puzzle. La pioche vide ne laisse plus rien au hasard des donnes : toutes les
+simulations rejouent la même partie, et c'est la politique de simulation, pas le
+budget, qui se trompe. Le solveur exact coûte :
+
+| Cartes en main (les deux joueurs) | Règle de revendication | Bornes réglées à la fin |
+| --- | --- | --- |
+| 8 | 51 ms au plus | 97 ms au plus |
+| 9 | 78 ms | 159 ms |
+| 10 | 1,7 s | 10,9 s |
+
+Le 0.7 s'en sert dès 8 cartes, avec un arrêt au premier coup gagnant, les coups
+essayés dans l'ordre du cœur. Il joue alors le coup gagnant dans **les 44 puzzles
+de 8 cartes ou moins** (un test le vérifie). Un premier essai en ratait un : le
+cœur écarte d'office certains jokers, et le coup gagnant en était un. Le solveur
+reçoit donc tous les coups.
+
+**Mesure contre le 0.6**, profil rapide (400 simulations par coup, 72 parties) :
+**56,9 %** (fourchette 45,4 – 67,7 %), 52,8 % en commençant, 61,1 % en second :
+**pas de différence nette**. Peu de parties atteignent une fin de partie aussi petite, et le gain
+de vitesse ne compte pas à budget de simulations égal. Le vrai gain du 0.7 est
+dans la page : 1,8 fois plus de simulations dans les mêmes 10 s, et un jeu
+parfait dans les derniers coups.
+
+**Les puzzles « gain immédiat ».** Sous la règle de revendication, un coup peut
+rendre la victoire certaine alors que la pioche n'est pas vide. Il faut que, après
+ce coup, les bornes prouvables fassent déjà trois côte à côte ou quatre en tout, et
+que l'adversaire n'ait pas gagné avant. La preuve n'utilise que les cartes de la
+table, donc la main cachée n'y change rien. `npm run puzzles:immediate` en a
+trouvé 20 dans l'auto-jeu du Stratège, qui ne voit le coup dans aucun d'eux. Un
+test rejoue chaque solution sur 20 donnes différentes des cartes cachées, avec une
+réponse au hasard : la victoire tombe à chaque fois.

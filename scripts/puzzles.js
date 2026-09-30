@@ -43,6 +43,9 @@ const strip = (log, turn) => ({ format: log.format, rules: log.rules, deck: log.
 const puzzles = chosen.map((p, i) => ({ id: i + 1, turn: p.turn, cardsLeft: p.cardsLeft, moves: p.moves, solutions: p.solutions, coreMove: p.coreMove, coreFails: p.coreFails, log: strip(logs[p.index], p.turn) }));
 const dir = fileURLToPath(new URL("../web/data/", import.meta.url));
 await mkdir(dir, { recursive: true });
-await writeFile(`${dir}puzzles.json`, `${JSON.stringify({ generatedAt: new Date().toISOString(), puzzles })}\n`);
+// The "gain immédiat" puzzles come from `npm run puzzles:immediate`: kept as they are.
+const previous = await readFile(`${dir}puzzles.json`, "utf8").then((text) => JSON.parse(text).puzzles, () => []);
+const immediate = previous.filter((puzzle) => puzzle.kind === "immediate");
+await writeFile(`${dir}puzzles.json`, `${JSON.stringify({ generatedAt: new Date().toISOString(), puzzles: [...puzzles, ...immediate] })}\n`);
 const unique = puzzles.filter((p) => p.solutions.length === 1).length;
 process.stdout.write(`${items.length} fins de partie examinées, ${found.length} puzzles possibles, ${puzzles.length} gardés (${unique} à solution unique, ${puzzles.filter((p) => p.coreFails).length} où le Stratège se trompe) — ${((Date.now() - started) / 60000).toFixed(1)} min\n`);

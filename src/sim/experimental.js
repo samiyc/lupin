@@ -21,5 +21,6 @@ export const EXPERIMENT = Object.freeze({
   // 0.6: its core also knows which borders are already decided (certainty.js).
   ideas: Object.freeze([...STRATEGIST_IDEAS, "certain"]),
   weights: Object.freeze({ ...IDEA_WEIGHTS }),
-  search: Object.freeze({ ...SEARCH, budget: 400 }),
+  // 0.7: an endgame of 8 cards or fewer, pile empty, is solved exactly (exact.js).
+  search: Object.freeze({ ...SEARCH, budget: 400, exact: true }),
 });

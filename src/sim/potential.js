@@ -1,4 +1,4 @@
-import { buildDeck, isJoker, valueOf } from "../core/cards.js";
+import { JOKER, isJoker, realCardCount, valueOf } from "../core/cards.js";
 
 /**
  * What a side of a border is likely to be worth once finished, seen from one
@@ -14,8 +14,18 @@ import { buildDeck, isJoker, valueOf } from "../core/cards.js";
 const SPAN = 64;
 const PAIR_DISCOUNT = 0.9;
 
+/** One valuer per evaluator: it only reads the spec and the evaluator, and a scoring used to rebuild it. */
+const valuers = new WeakMap();
+
 export function createValuer(state) {
-  const { spec, evaluator } = state;
+  const known = valuers.get(state.evaluator);
+  if (known?.spec === state.spec) return known.valuer;
+  const valuer = buildValuer(state);
+  valuers.set(state.evaluator, { spec: state.spec, valuer });
+  return valuer;
+}
+
+function buildValuer({ spec, evaluator }) {
   // One above the highest sum, so a value's integer part is always its rank.
   const sumScale = 3 * spec.values + 1;
   const average = (spec.values + 1) / 2;
@@ -36,12 +46,23 @@ export function createValuer(state) {
  * opponent's hand is in there — that is what not seeing it means.
  */
 export function unseenCards(state, player) {
-  const counts = new Map();
-  for (const card of buildDeck(state.spec)) counts.set(card, (counts.get(card) ?? 0) + 1);
-  const seen = [...state.hands[player], ...state.borders.flatMap((b) => b.sides.flat())];
-  for (const card of seen) counts.set(card, counts.get(card) - 1);
-  const entries = [...counts].filter(([, count]) => count > 0);
-  return { entries, total: entries.reduce((sum, [, count]) => sum + count, 0) };
+  // A flat count per card, the jokers last: the deck's own order, which the sums downstream keep.
+  const real = realCardCount(state.spec);
+  const counts = new Array(real + 1).fill(1);
+  counts[real] = state.spec.jokers;
+  const see = (card) => {
+    counts[isJoker(card) ? real : card] -= 1;
+  };
+  state.hands[player].forEach(see);
+  for (const border of state.borders) border.sides.forEach((side) => side.forEach(see));
+  const entries = [];
+  let total = 0;
+  counts.forEach((count, index) => {
+    if (count <= 0) return;
+    entries.push([index === real ? JOKER : index, count]);
+    total += count;
+  });
+  return { entries, total };
 }
 
 /** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? }. */
@@ -54,11 +75,13 @@ export function sidePotential(side, context) {
 
 const usable = (card, jokerOk) => jokerOk || !isJoker(card);
 
-function pairPotential(side, context, hand = context.hand) {
+/** `skip`: the index of a hand card already on `side`, left out without copying the hand. */
+function pairPotential(side, context, skip = -1) {
   const jokerOk = context.jokerAllowed(side);
+  const { hand } = context;
   let best = -Infinity;
-  for (const card of hand) {
-    if (usable(card, jokerOk)) best = Math.max(best, context.valuer.value3(side, card));
+  for (let i = 0; i < hand.length; i += 1) {
+    if (i !== skip && usable(hand[i], jokerOk)) best = Math.max(best, context.valuer.value3(side, hand[i]));
   }
   return Math.max(best, drawPotential(side, context, jokerOk));
 }
@@ -74,7 +97,9 @@ function pairPotential(side, context, hand = context.hand) {
 function drawPotential(side, context, jokerOk) {
   const { memo } = context;
   if (!memo) return drawPotentialOf(side, context, jokerOk);
-  const key = side[0] < side[1] ? `${side[0]},${side[1]},${jokerOk}` : `${side[1]},${side[0]},${jokerOk}`;
+  // A number rather than a string: cards run from -1 (joker) up, well under 63.
+  const [low, high] = side[0] < side[1] ? side : [side[1], side[0]];
+  const key = ((low + 1) * 64 + high + 1) * 2 + Number(jokerOk);
   let value = memo.get(key);
   if (value === undefined) {
     value = drawPotentialOf(side, context, jokerOk);
@@ -111,12 +136,11 @@ function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
 function singlePotential(side, context) {
   const jokerOk = context.jokerAllowed(side);
   let best = context.valuer.single(side[0]);
-  // The hand minus the card being paired, passed along rather than copied into a new context.
+  // The hand minus the card being paired: its index is skipped, not copied out.
   const { hand } = context;
   for (let i = 0; i < hand.length; i += 1) {
     if (!usable(hand[i], jokerOk)) continue;
-    const rest = hand.slice(0, i).concat(hand.slice(i + 1));
-    best = Math.max(best, PAIR_DISCOUNT * pairPotential([side[0], hand[i]], context, rest));
+    best = Math.max(best, PAIR_DISCOUNT * pairPotential([side[0], hand[i]], context, i));
   }
   return best;
 }

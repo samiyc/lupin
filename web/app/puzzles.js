@@ -4,6 +4,7 @@ import { applyMove, legalMoves } from "../../src/sim/game.js";
 import { createRng } from "../../src/core/random.js";
 import { $, freshSeed, recall, remember } from "./dom.js";
 import { sortBySuit, syncOrder } from "./hand.js";
+import { hintOf, immediateMessage, isImmediate, namesOf, openingMessage, randomOrder, solutionOf } from "./puzzle-kinds.js";
 import { SPEC } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
@@ -20,11 +21,7 @@ const puzzle = { list: [], index: 0, order: [], cursor: 0, game: null, visible: 
 
 /** A random order, the puzzles not yet solved first: the next one is never predictable. */
 function shuffleOrder() {
-  const rng = createRng(freshSeed());
-  const solved = solvedIds();
-  const indices = puzzle.list.map((_, i) => i);
-  const fresh = rng.shuffle(indices.filter((i) => !solved.has(puzzle.list[i].id)));
-  puzzle.order = [...fresh, ...rng.shuffle(indices.filter((i) => solved.has(puzzle.list[i].id)))];
+  puzzle.order = randomOrder(puzzle.list, solvedIds(), createRng(freshSeed()));
   puzzle.cursor = 0;
 }
 
@@ -64,17 +61,19 @@ function legalFor(index) {
 export function render() {
   const { game } = puzzle;
   if (!puzzle.visible || !game) return;
-  const view = tableView(SPEC, snapshot(game.state), { bottom: game.mover, reveal: true, handOrder: game.order, lastMove: game.lastMove });
+  const current = puzzle.list[puzzle.index];
+  const view = tableView(SPEC, snapshot(game.state), { bottom: game.mover, reveal: !isImmediate(current), handOrder: game.order, lastMove: game.lastMove });
   renderTable(view, {
     status: game.message,
-    names: { bottom: "Toi (au trait)", top: "Adversaire — jeu parfait" },
+    names: namesOf(current),
     interactive: humanTurn(),
     selected: game.selected,
     legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
     lastMove: game.lastMove,
   });
-  const current = puzzle.list[puzzle.index];
-  $("puzzle-title").textContent = `Puzzle ${puzzle.index + 1} / ${puzzle.list.length} · tour ${current.turn} · ${current.moves} coups possibles`;
+  const kind = isImmediate(current) ? `gain immédiat, pioche ${current.cardsLeft}` : `tour ${current.turn}`;
+  $("puzzle-kind").textContent = hintOf(current);
+  $("puzzle-title").textContent = `Puzzle ${puzzle.index + 1} / ${puzzle.list.length} · ${kind} · ${current.moves} coups possibles`;
   $("puzzle-solved").textContent = `Résolus : ${solvedIds().size} / ${puzzle.list.length}`;
 }
 
@@ -95,12 +94,20 @@ function pass(game) {
   applyMove(game.state, null);
 }
 
+const markSolved = () => remember(SOLVED_KEY, JSON.stringify([...solvedIds(), puzzle.list[puzzle.index].id]));
+
+/** A "gain immédiat" ends on its first move: the win is proved, not played out. */
+function settleImmediate(slip) {
+  const { game } = puzzle;
+  if (!slip && !game.revealed) markSolved();
+  game.message = immediateMessage(slip, game.revealed);
+  render();
+}
+
 function finish() {
   const { game } = puzzle;
   const won = game.state.winner === game.mover;
-  if (won && !game.slipped && !game.revealed) {
-    remember(SOLVED_KEY, JSON.stringify([...solvedIds(), puzzle.list[puzzle.index].id]));
-  }
+  if (won && !game.slipped && !game.revealed) markSolved();
   const helped = game.slipped || game.revealed;
   if (!won) game.message = "Perdu. Recommence ce puzzle, ou révèle le coup gagnant.";
   else game.message = helped ? "Gagné, mais avec de l'aide." : "Résolu ! Puzzle suivant ?";
@@ -143,7 +150,8 @@ function judge(move) {
   if (mine && mine.value < best) {
     game.slipped = true;
     const winners = game.solution.filter((entry) => entry.value === best).map((entry) => `${entry.card}→${entry.border}`);
-    return `Faux pas : ${text(move)} ne gagne plus. Il fallait ${winners.join(" ou ")}.`;
+    const verdict = isImmediate(puzzle.list[puzzle.index]) ? "ne gagne pas à coup sûr" : "ne gagne plus";
+    return `Faux pas : ${text(move)} ${verdict}. Il fallait ${winners.join(" ou ")}.`;
   }
   return null;
 }
@@ -162,7 +170,8 @@ export const puzzleInput = {
     const move = { card: game.order[at], border };
     const slip = judge(move);
     play(move);
-    reply().then(() => {
+    if (isImmediate(puzzle.list[puzzle.index])) return settleImmediate(slip);
+    return reply().then(() => {
       if (slip && !game.state.over) {
         game.message = slip;
         render();
@@ -178,9 +187,8 @@ export function start(index) {
   const state = stateAt(current.log, current.turn);
   puzzle.index = index;
   puzzle.game = { state, log: current.log, mover: state.current, played: [], order: sortBySuit(SPEC, state.hands[state.current]), selected: null, lastMove: null, thinking: false, slipped: false, revealed: false };
-  puzzle.game.solution = current.solutions.map((solution) => ({ card: solution.split("→")[0], border: Number(solution.split("→")[1]), value: 1 }));
-  puzzle.game.solution.push(...legalMoves(state).filter((move) => !current.solutions.includes(text(move))).map((move) => ({ card: formatCard(SPEC, move.card), border: move.border + 1, value: -1 })));
-  puzzle.game.message = `Trouve le coup gagnant : ${current.solutions.length} coup${current.solutions.length > 1 ? "s gagnent" : " gagne"} sur ${current.moves}.`;
+  puzzle.game.solution = solutionOf(current, legalMoves(state), text);
+  puzzle.game.message = openingMessage(current);
   render();
 }
 

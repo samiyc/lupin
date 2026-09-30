@@ -1,6 +1,7 @@
 import { createRng } from "../core/random.js";
 import { applyMove } from "./game.js";
 import { STATUS, boardStatus } from "./certainty.js";
+import { exactApplies, exactScores } from "./exact.js";
 import { cloneState, determinize, playOut } from "./lookahead.js";
 
 /**
@@ -143,7 +144,7 @@ function searchScores(scored, arms, alive, prior) {
  * deterministic, for duels — or by `stop()`, which the page sets to a
  * deadline. The base bot shortlists; `policy(rng)` plays the rollouts.
  */
-export function searchBot(rng, { base, policy, budget = 400, stop = null, name = "search", ...settings }) {
+export function searchBot(rng, { base, policy, budget = 400, stop = null, name = "search", exact = false, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createSearch(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
@@ -151,12 +152,26 @@ export function searchBot(rng, { base, policy, budget = 400, stop = null, name =
     while (!search.done() && (stop ? !stop(search) : search.rollouts() < budget)) search.step();
     return search;
   };
+  // `exact` (0.7): a small enough endgame is solved rather than searched (`exact.js`).
+  const solved = (state, moves) => exact && moves.length > 1 && exactApplies(state);
+  const scoreMoves = (state, moves, options = {}) => {
+    if (moves.length <= 1) return base.scoreMoves(state, moves, options);
+    // Every move, the jokers the core refuses included: the solver owes them a value.
+    if (solved(state, moves)) return exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }));
+    return run(searchFor(state, moves, options)).scored();
+  };
+  const bestOf = (scored) => scored.reduce((a, b) => (b.gain > a.gain ? b : a)).move;
   return {
     name,
     base,
     policy,
     searchFor,
-    scoreMoves: (state, moves, options = {}) => (moves.length <= 1 ? base.scoreMoves(state, moves, options) : run(searchFor(state, moves, options)).scored()),
-    choose: (state, moves) => (moves.length <= 1 ? moves[0] : run(searchFor(state, moves, {})).best()),
+    /** Will this position be solved exactly rather than searched? The page asks, to skip its search. */
+    solves: solved,
+    scoreMoves,
+    choose: (state, moves) => {
+      if (moves.length <= 1) return moves[0];
+      return solved(state, moves) ? bestOf(scoreMoves(state, moves)) : run(searchFor(state, moves, {})).best();
+    },
   };
 }

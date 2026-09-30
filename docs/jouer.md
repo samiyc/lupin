@@ -118,8 +118,17 @@ la main adverse, ce sont les cartes vues nulle part.
   n'as pas encore résolus passent d'abord.
 - **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
   navigateur.
-- **Source** : les 50 puzzles viennent de l'auto-jeu de l'Expérimental. Pour en
-  générer d'autres : `npm run selfplay`, puis `npm run puzzles`.
+- **Source** : les 50 puzzles de fin de partie viennent de l'auto-jeu de
+  l'Expérimental. Pour en générer d'autres : `npm run selfplay`, puis
+  `npm run puzzles`.
+- **Gain immédiat** (20 puzzles, `npm run puzzles:immediate`) : il reste une
+  pioche, et la main adverse est cachée. Un seul coup, parfois deux ou trois, te
+  fait revendiquer la victoire à ton prochain tour, quoi que tienne et joue
+  l'adversaire : la preuve n'utilise que les cartes de la table. Le puzzle
+  s'arrête sur ce coup. Le Stratège, lui, ne le voit dans aucun d'eux.
+  - L'astuce qui revient : **poser une carte n'importe où** pour la sortir du jeu,
+    ce qui rend une autre borne prouvable. Dans trois puzzles, la même carte
+    gagne sur quatre bornes différentes.
 
 **Stats.** Tout est tiré de tes replays, anciens compris (`/api/stats`,
 `src/replay/stats.js`).
@@ -146,7 +155,7 @@ la main adverse, ce sont les cartes vues nulle part.
 | **Basique** | 1.0.0 | Joue la carte qui vaut le plus à l'instant T, face à ce que l'adversaire construit. |
 | **Stratège** | 2.1.0 | **Il anticipe.** Il prend ses 4 meilleurs coups selon son cœur, le Stratège 1.2 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie en distribuant au hasard les cartes qu'il ne voit pas. Il garde le coup qui gagne le plus souvent, en tenant un peu compte de l'avis du cœur. Le 2.0 battait le cœur 1.1 dans 74 % des parties, et le 2.1 bat le 2.0 dans 55 %. |
 | Stratège 1.2 | (cœur du 2.1) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus trois idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide ; jamais la même valeur seule sur deux bornes ; ne jamais séparer deux cartes de même couleur qui se suivent (1.2). C'est lui qui joue les statistiques du rapport : le 2.1 est trop lent pour un million de parties. Le détail : `docs/strategie.md`. |
-| **Expérimental** | 0.6.0 | **Il cherche plus loin.** Même cœur que le Stratège 2.1, mais il part de 8 coups au lieu de 4. Il rejoue des fins de partie par rondes et élimine à chaque fois la moitié la moins bonne, jusqu'à 10 s par coup ; un coup évident part tout de suite. **Il réfléchit pendant ton tour** : il prépare sa réponse sans connaître ton coup, et tout ce temps compte à moitié. Si tu as réfléchi 20 s, il répond aussitôt. Avec 1 s par coup, il bat déjà le Stratège 2.1 dans 62 % des parties (`docs/validation.md`). C'est aussi le banc d'essai des idées (`src/sim/experimental.js`, `search.js`, `ponder.js`). |
+| **Expérimental** | 0.7.0 | **Il cherche plus loin.** Même cœur que le Stratège 2.1, mais il part de 8 coups au lieu de 4. Il rejoue des fins de partie par rondes et élimine à chaque fois la moitié la moins bonne, jusqu'à 10 s par coup ; un coup évident part tout de suite. **Il réfléchit pendant ton tour** : il prépare sa réponse sans connaître ton coup, et tout ce temps compte à moitié. Si tu as réfléchi 20 s, il répond aussitôt. Avec 1 s par coup, il bat déjà le Stratège 2.1 dans 62 % des parties (`docs/validation.md`). **Depuis le 0.7, il calcule la fin de partie exactement** : pioche vide et 8 cartes ou moins en main, il joue le coup parfait au lieu de chercher (`exact.js`). Et il simule 1,8 fois plus vite. C'est aussi le banc d'essai des idées (`src/sim/experimental.js`, `search.js`, `ponder.js`). |
 
 **Versions.** Tout changement de comportement change le numéro :
 - dernier chiffre : un réglage ;
@@ -203,6 +212,8 @@ npm run selfplay  # l'Expérimental contre lui-même, 20 min au plus → selfpla
 npm run mine      # ce que l'auto-jeu dit des motifs prouvés (docs/strategie.md)
 npm run elo       # le classement Elo complet ; --duels rejoue les duels entre robots (~20 min)
 npm run puzzles   # 50 puzzles de fin de partie tirés de l'auto-jeu → web/data/puzzles.json (10 min au plus)
+npm run puzzles:immediate  # 20 puzzles « gain immédiat », règle de revendication (quelques secondes)
+npm run bench     # banc d'essai de l'Expérimental : puzzles difficiles et milieu de partie (~1 min)
 ```
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de

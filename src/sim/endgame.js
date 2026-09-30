@@ -25,7 +25,8 @@ function keyOf(state) {
   const hands = state.hands.map(sortedText).join("|");
   const filled = [...new Set(state.borders.flatMap((border) => border.completedAt).filter(Number.isFinite))].sort((a, b) => a - b);
   const rank = (turn) => (Number.isFinite(turn) ? filled.indexOf(turn) : "-");
-  const borders = state.borders.map((border) => `${border.sides.map(sortedText).join("/")}@${border.completedAt.map(rank).join("/")}`).join(";");
+  // The owner too: under the claim rule a border claimed early is closed, which changes the moves.
+  const borders = state.borders.map((border) => `${border.sides.map(sortedText).join("/")}@${border.completedAt.map(rank).join("/")}${border.owner ?? ""}`).join(";");
   return `${state.current}#${state.passes}#${hands}#${borders}`;
 }
 
@@ -55,21 +56,35 @@ function negamax(state, memo, counter) {
   return best;
 }
 
+/** The exact value of `move` for the player making it. */
+function valueOf(state, move, memo, counter) {
+  const next = cloneState(state);
+  applyMove(next, move);
+  return next.over ? outcome(next, state.current) : -negamax(next, memo, counter);
+}
+
+function valueAll(state, candidates, stopAtWin, counter) {
+  const memo = new Map();
+  const moves = [];
+  for (const move of candidates) {
+    moves.push({ move, value: valueOf(state, move, memo, counter) });
+    if (stopAtWin && moves.at(-1).value === 1) break;
+  }
+  return moves;
+}
+
 /**
  * Every legal move of `state` with its exact value for the player to move,
  * best first, plus the number of positions examined. Meant for positions
  * with an empty pile (the solver reads the pile as it lies).
+ *
+ * `moves`: the moves to value, in the order to try them (all legal moves by
+ * default). `stopAtWin`: stop at the first winning one — a bot needs a win,
+ * not every win; the moves after it are left out of the answer.
  */
-export function solveEndgame(state) {
-  const memo = new Map();
+export function solveEndgame(state, { moves: candidates = legalMoves(state), stopAtWin = false } = {}) {
   const counter = { nodes: 0 };
-  const player = state.current;
-  const moves = legalMoves(state).map((move) => {
-    const next = cloneState(state);
-    applyMove(next, move);
-    const value = next.over ? outcome(next, player) : -negamax(next, memo, counter);
-    return { move, value };
-  });
+  const moves = valueAll(state, candidates, stopAtWin, counter);
   moves.sort((a, b) => b.value - a.value);
   return { moves, value: moves[0]?.value ?? 0, nodes: counter.nodes, cardsLeft: cardsLeft(state) };
 }
