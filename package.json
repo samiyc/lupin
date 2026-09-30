@@ -30,7 +30,8 @@
     "bench": "node scripts/bench.js",
     "puzzles:immediate": "node scripts/immediate-puzzles.js",
     "hiding": "node scripts/hiding.js",
-    "policy": "node scripts/policy.js"
+    "policy": "node scripts/policy.js",
+    "model": "node scripts/model.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

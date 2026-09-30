@@ -1,6 +1,7 @@
 import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
-import { EXPERIMENT } from "./experimental.js";
+import { EXPERIMENT, experimentalSettings } from "./experimental.js";
+import { ismctsBot, ismctsSettings } from "./ismcts.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
@@ -49,15 +50,32 @@ export const greedyBot = (rng) => ({
 const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], weights: IDEA_WEIGHTS, params: BOT_PARAMS });
 
 export const strategistBot = (rng, options = {}) => {
-  const { habits, strategy, ideas, weights, params, name } = { ...STRATEGIST_DEFAULTS, ...options };
+  const { habits, strategy, ideas, weights, params, name, sample } = { ...STRATEGIST_DEFAULTS, ...options };
   const tuning = { habits: new Set(habits), strategy, ideas: new Set(ideas), weights, params };
   const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { ...tuning, keepAll });
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
-    choose: (state, moves) => pickBest(scoreMoves(state, moves), rng),
+    // `sample` (a temperature): draw the move instead of taking the best — for rollouts only.
+    choose: (state, moves) => (sample ? pickSampled(scoreMoves(state, moves), rng, sample) : pickBest(scoreMoves(state, moves), rng)),
   };
 };
+
+/**
+ * A move drawn with probability ∝ exp(gain / `temperature`): rollouts that
+ * do not always repeat the core's favourite, so its blind spots do not
+ * decide every simulated game the same way.
+ */
+export function pickSampled(scored, rng, temperature) {
+  const top = Math.max(...scored.map(({ gain }) => gain));
+  const weights = scored.map(({ gain }) => Math.exp((gain - top) / temperature));
+  let draw = rng.next() * weights.reduce((sum, weight) => sum + weight, 0);
+  for (const [i, weight] of weights.entries()) {
+    draw -= weight;
+    if (draw <= 0) return scored[i].move;
+  }
+  return scored.at(-1).move;
+}
 
 /** The highest gain, ties broken at random. */
 export function pickBest(scored, rng) {
@@ -234,27 +252,13 @@ const lookaheadOf = (settings, name) => (rng) => {
  * `npm run policy` measures it on its own.
  */
 export const rolloutPolicyOf = (settings) => {
-  const rollouts = { ...settings, ideas: (settings.ideas ?? []).filter((idea) => idea !== "certain") };
+  const rollouts = { ...settings, ideas: (settings.ideas ?? []).filter((idea) => idea !== "certain"), sample: settings.rolloutSample };
   return (seeded) => strategistBot(seeded, rollouts);
 };
 
 export const searchOf = (settings, overrides = {}) => (rng) => {
   const base = strategistBot(rng, settings);
   return searchBot(rng, { base, policy: rolloutPolicyOf(settings), ...settings.search, name: "experimental", ...overrides });
-};
-
-/**
- * Earlier and candidate versions of the experimental bot, for duels. Each
- * spells out every search setting it differs by, so a later change to
- * EXPERIMENT cannot leak into it.
- */
-const FROZEN = {
-  // Lot 4 of 0.8, set aside: rollouts seeing a lost border at a glance, 53.1 % (47.4-58.8).
-  "experimental:0.8-lite": searchOf({ ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] }),
-  // Lot 3 of 0.8, set aside: 47.9 % against 0.7 (docs/strategie.md).
-  "experimental:0.8-early": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, rolloutMode: "early", exactCards: 9 } }),
-  "experimental:0.6": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false, rolloutMode: null } }),
-  "experimental:0.5": searchOf({ ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false, exact: false, rolloutMode: null } }),
 };
 
 /** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */
@@ -281,9 +285,14 @@ export const BOTS = Object.freeze({
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
 export function engineFor(id) {
-  if (Object.hasOwn(FROZEN, id)) return FROZEN[id];
+  const [name, at] = id.split("@");
+  const budget = at === undefined ? {} : { budget: Number(at) };
+  const settings = experimentalSettings(name);
+  if (settings) return searchOf(settings, budget);
+  const tree = ismctsSettings(name);
+  if (tree) return (rng) => ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf(EXPERIMENT), ...tree, ...budget });
   if (Object.hasOwn(BOTS, id)) return BOTS[id];
-  const budget = /^experimental:(\d+)$/.exec(id)?.[1];
-  if (budget) return searchOf(EXPERIMENT, { budget: Number(budget) });
+  const rollouts = /^experimental:(\d+)$/.exec(id)?.[1];
+  if (rollouts) return searchOf(EXPERIMENT, { budget: Number(rollouts) });
   throw new Error(`Moteur inconnu : « ${id} »`);
 }

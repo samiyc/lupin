@@ -48,6 +48,8 @@ export function createGame(spec, { order, jokerRule, rng, endMode = "early", dec
     hands: [pile.splice(0, spec.handSize), pile.splice(0, spec.handSize)],
     borders,
     jokersPlayed: [0, 0],
+    // Each player's last move, replaced (never mutated), so a cheap clone can share it.
+    lastMoves: [null, null],
     current: 0,
     turn: 0,
     passes: 0,
@@ -119,6 +121,7 @@ function placeCard(state, player, { card, border }) {
   const target = state.borders[border];
   target.sides[player].push(card);
   if (isJoker(card)) state.jokersPlayed[player] += 1;
+  state.lastMoves = state.lastMoves.map((last, seat) => (seat === player ? { card, border } : last));
   if (target.sides[player].length === 3) target.completedAt[player] = state.turn;
   if (state.pile.length > 0) hand.push(state.pile.pop());
   if (state.endMode === "early" && isFull(target)) {

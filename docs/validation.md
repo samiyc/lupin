@@ -144,3 +144,31 @@ simulations et non leur nombre.
 **Les duels à la règle de la page** (`--page`) ne coûtent rien de plus : 190,8 s
 contre 194,1 s pour les mêmes 48 parties. Les parties plus courtes paient les
 preuves de revendication.
+
+## Des duels plus courts ? (profil `--screen`, fourchette par paires)
+
+Pour essayer plus d'idées, deux pistes ont été mesurées le 30/09 sur un même duel,
+`experimental@200` contre `experimental@400`, 10 minutes, règle de la page.
+
+- **Trier à 200 simulations** : 200 contre 400 gagne **45,8 %** (38,4 – 53,3 %),
+  soit pas de différence nette. Le budget change peu le classement, comme le
+  disait déjà le duel 4000 contre 400. Le tri des idées se fait donc à 200
+  simulations : deux fois plus de parties dans le même temps.
+- **La fourchette par paires** (chaque donne jouée des deux côtés, la paire
+  comme unité, `pairedInterval`) : 14,9 points de large contre 16,1 partie par
+  partie. Seulement **8 % plus étroite** : entre deux robots proches, la chance
+  des donnes pèse moins que prévu. Elle reste la fourchette de décision, car
+  c'est la bonne analyse d'un plan apparié, mais elle ne suffit pas à diviser la
+  durée par deux.
+
+**Protocole retenu.**
+- **Tri** : `npm run duel -- candidat@200 référence@200 --screen --page`, 10
+  minutes au plus. Un candidat passe s'il atteint 52 % ou plus.
+- **Confirmation** : `npm run duel -- candidat référence --long --page`, 20
+  minutes au plus, 400 simulations. La version monte si la borne basse de la
+  fourchette par paires dépasse 50 %.
+
+Les identifiants de moteur se combinent :
+- `experimental+sample=0.05+prior=0.15`, pour les variantes ;
+- `experimental:0.8-lite@200`, pour le budget ;
+- `ismcts+depth=2`, pour la recherche en arbre.

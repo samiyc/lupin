@@ -58,6 +58,12 @@ function record(tally, state) {
   countJokerEdge(tally, state);
 }
 
+/** Game `g` of a batch: its rules, and its deck when the batch fixes one. */
+function gameRules(spec, { order, jokerRule, deals = null, deck: fixed = null, endMode = "early" }, g) {
+  const deck = fixed ?? (deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec)));
+  return { order, jokerRule, deck, endMode };
+}
+
 /**
  * Plays `games` matches between `players` (ids from `engineFor`) and returns
  * the raw tallies. Player 0 always starts. Tallies are plain sums, so chunks
@@ -68,13 +74,17 @@ function record(tally, state) {
  * of the cards cancels out, as in duplicate bridge. With `deck`, every game
  * is dealt that one deck: how good it is for each seat (`npm run luck`).
  */
-export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null, deck: fixed = null, endMode = "early" }) {
+export function playBatch(spec, options) {
+  const { games, seed, players, keepWinners = false } = options;
   const rng = createRng(seed);
   const bots = players.map((id) => engineFor(id)(rng));
   const tally = emptyTally();
+  // Duels pair each game with its mirror (same deck, seats swapped): they need every winner, in order.
+  if (keepWinners) tally.winners = [];
   for (let g = 0; g < games; g += 1) {
-    const deck = fixed ?? (deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec)));
-    record(tally, playGame(spec, { order, jokerRule, rng, bots, deck, endMode }));
+    const state = playGame(spec, { ...gameRules(spec, options, g), rng, bots });
+    record(tally, state);
+    tally.winners?.push(state.winner);
   }
   return tally;
 }
