@@ -19,22 +19,20 @@ describe("gain immédiat puzzles", () => {
   it("exist, under the claim rule, with a pile left", () => {
     assert.ok(immediate.length >= 10);
     for (const puzzle of immediate) {
-      assert.equal(puzzle.log.rules.endMode, "claim");
+      assert.equal(puzzle.log.rules.endMode, "claim-end");
       assert.ok(stateAt(puzzle.log, puzzle.turn).pile.length > 0, `puzzle ${puzzle.id}`);
     }
   });
 
-  /** One deal of the hidden cards, the solution, a random reply: who has won at the mover's next claim. */
+  /** One deal of the hidden cards, then the solution: who has won, once the move is over. */
   function playDeal(position, solution, rng) {
     // determinize() plays out in "final": the claim rule is the point here.
-    const state = { ...determinize(position, position.current, rng), endMode: "claim" };
+    const state = { ...determinize(position, position.current, rng), endMode: "claim-end" };
     applyMove(state, find(state, solution));
-    const replies = legalMoves(state);
-    if (!state.over) applyMove(state, replies.length > 0 ? replies[rng.int(replies.length)] : null);
-    return state.winner;
+    return state.over ? state.winner : null;
   }
 
-  it("win at the next claim whatever the hidden cards and the reply, over 20 deals each", () => {
+  it("win on the move itself, whatever the hidden cards, over 20 deals each", () => {
     for (const puzzle of immediate) {
       const position = stateAt(puzzle.log, puzzle.turn);
       const rng = createRng(puzzle.id);

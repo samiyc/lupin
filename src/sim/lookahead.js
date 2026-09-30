@@ -38,7 +38,7 @@ export function determinize(state, player, rng) {
   const copy = cloneState(state);
   // Rollouts settle borders at the end: proving claims on every simulated move
   // would cost a third of the search speed, as the certainty in 0.6 did.
-  if (copy.endMode === "claim") copy.endMode = "final";
+  if (copy.endMode.startsWith("claim")) copy.endMode = "final";
   const theirs = copy.hands[1 - player].length;
   copy.hands[1 - player] = hidden.slice(0, theirs);
   copy.pile = hidden.slice(theirs);

@@ -64,8 +64,9 @@ function claimBorder(state, index, player) {
 }
 
 /**
- * `endMode: "claim"`, at the start of `player`'s turn: every border they can
- * prove is claimed, and the game stops at the first victory.
+ * The claim modes: every border `player` can prove is claimed, and the game
+ * stops at the first victory. `claim-end` calls it after each move, for the
+ * mover then the opponent; `claim` at the start of `player`'s turn.
  */
 export function claimBorders(state, player) {
   for (let index = 0; index < state.borders.length && !state.over; index += 1) {

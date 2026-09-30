@@ -17,12 +17,17 @@ export { resolveFinal };
  *   and a resolved border is full anyway, so both modes pick the same winner;
  *   a test holds them to it.
  *
- * - `endMode: "claim"` (the web game since 0.7, the printed rule): at the
- *   start of their turn a player claims every border they can prove the
+ * - `endMode: "claim-end"` (the web game, the printed rule): right after a
+ *   move, the player who made it claims every border they can prove the
  *   opponent can no longer beat, from the cards on the table alone
- *   (`isClaimable`). A claimed border takes no more cards, and the game stops
- *   at the first victory. Borders never claimed settle at the end, as in
- *   `final`. It changes which moves are legal, so it can change the winner.
+ *   (`isClaimable`), then the opponent claims theirs — a card laid down can
+ *   prove a border for either side. A claimed border takes no more cards, and
+ *   the game stops at the first victory, the mover's first. Borders never
+ *   claimed settle at the end, as in `final`. It changes which moves are
+ *   legal, so it can change the winner.
+ * - `endMode: "claim"`: the same, but claimed at the start of the claimer's
+ *   next turn — the web game of 30/09, a move late. Kept so its replays read
+ *   back as they were played.
  */
 export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null }) {
   const shuffled = deck ? [...deck] : rng.shuffle(buildDeck(spec));
@@ -92,9 +97,20 @@ export function applyMove(state, move) {
   }
   state.turn += 1;
   state.current = 1 - player;
-  if (state.over || state.endMode === "early") return;
+  if (!state.over && state.endMode !== "early") settleAfter(state, player, move);
+}
+
+/** What the end modes settle once a move (or a pass) is made. */
+function settleAfter(state, player, move) {
   if (state.endMode === "claim") claimBorders(state, state.current);
+  if (state.endMode === "claim-end" && move !== null) claimAfterMove(state, player);
   if (!state.over && allPlayed(state)) resolveFinal(state);
+}
+
+/** `claim-end`: the mover claims first, so a double victory is theirs. */
+function claimAfterMove(state, player) {
+  claimBorders(state, player);
+  if (!state.over) claimBorders(state, 1 - player);
 }
 
 function placeCard(state, player, { card, border }) {

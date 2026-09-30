@@ -19,13 +19,13 @@ export function openingMessage(current) {
   const count = current.solutions.length;
   const found = `${count} coup${count > 1 ? "s gagnent" : " gagne"} sur ${current.moves}`;
   if (!isImmediate(current)) return `Trouve le coup gagnant : ${found}.`;
-  return `Gain immédiat : trouve le coup qui te fait revendiquer la victoire à ton prochain tour, quoi que tienne l'adversaire (${found}).`;
+  return `Gain immédiat : trouve le coup qui te fait revendiquer la victoire tout de suite, quoi que tienne l'adversaire (${found}).`;
 }
 
 export function immediateMessage(slip, helped) {
   if (slip) return slip;
   if (helped) return "Gagné, mais avec de l'aide.";
-  return "Résolu ! À ton prochain tour, tes bornes se prouvent avec les seules cartes de la table : l'adversaire ne peut plus rien y faire.";
+  return "Résolu ! Ce coup prouve assez de bornes, avec les seules cartes de la table, pour les revendiquer et gagner tout de suite.";
 }
 
 export const hintOf = (current) =>

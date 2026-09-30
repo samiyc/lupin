@@ -13,9 +13,11 @@ pas écrire de fichier. `Ctrl+C` arrête le serveur.
 Les règles sont celles de la fiche : le jeu de 52 cartes sans figures (As à 10),
 les 2 jokers sans couleur et 7 bornes. Le premier à avoir 4 bornes, ou 3 côte à
 côte, gagne.
-- **Revendiquer** (règle officielle, `endMode: "claim"`) : au début de chaque tour,
-  le joueur prend toute borne où ses 3 cartes sont posées et que l'adversaire ne
-  peut plus battre. La preuve ne s'appuie que sur les cartes de la table : sa propre
+- **Revendiquer** (règle officielle, `endMode: "claim-end"`) : **dès qu'un coup est
+  joué**, le joueur qui vient de poser prend toute borne où ses 3 cartes sont
+  posées et que l'adversaire ne peut plus battre ; puis l'adversaire prend les
+  siennes, car une carte posée peut aussi prouver une borne de l'autre côté. Si
+  les deux atteignent la victoire sur le même coup, elle va à celui qui a joué. La preuve ne s'appuie que sur les cartes de la table : sa propre
   main compte parmi ce que l'adversaire pourrait tenir. La page revendique pour
   toi, automatiquement. Une borne revendiquée ne prend plus de carte.
   - La fiche imprimée n'en parle pas : elle règle une borne dès que ses deux
@@ -27,8 +29,9 @@ côte, gagne.
   moyenne au lieu de 42.
 - **Les bornes jamais revendiquées** se règlent en fin de partie, dans l'ordre où
   elles se sont complétées.
-- **Les anciens replays** gardent leur règle, `final` (toutes les bornes réglées à
-  la fin), et se relisent à l'identique. Sur 1000 parties, les deux règles
+- **Les anciens replays** gardent leur règle et se relisent à l'identique : `final`
+  (toutes les bornes réglées à la fin), ou `claim`, la revendication d'un coup en
+  retard des parties du 30/09 (au début du tour suivant du joueur). Sur 1000 parties, les deux règles
   désignent le même vainqueur 91 fois sur 100 : une borne fermée change les coups
   possibles, donc parfois l'issue.
 
@@ -123,9 +126,8 @@ la main adverse, ce sont les cartes vues nulle part.
   `npm run puzzles`.
 - **Gain immédiat** (20 puzzles, `npm run puzzles:immediate`) : il reste une
   pioche, et la main adverse est cachée. Un seul coup, parfois deux ou trois, te
-  fait revendiquer la victoire à ton prochain tour, quoi que tienne et joue
-  l'adversaire : la preuve n'utilise que les cartes de la table. Le puzzle
-  s'arrête sur ce coup. Le Stratège, lui, ne le voit dans aucun d'eux.
+  fait revendiquer la victoire tout de suite, quoi que tienne l'adversaire : la
+  preuve n'utilise que les cartes de la table. La partie s'arrête sur ce coup. Le Stratège, lui, ne le voit dans aucun d'eux.
   - L'astuce qui revient : **poser une carte n'importe où** pour la sortir du jeu,
     ce qui rend une autre borne prouvable. Dans trois puzzles, la même carte
     gagne sur quatre bornes différentes.
