@@ -83,6 +83,15 @@ adversaire et ton prénom.
   paire est signalé à part : il ne le jouerait jamais, il n'y a donc pas
   d'écart à mesurer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
+- **Classement Elo**, sous la liste : toi et chaque version de robot, avec sa
+  marge à 95 %.
+  - Le Basique vaut 1000.
+  - Le calcul prend toutes tes parties enregistrées (y compris `replays/OLD/`) et
+    les duels entre robots de `data/elo-duels.json`, en un seul ajustement
+    (modèle de Bradley-Terry, `src/replay/elo.js`). Un robot que tu n'as pas
+    affronté est donc quand même placé par rapport à toi.
+  - Les Expérimental y sont mesurés à 1 s par coup, plus faibles qu'avec les
+    10 s de la page.
 
 **Puzzles.** Des fins de partie, pioche vide, où toutes les cartes sont connues :
 la main adverse, ce sont les cartes vues nulle part.
@@ -163,6 +172,7 @@ npm run replays   # bilan de toutes les parties enregistrées
 npm run luck      # la chance de chaque paquet : rejoué 16 fois entre robots égaux (~10 min)
 npm run selfplay  # l'Expérimental contre lui-même, 20 min au plus → selfplay/ (hors git)
 npm run mine      # ce que l'auto-jeu dit des motifs prouvés (docs/strategie.md)
+npm run elo       # le classement Elo complet ; --duels rejoue les duels entre robots (~20 min)
 npm run puzzles   # 50 puzzles de fin de partie tirés de l'auto-jeu → web/data/puzzles.json (10 min au plus)
 ```
 

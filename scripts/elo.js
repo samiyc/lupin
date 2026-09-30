@@ -1,0 +1,40 @@
+import { spawnSync } from "node:child_process";
+import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { DUELS_FILE, eloTable, readDuels } from "./lib/elo-data.js";
+
+/**
+ * `npm run elo`: the Elo table of the human players and every bot version,
+ * from the saved games and data/elo-duels.json (src/replay/elo.js).
+ * `npm run elo -- --duels` first replays, in the quick duel profile, the
+ * duels it has engines for, and rewrites their lines (about 20 minutes).
+ */
+const RERUN = [
+  { a: "stratege@1.0.0", b: "basique@1.0.0", engines: ["strategist:habits", "greedy"] },
+  { a: "stratege@1.1.0", b: "basique@1.0.0", engines: ["strategist:1.1", "greedy"] },
+  { a: "stratege@2.1.0", b: "basique@1.0.0", engines: ["lookahead", "greedy"] },
+  { a: "experimental@0.5.0", b: "stratege@2.1.0", engines: ["experimental:0.5", "lookahead"] },
+  { a: "experimental@0.6.0", b: "experimental@0.5.0", engines: ["experimental:400", "experimental:0.5"] },
+];
+
+function duel([a, b]) {
+  const script = fileURLToPath(new URL("./duel.js", import.meta.url));
+  const out = spawnSync(process.execPath, [script, a, b], { encoding: "utf8" }).stdout;
+  const games = Number(/— (\d+) parties/.exec(out)?.[1]);
+  const share = Number(/gagne ([\d,]+) %/.exec(out)?.[1].replace(",", ".")) / 100;
+  return { games, wins: Math.round(share * games) };
+}
+
+if (process.argv.includes("--duels")) {
+  const file = await readDuels();
+  for (const pair of RERUN) {
+    const { games, wins } = duel(pair.engines);
+    process.stderr.write(`  ${pair.a} contre ${pair.b} : ${wins} / ${games}\n`);
+    const line = { a: pair.a, b: pair.b, wins, games, source: `npm run elo -- --duels, ${new Date().toISOString().slice(0, 10)}` };
+    file.duels = [...file.duels.filter((d) => !(d.a === pair.a && d.b === pair.b)), line];
+  }
+  await writeFile(DUELS_FILE, `${JSON.stringify(file, null, 2)}\n`);
+}
+
+const rows = await eloTable();
+process.stdout.write(["Classement Elo (Basique = 1000, marge à 95 %)", ...rows.map((r) => `  ${String(r.elo).padStart(5)} ±${String(r.margin).padEnd(4)} ${r.player}${r.human ? " (humain)" : ""} — ${r.games} parties`), ""].join("\n"));

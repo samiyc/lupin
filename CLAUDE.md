@@ -156,6 +156,11 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   core uses them (`certain`: a move onto a lost border is worth the card
   thrown away) and its search prunes on them (`prune`). `npm run selfplay`
   (20 min max, `selfplay/`, ignored) and `npm run mine` measure the patterns.
+- **Elo** (`src/replay/elo.js`, pure): Bradley-Terry fitted on human replays
+  and `data/elo-duels.json` together, anchored on Basique = 1000, one virtual
+  draw per player against the anchor so a lone win stays finite. Served by
+  `/api/elo` (`scripts/lib/elo-data.js`) and shown in the Replays tab;
+  `npm run elo -- --duels` refreshes the duel lines it has engines for.
 - **Endgames are solved exactly** once the pile is empty (`src/sim/endgame.js`):
   negamax with memory, keyed on the ORDER sides filled (only order matters),
   cut at the first win. ~0.2 s at 8 cards, seconds at 9-10: in the page it

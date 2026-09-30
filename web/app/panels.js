@@ -1,6 +1,6 @@
 import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT } from "../../src/config/bots.js";
 import { $, el, freshSeed, toast } from "./dom.js";
-import { keepReplay, listReplays, loadReplay, saveReplay } from "./replays-api.js";
+import { fetchElo, keepReplay, listReplays, loadReplay, saveReplay } from "./replays-api.js";
 import { generateBotGame, playerName } from "./runner.js";
 import { clearTable } from "./table.js";
 import { replayLabel } from "./view.js";
@@ -72,6 +72,17 @@ function markCurrent(header) {
   });
 }
 
+/** The Elo table under the list: every human and bot version, with its margin. */
+async function renderElo() {
+  try {
+    const rows = await fetchElo();
+    const line = (row) => el("tr", { class: row.human ? "human" : "" }, el("td", {}, row.player.replace("@", " ")), el("td", {}, String(row.elo)), el("td", {}, `±${row.margin}`));
+    $("elo").replaceChildren(el("h3", {}, "Classement Elo"), el("table", {}, ...rows.map(line)), el("p", { class: "hint" }, "Basique = 1000. Tes parties et les duels entre robots (npm run elo)."));
+  } catch {
+    $("elo").replaceChildren();
+  }
+}
+
 export function wireReplays() {
   let headers = [];
   let current = null;
@@ -82,6 +93,7 @@ export function wireReplays() {
     markCurrent(header);
   };
   const refresh = async () => {
+    renderElo();
     try {
       const { recent, kept } = await listReplays();
       headers = [...recent, ...kept];

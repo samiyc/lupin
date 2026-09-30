@@ -19,3 +19,6 @@ export const saveReplay = (log) =>
   call("/api/replays", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(log) });
 
 export const keepReplay = (name) => call(`/api/replays/recent/${encodeURIComponent(name)}/garder`, { method: "POST" });
+
+/** The Elo table (`/api/elo`): `[{ player, elo, margin, games, human }]`, strongest first. */
+export const fetchElo = () => call("/api/elo");

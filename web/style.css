@@ -172,6 +172,11 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .explain li.chosen { font-weight: 700; }
 /* Five games in sight, then the list scrolls: the player's buttons stay on screen. */
 .replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.05rem; }
+.elo h3 { margin: 10px 0 4px; font-size: 0.85rem; color: var(--ink-2); }
+.elo table { width: 100%; border-collapse: collapse; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.elo td { padding: 2px 4px; border-bottom: 1px solid var(--line); }
+.elo td + td { text-align: right; }
+.elo tr.human { font-weight: 700; color: var(--felt); }
 .replay-list h3 { margin: 6px 0 2px; font-size: 0.85rem; color: var(--ink-2); }
 .replay-list button { display: grid; align-content: center; gap: 1px; height: var(--replay-item); text-align: left; background: transparent; color: var(--ink); border-color: var(--line); font-size: 0.85rem; padding: 4px 6px; }
 .replay-list .replay-title, .replay-list .replay-detail { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

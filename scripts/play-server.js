@@ -3,6 +3,7 @@ import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises"
 import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { REPLAY_FORMAT } from "../src/replay/log.js";
+import { eloTable } from "./lib/elo-data.js";
 import { REPLAY_DIRS, isReplayDir, isSafeName, replayFileName, replayHeader } from "./lib/replay-files.js";
 
 /**
@@ -105,7 +106,9 @@ async function serveStatic(res, path) {
 const server = createServer(async (req, res) => {
   const { pathname } = new URL(req.url, "http://localhost");
   try {
-    if (pathname.startsWith("/api/replays")) {
+    if (pathname === "/api/elo") {
+      send(res, 200, await eloTable());
+    } else if (pathname.startsWith("/api/replays")) {
       const parts = pathname.split("/").slice(3).filter(Boolean).map(decodeURIComponent);
       await api(req, res, parts);
     } else {
