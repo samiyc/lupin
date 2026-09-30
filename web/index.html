@@ -15,6 +15,7 @@
     <button type="button" role="tab" id="tab-play" data-mode="play" aria-selected="true">Jouer</button>
     <button type="button" role="tab" id="tab-observe" data-mode="observe" aria-selected="false">Observer</button>
     <button type="button" role="tab" id="tab-replays" data-mode="replays" aria-selected="false">Replays</button>
+    <button type="button" role="tab" id="tab-puzzles" data-mode="puzzles" aria-selected="false">Puzzles</button>
   </nav>
   <a class="rules-link" href="/regles/regles.pdf" target="_blank" rel="noopener">Règles</a>
 </header>
@@ -45,6 +46,15 @@
     <section class="panel" id="panel-replays" hidden>
       <div id="replay-list" class="replay-list"></div>
       <button type="button" id="btn-keep" class="quiet" hidden>Garder pour l'analyse</button>
+    </section>
+
+    <section class="panel" id="panel-puzzles" hidden>
+      <p class="hint" id="puzzle-title"></p>
+      <p class="hint">Pioche vide : toutes les cartes sont connues. Joue le camp du bas contre un adversaire parfait.</p>
+      <button type="button" id="btn-puzzle-reveal" class="quiet">Révéler le coup gagnant</button>
+      <button type="button" id="btn-puzzle-retry" class="quiet">Recommencer ce puzzle</button>
+      <button type="button" id="btn-puzzle-next">Puzzle suivant</button>
+      <p class="hint" id="puzzle-solved"></p>
     </section>
 
     <section class="panel player" id="player" hidden>

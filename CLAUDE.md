@@ -156,6 +156,13 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   core uses them (`certain`: a move onto a lost border is worth the card
   thrown away) and its search prunes on them (`prune`). `npm run selfplay`
   (20 min max, `selfplay/`, ignored) and `npm run mine` measure the patterns.
+- **Endgames are solved exactly** once the pile is empty (`src/sim/endgame.js`):
+  negamax with memory, keyed on the ORDER sides filled (only order matters),
+  cut at the first win. ~0.2 s at 8 cards, seconds at 9-10: in the page it
+  runs in `solve-worker.js`. `npm run puzzles` keeps self-play endgames won
+  through at most half the moves (strong games are rarely delicate: 30 %
+  gave 19 of 4 544) into `web/data/puzzles.json`. The table's input is
+  routed to the tab on show (`main.js`): play or puzzles.
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

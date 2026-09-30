@@ -16,7 +16,7 @@ dans l'ordre où elles se sont complétées. Le premier à avoir 4 bornes, ou 3 
 côte, gagne. C'est le même vainqueur qu'avec la règle officielle, où l'on revendique
 en cours de partie ; un test le vérifie.
 
-## Les trois onglets
+## Les quatre onglets
 
 **Jouer.** « Nouvelle partie » : choisis de jouer premier ou second, ton
 adversaire et ton prénom.
@@ -84,6 +84,20 @@ adversaire et ton prénom.
   d'écart à mesurer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
 
+**Puzzles.** Des fins de partie, pioche vide, où toutes les cartes sont connues :
+la main adverse, ce sont les cartes vues nulle part.
+- **Le principe** : tu joues le camp du bas contre un adversaire qui joue
+  parfaitement. Seuls quelques coups gagnent, parfois un seul ; à toi de le
+  trouver.
+- **Chaque coup est jugé** d'après la solution exacte (`src/sim/endgame.js`). Un
+  faux pas est signalé, avec le coup qu'il fallait jouer.
+- **Boutons** : « Révéler le coup gagnant », « Recommencer ce puzzle », « Puzzle
+  suivant ».
+- **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
+  navigateur.
+- **Source** : les 50 puzzles viennent de l'auto-jeu de l'Expérimental. Pour en
+  générer d'autres : `npm run selfplay`, puis `npm run puzzles`.
+
 `?debug` dans l'adresse expose les commandes du jeu dans la console
 (`window.__lopin`), pour piloter une partie par script.
 
@@ -149,6 +163,7 @@ npm run replays   # bilan de toutes les parties enregistrées
 npm run luck      # la chance de chaque paquet : rejoué 16 fois entre robots égaux (~10 min)
 npm run selfplay  # l'Expérimental contre lui-même, 20 min au plus → selfplay/ (hors git)
 npm run mine      # ce que l'auto-jeu dit des motifs prouvés (docs/strategie.md)
+npm run puzzles   # 50 puzzles de fin de partie tirés de l'auto-jeu → web/data/puzzles.json (10 min au plus)
 ```
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de
