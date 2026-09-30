@@ -214,6 +214,7 @@ npm run elo       # le classement Elo complet ; --duels rejoue les duels entre r
 npm run puzzles   # 50 puzzles de fin de partie tirés de l'auto-jeu → web/data/puzzles.json (10 min au plus)
 npm run puzzles:immediate  # 20 puzzles « gain immédiat », règle de revendication (quelques secondes)
 npm run bench     # banc d'essai de l'Expérimental : puzzles difficiles et milieu de partie (~1 min)
+npm run hiding    # coups forts joués tout de suite ou gardés, dans l'auto-jeu (docs/strategie.md)
 ```
 
 Le bilan donne tes résultats contre chaque robot, les combinaisons faites de

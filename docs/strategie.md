@@ -272,3 +272,38 @@ table, donc la main cachée n'y change rien. `npm run puzzles:immediate` en a
 trouvé 20 dans l'auto-jeu du Stratège, qui ne voit le coup dans aucun d'eux. Un
 test rejoue chaque solution sur 20 donnes différentes des cartes cachées, avec une
 réponse au hasard : la victoire tombe à chaque fois.
+
+## Cacher son jeu ? (`npm run hiding`)
+
+**La question** (Sami, après le 0.6) : l'Expérimental cache-t-il sa stratégie en
+gardant ses coups forts en main ?
+
+**La réponse** : aucun robot ne se représente ce que l'adversaire devine de sa
+main, donc aucun ne cache quoi que ce soit *exprès*. S'il garde une carte qui
+finirait une suite couleur ou un brelan, c'est que la recherche juge un autre coup
+meilleur maintenant, et que le coup fort restera possible.
+
+**La mesure**, sur les 1 136 parties d'auto-jeu (0.6, bornes réglées à la fin).
+À chaque première occasion de finir une borne en suite couleur ou en brelan :
+
+| Choix | Occasions | Formation forte finie | Borne gagnée | Partie gagnée |
+| --- | --- | --- | --- | --- |
+| Jouée tout de suite | 2 411 | 100 % | 84,7 % | 57,5 % |
+| Gardée pour plus tard | 4 627 | 75,1 % | 67,3 % | 55,1 % |
+| … puis finie en forte | 3 474 | 100 % | 80,2 % | 57,1 % |
+| … jamais finie en forte | 1 153 | 0 % | 28,5 % | 49,0 % |
+
+**Lecture.**
+- Il garde **deux occasions sur trois**.
+- Quand il finit plus tard, il gagne la partie aussi souvent qu'en jouant tout de
+  suite : attendre ne lui coûte presque rien. Cacher son jeu serait donc
+  gratuit, mais il ne le fait que par accident.
+- Une fois sur quatre, la formation ne se fait jamais, et la borne tombe
+  rarement. C'est le vrai coût de l'attente, dans des positions qu'on ne sait pas
+  distinguer ici.
+- Ce sont des corrélations : il garde sa carte dans d'autres positions que
+  celles où il la joue.
+- Le vrai jeu caché demande de modéliser ce que l'autre croit : c'est un levier de
+  la feuille de route (`out/roadmap-experimental.html`), pas un acquis du 0.6.
+- À refaire sur un auto-jeu du 0.7 : avec la revendication, finir tôt ferme la
+  borne et peut arrêter la partie.
