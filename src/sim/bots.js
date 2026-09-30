@@ -220,12 +220,20 @@ const lookaheadOf = (settings, name) => (rng) => {
 };
 
 /** The experimental bot: `settings`' strategist shortlists and plays the rollouts of a deeper search (`search.js`). */
+/**
+ * The bot that plays the experimental search's rollouts: `settings`'
+ * strategist without `certain` — certainties choose the real move; in the
+ * rollouts they cost a third of the speed for nothing measurable.
+ * `npm run policy` measures it on its own.
+ */
+export const rolloutPolicyOf = (settings) => {
+  const rollouts = { ...settings, ideas: (settings.ideas ?? []).filter((idea) => idea !== "certain") };
+  return (seeded) => strategistBot(seeded, rollouts);
+};
+
 export const searchOf = (settings, overrides = {}) => (rng) => {
   const base = strategistBot(rng, settings);
-  // Certainties choose the real move; in the rollouts they cost a third of the speed for nothing measurable.
-  const rollouts = { ...settings, ideas: (settings.ideas ?? []).filter((idea) => idea !== "certain") };
-  const policy = (seeded) => strategistBot(seeded, rollouts);
-  return searchBot(rng, { base, policy, ...settings.search, name: "experimental", ...overrides });
+  return searchBot(rng, { base, policy: rolloutPolicyOf(settings), ...settings.search, name: "experimental", ...overrides });
 };
 
 /** Bot engines by id. The public line-up (names, versions) is `src/config/bots.js`. */

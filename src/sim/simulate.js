@@ -16,7 +16,7 @@ function emptyTally() {
     built: zeroCounts(),
     builtTotal: 0,
     winning: zeroCounts(),
-    decidedBy: { formation: 0, sum: 0, first: 0 },
+    decidedBy: { formation: 0, sum: 0, first: 0, claim: 0 },
     jokerEdge: { games: 0, won: 0 },
   };
 }
@@ -68,13 +68,13 @@ function record(tally, state) {
  * of the cards cancels out, as in duplicate bridge. With `deck`, every game
  * is dealt that one deck: how good it is for each seat (`npm run luck`).
  */
-export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null, deck: fixed = null }) {
+export function playBatch(spec, { order, jokerRule, games, seed, players, deals = null, deck: fixed = null, endMode = "early" }) {
   const rng = createRng(seed);
   const bots = players.map((id) => engineFor(id)(rng));
   const tally = emptyTally();
   for (let g = 0; g < games; g += 1) {
     const deck = fixed ?? (deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec)));
-    record(tally, playGame(spec, { order, jokerRule, rng, bots, deck }));
+    record(tally, playGame(spec, { order, jokerRule, rng, bots, deck, endMode }));
   }
   return tally;
 }

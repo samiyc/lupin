@@ -35,7 +35,8 @@ function measure(position) {
   const found = position.solutions ? runs.filter((run) => position.solutions.has(moveText(position.state, run.move))).length : null;
   const rollouts = runs.reduce((sum, run) => sum + run.rollouts, 0);
   const ms = runs.reduce((sum, run) => sum + run.ms, 0);
-  return { id: position.id, found, rollouts: median(runs.map((run) => run.rollouts)), ms: median(runs.map((run) => run.ms)), perSecond: (1000 * rollouts) / ms };
+  const moves = runs.map((run) => moveText(position.state, run.move));
+  return { id: position.id, found, moves, rollouts: median(runs.map((run) => run.rollouts)), ms: median(runs.map((run) => run.ms)), perSecond: (1000 * rollouts) / ms };
 }
 
 /** What the bot itself plays (0.7: the exact solver once the endgame is small enough): right or wrong, and how fast. */
@@ -73,5 +74,6 @@ const puzzleRows = puzzles.map((position) => ({ ...measure(position), solver: so
 const botCells = (row) => (row ? [row.solver.toFixed(0), `${row.bot.right ? "oui" : "non"} (${row.bot.ms.toFixed(0)} ms)`] : ["Solveur ms", "Coup du robot"]);
 report("Les 20 puzzles les plus difficiles", puzzleRows, botCells);
 console.log(`Coup du robot (recherche, ou solveur exact jusqu'à 8 cartes) : juste ${puzzleRows.filter((row) => row.bot.right).length} / ${puzzleRows.length}.`);
-report("Milieu de partie", midGames([1, 2, 3, 4], [8, 16, 24]).map(measure));
+// The move of each seed: two budgets compared position by position (`npm run bench -- 4000`).
+report("Milieu de partie", midGames([1, 2, 3, 4], [8, 16, 24]).map(measure), (row) => (row ? [row.moves.join(" ")] : ["Coups joués"]));
 console.log(`\nDurée : ${((performance.now() - started) / 1000).toFixed(0)} s`);

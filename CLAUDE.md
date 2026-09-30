@@ -26,7 +26,9 @@ identifiers are English. Node 20.10 on this machine; no Python.
 
 ```bash
 npm run play                  # web game, http://127.0.0.1:4742/ (add ?debug for window.__lopin)
-npm run duel -- a b [--long]  # duel, mirrored decks, stops when clear; quick ≤ 5 min, long ≤ 20
+npm run duel -- a b [--long] [--page]  # duel, mirrored decks, stops when clear; quick ≤ 5 min, long ≤ 20;
+                              # early rule by default (every Elo line), --page = the page's claim rule, same cost
+npm run policy                # rollout policy vs the solver on self-play endgames: the yardstick before a duel
 npm run fingerprint -- a,b n  # hash of every move in seeded games: optimisations must keep it
 npm run replays               # summary of replays/ + data/replays/
 npm run build                 # all statistics → out/ + rules stats box (thread pool, ~3 min)

@@ -118,3 +118,29 @@ une référence de 60 s, et on note le coup qu'elle jouerait à 5, 10, 15, 20 et
 - Limite de la méthode : la « perte » est estimée par la référence elle-même, qui
   a son propre bruit. Un duel 10 s contre 20 s demanderait plus d'une heure pour
   la confirmer.
+
+**Le duel qui tranche** (Sami, 30/09, `npm run duel -- experimental:4000
+experimental:400 --long`, 48 parties en 13 minutes) : 4 000 simulations par coup
+gagnent **37,5 %** (fourchette 25,2 – 51,6 %) contre 400. Dix fois plus de
+simulations ne rapportent rien, et peut-être moins. La page (10 s, soit 3 000 à
+5 000 simulations) n'est donc pas plus forte que le classement mesuré à 400.
+
+**Pourquoi** (`npm run bench -- 4000`, contre `-- 400`) :
+- **Sur les puzzles difficiles**, la recherche trouve le coup gagnant **30 fois
+  sur 60**, à 400 comme à 4 000. À 4 000, elle s'arrête même plus tôt, sûre
+  d'elle, sur le mauvais coup. Le budget amplifie le jugement des simulations ;
+  il ne le corrige pas.
+- **En milieu de partie**, à 4 000 simulations, les trois graines choisissent
+  encore des coups différents dans 4 positions sur 12. Les meilleurs candidats
+  se valent à quelques pour cent près : les départager ne change pas la partie.
+
+**L'étalon de la politique** (`npm run policy`) : sur 400 fins de partie
+décisives de l'auto-jeu (9 cartes ou moins, vérité donnée par le solveur), la
+politique qui joue les simulations garde le coup gagnant dans **94,3 %** des cas,
+et **87,5 %** sur les positions délicates, où la moitié des coups ou moins
+gagnent. C'est la mesure de départ de la 0.8, qui travaille la qualité des
+simulations et non leur nombre.
+
+**Les duels à la règle de la page** (`--page`) ne coûtent rien de plus : 190,8 s
+contre 194,1 s pour les mêmes 48 parties. Les parties plus courtes paient les
+preuves de revendication.

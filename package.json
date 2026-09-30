@@ -29,7 +29,8 @@
     "elo": "node scripts/elo.js",
     "bench": "node scripts/bench.js",
     "puzzles:immediate": "node scripts/immediate-puzzles.js",
-    "hiding": "node scripts/hiding.js"
+    "hiding": "node scripts/hiding.js",
+    "policy": "node scripts/policy.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

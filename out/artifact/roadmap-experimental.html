@@ -126,7 +126,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     <ul class="verdicts">
       <li><b>Aujourd'hui</b>Expérimental 0.7 : <span class="num">1455 ± 81</span>, mesuré à 400 simulations par coup (≈ 1 s). La page lui donne 10 s.</li>
       <li><b>L'écart</b><span class="num">+545</span> Elo pour 2000 : gagner <span class="num">24</span> parties sur <span class="num">25</span> contre le 0.7 d'aujourd'hui.</li>
-      <li><b>La leçon du temps</b>Au-delà de 10 s par coup, plus de simulations n'apporte presque rien. La marge est dans la qualité des simulations, pas dans leur nombre.</li>
+      <li><b>La leçon du temps</b>4 000 simulations contre 400 : <span class="num">37,5 %</span> (25 – 52 %). Plus de simulations n'apporte rien : la marge est dans leur qualité, pas dans leur nombre.</li>
       <li><b>Cacher son jeu</b>Il garde pour plus tard 2 coups forts sur 3, sans le faire exprès. Attendre puis finir ne lui coûte presque rien.</li>
     </ul>
   </div>
@@ -161,7 +161,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
         <p class="caption">Point : l'Elo ; trait : la marge à 95 %. Le trait vertical doré marque 2000. La bande verte, si tu coches des leviers plus bas, montre où ils mèneraient.</p>
       </div>
     </div>
-    <p class="limits"><b>À mesurer d'abord</b> : l'Elo du 0.7 tel qu'il joue dans la page. Les duels tournent à 400 simulations par coup ; la page en fait 3 000 à 5 000 en 10 s, plus ce qu'elle prépare pendant ton tour. Le premier lot de la route donne ce chiffre.</p>
+    <p class="limits"><b>Mesuré depuis</b> : l'Elo de la page est celui du classement. Ton duel long <code>experimental:4000</code> contre <code>experimental:400</code> donne 37,5 % (fourchette 25,2 – 51,6 %, 48 parties) : les 3 000 à 5 000 simulations des 10 s de la page ne battent pas les 400 des duels. Le banc d'essai dit pourquoi : sur les puzzles difficiles, la recherche trouve le coup gagnant 30 fois sur 60 à 400 comme à 4 000.</p>
   </section>
 
   <section class="part" id="leviers">
@@ -177,7 +177,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     </div>
     <div class="takeaway">
       <h3>Honnêtement</h3>
-      <p>Les six leviers réunis visent <span class="num">1 590 – 1 900</span> avec les fourchettes prudentes. Toutes en haut de leur fourchette, elles n'atteignent 2000 que si leurs gains s'additionnent sans se recouvrir (2 045). Le jalon réaliste est <b>1 700</b> ; 2000 reste le cap, pas une promesse.</p>
+      <p>Les six leviers réunis visent <span class="num">1 580 – 1 875</span>, recouvrement déduit. Toutes en haut de leur fourchette, elles n'atteignent 2000 que si leurs gains s'additionnent sans se recouvrir (2 015). Le levier 1 ne compte presque plus : il a été mesuré. Le jalon réaliste est <b>1 700</b> ; 2000 reste le cap, pas une promesse.</p>
     </div>
   </section>
 
@@ -187,9 +187,9 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
       <h2>Une version par levier, un duel long pour trancher</h2>
     </header>
     <ol class="steps">
-      <li><span class="v">0.8</span><div><h3>Plusieurs workers, et l'Elo de la page</h3><p>Des recherches en parallèle, fusionnées à la fin. Puis un duel <code>experimental:4000</code> contre <code>experimental:400</code> dit enfin ce que valent les 10 s de la page. Solveur exact jusqu'à 10 cartes quand le temps le permet. <b>Un lot.</b></p></div></li>
-      <li><span class="v">0.9</span><div><h3>De meilleures simulations</h3><p>Le cœur qui joue les fins de partie simulées, réglé par auto-jeu. Ou un cœur plus simple et plus rapide, s'il se trompe à peine plus. <b>Deux lots.</b> Gardé si le duel long le donne gagnant à 55 % ou plus.</p></div></li>
-      <li><span class="v">1.0</span><div><h3>Chercher plus d'un coup d'avance</h3><p>ISMCTS, ou le modèle de l'adversaire : celui des deux que le 0.9 rend le plus prometteur. <b>Trois à quatre lots.</b> Comparé à temps égal, pas à budget égal.</p></div></li>
+      <li><span class="v">0.8</span><div><h3>De meilleures simulations</h3><p>Des simulations qui connaissent la règle de revendication, puis une politique mieux réglée, triée d'abord par <code>npm run policy</code> (94,3 % du coup gagnant gardé, 87,5 % sur les positions délicates, au départ). Solveur exact jusqu'à 9 cartes. <b>Deux lots.</b> Gardé si le duel long, à la règle de la page, reste au-dessus de 50 %.</p></div></li>
+      <li><span class="v">0.9</span><div><h3>Modéliser l'adversaire</h3><p>Des donnes pondérées par ce que tu as joué. C'est aussi la base du vrai jeu caché. <b>Deux lots.</b></p></div></li>
+      <li><span class="v">1.0</span><div><h3>Chercher plus d'un coup d'avance</h3><p>ISMCTS, avec des workers si le débit manque. <b>Trois à quatre lots.</b> Comparé à temps égal, pas à budget égal.</p></div></li>
       <li><span class="v">—</span><div><h3>Le répertoire d'ouvertures</h3><p>Peu cher, à glisser entre deux versions. Un duel long décide.</p></div></li>
     </ol>
     <p class="limits"><b>La règle de décision ne change pas</b> : un duel long (240 parties, 20 minutes, jeux miroirs). Une version n'entre dans la page que si la fourchette à 95 % reste au-dessus de 50 %.</p>
@@ -267,11 +267,11 @@ const PLAYERS = [
 const BASE = 1455;
 
 const LEVERS = [
-  { id: "speed", title: "Plus de simulations par seconde, sur plusieurs workers", low: 10, high: 40, cost: "1 lot", status: "moitié faite",
+  { id: "speed", title: "Plus de simulations par seconde, sur plusieurs workers", low: 0, high: 10, cost: "1 lot", status: "réfuté",
     principle: "Le 0.7 simule déjà 1,8 fois plus vite, sans changer un coup. Le PC a 24 fils, la page n'en utilise qu'un : plusieurs recherches en parallèle, fusionnées à la fin, multiplient encore le budget.",
-    gain: "Faible : l'étude du temps montre qu'au-delà de 10 s le coup change à peine. Il aide surtout en début de partie, où l'on ne fait que 350 simulations par seconde.",
-    measure: "npm run bench (simulations/s), puis un duel experimental:4000 contre experimental:400 : ce que vaut le budget de la page.",
-    decision: "Gardé si la page reste fluide : la force est gratuite. Le duel sert surtout à connaître l'Elo réel de la page." },
+    gain: "Mesuré : rien. 4 000 simulations contre 400 gagnent 37,5 % (25 – 52 %). Les meilleurs coups se valent, et les erreurs viennent de la politique de simulation, que le budget amplifie au lieu de les corriger.",
+    measure: "Fait : duel long experimental:4000 contre experimental:400 (Sami, 30/09), et npm run bench à 400 et 4 000.",
+    decision: "Écarté de la 0.8. Les workers ne reviendront que si une recherche en arbre (levier 4) a besoin de débit." },
   { id: "exact", title: "Le solveur exact en fin de partie", low: 5, high: 20, cost: "½ lot", status: "fait jusqu'à 8 cartes",
     principle: "Pioche vide, tout est connu : le 0.7 calcule le coup parfait au lieu de simuler. Étendre à 10 cartes quand le temps le permet (1,7 s au plus avec la revendication).",
     gain: "Petit mais sûr : peu de parties se jouent dans les derniers coups. Là, la recherche ne trouvait le gain que 30 fois sur 60 ; le solveur, 44 sur 44.",
@@ -348,7 +348,7 @@ function drawLadder() {
 
 /* The levers, ticked into a running total. */
 const leversNode = document.getElementById("levers");
-const statusClass = (status) => (status.startsWith("fait") ? "ok" : status.startsWith("moitié") ? "mid" : "bad");
+const statusClass = (status) => (status.startsWith("fait") ? "ok" : status.startsWith("réfuté") ? "bad" : "mid");
 for (const [index, lever] of LEVERS.entries()) {
   const card = document.createElement("label");
   card.className = "lever";
