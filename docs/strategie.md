@@ -197,9 +197,15 @@ décisions.
 **Mesure du 0.6 contre le 0.5**, à budget égal (400 simulations par coup, profil
 rapide) : 50 % sur 48 parties avant la correction de vitesse, puis **58 %** sur
 72 parties (fourchette 47 – 69 %). Une tendance, pas encore une preuve : entre
-deux robots aussi forts, 5 minutes ne suffisent pas. Le 0.6 reste le banc
-d'essai. `npm run duel -- experimental:400 experimental:0.5 --long` tranchera en
-20 minutes.
+deux robots aussi forts, 5 minutes ne suffisent pas.
+
+**Duel long** (`npm run duel -- experimental:400 experimental:0.5 --long`, 240
+parties en 23 minutes) : **50,4 %** (fourchette 44,1 – 56,7 %) ; 43 % en
+commençant, 58 % en second. **Aucune différence** : à budget égal, le 0.6 est
+aussi fort que le 0.5, pas plus. Le 58 % du profil rapide était du hasard. Le
+0.6 reste en place pour son jeu plus propre sur les bornes perdues, qui ne coûte
+rien. Les gains devront venir d'ailleurs : de plus de simulations par seconde,
+ou d'une meilleure politique dans les fins de partie simulées.
 3. **« Gagner une borne à coup sûr » n'est pas une priorité prouvée.** Le robot fort
    ne la prend qu'une fois sur deux. Elle reste une information pour le cœur, pas
    une règle.

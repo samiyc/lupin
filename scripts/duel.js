@@ -47,7 +47,9 @@ const pct = (share) => `${(100 * share).toFixed(1).replace(".", ",")} %`;
 const tally = { games: 0, first: 0, second: 0, tasks: 0 };
 const started = Date.now();
 let verdict = { stop: false };
+let lastRound = 0;
 while (!verdict.stop) {
+  const roundStarted = Date.now();
   const perSeat = Math.min(plan.max - tally.games, Math.max(plan.chunk, Math.ceil(threads / 2) * plan.chunk));
   const tasksPerSeat = Math.ceil(perSeat / plan.chunk);
   const tasks = [];
@@ -65,7 +67,9 @@ while (!verdict.stop) {
     else tally.second += result.wins[1];
   });
   tally.games += perSeat;
-  const outOfTime = !exact && (Date.now() - started) / 1000 > profile.seconds;
+  lastRound = Date.now() - roundStarted;
+  // Stop when another round like the last one would not fit: the cap holds, rounds are minutes long.
+  const outOfTime = !exact && Date.now() - started + lastRound > profile.seconds * 1000;
   verdict = duelVerdict({ wins: tally.first + tally.second, games: tally.games, min: plan.min, max: plan.max, outOfTime });
   const seconds = ((Date.now() - started) / 1000).toFixed(0);
   process.stderr.write(`  ${2 * tally.games} parties, ${a} ${pct((tally.first + tally.second) / (2 * tally.games))} (${pct(verdict.low)} – ${pct(verdict.high)}), ${seconds} s\n`);
