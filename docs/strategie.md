@@ -334,3 +334,26 @@ est jugé par un duel long **à la règle de la page** (`npm run duel -- … --l
 héritaient du solveur exact du 0.7, parce qu'ils copiaient les réglages courants.
 Ils énumèrent maintenant chaque réglage qui les distingue (`FROZEN`, dans
 `src/sim/bots.js`).
+
+**Candidat 2 : des simulations qui voient une borne perdue d'un coup d'œil**
+(`experimental:0.8-lite`).
+- L'idée `certainLite` : une borne est perdue quand l'autre côté est complet, que
+  le mien tient deux cartes, et qu'aucune carte encore possible ne finit le mien
+  au-dessus. Un seul essai par carte, là où la certitude du 0.6 énumérait toutes
+  les fins.
+- Choisie par `npm run policy` parmi cinq variantes : elle garde le coup gagnant
+  dans 95,3 % des fins de partie décisives (90,0 % des délicates), contre 94,3 %
+  (87,5 %) pour le 0.7. La température, le coût des cartes et celui des jokers ne
+  bougeaient rien.
+- Banc d'essai : coup gagnant trouvé 33 fois sur 60 au lieu de 30, pour 7 % de
+  vitesse en moins.
+- **Duel long contre le 0.7**, à la règle de la page : 288 parties en 20 minutes,
+  **53,1 %** (fourchette 47,4 – 58,8 %). La tendance est pour lui, mais la borne
+  basse reste sous 50 % : écarté selon la règle, **le 0.7 reste en place**.
+
+**Ce qu'on en retient.** Deux corrections de la politique, mesurables sur les fins
+de partie, ne se voient pas en partie entière : +3 points au mieux. Les simulations
+se trompent surtout ailleurs, en milieu de partie, où la politique joue les deux
+camps sans rien savoir de la main adverse. La suite de la feuille de route est
+donc de **modéliser l'adversaire** : pondérer les donnes par ce qu'il a joué.
+`certainLite` reste disponible, et pourra être remesuré avec ce modèle.

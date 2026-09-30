@@ -184,7 +184,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     </div>
     <div class="takeaway">
       <h3>Honnêtement</h3>
-      <p>Les six leviers réunis visent <span class="num">1 580 – 1 875</span>, recouvrement déduit. Toutes en haut de leur fourchette, elles n'atteignent 2000 que si leurs gains s'additionnent sans se recouvrir (2 015). Le levier 1 ne compte presque plus : il a été mesuré. Le jalon réaliste est <b>1 700</b> ; 2000 reste le cap, pas une promesse.</p>
+      <p>Les six leviers réunis visent <span class="num">1 540 – 1 810</span>, recouvrement déduit. Deux sont déjà mesurés, et plus bas qu'espéré : plus de simulations ne rapporte rien, de meilleures simulations +3 points de victoire au mieux. Le cap de 2000 s'éloigne ; ce qui reste à essayer est dans la recherche (modèle de l'adversaire, arbre) plus que dans la vitesse. Le jalon réaliste est <b>1 600</b> ; 2000 reste le cap, pas une promesse.</p>
     </div>
   </section>
 
@@ -194,8 +194,8 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
       <h2>Une version par levier, un duel long pour trancher</h2>
     </header>
     <ol class="steps">
-      <li><span class="v">0.8</span><div><h3>De meilleures simulations</h3><p>Des simulations qui connaissent la règle de revendication, puis une politique mieux réglée, triée d'abord par <code>npm run policy</code> (94,3 % du coup gagnant gardé, 87,5 % sur les positions délicates, au départ). Solveur exact jusqu'à 9 cartes. <b>Deux lots.</b> Gardé si le duel long, à la règle de la page, reste au-dessus de 50 %.</p></div></li>
-      <li><span class="v">0.9</span><div><h3>Modéliser l'adversaire</h3><p>Des donnes pondérées par ce que tu as joué. C'est aussi la base du vrai jeu caché. <b>Deux lots.</b></p></div></li>
+      <li><span class="v">0.8</span><div><h3>De meilleures simulations — deux candidats écartés</h3><p>Des simulations à la règle de revendication : <span class="num">47,9 %</span> (42,2 – 53,7 %) contre le 0.7. Des simulations qui voient une borne perdue d'un coup d'œil, meilleures sur les fins de partie (<code>npm run policy</code> : 90,0 % des délicates contre 87,5 %) : <span class="num">53,1 %</span> (47,4 – 58,8 %). La borne basse reste sous 50 % : <b>le 0.7 reste en place</b>.</p></div></li>
+      <li><span class="v">0.8</span><div><h3>Modéliser l'adversaire — la suite</h3><p>Les simulations se trompent surtout en milieu de partie, où la main adverse est tirée au hasard. Pondérer les donnes par ce que tu as joué, puis remesurer les simulations améliorées avec ce modèle. C'est aussi la base du vrai jeu caché. <b>Deux lots.</b></p></div></li>
       <li><span class="v">1.0</span><div><h3>Chercher plus d'un coup d'avance</h3><p>ISMCTS, avec des workers si le débit manque. <b>Trois à quatre lots.</b> Comparé à temps égal, pas à budget égal.</p></div></li>
       <li><span class="v">—</span><div><h3>Le répertoire d'ouvertures</h3><p>Peu cher, à glisser entre deux versions. Un duel long décide.</p></div></li>
     </ol>
@@ -284,11 +284,11 @@ const LEVERS = [
     gain: "Petit mais sûr : peu de parties se jouent dans les derniers coups. Là, la recherche ne trouvait le gain que 30 fois sur 60 ; le solveur, 44 sur 44.",
     measure: "Le banc (tous les puzzles gagnés), puis un duel rapide.",
     decision: "Gardé si le banc reste à 100 % sans dépasser le temps de la page." },
-  { id: "policy", title: "De meilleures simulations", low: 50, high: 150, cost: "2 lots", status: "à faire",
+  { id: "policy", title: "De meilleures simulations", low: 0, high: 60, cost: "2 lots", status: "moitié faite",
     principle: "Les fins de partie simulées sont jouées par le cœur du Stratège : ses erreurs deviennent celles de la recherche. Régler ses poids par auto-jeu, ou le rendre conscient de la revendication, maintenant que la vitesse le permet.",
     gain: "Le plus gros levier mesurable : l'anticipation avec un bon cœur a valu +180 (Stratège 2.0).",
-    measure: "L'empreinte change : duel long contre le 0.7, à budget égal.",
-    decision: "Gardé à 55 % ou plus sur 240 parties." },
+    measure: "Fait en 0.8 : npm run policy, puis duels longs à la règle de la page. Simulations à la revendication 47,9 % ; borne perdue vue d'un coup d'œil 53,1 % (47,4 – 58,8 %).",
+    decision: "Deux candidats écartés : la borne basse reste sous 50 %. Le second reste disponible, à remesurer avec le modèle de l'adversaire." },
   { id: "ismcts", title: "Chercher plus d'un coup d'avance (ISMCTS)", low: 80, high: 250, cost: "3 – 4 lots", status: "à faire",
     principle: "Aujourd'hui : un coup, puis des simulations. Un arbre de recherche sur information cachée explore aussi tes réponses, et les siennes ensuite.",
     gain: "Grand mais incertain : c'est ce qui sépare les bons programmes de jeux à information cachée des moyens. Il faut aussi beaucoup de vitesse.",
@@ -355,7 +355,10 @@ function drawLadder() {
 
 /* The levers, ticked into a running total. */
 const leversNode = document.getElementById("levers");
-const statusClass = (status) => (status.startsWith("fait") ? "ok" : status.startsWith("réfuté") ? "bad" : "mid");
+const statusClass = (status) => {
+  if (status.startsWith("fait")) return "ok";
+  return status.startsWith("réfuté") ? "bad" : "mid";
+};
 for (const [index, lever] of LEVERS.entries()) {
   const card = document.createElement("label");
   card.className = "lever";

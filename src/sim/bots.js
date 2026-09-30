@@ -249,6 +249,8 @@ export const searchOf = (settings, overrides = {}) => (rng) => {
  * EXPERIMENT cannot leak into it.
  */
 const FROZEN = {
+  // Lot 4 of 0.8, set aside: rollouts seeing a lost border at a glance, 53.1 % (47.4-58.8).
+  "experimental:0.8-lite": searchOf({ ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] }),
   // Lot 3 of 0.8, set aside: 47.9 % against 0.7 (docs/strategie.md).
   "experimental:0.8-early": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, rolloutMode: "early", exactCards: 9 } }),
   "experimental:0.6": searchOf({ ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false, rolloutMode: null } }),
