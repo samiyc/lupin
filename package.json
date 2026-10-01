@@ -31,7 +31,8 @@
     "puzzles:immediate": "node scripts/immediate-puzzles.js",
     "hiding": "node scripts/hiding.js",
     "policy": "node scripts/policy.js",
-    "bretagne": "node scripts/bretagne.js"
+    "bretagne": "node scripts/bretagne.js",
+    "pivots": "node scripts/pivots.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

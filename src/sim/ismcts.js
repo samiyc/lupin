@@ -1,5 +1,5 @@
 import { createRng } from "../core/random.js";
-import { exactApplies, exactScores } from "./exact.js";
+import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
 import { determinize, playOut } from "./lookahead.js";
 import { moveKey } from "./search.js";
@@ -17,6 +17,16 @@ import { moveKey } from "./search.js";
  * The opponent's moves depend on the hand each deal gives them, so a child's
  * exploration term counts the iterations where it was available (`avail`),
  * not its parent's visits. The move played is the root child most visited.
+ *
+ * Two ways to spend the budget deeper (merlin-is-dead, both off by default):
+ * - `pw`, progressive widening: below the root a node offers one move, then
+ *   more as it is visited (1 + √visits, up to `widen`), so the budget follows
+ *   the good lines down instead of spreading over every reply;
+ * - `rave` (a weight k, ~300): "7♥ on border 3" is worth about the same a move
+ *   earlier or later, so every move a player made in an iteration — in the tree
+ *   or the rollout — also informs that move wherever it was available. A
+ *   child's value blends in that shared statistic, weighted √(k / (3n + k)): it
+ *   speaks while the child has few visits, and fades as they grow.
  */
 export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7 });
 
@@ -37,39 +47,83 @@ function shortlist(judge, state, count) {
     .map(({ move }) => move);
 }
 
+/** A child's value: its own wins, blended with what its move did everywhere (`rave`) while it has few visits. */
+function valueOf(child, shared, rave) {
+  const own = child.wins / child.visits;
+  if (!shared || shared.visits === 0) return own;
+  const beta = Math.sqrt(rave / (3 * child.visits + rave));
+  return (1 - beta) * own + (beta * shared.wins) / shared.visits;
+}
+
 /** Marks every move of `moves` available, then picks: the first never tried, or the best by UCB1. */
-function select(node, moves, exploration) {
+function select(node, moves, { exploration, amaf, rave }, mover) {
   const children = moves.map((move) => {
     const key = moveKey(move);
     if (!node.children.has(key)) node.children.set(key, newNode());
     const child = node.children.get(key);
     child.avail += 1;
-    return { move, child };
+    return { move, child, shared: amaf?.get(`${mover}|${key}`) };
   });
   const fresh = children.find(({ child }) => child.visits === 0);
   if (fresh) return fresh;
-  const ucb = ({ child }) => child.wins / child.visits + exploration * Math.sqrt(Math.log(child.avail) / child.visits);
+  const ucb = ({ child, shared }) => valueOf(child, shared, rave) + exploration * Math.sqrt(Math.log(child.avail) / child.visits);
   return children.reduce((best, entry) => (ucb(entry) > ucb(best) ? entry : best));
+}
+
+/** How many of the core's moves a node below the root offers: all `widen`, or 1 + √visits with `pw`. */
+const breadth = (node, ctx) => (ctx.pw ? Math.min(ctx.widen, 1 + Math.floor(Math.sqrt(node.visits))) : ctx.widen);
+
+/** `playOut`, noting every move and who made it, for `rave`. */
+function playOutNoted(game, policy, played) {
+  const guard = game.spec.borders * 6 * 3;
+  while (!game.over && game.turn < guard) {
+    const moves = legalMoves(game);
+    const move = moves.length > 0 ? policy.choose(game, moves) : null;
+    if (move) played.push(`${game.current}|${moveKey(move)}`);
+    applyMove(game, move);
+  }
+  return game.winner;
+}
+
+/** Credits every distinct (player, move) of an iteration with its result for that player. */
+function creditShared(amaf, played, winner) {
+  for (const key of new Set(played)) {
+    if (!amaf.has(key)) amaf.set(key, { visits: 0, wins: 0 });
+    const stat = amaf.get(key);
+    stat.visits += 1;
+    stat.wins += pointsFor(winner, Number(key[0]));
+  }
+}
+
+/** The walk down the tree: the path taken, and the moves made on it (`rave`). */
+function descend(root, game, ctx) {
+  const path = [];
+  const played = [];
+  let node = root;
+  for (let ply = 0; ply < ctx.depth && !game.over; ply += 1) {
+    const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx));
+    const mover = game.current;
+    const { move, child } = select(node, moves, ctx, mover);
+    path.push({ child, mover });
+    if (move) played.push(`${mover}|${moveKey(move)}`);
+    applyMove(game, move);
+    node = child;
+    if (child.visits === 0) break;
+  }
+  return { path, played };
 }
 
 /** One iteration: a deal, a walk down the tree, a rollout, and the result carried back up. */
 function iterate(root, ctx) {
   const game = determinize(ctx.state, ctx.player, ctx.deals);
-  const path = [];
-  let node = root;
-  for (let ply = 0; ply < ctx.depth && !game.over; ply += 1) {
-    const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, ctx.widen);
-    const { move, child } = select(node, moves, ctx.exploration);
-    path.push({ child, mover: game.current });
-    applyMove(game, move);
-    node = child;
-    if (child.visits === 0) break;
-  }
-  const winner = game.over ? game.winner : playOut(game, ctx.rollout);
+  const { path, played } = descend(root, game, ctx);
+  const rollout = () => (ctx.amaf ? playOutNoted(game, ctx.rollout, played) : playOut(game, ctx.rollout));
+  const winner = game.over ? game.winner : rollout();
   for (const { child, mover } of path) {
     child.visits += 1;
     child.wins += pointsFor(winner, mover);
   }
+  if (ctx.amaf) creditShared(ctx.amaf, played, winner);
 }
 
 /**
@@ -79,13 +133,13 @@ function iterate(root, ctx) {
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
 export function createIsmcts(state, scored, { policy, seed, ...settings }) {
-  const { candidates, widen, depth, exploration } = { ...ISMCTS, ...settings };
+  const { candidates, widen, depth, exploration, pw = 0, rave = 0 } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
   const rootMoves = [...scored]
     .sort((a, b) => b.gain - a.gain)
     .slice(0, candidates)
     .map(({ move }) => move);
-  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration };
+  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, amaf: rave > 0 ? new Map() : null };
   const root = newNode();
   let iterations = 0;
   const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
@@ -102,30 +156,55 @@ export function createIsmcts(state, scored, { policy, seed, ...settings }) {
   };
 }
 
-/** The ISMCTS bot: the core shortlists at the root, the rollout policy plays the rest; small endgames are solved. */
-export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, ...settings }) {
+/** Has the opponent just put a card on the last of the seven borders? From then on, no border of theirs can start from nothing. */
+export function isPivot(state) {
+  const opponent = 1 - state.current;
+  const last = state.lastMoves?.[opponent];
+  const allStarted = state.borders.every((border) => border.sides[opponent].length > 0);
+  return Boolean(last) && allStarted && state.borders[last.border].sides[opponent].length === 1;
+}
+
+/**
+ * The ISMCTS bot: the core shortlists at the root, the rollout policy plays
+ * the rest; small endgames are solved. Turning points (merlin-is-dead):
+ * `exact` solves endgames up to that many cards once the pile is empty (8
+ * by default), capped at `EXACT.nodes` positions past 8; `pivot` multiplies
+ * the budget on the move after the opponent has started all seven borders.
+ * `hope`: when the solver finds no win, search anyway — every lost move is
+ * equal to the solver, not to an opponent who may still slip.
+ */
+export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, exact = EXACT.maxCards, pivot = 1, hope = 0, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createIsmcts(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
   // `budgetMs`: a clock instead of a count, to compare variants of unequal speed at equal time.
-  const run = (search) => {
-    const until = performance.now() + budgetMs;
-    while (!search.done() && search.rollouts() < budget && performance.now() < until) search.step();
+  const run = (search, factor) => {
+    const until = performance.now() + budgetMs * factor;
+    while (!search.done() && search.rollouts() < budget * factor && performance.now() < until) search.step();
     return search;
   };
-  const solves = (state, moves) => moves.length > 1 && exactApplies(state);
+  const solves = (state, moves) => moves.length > 1 && exactApplies(state, exact);
+  const maxNodes = exact > EXACT.maxCards ? EXACT.nodes : Infinity;
+  const winning = (scores) => scores && (!hope || scores.some((entry) => entry.exact && entry.gain > 0.5));
+  const solved = (state, moves, options) => {
+    if (!solves(state, moves)) return null;
+    const scores = exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }), { maxNodes });
+    return winning(scores) ? scores : null;
+  };
   const bestOf = (scored) => scored.reduce((a, b) => (b.gain > a.gain ? b : a)).move;
   const scoreMoves = (state, moves, options = {}) => {
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
-    if (solves(state, moves)) return exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }));
-    return run(searchFor(state, moves, options)).scored();
+    const exactly = solved(state, moves, options);
+    if (exactly) return exactly;
+    return run(searchFor(state, moves, options), isPivot(state) ? pivot : 1).scored();
   };
   return { name, base, policy, searchFor, solves, scoreMoves, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
 }
 
 /**
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
- * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts) — or null.
+ * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
+ * `+pivot=4`, `+hope=1` (`ismctsBot`), `+pw=1`, `+rave=300` (`createIsmcts`) — or null.
  */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
@@ -133,7 +212,7 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      if (!["depth", "widen", "exploration", "candidates", "sample"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

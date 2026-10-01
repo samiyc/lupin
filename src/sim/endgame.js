@@ -35,6 +35,9 @@ function outcome(state, player) {
   return state.winner === player ? 1 : -1;
 }
 
+/** Thrown when a solve runs past `maxNodes`: the caller gets `complete: false` instead of a value. */
+const OUT_OF_NODES = Symbol("out of nodes");
+
 /** Negamax value of `state` for the player to move, memoised in `memo`. */
 function negamax(state, memo, counter) {
   if (state.over) return outcome(state, state.current);
@@ -42,6 +45,7 @@ function negamax(state, memo, counter) {
   const known = memo.get(key);
   if (known !== undefined) return known;
   counter.nodes += 1;
+  if (counter.nodes > counter.limit) throw OUT_OF_NODES;
   const moves = legalMoves(state);
   let best = -Infinity;
   for (const move of moves.length > 0 ? moves : [null]) {
@@ -73,6 +77,16 @@ function valueAll(state, candidates, stopAtWin, counter) {
   return moves;
 }
 
+/** `valueAll`, or null when it ran out of nodes. */
+function tryValueAll(state, candidates, stopAtWin, counter) {
+  try {
+    return valueAll(state, candidates, stopAtWin, counter);
+  } catch (error) {
+    if (error !== OUT_OF_NODES) throw error;
+    return null;
+  }
+}
+
 /**
  * Every legal move of `state` with its exact value for the player to move,
  * best first, plus the number of positions examined. Meant for positions
@@ -80,13 +94,16 @@ function valueAll(state, candidates, stopAtWin, counter) {
  *
  * `moves`: the moves to value, in the order to try them (all legal moves by
  * default). `stopAtWin`: stop at the first winning one — a bot needs a win,
- * not every win; the moves after it are left out of the answer.
+ * not every win; the moves after it are left out of the answer. `maxNodes`:
+ * give up past that many positions — the answer is then `{ complete: false }`
+ * and nothing else, since a half-solved position proves nothing.
  */
-export function solveEndgame(state, { moves: candidates = legalMoves(state), stopAtWin = false } = {}) {
-  const counter = { nodes: 0 };
-  const moves = valueAll(state, candidates, stopAtWin, counter);
+export function solveEndgame(state, { moves: candidates = legalMoves(state), stopAtWin = false, maxNodes = Infinity } = {}) {
+  const counter = { nodes: 0, limit: maxNodes };
+  const moves = tryValueAll(state, candidates, stopAtWin, counter);
+  if (!moves) return { complete: false, nodes: counter.nodes, cardsLeft: cardsLeft(state) };
   moves.sort((a, b) => b.value - a.value);
-  return { moves, value: moves[0]?.value ?? 0, nodes: counter.nodes, cardsLeft: cardsLeft(state) };
+  return { complete: true, moves, value: moves[0]?.value ?? 0, nodes: counter.nodes, cardsLeft: cardsLeft(state) };
 }
 
 /** The moves that reach the best value — the puzzle's solutions. */
