@@ -69,3 +69,9 @@ export function experimentalSettings(name) {
   else if (base === "experimental") settings = EXPERIMENT;
   return settings && changes.reduce(applyVariant, settings);
 }
+
+/** An engine id's `@` suffix: `@800` for 800 rollouts (or iterations) a move, `@t1500` for 1.5 s a move, whatever that buys. */
+export function budgetOf(at) {
+  if (at === undefined) return {};
+  return at.startsWith("t") ? { budget: Infinity, budgetMs: Number(at.slice(1)) } : { budget: Number(at) };
+}

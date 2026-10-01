@@ -162,14 +162,16 @@ function searchScores(scored, arms, alive, prior) {
 /**
  * The experimental bot: a search per move, stopped by `budget` rollouts —
  * deterministic, for duels — or by `stop()`, which the page sets to a
- * deadline. The base bot shortlists; `policy(rng)` plays the rollouts.
+ * deadline, or by `budgetMs` (an engine id's `@t1500`), to compare at equal time. The base bot shortlists; `policy(rng)` plays the rollouts.
  */
-export function searchBot(rng, { base, policy, budget = 400, stop = null, name = "search", exact = false, ...settings }) {
+export function searchBot(rng, { base, policy, budget = 400, budgetMs = Infinity, stop = null, name = "search", exact = false, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createSearch(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
   const run = (search) => {
-    while (!search.done() && (stop ? !stop(search) : search.rollouts() < budget)) search.step();
+    const until = performance.now() + budgetMs;
+    const spent = stop ?? ((current) => current.rollouts() >= budget || performance.now() >= until);
+    while (!search.done() && !spent(search)) search.step();
     return search;
   };
   // `exact` (0.7): a small enough endgame is solved rather than searched (`exact.js`).

@@ -1,11 +1,13 @@
 import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
-import { EXPERIMENT, experimentalSettings } from "./experimental.js";
+import { EXPERIMENT, budgetOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
+import { createValue } from "./value.js";
 import { mixBot } from "./mix.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
+import { pickBest, pickSampled } from "./pick.js";
 import { searchBot } from "./search.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
 
@@ -31,6 +33,7 @@ const CARD_COST = 0.02;
 const VALUE_TO_CHANCE = 1 / (4 * TEMPERATURE);
 /** The estimate's settings; a bot may carry its own (`params`), to be tuned. */
 export const BOT_PARAMS = Object.freeze({ temperature: TEMPERATURE, jokerCost: JOKER_COST, cardCost: CARD_COST });
+export { pickBest, pickSampled };
 
 export const randomBot = (rng) => ({
   name: "random",
@@ -61,33 +64,6 @@ export const strategistBot = (rng, options = {}) => {
     choose: (state, moves) => (sample ? pickSampled(scoreMoves(state, moves), rng, sample) : pickBest(scoreMoves(state, moves), rng)),
   };
 };
-
-/**
- * A move drawn with probability ∝ exp(gain / `temperature`): rollouts that
- * do not always repeat the core's favourite, so its blind spots do not
- * decide every simulated game the same way.
- */
-export function pickSampled(scored, rng, temperature) {
-  const top = Math.max(...scored.map(({ gain }) => gain));
-  const weights = scored.map(({ gain }) => Math.exp((gain - top) / temperature));
-  let draw = rng.next() * weights.reduce((sum, weight) => sum + weight, 0);
-  for (const [i, weight] of weights.entries()) {
-    draw -= weight;
-    if (draw <= 0) return scored[i].move;
-  }
-  return scored.at(-1).move;
-}
-
-/** The highest gain, ties broken at random. */
-export function pickBest(scored, rng) {
-  let best = [];
-  let bestGain = -Infinity;
-  for (const { move, gain } of scored) {
-    if (gain > bestGain + 1e-9) [best, bestGain] = [[move], gain];
-    else if (gain > bestGain - 1e-9) best.push(move);
-  }
-  return best[rng.int(best.length)];
-}
 
 /** May one more joker join `side`? Asked once per side, not once per card. */
 function jokerGate(state, player) {
@@ -122,6 +98,13 @@ function scoreGreedy(state, moves) {
 function borderChances(state, player, { mine, threat }) {
   const withHand = { ...mine, hand: state.hands[player] };
   return state.borders.map((border, index) => winChance(sidePotential(border.sides[player], withHand), threat[index], mine.params));
+}
+
+/** The core's odds on each border for the player to move, a won border 1 or 0: what `value.js` reads. */
+export function borderOdds(state) {
+  const player = state.current;
+  const chances = borderChances(state, player, views(state));
+  return state.borders.map((border, index) => (border.owner === null ? chances[index] : Number(border.owner === player)));
 }
 
 /** Every card on the board, border by border, side by side — without `flat()`, which a rollout paid for on every move. */
@@ -245,7 +228,6 @@ const lookaheadOf = (settings, name) => (rng) => {
   return lookaheadBot(rng, { base, policy, ...settings.lookahead, name });
 };
 
-/** The experimental bot: `settings`' strategist shortlists and plays the rollouts of a deeper search (`search.js`). */
 /**
  * The bot that plays the experimental search's rollouts: `settings`'
  * strategist without `certain` — certainties choose the real move; in the
@@ -281,10 +263,6 @@ export const BOTS = Object.freeze({
   ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
 });
 
-/**
- * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
- * with a budget of N rollouts a move, to weigh depth against time in duels.
- */
 /** A mixture of three experts, one per phase (`mix.js`). */
 const mixOf = (ids) => {
   if (ids.length !== 3) throw new Error(`Il faut trois moteurs : « mix:${ids.join(",")} »`);
@@ -292,15 +270,21 @@ const mixOf = (ids) => {
   return (rng) => mixBot(factories.map((factory) => factory(rng)));
 };
 
-/** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
-const ismctsOf = ({ sample, ...tree }, budget) => (rng) =>
-  ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), ...tree, ...budget });
+/** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves, `value` judges some leaves by the learned value. */
+const ismctsOf = ({ sample, ...tree }, budget) => (rng) => {
+  const judgeValue = tree.value ? createValue(borderOdds) : null;
+  return ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), judgeValue, ...tree, ...budget });
+};
 
+/**
+ * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
+ * with a budget of N rollouts a move, to weigh depth against time in duels.
+ */
 export function engineFor(id) {
   // `mix:A,B,C` before anything else: its experts carry their own `@` and `+`.
   if (id.startsWith("mix:")) return mixOf(id.slice(4).split(","));
   const [name, at] = id.split("@");
-  const budget = at === undefined ? {} : { budget: Number(at) };
+  const budget = budgetOf(at);
   const settings = experimentalSettings(name);
   if (settings) return searchOf(settings, budget);
   const tree = ismctsSettings(name);

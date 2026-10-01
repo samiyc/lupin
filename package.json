@@ -35,7 +35,8 @@
     "hard-cases": "node scripts/hard-cases.js",
     "cases": "node scripts/cases.js",
     "openings": "node scripts/openings.js",
-    "bretagne": "node scripts/bretagne.js"
+    "bretagne": "node scripts/bretagne.js",
+    "value": "node scripts/value.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
