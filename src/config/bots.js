@@ -24,13 +24,13 @@ export const BOT_LINEUP = Object.freeze({
     pace: "≈ 0,5 s par coup",
   }),
   experimental: Object.freeze({
-    // 0.8: a tree search over hidden information (src/sim/ismcts.js), measured at 800 iterations a move.
-    // The 0.7 search is still the `experimental` engine id, for duels and the bench.
-    engine: "ismcts@800",
-    version: "0.8.0",
+    // 0.9: the 0.8's tree (src/sim/ismcts.js), narrower and deeper — 3 replies, 5 plies — at the same speed.
+    // 0.8 is `ismcts@800`; the 0.7 search is still the `experimental` engine id, for duels and the bench.
+    engine: "ismcts+widen=3+depth=5@800",
+    version: "0.9.0",
     label: "Expérimental",
-    description: "Le cœur du Stratège, qui cherche en arbre",
-    examines: "ses 8 meilleurs coups, tes réponses et les siennes, sur 3 coups d'avance ; la fin de partie calculée exactement",
+    description: "Le cœur du Stratège, qui cherche en arbre, plus loin",
+    examines: "ses 8 meilleurs coups, tes 3 meilleures réponses et les siennes, sur 5 coups d'avance ; la fin de partie calculée exactement",
     pace: "jusqu'à 10 s, et pendant ton tour",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
@@ -48,7 +48,7 @@ export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 export const KEPT_VERSIONS = Object.freeze({
   basique: Object.freeze(["1.0.0"]),
   stratege: Object.freeze(["2.1.0", "2.0.0", "1.1.0"]),
-  experimental: Object.freeze(["0.8.0", "0.7.0", "0.6.0"]),
+  experimental: Object.freeze(["0.9.0", "0.8.0", "0.7.0"]),
 });
 
 /** Is `player` ("Sami", "stratege@2.1.0") one to show? Humans always are. */

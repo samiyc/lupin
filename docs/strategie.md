@@ -606,3 +606,74 @@ mains fortes perdues et le Merlin ne sont pas construits : ils apprendraient d'u
 coup profond qui ne gagne pas plus que le coup joué. **Reste le suivi des mains
 de départ dans l'onglet Stats**, pour ajuster le tir plus tard, par exemple voir
 si un robot perd ses mains fortes plus souvent qu'il ne devrait.
+
+## Les points charnières et l'élagage (01/10, merlin-is-dead)
+
+**Quand la partie bascule** (`npm run pivots`, 200 parties entre deux cœurs
+expérimentaux, règle de la page) :
+
+| Moment | Tour médian | 10 % – 90 % |
+| --- | --- | --- |
+| un joueur a une carte sur les 7 bornes | 13 | 13 – 15 |
+| les deux joueurs l'ont | 14 | 14 – 18 |
+| la 1re borne prouvée | 22 | 18 – 27 |
+| le dernier joker posé (170 parties sur 200) | 30 | 22 – 36 |
+| la pioche vide | 30 | 30 – 30 |
+
+**Pioche vide = information complète** : la seule donne possible est la vraie.
+Le solveur exact, qui ne jouait qu'à 8 cartes au plus (vers le tour 34),
+règle en fait **toutes** les positions dès le tour 30 :
+
+| Cartes en main (les deux) | Résolues (400 000 positions au plus) | Temps médian | 90 % sous |
+| --- | --- | --- | --- |
+| 12 | 100 % | 255 ms | 2,3 s |
+| 11 | 100 % | 43 ms | 0,5 s |
+| 10 | 100 % | 10 ms | 0,1 s |
+
+**Ce que ça donne en duel** (contre le 0.8, `--long --page`, 20 min) :
+- résoudre dès la pioche vide (`ismcts+exact=12@800`) : **47,2 % (40,0 – 54,4)** ;
+- la même chose, mais chercher quand le solveur ne trouve pas de victoire
+  (`+hope=1` : pour le solveur, tous les coups perdants se valent ; pour un
+  adversaire qui peut encore se tromper, non) : 48,6 % (41,1 – 56,1) ;
+- budget ×4 au coup qui suit les 7 bornes adverses entamées (`+pivot=4`) :
+  44,8 % (36,4 – 53,2), sur 96 parties.
+- **Aucun gain.** À 800 itérations, l'arbre joue déjà presque parfaitement la fin
+  de partie à information complète : il n'y a rien à reprendre aux tours 30-33.
+  Et au tour 13-15, quatre fois plus d'itérations ne changent pas le coup joué.
+
+**Pourquoi les échecs voient 10 coups et plus, et pas nous** :
+- Aux échecs, tout est visible. L'alpha-bêta élague à peu près la racine du
+  nombre de branches, et une évaluation fiable juge chaque feuille.
+- Ici, chaque réponse adverse dépend d'une main cachée, et chaque pioche est
+  un tirage : il n'y a pas de valeur exacte à comparer pour élaguer. Et aucune
+  évaluation ne prédit avant le tour 15 (mesuré : la valeur apprise ne fait pas
+  mieux que pile ou face). L'arbre doit tirer des donnes et jouer jusqu'au bout.
+- À 800 itérations, la profondeur 3 compte déjà 8 × 4 × 4 = 128 lignes,
+  soit environ 6 visites chacune.
+
+**Les élagages essayés** (tris de 10 min à temps égal, 1,4 s par coup, contre
+`ismcts@t1400`) :
+
+| Variante | Ce qu'elle fait | Résultat |
+| --- | --- | --- |
+| `widen=3+depth=5` | 3 réponses au lieu de 4 sous la racine, 5 coups d'avance | **54,2 % (46,0 – 62,3)** |
+| `pw=1+widen=6+depth=5` | élargissement progressif : 1 + √visites réponses, jusqu'à 6 | 52,8 % (45,1 – 60,5) |
+| `widen=2+depth=5` | 2 réponses seulement | 47,2 % (39,3 – 55,2) |
+| `rave=300` | les statistiques d'un coup partagées partout où il était jouable | 44,4 % (36,3 – 52,6) |
+
+- Élaguer à 2 réponses coupe trop : le bon coup adverse n'est pas toujours dans
+  les deux préférés du cœur. À 3, on gagne deux coups de profondeur pour le même
+  temps.
+- RAVE perd : dans ce jeu, un coup ne vaut pas la même chose un tour plus tôt ou
+  plus tard. Ce sont les cartes vues entre-temps qui décident.
+
+**La confirmation** (`npm run duel -- ismcts+widen=3+depth=5@t1400 ismcts@t1400 --long --page --offset 1`) :
+- **55,9 % (50,3 – 61,5)**, 288 parties, sur d'autres donnes que le tri.
+- Mis en commun avec le tri : **55,3 % (50,7 – 59,9)**, 432 parties. La règle est
+  passée : c'est l'**Expérimental 0.9.0** (`ismcts+widen=3+depth=5@800`).
+- Même vitesse que le 0.8 (580 contre 588 itérations par seconde,
+  `npm run bench`) : chaque itération descend plus loin, mais sur moins de
+  branches.
+- Classement : 0.9.0 à **1032 ± 33**, 0.8.0 à 996.
+- Le reste du lot ne passe pas : élargissement progressif 52,8 % (proche, à
+  retenter combiné au 0.9), RAVE, les points charnières.

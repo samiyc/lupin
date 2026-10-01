@@ -49,6 +49,13 @@
       "wins": 162,
       "games": 288,
       "source": "deux duels longs du 01/10, 800 simulations, règle de la page, donnes 0 et 1 : ISMCTS (docs/strategie.md)"
+    },
+    {
+      "a": "experimental@0.9.0",
+      "b": "experimental@0.8.0",
+      "wins": 239,
+      "games": 432,
+      "source": "tri de 10 min et duel long du 01/10, à temps égal (1,4 s par coup), règle de la page, donnes 0 et 1 : ISMCTS à 3 réponses, 5 coups d'avance (docs/strategie.md)"
     }
   ]
 }

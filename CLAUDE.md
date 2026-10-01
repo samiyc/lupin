@@ -184,6 +184,11 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   evaluator, skips the paired card by index and keys its memo by number;
   `bots.js` builds `boardCards` without `flat()` and keeps `withoutCard` views
   in their own Map. ×1.8 on the experimental bot, every fingerprint identical.
+- **Expérimental 0.9 is the 0.8's ISMCTS, narrower and deeper**
+  (`ismcts+widen=3+depth=5@800`): 3 replies a node instead of 4 buys 5 plies
+  instead of 3 at the same speed; 55.3 % (50.7-59.9) over 432 games at equal
+  time. Narrower (2 replies), RAVE, exact solving from the empty pile and ×4
+  budgets on turning points all failed (`docs/strategie.md`).
 - **Expérimental 0.8 is an ISMCTS** (`src/sim/ismcts.js`, lineup engine
   `ismcts@800`): every iteration deals the unseen cards, walks a 3-ply tree
   (UCB1 on availability, the core's shortlist), then rolls out with the 0.7
