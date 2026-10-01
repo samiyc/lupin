@@ -69,6 +69,9 @@ en premier, comme au bridge en « duplicate ».
 | régénérer rapport et fiche | `npm run build && npm run pdf` | 4 min |
 | savoir si plus de temps de réflexion aide | `npm run time-study` | 8 min |
 | faire jouer l'Expérimental contre lui-même | `npm run selfplay` | 20 min au plus |
+| comparer deux variantes de vitesses différentes | `npm run duel -- A@t1400 B@t1400 --screen --page` (1,4 s par coup chacun) | 10 min |
+| apprendre la valeur de position sur l'auto-jeu | `npm run value` | 1 min |
+| régler les poids du cœur par auto-jeu | `npm run tune -- --minutes 15`, puis `npm run duel -- core:tuned core` | 15 min + 10 s |
 
 **Règle de conduite.**
 1. Une idée se trie d'abord en `--quick`, sur le cœur si possible (secondes plutôt

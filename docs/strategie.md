@@ -452,3 +452,63 @@ git) :
   qu'il soit meilleur. Pour le 0.7, chercher plus ne rapportait rien. Pour
   ISMCTS, qui gagne avec le budget, un répertoire calculé à 5 000 itérations
   reste à essayer.
+
+## L'étape 2 : apprendre l'évaluation par auto-jeu (01/10, evol-exp-080)
+
+**Pousser l'arbre (étape 1), d'après tes duels longs :**
+- Profondeur 4 à 800 itérations : 53,5 % (47,2 – 59,7). Profondeur 5 : 53,5 % aussi.
+- Profondeur 4 à 1 600 itérations : 56,3 % (45,5 – 67,0), sur 48 parties.
+- Rien n'est net : **la profondeur 3 reste**.
+- Le même total (77/144) pour 4 et 5 n'est pas un hasard de code. L'arbre
+  n'ajoute qu'un nœud par itération : à 800 itérations, 12 % d'entre elles
+  atteignent le 4e coup, et **0,2 %** le 5e. Les deux moteurs jouent presque
+  pareil.
+
+**Lot 2 — une valeur de position apprise** (`npm run value`, `src/sim/value.js`) :
+- Une régression logistique sur 47 712 positions d'auto-jeu. Elle lit les
+  chances du cœur par borne (adoucies : il est trop sûr de lui), traduites en
+  chances de gagner la partie, plus les bornes closes, les jokers et la phase.
+- Jugée sur des parties qu'elle n'a pas vues (Brier, plus bas = mieux) :
+
+| Prédicteur | tours 1-14 | tours 15-29 | tours 30+ |
+| --- | --- | --- | --- |
+| pile ou face | 0,250 | 0,250 | 0,250 |
+| valeur apprise | 0,250 | 0,232 | 0,148 |
+| 8 simulations | 0,288 | 0,227 | 0,025 |
+| une simulation | 0,504 | 0,382 | 0,022 |
+
+- Avant le tour 15, personne ne prédit rien. Entre 15 et 29, la valeur vaut
+  8 simulations ; après, une seule simulation fait bien mieux.
+
+**Lot 3 — la valeur dans l'arbre** (`ismcts+value=N`, à temps égal, `@t1400`) :
+- Juger les feuilles par la valeur est 1,5 à 6 fois plus rapide, mais :
+  - dès le tour 1 : **40,3 % (33,1 – 47,4)**, nettement moins bon ;
+  - dès le tour 15 : 43,8 % (35,8 – 51,7).
+- **Écartée.** Une valeur qui prédit bien en moyenne ne départage pas les coups :
+  les simulations, même bruitées, voient les différences entre deux coups
+  voisins, la valeur les lisse.
+
+**Lot 4 — régler le cœur par auto-jeu** (`npm run tune`, SPSA) :
+- Dix poids du cœur qui joue les simulations, déplacés dans les directions qui
+  gagnent des parties cœur contre cœur, sur les mêmes donnes : 240 manches de
+  23 sondes en 15 minutes.
+- Ce qui bouge le plus :
+  - la température, de 0,35 à **0,25** ; elle descendait encore à la fin ;
+  - le départ assorti (`suitedStart`), de 0,2 à **0,285** ;
+  - l'ouverture au milieu (`openMiddle`), de 0,1 à 0,057.
+- Le cœur réglé bat le cœur actuel : **52,9 % (51,7 – 54,0)** sur 6 000 parties.
+  Les réglages à la main plafonnaient à +3 points ; le SPSA les règle tous
+  ensemble.
+- En fin de partie, il ne garde pas mieux le coup gagnant (94,0 % contre
+  94,3 %, `npm run policy`) : le gain vient du milieu de partie.
+
+**Lot 5 — valider dans l'arbre** (`npm run duel -- ismcts+core=1@800 ismcts@800 --long --page`) :
+- **50,7 % (42,8 – 58,6)**, 144 parties : pas de différence nette. **Le 0.8 reste.**
+- Le cœur gagne 3 points quand il joue seul, l'arbre ne les voit pas. À 800
+  itérations, ce n'est plus la politique des simulations qui limite : l'arbre
+  corrige déjà ses erreurs de milieu de partie.
+- Ce qui reste à essayer :
+  - régler le cœur **dans l'arbre** (sondes ISMCTS à 200 itérations, bien plus
+    lentes que cœur contre cœur) ;
+  - laisser le SPSA converger : sa température descendait encore à la fin ;
+  - et surtout des **workers dans la page**, puisque le budget, lui, paie.
