@@ -174,3 +174,29 @@ Les identifiants de moteur se combinent :
 - `experimental+sample=0.05+prior=0.15`, pour les variantes ;
 - `experimental:0.6@200` ou `ismcts@t1400`, pour le budget (en simulations ou en temps) ;
 - `ismcts+depth=2`, pour la recherche en arbre.
+
+## Les duels gardés en replays (`duels/`)
+
+Les parties des duels sont gardées, pour bâtir les tests suivants sur elles au
+lieu de rejouer des parties entières (`src/replay/bot-games.js`,
+`scripts/lib/duel-save.js`).
+
+- **Quand** : avec `--save`, et d'office pour un duel long ou quand les deux
+  robots jouent à pleine force. C'est le cas d'un robot qui ne cherche pas
+  (Basique, Stratège), d'une recherche à 800 itérations ou plus, ou d'une
+  recherche à l'horloge (`@t`).
+- **Où** : `duels/<date>_<a>_vs_<b>.json`, hors de git (environ 11 Ko par
+  partie). Un fichier par duel : ses réglages, puis chaque partie au format des
+  replays (paquet et coups), donc relisible comme une partie de la page.
+- **L'analyse, calculée une fois** :
+  - `handClasses` : la main de départ de chacun, faible, moyenne ou forte.
+    `balancedGames()` ne garde que les parties où les deux sont moyennes,
+    pour un milieu de partie équilibré ;
+  - `advantage` : qui tient la partie au tour 30, la pioche vide, en jeu parfait.
+    Le solveur exact le dit en moins d'une seconde en général ; aucun test
+    suivant n'a à le recalculer.
+- **Rejouer à partir d'un tour** : `stateAt(log, tour)` (`src/replay/log.js`)
+  rend la position exacte, même paquet et même pioche. On n'y change qu'un
+  mécanisme, sur un seul coup, et on rejoue la suite : une partie qui bascule au
+  tour 30 se voit sur la même donne. Valable tant que la version des robots est
+  la même.

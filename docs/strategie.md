@@ -674,6 +674,28 @@ règle en fait **toutes** les positions dès le tour 30 :
 - Même vitesse que le 0.8 (580 contre 588 itérations par seconde,
   `npm run bench`) : chaque itération descend plus loin, mais sur moins de
   branches.
-- Classement : 0.9.0 à **1032 ± 33**, 0.8.0 à 996.
+- Classement : 0.9.0 à 1032 ± 33 ce jour-là, 920 après les duels directs (plus bas).
 - Le reste du lot ne passe pas : élargissement progressif 52,8 % (proche, à
   retenter combiné au 0.9), RAVE, les points charnières.
+
+## Le classement stabilisé (01/10, duels directs gardés en replays)
+
+Trois duels de 100 parties entre les versions actuelles, à la règle de la page,
+toutes gardées dans `duels/` (avec l'avantage au tour 30) :
+
+| Duel | Score | Fourchette à 95 % par paires |
+| --- | --- | --- |
+| Stratège 2.1 contre Basique | 82 % | 74,2 – 89,8 |
+| Expérimental 0.9 contre Basique | 92 % | 86,9 – 97,1 |
+| Expérimental 0.9 contre Stratège 2.1 | 60 % | 50,3 – 69,7 |
+
+- **Le classement descend pour les Expérimental** : 0.9.0 à **920 ± 29** (1032
+  avant ces duels), 0.8.0 à 892, 0.7.0 à 862, Stratège 2.1 à 811. Ils n'étaient
+  reliés aux Stratège que par une chaîne de duels anciens, à la règle `early` et
+  à 400 simulations. Le duel direct, à la règle de la page, dit que l'écart est
+  plus petit. C'est lui qu'il faut croire.
+- **L'avantage au tour 30 décide presque tout** : quand la pioche est vide, le
+  camp qui gagne en jeu parfait gagne la partie dans 95 à 99 % des cas, même
+  entre robots imparfaits. Les parties se jouent avant le tour 30. C'est là
+  qu'un rejeu « à partir du tour 15, un seul changement » a le plus de chances
+  de montrer quelque chose.

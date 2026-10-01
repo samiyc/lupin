@@ -40,4 +40,6 @@ real life test/
 # keeping for analysis are copied to data/replays/, which is versioned.
 /replays/
 /selfplay/
+# Bot duels kept as replays (npm run duel), to build later tests on.
+/duels/
 

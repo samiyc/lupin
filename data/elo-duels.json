@@ -56,6 +56,27 @@
       "wins": 239,
       "games": 432,
       "source": "tri de 10 min et duel long du 01/10, à temps égal (1,4 s par coup), règle de la page, donnes 0 et 1 : ISMCTS à 3 réponses, 5 coups d'avance (docs/strategie.md)"
+    },
+    {
+      "a": "stratege@2.1.0",
+      "b": "basique@1.0.0",
+      "wins": 82,
+      "games": 100,
+      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
+    },
+    {
+      "a": "experimental@0.9.0",
+      "b": "basique@1.0.0",
+      "wins": 92,
+      "games": 100,
+      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
+    },
+    {
+      "a": "experimental@0.9.0",
+      "b": "stratege@2.1.0",
+      "wins": 60,
+      "games": 100,
+      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
     }
   ]
 }

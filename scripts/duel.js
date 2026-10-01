@@ -4,6 +4,7 @@ import { OFFICIAL_RULES } from "../src/config/rules.js";
 import { DUEL_ROW, SEED } from "../src/config/simulations.js";
 import { BOTS, engineFor } from "../src/sim/bots.js";
 import { PROFILES, duelVerdict, isSlowEngine, pointsOf } from "./lib/duel-plan.js";
+import { saveDuel, shouldSave } from "./lib/duel-save.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -21,6 +22,9 @@ import { runPool } from "./lib/pool.js";
  *
  * `--hands weak|strong` deals only decks whose first player starts with a
  * weak or a strong hand (src/sim/hand-classes.js), the same for both seats.
+ *
+ * The games are kept as replays in duels/ (`--save`, and by default for a
+ * long duel or bots at full strength: `scripts/lib/duel-save.js`).
  *
  * Borders settle as soon as they are full (`early`), the rule every Elo line
  * was measured with. `--page` plays the page's own rule instead
@@ -68,6 +72,8 @@ if (!known(a) || !known(b)) {
 }
 
 const slow = isSlowEngine(engine(a)) || isSlowEngine(engine(b));
+const save = shouldSave({ asked: args.includes("--save"), profileName, engines: [engine(a), engine(b)] });
+const logs = [];
 const scale = slow ? profile.slow : profile.fast;
 const plan = exact ? { min: exact, max: exact, chunk: Math.max(1, Math.ceil(exact / 20)) } : scale;
 const threads = Math.max(2, os.cpus().length - 1);
@@ -92,10 +98,10 @@ while (!verdict.stop) {
   const tasks = [];
   // Both seatings play the same decks (`deals`): the luck of the cards cancels out.
   const round = tally.tasks;
-  for (const players of [[engine(a), engine(b)], [engine(b), engine(a)]]) {
+  for (const [players, labels] of [[[engine(a), engine(b)], [tag(a), tag(b)]], [[engine(b), engine(a)], [tag(b), tag(a)]]]) {
     for (let t = 0; t < tasksPerSeat; t += 1) {
       tally.tasks += 1;
-      tasks.push({ ...DUEL_ROW, endMode, handClass, keepWinners: true, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
+      tasks.push({ ...DUEL_ROW, endMode, handClass, keepWinners: true, keepLogs: save, labels, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
     }
   }
   const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks);
@@ -104,6 +110,7 @@ while (!verdict.stop) {
     else tally.second += result.wins[1];
   });
   collectPairs(results, tasksPerSeat);
+  if (save) results.forEach((result) => logs.push(...result.logs));
   tally.games += perSeat;
   lastRound = Date.now() - roundStarted;
   // Stop when another round like the last one would not fit: the cap holds, rounds are minutes long.
@@ -133,6 +140,7 @@ process.stdout.write(
     `  en commençant : ${pct(tally.first / tally.games)} · en second : ${pct(tally.second / tally.games)}`,
     `  paires : ${pairStats(tally.pairs)}${offsetNote}`,
     conclusion(),
+    save ? await saveDuel({ a: tag(a), b: tag(b), engines: [engine(a), engine(b)], settings: { endMode, handClass, offset, profile: profileLabel }, logs }) : "  (parties non gardées : --save pour les garder)",
     "",
   ].join("\n"),
 );
