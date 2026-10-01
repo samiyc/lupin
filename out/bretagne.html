@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Les 7 Menhirs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;700;800&family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Granite, ermine and Atlantic slate: the Gwenn-ha-du's black and white, with the sea for an accent. */
+:root {
+  --paper: #f2f0ea; --card: #fbfaf6; --edge: #d9d5ca; --ink: #1c1d1f; --ink-2: #47494c; --ink-3: #6b6d6f;
+  --line: #ddd8cc; --wash: #e9e6dd; --sea: #1f4e6b; --sea-ink: #f2f4f5; --sea-soft: #b8cad6;
+  --gorse: #a27b0c; --gorse-wash: #f3e9c8; --red: #b3263a; --black: #1c1d1f;
+  --sc: #1f4e6b; --br: #a27b0c; --co: #b3263a;
+  --display: "Alegreya", Georgia, "Times New Roman", serif;
+  --body: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #15181b; --card: #1d2125; --edge: #30363c; --ink: #eceae4; --ink-2: #c3c1ba; --ink-3: #979891;
+    --line: #2d3338; --wash: #20262b; --sea: #122f42; --sea-ink: #eef2f4; --sea-soft: #97b2c4;
+    --gorse: #e1bd4f; --gorse-wash: #2f2a16; --red: #ff7d8c; --black: #eceae4;
+    --sc: #6fa8cf; --br: #e1bd4f; --co: #ff7d8c;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #15181b; --card: #1d2125; --edge: #30363c; --ink: #eceae4; --ink-2: #c3c1ba; --ink-3: #979891;
+  --line: #2d3338; --wash: #20262b; --sea: #122f42; --sea-ink: #eef2f4; --sea-soft: #97b2c4;
+  --gorse: #e1bd4f; --gorse-wash: #2f2a16; --red: #ff7d8c; --black: #eceae4;
+  --sc: #6fa8cf; --br: #e1bd4f; --co: #ff7d8c;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.06rem/1.6 var(--body); }
+.wrap { max-width: 1060px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.45rem, 3.2vw, 1.9rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 68ch; }
+.num, td.num { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: 0.9em; }
+.eyebrow { font: 600 0.74rem/1.4 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+.band { background: var(--sea); color: var(--sea-ink); padding-block: 44px 36px; position: relative; overflow: hidden; }
+.band .eyebrow { color: var(--sea-soft); }
+.band h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 800; }
+.band p { color: var(--sea-soft); margin-top: 12px; font-size: 1.12rem; }
+.stones { display: flex; gap: 10px; align-items: flex-end; margin-top: 22px; height: 64px; }
+.stones span { width: 18px; background: var(--sea-ink); opacity: 0.85; border-radius: 9px 9px 2px 2px; }
+.ermine { color: var(--sea-soft); font-size: 0.85rem; margin-top: 10px; }
+main { display: grid; gap: 48px; padding-block: 40px 56px; }
+section { display: grid; gap: 16px; min-width: 0; }
+.royals { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+.royal { background: var(--card); border: 1px solid var(--edge); border-radius: 10px; padding: 14px 16px; display: grid; gap: 6px; align-content: start; }
+.royal .suit { font: 700 1.6rem/1 var(--display); }
+.royal .suit.r { color: var(--red); } .royal .suit.b { color: var(--black); }
+.royal h3 { font-size: 1.12rem; }
+.royal .role { font: 600 0.72rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.royal p { color: var(--ink-2); font-size: 0.97rem; }
+.aside { border-left: 4px solid var(--gorse); background: var(--gorse-wash); padding: 12px 16px; border-radius: 0 8px 8px 0; display: grid; gap: 6px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 12px; }
+.rule { border-top: 3px solid var(--sea); padding-top: 10px; display: grid; gap: 6px; align-content: start; }
+.rule p { color: var(--ink-2); font-size: 0.98rem; }
+.rule .ex { font: 400 0.86rem var(--mono); color: var(--ink-3); }
+.scroll { overflow-x: auto; border: 1px solid var(--edge); border-radius: 10px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; }
+th, td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--line); }
+th[scope="row"], thead th:first-child { text-align: left; font-weight: 700; }
+thead th { font: 600 0.72rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+tr.pick { background: var(--gorse-wash); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.9rem; color: var(--ink-2); }
+.legend b { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.bals { display: grid; gap: 10px; }
+.bal { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 4.5rem; gap: 4px 12px; align-items: center; }
+.bal .who { font-weight: 700; font-size: 0.97rem; }
+.bal .track { display: flex; height: 16px; background: var(--wash); border-radius: 4px; overflow: hidden; }
+.bal .track i { display: block; height: 100%; }
+.bal .split { grid-column: 2 / 4; font: 400 0.8rem var(--mono); color: var(--ink-3); }
+.bal.pick .who { color: var(--sea); }
+i.sc, b.sc { background: var(--sc); } i.br, b.br { background: var(--br); } i.co, b.co { background: var(--co); }
+.verdict { background: var(--card); border: 2px solid var(--sea); border-radius: 12px; padding: 18px 20px; display: grid; gap: 10px; }
+.verdict ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-2); }
+footer { border-top: 1px solid var(--line); padding-block: 18px 28px; color: var(--ink-3); font-size: 0.9rem; }
+code { font-family: var(--mono); font-size: 0.88em; }
+@media (max-width: 560px) {
+  .bal { grid-template-columns: minmax(0, 1fr) 4.5rem; }
+  .bal .who { grid-column: 1 / 3; }
+  .bal .track { grid-column: 1 / 2; }
+  .bal .split { grid-column: 1 / 3; }
+}
+</style>
+
+</head>
+<body>
+<div class="band">
+  <div class="wrap">
+    <p class="eyebrow">Lopin n°742 · proposition · 01/10/2026</p>
+    <h1>Les 7 Menhirs</h1>
+    <p>Sept bornes, comme sept pierres levées : le nom long du jeu, et une variante bretonne où une figure royale remplace le 10 de chaque couleur. Le paquet garde ses 42 cartes. Rien ne change dans le jeu actuel : c'est une proposition chiffrée, pas encore une règle.</p>
+    <div class="stones" aria-hidden="true"><span style="height:46px"></span><span style="height:58px"></span><span style="height:40px"></span><span style="height:64px"></span><span style="height:52px"></span><span style="height:44px"></span><span style="height:56px"></span></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <section>
+    <p class="eyebrow">1 · Le paquet</p>
+    <h2>4 couleurs × (1 à 9 + une figure), plus 2 jokers</h2>
+    <p>Une figure par couleur : les deux reines en rouge, les deux souverains en noir. Hors de ses règles à elle, la figure compte comme le 10 de sa couleur : sans ses règles, le paquet joue exactement comme le Classique, et l'énumération le confirme main par main.</p>
+    <div class="royals">
+      <article class="royal"><span class="suit r">♥</span><span class="role">Reine de cœur</span><h3>Anne de Bretagne</h3><p>Née en 1477 au château des ducs, à Nantes. Dernière duchesse d'une Bretagne indépendante, deux fois reine de France. Son cœur repose à Nantes dans un reliquaire d'or.</p></article>
+      <article class="royal"><span class="suit r">♦</span><span class="role">Reine de carreau</span><h3>Claude de France</h3><p>Sa fille, duchesse de Bretagne et reine de France, épouse de François Ier. La prune reine-claude porte son nom.</p></article>
+      <article class="royal"><span class="suit b">♠</span><span class="role">Souverain de pique</span><h3>Nominoë</h3><p>« Tad ar Vro », le père de la patrie : le premier à unir la Bretagne, vainqueur de Charles le Chauve à Ballon en 845. Il ne portait pas le titre de roi ; Salomon, le seul roi de Bretagne reconnu, peut le remplacer.</p></article>
+      <article class="royal"><span class="suit b">♣</span><span class="role">Souverain de trèfle</span><h3>Alain Barbetorte</h3><p>Rentré d'exil en Angleterre, il chasse les Vikings de Nantes vers 937 et en fait sa capitale.</p></article>
+    </div>
+    <div class="aside">
+      <h3>Et Nantes, alors ?</h3>
+      <p>Capitale des ducs, ville natale d'Anne : Nantes est bretonne par l'histoire. Un décret de 1941 a détaché la Loire-Atlantique de la région Bretagne, et le débat sur sa réunification dure depuis. Deux des quatre figures y sont liées.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">2 · Les règles de la figure</p>
+    <h2>Quatre façons de la rendre royale</h2>
+    <p>Elle doit rester autre chose qu'un joker. Le joker a une valeur, mais pas de couleur. La figure, elle, ne prend aucune valeur : elle forme des combinaisons à elle.</p>
+    <div class="rules">
+      <div class="rule"><h3>La Cour</h3><p>Figure + une paire = un Brelan. Un joker n'entre pas à la Cour : il faut deux vraies cartes.</p><p class="ex">Anne ♥ + 7♠ 7♣ → Brelan</p></div>
+      <div class="rule"><h3>La Lignée</h3><p>Figure + deux cartes de même couleur, à un ou deux pas = une Suite couleur, quelle que soit la couleur.</p><p class="ex">Nominoë ♠ + 4♦ 6♦ → Suite couleur</p></div>
+      <div class="rule"><h3>La Bannière</h3><p>La figure est de toutes les couleurs et de nulle valeur : le miroir exact du joker. Elle ne sert qu'à la Couleur.</p><p class="ex">Claude ♦ + 2♣ 8♣ → Couleur</p></div>
+      <div class="rule"><h3>Les trois couronnes</h3><p>La Cour, la Lignée et une Couleur limitée à son blason : deux cartes d'une même couleur rouge pour une reine (♥ ou ♦), noire pour un souverain (♠ ou ♣).</p><p class="ex">Anne ♥ + 3♦ 9♦ → Couleur · + 3♠ 9♠ → rien</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">3 · Ton objectif 30 / 30 / 30</p>
+    <h2>Une figure qui sert autant à la Suite couleur, au Brelan et à la Couleur</h2>
+    <p>Pour chaque variante : sur toutes les mains de 3 cartes qui contiennent une figure, la part qui forme une Suite couleur, un Brelan ou une Couleur. La même mesure est faite pour une main avec un joker.</p>
+    <div class="legend"><span><b class="sc"></b>Suite couleur</span><span><b class="br"></b>Brelan</span><span><b class="co"></b>Couleur</span></div>
+    <div class="bals">
+<div class="bal"><span class="who">Un joker (pour comparer)</span><span class="track"><i class="br" style="width:25.641025641025642%" title="Brelan 7,7 %"></i></span><span class="num">7,7 %</span><span class="split">0,0 % · 7,7 % · 0,0 %</span></div>
+<div class="bal"><span class="who">Figure = un simple 10</span><span class="track"><i class="sc" style="width:0.47415836889521107%" title="Suite couleur 0,1 %"></i><i class="br" style="width:0.47415836889521107%" title="Brelan 0,1 %"></i><i class="co" style="width:16.595542911332384%" title="Couleur 5,0 %"></i></span><span class="num">5,3 %</span><span class="split">0,1 % · 0,1 % · 5,0 %</span></div>
+<div class="bal"><span class="who">La Cour</span><span class="track"><i class="sc" style="width:0.47415836889521107%" title="Suite couleur 0,1 %"></i><i class="br" style="width:26.078710289236607%" title="Brelan 7,8 %"></i><i class="co" style="width:16.595542911332384%" title="Couleur 5,0 %"></i></span><span class="num">12,9 %</span><span class="split">0,1 % · 7,8 % · 5,0 %</span></div>
+<div class="bal"><span class="who">La Lignée</span><span class="track"><i class="sc" style="width:28.44950213371266%" title="Suite couleur 8,5 %"></i><i class="br" style="width:0.47415836889521107%" title="Brelan 0,1 %"></i><i class="co" style="width:9.95732574679943%" title="Couleur 3,0 %"></i></span><span class="num">11,7 %</span><span class="split">8,5 % · 0,1 % · 3,0 %</span></div>
+<div class="bal"><span class="who">La Bannière</span><span class="track"><i class="co" style="width:68.27880512091039%" title="Couleur 20,5 %"></i></span><span class="num">20,5 %</span><span class="split">0,0 % · 0,0 % · 20,5 %</span></div>
+<div class="bal pick"><span class="who">Les trois couronnes</span><span class="track"><i class="sc" style="width:28.44950213371266%" title="Suite couleur 8,5 %"></i><i class="br" style="width:26.078710289236607%" title="Brelan 7,8 %"></i><i class="co" style="width:19.91465149359886%" title="Couleur 6,0 %"></i></span><span class="num">22,3 %</span><span class="split">8,5 % · 7,8 % · 6,0 %</span></div>
+    </div>
+    <p><b>Les trois couronnes</b> s'en approche le plus.</p>
+    <ul>
+      <li><b>Ce que fait la figure</b> : 22,3 % des mains qui en contiennent une forment une des trois combinaisons. C'est 4,2 fois plus qu'un simple 10.</li>
+      <li><b>La répartition</b> : 38,2 % de Suite couleur, 35,0 % de Brelan, 26,8 % de Couleur. C'est le tiers-tiers-tiers, à quelques points près.</li>
+      <li><b>Lire 30 % comme une valeur absolue</b> pour chacune ferait 90 % de mains fortes. La figure deviendrait alors un super-joker, alors que le joker, lui, n'apporte qu'un Brelan dans 7,7 % des mains et une Suite dans 34,9 %.</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="eyebrow">4 · Les chiffres</p>
+    <h2>Les 11 480 mains de 3 cartes, une par une</h2>
+    <p>Chaque main compte une seule fois, sous sa meilleure lecture dans l'ordre d'origine. Une inversion désigne une combinaison plus forte que plus fréquente qu'une plus faible, ce que l'étude du paquet cherche à éviter (<code>npm run bretagne</code>).</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Paquet</th><th>Suite couleur</th><th>Brelan</th><th>Couleur</th><th>Suite</th><th>Somme</th><th>Inversions</th></tr></thead>
+        <tbody>
+<tr><th scope="row">Classique (le jeu d'aujourd'hui)</th><td class="num">32</td><td class="num">200</td><td class="num">448</td><td class="num">1 024</td><td class="num">9 776</td><td class="num">0</td></tr>
+<tr><th scope="row">La Cour</th><td class="num">32</td><td class="num">416</td><td class="num">448</td><td class="num">1 024</td><td class="num">9 560</td><td class="num">0</td></tr>
+<tr><th scope="row">La Lignée</th><td class="num">268</td><td class="num">200</td><td class="num">392</td><td class="num">1 012</td><td class="num">9 608</td><td class="num">1</td></tr>
+<tr><th scope="row">La Bannière</th><td class="num">28</td><td class="num">196</td><td class="num">884</td><td class="num">900</td><td class="num">9 472</td><td class="num">0</td></tr>
+<tr class="pick"><th scope="row">Les trois couronnes</th><td class="num">268</td><td class="num">416</td><td class="num">476</td><td class="num">1 012</td><td class="num">9 308</td><td class="num">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Avec les trois couronnes, la Suite couleur devient 8,4 fois plus fréquente (32 → 268), mais elle reste la plus rare. L'ordre des combinaisons ne bouge pas, sans aucune inversion. La Lignée seule, elle, rend la Suite couleur plus courante que le Brelan.</p>
+  </section>
+
+  <section>
+    <div class="verdict">
+      <p class="eyebrow">Recommandation</p>
+      <h2>Les trois couronnes, sous le nom des 7 Menhirs</h2>
+      <ul>
+        <li>La seule variante qui donne à la figure ses trois usages à parts presque égales, sans casser l'ordre des combinaisons.</li>
+        <li>Elle reste distincte du joker : pas de valeur à choisir, et des règles qui ne servent qu'avec de vraies cartes.</li>
+        <li><b>La suite</b>, si tu la retiens :
+          <ul>
+            <li>un paquet <code>bretagne</code> à part, à côté du Classique, sans toucher au jeu actuel ;</li>
+            <li>des parties simulées entre robots, pour vérifier que l'avantage du premier joueur et la longueur des parties restent sains ;</li>
+            <li>enfin une feuille de règles imprimable.</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">evol-exp-080 · Chiffres : <code>scripts/bretagne.js</code> → <code>out/bretagne.json</code>. Proposition seulement : le jeu, ses robots et sa page sont inchangés.</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,177 @@
+{
+  "patterns": [
+    "straightFlush",
+    "threeOfAKind",
+    "flush",
+    "straight"
+  ],
+  "classique": {
+    "counts": {
+      "straightFlush": 32,
+      "threeOfAKind": 200,
+      "flush": 448,
+      "straight": 1024,
+      "sum": 9776
+    },
+    "rarity": [
+      "straightFlush",
+      "threeOfAKind",
+      "flush",
+      "straight",
+      "sum"
+    ],
+    "inversions": []
+  },
+  "plain": {
+    "counts": {
+      "straightFlush": 32,
+      "threeOfAKind": 200,
+      "flush": 448,
+      "straight": 1024,
+      "sum": 9776
+    },
+    "rarity": [
+      "straightFlush",
+      "threeOfAKind",
+      "flush",
+      "straight",
+      "sum"
+    ],
+    "inversions": [],
+    "figureShare": {
+      "straightFlush": 0.001422475106685633,
+      "threeOfAKind": 0.001422475106685633,
+      "flush": 0.049786628733997154,
+      "straight": 0.044096728307254626,
+      "sum": 0.903271692745377
+    },
+    "jokerShare": {
+      "straightFlush": 0,
+      "threeOfAKind": 0.07692307692307693,
+      "flush": 0,
+      "straight": 0.3487179487179487,
+      "sum": 0.5743589743589743
+    }
+  },
+  "variants": {
+    "cour": {
+      "label": "La Cour",
+      "rules": [
+        "cour"
+      ],
+      "counts": {
+        "straightFlush": 32,
+        "threeOfAKind": 416,
+        "flush": 448,
+        "straight": 1024,
+        "sum": 9560
+      },
+      "rarity": [
+        "straightFlush",
+        "threeOfAKind",
+        "flush",
+        "straight",
+        "sum"
+      ],
+      "inversions": [],
+      "figureShare": {
+        "straightFlush": 0.001422475106685633,
+        "threeOfAKind": 0.07823613086770982,
+        "flush": 0.049786628733997154,
+        "straight": 0.044096728307254626,
+        "sum": 0.8264580369843528
+      }
+    },
+    "lignee": {
+      "label": "La Lignée",
+      "rules": [
+        "lignee"
+      ],
+      "counts": {
+        "straightFlush": 268,
+        "threeOfAKind": 200,
+        "flush": 392,
+        "straight": 1012,
+        "sum": 9608
+      },
+      "rarity": [
+        "threeOfAKind",
+        "straightFlush",
+        "flush",
+        "straight",
+        "sum"
+      ],
+      "inversions": [
+        {
+          "stronger": "straightFlush",
+          "weaker": "threeOfAKind"
+        }
+      ],
+      "figureShare": {
+        "straightFlush": 0.08534850640113797,
+        "threeOfAKind": 0.001422475106685633,
+        "flush": 0.029871977240398292,
+        "straight": 0.03982930298719772,
+        "sum": 0.8435277382645804
+      }
+    },
+    "banniere": {
+      "label": "La Bannière",
+      "rules": [
+        "banniere"
+      ],
+      "counts": {
+        "straightFlush": 28,
+        "threeOfAKind": 196,
+        "flush": 884,
+        "straight": 900,
+        "sum": 9472
+      },
+      "rarity": [
+        "straightFlush",
+        "threeOfAKind",
+        "flush",
+        "straight",
+        "sum"
+      ],
+      "inversions": [],
+      "figureShare": {
+        "straightFlush": 0,
+        "threeOfAKind": 0,
+        "flush": 0.20483641536273114,
+        "straight": 0,
+        "sum": 0.7951635846372689
+      }
+    },
+    "trois": {
+      "label": "Les trois couronnes",
+      "rules": [
+        "cour",
+        "lignee",
+        "royale"
+      ],
+      "counts": {
+        "straightFlush": 268,
+        "threeOfAKind": 416,
+        "flush": 476,
+        "straight": 1012,
+        "sum": 9308
+      },
+      "rarity": [
+        "straightFlush",
+        "threeOfAKind",
+        "flush",
+        "straight",
+        "sum"
+      ],
+      "inversions": [],
+      "figureShare": {
+        "straightFlush": 0.08534850640113797,
+        "threeOfAKind": 0.07823613086770982,
+        "flush": 0.059743954480796585,
+        "straight": 0.03982930298719772,
+        "sum": 0.7368421052631579
+      }
+    }
+  }
+}
