@@ -97,7 +97,7 @@ cœurs du processeur. Le résultat ne dépend pas de l'ordre de calcul.
 
 ## Cinquième angle : les parties réelles
 
-Sami a photographié 10 parties d'essai (`real life test/pictures`, hors de git).
+Sami a photographié 10 parties d'essai (les photos n'ont pas été gardées).
 Elles sont transcrites dans `data/irl/essais.json`, une colonne par chaîne de
 caractères. Un test vérifie que chaque photo contient les 42 cartes, une fois
 chacune : une carte mal lue le fait échouer.

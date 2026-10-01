@@ -16,8 +16,7 @@ project folder is **`Lopin n°742`** (7 borders, 42 cards).
 The folder name holds a space and a non-ASCII `°`: keep going through
 `pathToFileURL` / `fileURLToPath` / `new URL(..., import.meta.url)` for every
 path, as the scripts do, and never build a `file://` URL by string
-concatenation. `real life test/` (the owner's photos of real games) is
-git-ignored on purpose: heavy, and some carry GPS metadata.
+concatenation.
 
 Prose docs are in French, matching how the owner works. Code, comments and
 identifiers are English. Node 20.10 on this machine; no Python.
@@ -252,9 +251,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   `<!-- stats:fin -->` in `regles/regles.html`, `scripts/build.js` writes the
   statistics table (`src/report/rules-stats.js`). Edit the rest of the sheet by
   hand; never that block.
-- **Real games are data.** `data/irl/essais.json` is a transcription; its test
-  checks every photo holds the 42 cards once. The photos themselves stay out of
-  git (`real life test/`: heavy, some carry GPS metadata).
+- **Real games are data.** `data/irl/essais.json` is a transcription of 10
+  photographed games; its test checks each holds the 42 cards once. The photos
+  were not kept (heavy, some carried GPS metadata).
 - **The rules sheet ships its fonts** (`regles/fonts/`, OFL). A headless print
   does not wait for Google Fonts: with remote fonts the PDF silently fell back
   to Times. After editing the sheet, check both pages still fit A4 — `.page` is

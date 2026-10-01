@@ -71,8 +71,9 @@ Aucun chiffre n'est tapé à la main dans les rapports : ils sortent tous de
 de règles. Changer une règle, c'est modifier `src/config/` et relancer le build,
 puis `npm run pdf`.
 
-Les photos des parties réelles (`real life test/`) restent hors de git : elles
-sont lourdes, et certaines contiennent la position GPS du téléphone.
+Les photos des parties réelles n'ont pas été gardées : elles étaient lourdes, et
+certaines contenaient la position GPS du téléphone. Leur transcription est dans
+`data/irl/essais.json`.
 
 Les polices de la fiche de règles (Atkinson Hyperlegible, Bodoni Moda) sont
 livrées dans `regles/fonts/`, sous licence SIL Open Font License.
