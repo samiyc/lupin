@@ -3,8 +3,10 @@ import assert from "node:assert/strict";
 import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
-import { BOTS, borderOdds, engineFor } from "../src/sim/bots.js";
+import { BOTS, borderOdds, engineFor, rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
+import { EXPERIMENT } from "../src/sim/experimental.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
+import { ismctsBot } from "../src/sim/ismcts.js";
 import { createValue, independentWin } from "../src/sim/value.js";
 
 const spec = DECKS.classique;
@@ -35,10 +37,22 @@ describe("the learned value", () => {
 
   it("lets the tree judge leaves with it, and stop on a clock", () => {
     const state = midGame(9, 16);
-    for (const id of ["ismcts+value=15@30", "ismcts@t20", "experimental@t20"]) {
+    for (const id of ["ismcts+value=15@30", "ismcts@t20", "experimental@t20", "ismcts+open=1@30"]) {
       const bot = engineFor(id)(createRng(1));
       const moves = legalMoves(state);
       assert.ok(moves.some((move) => move === bot.choose(state, moves)), id);
     }
+  });
+
+  it("searches only the opening turns at the opening budget", () => {
+    const opening = midGame(3, 0);
+    const later = midGame(3, 2);
+    // A root move's gain is its visits: their sum is the iterations the move got.
+    const searched = (state, open) => {
+      const bot = ismctsBot(createRng(2), { base: strategistBot(createRng(2), EXPERIMENT), policy: rolloutPolicyOf(EXPERIMENT), budget: 30, open, openBudget: 120 });
+      return bot.scoreMoves(state, legalMoves(state)).reduce((sum, { gain }) => sum + Math.max(0, gain), 0);
+    };
+    assert.equal(searched(opening, 1), 120);
+    assert.equal(searched(later, 1), searched(later, 0), "later moves are untouched");
   });
 });

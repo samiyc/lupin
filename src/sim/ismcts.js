@@ -23,6 +23,13 @@ import { moveKey } from "./search.js";
  * value instead of being played out: there it predicts as well as eight
  * rollouts, for the cost of one scoring. Later, rollouts are far better.
  */
+/**
+ * The budget of the first `open` turns with `+open=N`: what a complete
+ * opening repertoire computed at that budget would play, without the
+ * repertoire (`npm run openings`).
+ */
+export const OPENING_BUDGET = 5000;
+
 /** The last turn the learned value judges: past it, one rollout predicts better (npm run value). */
 export const VALUE_UNTIL = 29;
 export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7 });
@@ -121,14 +128,15 @@ export function createIsmcts(state, scored, { policy, seed, judgeValue = null, .
 }
 
 /** The ISMCTS bot: the core shortlists at the root, the rollout policy plays the rest; small endgames are solved. */
-export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, ...settings }) {
+export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, open = 0, openBudget = OPENING_BUDGET, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createIsmcts(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
   // `budgetMs`: a clock instead of a count, to compare variants of unequal speed at equal time.
-  const run = (search) => {
+  const run = (search, turn) => {
     const until = performance.now() + budgetMs;
-    while (!search.done() && search.rollouts() < budget && performance.now() < until) search.step();
+    const limit = turn < open ? openBudget : budget;
+    while (!search.done() && search.rollouts() < limit && performance.now() < until) search.step();
     return search;
   };
   const solves = (state, moves) => moves.length > 1 && exactApplies(state);
@@ -136,7 +144,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
   const scoreMoves = (state, moves, options = {}) => {
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
     if (solves(state, moves)) return exactScores(state, base.scoreMoves(state, moves, { ...options, keepAll: true }));
-    return run(searchFor(state, moves, options)).scored();
+    return run(searchFor(state, moves, options), state.turn).scored();
   };
   return { name, base, policy, searchFor, solves, scoreMoves, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
 }
@@ -144,7 +152,8 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
 /**
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+value=15`
- * (the learned value judges leaves from turn 15), `+core=1` (the tuned core) — or null.
+ * (the learned value judges leaves from turn 15), `+core=1` (the tuned core),
+ * `+open=1` (the first turn searched at `OPENING_BUDGET`) — or null.
  */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
@@ -152,7 +161,7 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      if (!["depth", "widen", "exploration", "candidates", "sample", "value", "core"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "value", "core", "open"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );
