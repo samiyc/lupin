@@ -41,6 +41,3 @@ real life test/
 /replays/
 /selfplay/
 
-# ---- Opening repertoire (npm run openings) ------------------------------
-# Up to 500 MB, rebuilt on demand.
-/data/openings/

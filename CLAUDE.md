@@ -191,9 +191,13 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   pondering run it unchanged. It beat the 0.7 only once both had 800
   rollouts (56.3 %, 51.2-62.7 over two runs, `--offset 1`); at 400 it was
   49 %. The `experimental` engine id is still the 0.7 search (bench, policy,
-  cases, duels); `experimental:0.7` names it explicitly.
-- **Engine ids stack**: `experimental+sample=0.05+prior=0.15`, `@N` budgets,
-  `ismcts+depth=2`, `mix:A,B,C` (one expert per phase, `src/sim/mix.js`).
+  duels); `experimental:0.7` names it explicitly.
+- **Engine ids stack**: `experimental+sample=0.05+prior=0.15`, `@N` budgets
+  (`@t1400`: 1.4 s a move, for variants of unequal speed), `ismcts+depth=2`;
+  `--hands weak|strong` deals only such starting hands (`src/sim/hand-classes.js`).
+- **Failed attempts are listed, not kept** (`docs/strategie.md`, « Tentatives
+  écartées »): their code was removed on 01/10 and lives at commit eb9d1c0.
+  Do not reintroduce one without a new reason to expect a different result.
   Screen with `--screen` (10 min), confirm with `--long` (20 min), always
   `--page`; pool two runs with `--offset K` (pair statistics printed).
 - **The experimental bot solves small endgames** (0.7, `src/sim/exact.js`):

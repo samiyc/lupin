@@ -2,13 +2,6 @@
   "note": "Duels entre versions de robots, pour le classement Elo (npm run elo). wins = victoires de a. Les Expérimental sont mesurés à 400 simulations par coup (environ 1 s), pas aux 10 s de la page. npm run elo -- --duels remplace les lignes qu'il sait rejouer.",
   "duels": [
     {
-      "a": "stratege@1.0.0",
-      "b": "basique@1.0.0",
-      "wins": 2308,
-      "games": 4000,
-      "source": "rapport : les trois habitudes contre le gourmand"
-    },
-    {
       "a": "stratege@1.1.0",
       "b": "basique@1.0.0",
       "wins": 2580,
@@ -37,18 +30,11 @@
       "source": "duel rapide du 25/09"
     },
     {
-      "a": "experimental@0.5.0",
-      "b": "stratege@2.1.0",
-      "wins": 60,
-      "games": 96,
-      "source": "docs/validation.md : 400 simulations par coup"
-    },
-    {
       "a": "experimental@0.6.0",
-      "b": "experimental@0.5.0",
-      "wins": 121,
-      "games": 240,
-      "source": "duel long du 30/09 (docs/strategie.md)"
+      "b": "stratege@2.1.0",
+      "wins": 45,
+      "games": 72,
+      "source": "duel rapide du 01/10 : relie les Expérimental aux Stratège depuis le retrait du 0.5"
     },
     {
       "a": "experimental@0.7.0",

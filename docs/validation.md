@@ -69,10 +69,8 @@ en premier, comme au bridge en « duplicate ».
 | régénérer rapport et fiche | `npm run build && npm run pdf` | 4 min |
 | savoir si plus de temps de réflexion aide | `npm run time-study` | 8 min |
 | faire jouer l'Expérimental contre lui-même | `npm run selfplay` | 20 min au plus |
+| ne jouer que des mains faibles ou fortes au 1er joueur | `npm run duel -- A B --hands weak` | comme le profil |
 | comparer deux variantes de vitesses différentes | `npm run duel -- A@t1400 B@t1400 --screen --page` (1,4 s par coup chacun) | 10 min |
-| apprendre la valeur de position sur l'auto-jeu | `npm run value` | 1 min |
-| régler les poids du cœur par auto-jeu | `npm run tune -- --minutes 15`, puis `npm run duel -- core:tuned core` | 15 min + 10 s |
-| un lot du répertoire d'ouvertures (le 0.8 contre le Stratège, ses défaites approfondies) | `npm run openings -- --minutes 20 --offset K` | 25 min |
 
 **Règle de conduite.**
 1. Une idée se trie d'abord en `--quick`, sur le cœur si possible (secondes plutôt
@@ -174,5 +172,5 @@ Pour essayer plus d'idées, deux pistes ont été mesurées le 30/09 sur un mêm
 
 Les identifiants de moteur se combinent :
 - `experimental+sample=0.05+prior=0.15`, pour les variantes ;
-- `experimental:0.8-lite@200`, pour le budget ;
+- `experimental:0.6@200` ou `ismcts@t1400`, pour le budget (en simulations ou en temps) ;
 - `ismcts+depth=2`, pour la recherche en arbre.

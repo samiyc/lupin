@@ -2,9 +2,6 @@ import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
-import { ROLLOUT_CORE, tunedCore } from "./tuning.js";
-import { createValue } from "./value.js";
-import { mixBot } from "./mix.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
@@ -101,13 +98,6 @@ function borderChances(state, player, { mine, threat }) {
   return state.borders.map((border, index) => winChance(sidePotential(border.sides[player], withHand), threat[index], mine.params));
 }
 
-/** The core's odds on each border for the player to move, a won border 1 or 0: what `value.js` reads. */
-export function borderOdds(state) {
-  const player = state.current;
-  const chances = borderChances(state, player, views(state));
-  return state.borders.map((border, index) => (border.owner === null ? chances[index] : Number(border.owner === player)));
-}
-
 /** Every card on the board, border by border, side by side — without `flat()`, which a rollout paid for on every move. */
 function boardCards(state) {
   const cards = [];
@@ -129,10 +119,9 @@ function ideasContext(state, player, { ideas, weights }, seen) {
   };
 }
 
-/** Which certainty idea is on, if any: `certain` enumerates, `certainLite` glances (`certainty.js`). */
+/** Whether the `certain` idea is on: borders already lost are enumerated (`certainty.js`). */
 function certaintyOf(ideas) {
-  if (ideas?.has("certain")) return { lite: false };
-  return ideas?.has("certainLite") ? { lite: true } : null;
+  return ideas?.has("certain") ? {} : null;
 }
 
 function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...tuning }) {
@@ -153,7 +142,7 @@ function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...t
   const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   const certainty = certaintyOf(context.ideas);
-  const gainOf = certainty ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params), certainty) : plainGain;
+  const gainOf = certainty ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params)) : plainGain;
   return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
     gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1),
     scale: 1 / (4 * params.temperature),
@@ -253,9 +242,6 @@ export const BOTS = Object.freeze({
   // Strategist 1.1 plus look-ahead: the line-up's Stratège 2. Too slow for the report's simulations.
   lookahead: lookaheadOf({ ideas: STRATEGIST_IDEAS }, "lookahead"),
   experimental: searchOf(EXPERIMENT),
-  // The core that plays the rollouts, as today and as `npm run tune` left it.
-  core: (rng) => strategistBot(rng, { ...ROLLOUT_CORE, name: "core" }),
-  "core:tuned": (rng) => strategistBot(rng, { ...tunedCore(), name: "core:tuned" }),
   // One habit at a time, to weigh each against the plain greedy bot.
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
@@ -267,31 +253,15 @@ export const BOTS = Object.freeze({
   ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
 });
 
-/** A mixture of three experts, one per phase (`mix.js`). */
-const mixOf = (ids) => {
-  if (ids.length !== 3) throw new Error(`Il faut trois moteurs : « mix:${ids.join(",")} »`);
-  const factories = ids.map((id) => engineFor(id));
-  return (rng) => mixBot(factories.map((factory) => factory(rng)));
-};
-
-/**
- * The ISMCTS bot on the experimental core; `sample` makes its rollouts draw
- * their moves, `value` judges some leaves by the learned value, `core` plays
- * with the weights `npm run tune` found.
- */
-const ismctsOf = ({ sample, core, ...tree }, budget) => (rng) => {
-  const judgeValue = tree.value ? createValue(borderOdds) : null;
-  const settings = core ? tunedCore(EXPERIMENT) : EXPERIMENT;
-  return ismctsBot(rng, { base: strategistBot(rng, settings), policy: rolloutPolicyOf({ ...settings, rolloutSample: sample }), judgeValue, ...tree, ...budget });
-};
+/** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
+const ismctsOf = ({ sample, ...tree }, budget) => (rng) =>
+  ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), ...tree, ...budget });
 
 /**
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
  * with a budget of N rollouts a move, to weigh depth against time in duels.
  */
 export function engineFor(id) {
-  // `mix:A,B,C` before anything else: its experts carry their own `@` and `+`.
-  if (id.startsWith("mix:")) return mixOf(id.slice(4).split(","));
   const [name, at] = id.split("@");
   const budget = budgetOf(at);
   const settings = experimentalSettings(name);

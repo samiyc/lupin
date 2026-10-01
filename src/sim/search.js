@@ -3,7 +3,6 @@ import { applyMove } from "./game.js";
 import { STATUS, boardStatus } from "./certainty.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { cloneState, determinize, playOut } from "./lookahead.js";
-import { modelledDeal } from "./model.js";
 
 /**
  * A deeper look ahead than `lookahead.js`, for the experimental bot: more
@@ -26,26 +25,8 @@ import { modelledDeal } from "./model.js";
  *
  * A search is a plain object advanced by `step()`, so the page can run it
  * a little at a time — in a worker, and during the human's turn.
- *
- * `rolloutMode` (since 0.8): the rule the simulated games settle borders by.
- * `null` keeps `determinize`'s own (`final` under the claim rule); `early`
- * settles a border as soon as it is full and stops at the first victory —
- * what the claim rule does with full borders, and shorter games.
- *
- * `opponentModel` (a temperature, since the 0.8 candidates): deals weighed by
- * the opponent's last move (`model.js`); `null` deals uniformly.
  */
-export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5, rolloutMode: null, opponentModel: null });
-
-/** What `dealFor` needs to model the opponent, built once per search: the policy's judgement and a temperature. */
-export const modelOf = (policy, temperature, tries = 8) => (temperature ? { judge: policy(createRng(0)), temperature, tries } : null);
-
-/** One deal of the unseen cards — modelled when `model` is set — played out under `rolloutMode` when one is set. */
-export function dealFor(state, player, rng, { rolloutMode = null, model = null } = {}) {
-  const deal = model ? modelledDeal(state, player, rng, model) : determinize(state, player, rng);
-  if (rolloutMode) deal.endMode = rolloutMode;
-  return deal;
-}
+export const SEARCH = Object.freeze({ candidates: 8, firstPhase: 8, prior: 0.3, confidence: 3, prune: true, hopeless: 2.5 });
 
 export const moveKey = (move) => (move ? `${move.card}@${move.border}` : "pass");
 
@@ -106,8 +87,7 @@ function settled([first, second], prior, confidence) {
  * same answer.
  */
 export function createSearch(state, scored, { policy, seed, warm = null, ...settings }) {
-  const { candidates, firstPhase, prior, confidence, prune, hopeless, rolloutMode, opponentModel } = { ...SEARCH, ...settings };
-  const dealing = { rolloutMode, model: modelOf(policy, opponentModel, settings.modelTries) };
+  const { candidates, firstPhase, prior, confidence, prune, hopeless } = { ...SEARCH, ...settings };
   const player = state.current;
   const sorted = [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain);
   const ranked = prune ? withoutDominated(state, sorted) : sorted;
@@ -122,7 +102,7 @@ export function createSearch(state, scored, { policy, seed, warm = null, ...sett
     /** One deal, played out after every surviving candidate. */
     step() {
       if (alive.length <= 1) return;
-      const deal = dealFor(state, player, deals, dealing);
+      const deal = determinize(state, player, deals);
       for (const arm of alive) {
         const game = cloneState(deal);
         applyMove(game, arm.entry.move);
@@ -175,7 +155,7 @@ export function searchBot(rng, { base, policy, budget = 400, budgetMs = Infinity
     return search;
   };
   // `exact` (0.7): a small enough endgame is solved rather than searched (`exact.js`).
-  const solved = (state, moves) => exact && moves.length > 1 && exactApplies(state, settings.exactCards ?? EXACT.maxCards);
+  const solved = (state, moves) => exact && moves.length > 1 && exactApplies(state, EXACT.maxCards);
   const scoreMoves = (state, moves, options = {}) => {
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
     // Every move, the jokers the core refuses included: the solver owes them a value.
@@ -190,10 +170,6 @@ export function searchBot(rng, { base, policy, budget = 400, budgetMs = Infinity
     searchFor,
     /** Will this position be solved exactly rather than searched? The page asks, to skip its search. */
     solves: solved,
-    /** The rule of its simulated games, for pondering to deal the same way. */
-    rolloutMode: settings.rolloutMode ?? null,
-    opponentModel: settings.opponentModel ?? null,
-    modelTries: settings.modelTries,
     scoreMoves,
     choose: (state, moves) => {
       if (moves.length <= 1) return moves[0];

@@ -31,13 +31,7 @@
     "puzzles:immediate": "node scripts/immediate-puzzles.js",
     "hiding": "node scripts/hiding.js",
     "policy": "node scripts/policy.js",
-    "model": "node scripts/model.js",
-    "hard-cases": "node scripts/hard-cases.js",
-    "cases": "node scripts/cases.js",
-    "openings": "node scripts/openings.js",
-    "bretagne": "node scripts/bretagne.js",
-    "value": "node scripts/value.js",
-    "tune": "node scripts/tune.js"
+    "bretagne": "node scripts/bretagne.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

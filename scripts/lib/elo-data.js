@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { fitElo, resultsFromLogs } from "../../src/replay/elo.js";
 import { statsOf } from "../../src/replay/stats.js";
 import { REPLAY_DIRS, isSafeName } from "./replay-files.js";
+import { isShownPlayer } from "../../src/config/bots.js";
 
 /**
  * The Elo table as the server and `npm run elo` compute it: every saved human
@@ -28,12 +29,13 @@ export async function readAllLogs() {
   return (await Promise.all([REPLAY_DIRS.recent, `${REPLAY_DIRS.recent}/OLD`, REPLAY_DIRS.kept].map(readLogs))).flat();
 }
 
-/** What the "Stats" tab shows (`/api/stats`): per-opponent lines, formations, and the Elo table. */
+/** What the "Stats" tab shows (`/api/stats`): per-opponent lines, formations, starting hands and the Elo table — kept versions only. */
 export async function statsPage() {
-  return { ...statsOf(await readAllLogs()), elo: await eloTable() };
+  const stats = statsOf(await readAllLogs());
+  return { ...stats, lines: stats.lines.filter((line) => isShownPlayer(line.opponent)), hands: stats.hands.filter((row) => isShownPlayer(row.player)), elo: await eloTable() };
 }
 
-/** `[{ player, elo, margin, games, human }]`, strongest first. */
+/** `[{ player, elo, margin, games, human }]`, strongest first: the kept versions and the humans (`KEPT_VERSIONS`), fitted on every game. */
 export async function eloTable() {
   const logs = await readAllLogs();
   const humans = resultsFromLogs(logs);
@@ -42,5 +44,6 @@ export async function eloTable() {
   const humanNames = new Set(humans.map((result) => result.a));
   return Object.entries(ratings)
     .map(([player, rating]) => ({ player, ...rating, human: humanNames.has(player) }))
+    .filter((row) => isShownPlayer(row.player))
     .sort((x, y) => y.elo - x.elo);
 }

@@ -10,11 +10,9 @@ import { DUELS_FILE, eloTable, readDuels } from "./lib/elo-data.js";
  * duels it has engines for, and rewrites their lines (about 20 minutes).
  */
 const RERUN = [
-  { a: "stratege@1.0.0", b: "basique@1.0.0", engines: ["strategist:habits", "greedy"] },
   { a: "stratege@1.1.0", b: "basique@1.0.0", engines: ["strategist:1.1", "greedy"] },
   { a: "stratege@2.1.0", b: "basique@1.0.0", engines: ["lookahead", "greedy"] },
-  { a: "experimental@0.5.0", b: "stratege@2.1.0", engines: ["experimental:0.5", "lookahead"] },
-  { a: "experimental@0.6.0", b: "experimental@0.5.0", engines: ["experimental:0.6", "experimental:0.5"] },
+  { a: "experimental@0.6.0", b: "stratege@2.1.0", engines: ["experimental:0.6", "lookahead"] },
   { a: "experimental@0.7.0", b: "experimental@0.6.0", engines: ["experimental:400", "experimental:0.6"] },
   { a: "experimental@0.8.0", b: "experimental@0.7.0", engines: ["ismcts@800", "experimental@800"] },
 ];

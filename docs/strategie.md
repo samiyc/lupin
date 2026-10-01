@@ -13,6 +13,28 @@ principe. Chaque principe donne :
   dans le Stratège.
 - Son test de cas reste alors « à faire » (`todo`), avec la raison.
 
+## Tentatives écartées (le code est retiré, git le garde)
+
+Tout ce qui a été essayé pour dépasser le 0.7 puis le 0.8, et n'a pas passé la
+règle. Le code a été retiré le 01/10 (« merlin-is-dead ») : `git show eb9d1c0:<fichier>`
+le retrouve tel qu'il était, le commit d'origine dit comment il a été fait. Les
+mesures détaillées sont plus bas, section par section.
+
+| Idée | Date | Mesure (fourchette à 95 % par paires) | Verdict | Commit d'origine |
+| --- | --- | --- | --- | --- |
+| Plus de simulations pour le 0.7 (4 000 contre 400) | 30/09 | 37,5 % | sa recherche plafonne ; c'est ce qui a mené à ISMCTS | ffc7267 |
+| Simulations à la règle de revendication (0.8-early) | 30/09 | 47,9 % contre le 0.7 | écarté | 0c0f1cf |
+| Simulations qui voient une borne perdue (`certainLite`, 0.8-lite) | 30/09 | 53,1 % (47,4 – 58,8) contre le 0.7 | pas net, écarté | 975fc24 |
+| Modèle de l'adversaire (donnes pondérées par son dernier coup) | 30/09 | +4,3 % de cartes devinées seulement | écarté sans duel | f14548e |
+| Mixture d'experts par phase | 01/10 | 45,8 % (38,4 – 53,3) contre ISMCTS partout | écarté | 28c9ccb |
+| Simulations tirées au sort (TLC) | 01/10 | 51,4 % à 400, 50,0 % à 800 | écarté | 52f702a |
+| Cas difficiles comme banc d'essai | 01/10 | 5 cas nets en 20 min, sans vérité indépendante | écarté | 52f702a |
+| Profondeur 4 et 5 de l'arbre (duels de Sami) | 01/10 | 53,5 % (47,2 – 59,7) chacune ; le 5e coup n'est atteint que par 0,2 % des itérations | la profondeur 3 reste | — |
+| Valeur de position apprise, dans l'arbre | 01/10 | 40,3 % (33,1 – 47,4) dès le tour 1 ; 43,8 % dès le tour 15 | écarté | e8dceea |
+| Cœur réglé par auto-jeu (SPSA) | 01/10 | 52,9 % seul, mais 50,7 % (42,8 – 58,6) dans l'arbre | écarté | 2207a8d |
+| Répertoire d'ouvertures complet (plafond : 1er coup à 5 000) | 01/10 | 45,1 % (37,8 – 52,4) | écarté | 9a8b980, 6c0e13a |
+| Répertoire ciblé, mains faibles / fortes | 01/10 | 47,9 % (39,8 – 56,0) / 44,4 % (38,5 – 50,4) | écarté ; le suivi des mains de départ reste | eb9d1c0 |
+
 ## Comment le Stratège choisit un coup
 
 Le Stratège 2 a deux étages :

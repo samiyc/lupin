@@ -17,7 +17,7 @@ import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js"
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "certainLite", ...PRINCIPLES]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", ...PRINCIPLES]);
 
 /**
  * What the strategist plays. 1.1: measured against 1.0 over 24 000 games

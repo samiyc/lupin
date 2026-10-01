@@ -29,7 +29,7 @@ import { runPool } from "./lib/pool.js";
  *
  * Bots are line-up ids (`src/config/bots.js`) or engine ids (`BOTS` in
  * `src/sim/bots.js`, and `experimental:N` for N rollouts a move). Any
- * experimental engine takes `@N` for a budget of N rollouts: `experimental:0.8-lite@200`.
+ * experimental engine takes `@N` for a budget of N rollouts: `experimental:0.6@200`.
  *
  *   npm run duel -- idea:middle strategist
  *   npm run duel -- experimental:400 stratege --long

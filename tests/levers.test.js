@@ -6,7 +6,6 @@ import { createRng } from "../src/core/random.js";
 import { BOTS, engineFor, pickSampled } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { createIsmcts } from "../src/sim/ismcts.js";
-import { likelihood, modelledDeal } from "../src/sim/model.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
 
@@ -31,32 +30,6 @@ describe("sampled rollouts", () => {
     };
     assert.ok(count(0.01) > 1990);
     assert.ok(count(0.2) < 1600 && count(0.2) > 800);
-  });
-});
-
-describe("the opponent model", () => {
-  it("records each player's last move without sharing it between clones", () => {
-    const state = position(5, 6);
-    assert.ok(state.lastMoves.every((move) => move && Number.isInteger(move.border)));
-  });
-
-  it("finds the move actually played plausible when the deal is the truth", () => {
-    const judge = rolloutPolicyOf(EXPERIMENT)(createRng(0));
-    let plausible = 0;
-    for (let seed = 1; seed <= 20; seed += 1) {
-      const state = position(seed, 11);
-      // The true hands, seen from the opponent's side: the strategist played its favourite.
-      if (likelihood(state, 1 - state.current, judge, 0.15) > 0.5) plausible += 1;
-    }
-    assert.ok(plausible >= 14, `${plausible} / 20`);
-  });
-
-  it("deals a full hand to the opponent, like a plain deal", () => {
-    const state = position(9, 14);
-    const judge = rolloutPolicyOf(EXPERIMENT)(createRng(0));
-    const deal = modelledDeal(state, state.current, createRng(1), { judge, temperature: 0.15 });
-    assert.equal(deal.hands[1 - state.current].length, state.hands[1 - state.current].length);
-    assert.equal(deal.pile.length, state.pile.length);
   });
 });
 

@@ -39,6 +39,24 @@ export const BOT_LINEUP = Object.freeze({
 
 export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 
+/**
+ * The versions still shown — in the Elo table and the Stats tab — three at
+ * most per bot (Sami, merlin-is-dead): with the human players, ten rows at
+ * most. Older versions' games still count in the Elo fit; their engines are
+ * in git history.
+ */
+export const KEPT_VERSIONS = Object.freeze({
+  basique: Object.freeze(["1.0.0"]),
+  stratege: Object.freeze(["2.1.0", "2.0.0", "1.1.0"]),
+  experimental: Object.freeze(["0.8.0", "0.7.0", "0.6.0"]),
+});
+
+/** Is `player` ("Sami", "stratege@2.1.0") one to show? Humans always are. */
+export function isShownPlayer(player) {
+  const [id, version] = player.split("@");
+  return version === undefined || Boolean(KEPT_VERSIONS[id]?.includes(version));
+}
+
 export const DEFAULT_OPPONENT = "stratege";
 
 /** "stratege@2.1.0": how a bot is named in replays. */

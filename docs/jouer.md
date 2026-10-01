@@ -142,6 +142,9 @@ la main adverse, ce sont les cartes vues nulle part.
     affronté est donc quand même placé par rapport à toi.
   - Les Expérimental y sont mesurés à 1 s par coup, plus faibles qu'avec les
     10 s de la page.
+  - Seules les 3 dernières versions de chaque robot sont affichées
+    (`KEPT_VERSIONS`, `src/config/bots.js`), ici comme dans les autres
+    tableaux. Tes parties contre les plus anciennes comptent toujours dans ton Elo.
 - **Tes parties**, par adversaire et version : parties, victoires, en premier et
   en second, durée moyenne, réflexion moyenne par coup.
 - **Mains de départ** : pour toi et pour chaque robot, les parties gagnées selon

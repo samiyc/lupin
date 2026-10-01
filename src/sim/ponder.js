@@ -1,7 +1,6 @@
 import { createRng } from "../core/random.js";
 import { applyMove, canPlace, legalMoves } from "./game.js";
-import { cloneState, playOut } from "./lookahead.js";
-import { dealFor, modelOf } from "./search.js";
+import { cloneState, determinize, playOut } from "./lookahead.js";
 import { moveKey } from "./search.js";
 
 /**
@@ -48,11 +47,10 @@ export function createPonder(state, bot, { now = () => performance.now(), limitM
   const rng = createRng(seed);
   const humanCore = bot.policy(createRng(seed ^ 0x9e3779b9));
   const rollout = bot.policy(createRng(seed ^ 0x85ebca6b));
-  const dealing = { rolloutMode: bot.rolloutMode, model: modelOf(bot.policy, bot.opponentModel, bot.modelTries) };
   let spentMs = 0;
   let rollouts = 0;
   const step = () => {
-    const deal = dealFor(state, botSeat, rng, dealing);
+    const deal = determinize(state, botSeat, rng);
     const replies = legalMoves(deal);
     applyMove(deal, replies.length > 0 ? humanCore.choose(deal, replies) : null);
     for (const arm of arms) {

@@ -29,17 +29,12 @@ export const EXPERIMENT = Object.freeze({
  * Earlier and candidate versions of the experimental bot, as settings, for
  * duels. Each spells out every setting it differs by, so a later change to
  * EXPERIMENT cannot leak into it. Any of them, and `experimental`, takes
- * `@N` for a budget of N rollouts (`experimental:0.8-lite@200`).
+ * `@N` for a budget of N rollouts (`experimental:0.6@200`).
  */
 const FROZEN = {
   // The 0.7, as the page played it until the 0.8 (an ISMCTS, src/sim/ismcts.js).
   "experimental:0.7": EXPERIMENT,
-  // Lot 4 of 0.8, set aside: rollouts seeing a lost border at a glance, 53.1 % (47.4-58.8).
-  "experimental:0.8-lite": { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] },
-  // Lot 3 of 0.8, set aside: 47.9 % against 0.7 (docs/strategie.md).
-  "experimental:0.8-early": { ...EXPERIMENT, search: { ...EXPERIMENT.search, rolloutMode: "early", exactCards: 9 } },
-  "experimental:0.6": { ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false, rolloutMode: null } },
-  "experimental:0.5": { ...EXPERIMENT, ideas: STRATEGIST_IDEAS, search: { ...EXPERIMENT.search, prune: false, exact: false, rolloutMode: null } },
+  "experimental:0.6": { ...EXPERIMENT, search: { ...EXPERIMENT.search, exact: false } },
 };
 
 /**
@@ -50,9 +45,6 @@ const VARIANTS = {
   sample: (settings, value) => ({ ...settings, rolloutSample: Number(value) }),
   prior: (settings, value) => ({ ...settings, search: { ...settings.search, prior: Number(value) } }),
   candidates: (settings, value) => ({ ...settings, search: { ...settings.search, candidates: Number(value) } }),
-  lite: (settings) => ({ ...settings, ideas: [...settings.ideas, "certainLite"] }),
-  model: (settings, value) => ({ ...settings, search: { ...settings.search, opponentModel: Number(value) } }),
-  tries: (settings, value) => ({ ...settings, search: { ...settings.search, modelTries: Number(value) } }),
 };
 
 function applyVariant(settings, change) {

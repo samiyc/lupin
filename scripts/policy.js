@@ -5,7 +5,6 @@ import { BOT_PARAMS, rolloutPolicyOf } from "../src/sim/bots.js";
 import { bestMoves, solveEndgame } from "../src/sim/endgame.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { legalMoves } from "../src/sim/game.js";
-import { tunedCore } from "../src/sim/tuning.js";
 
 /**
  * `npm run policy`: how good is the bot that plays the search's rollouts?
@@ -24,12 +23,10 @@ import { tunedCore } from "../src/sim/tuning.js";
 const withParams = (changes) => rolloutPolicyOf({ ...EXPERIMENT, params: { ...BOT_PARAMS, ...changes } });
 const POLICIES = {
   "0.7": rolloutPolicyOf(EXPERIMENT),
-  "certainLite": rolloutPolicyOf({ ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "certainLite"] }),
   "température 0,25": withParams({ temperature: 0.25 }),
   "température 0,5": withParams({ temperature: 0.5 }),
   "coût des cartes 0,04": withParams({ cardCost: 0.04 }),
   "coût des jokers 0,12": withParams({ jokerCost: 0.12 }),
-  "cœur réglé (npm run tune)": rolloutPolicyOf(tunedCore()),
 };
 const MAX_CARDS = 9;
 const SEEDS = [1, 2, 3];
