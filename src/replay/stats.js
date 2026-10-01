@@ -1,4 +1,5 @@
 import { FORMATIONS } from "../config/formations.js";
+import { startingHandStats } from "./hand-stats.js";
 
 /**
  * What the "Stats" tab shows, from the saved games: for each human and each
@@ -44,7 +45,7 @@ function countBorders(formations, log, human) {
   }
 }
 
-/** `{ lines, formations: { human, bot } }` from finished games between a human and a bot. */
+/** `{ lines, formations: { human, bot }, hands }` from finished games between a human and a bot (`hands`: `hand-stats.js`). */
 export function statsOf(logs) {
   const lines = new Map();
   const formations = { human: zero(), bot: zero() };
@@ -55,5 +56,5 @@ export function statsOf(logs) {
     countGame(lineFor(lines, human, bot), log, human);
     countBorders(formations, log, human);
   }
-  return { lines: [...lines.values()], formations };
+  return { lines: [...lines.values()], formations, hands: startingHandStats(logs) };
 }

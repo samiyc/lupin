@@ -144,6 +144,10 @@ la main adverse, ce sont les cartes vues nulle part.
     10 s de la page.
 - **Tes parties**, par adversaire et version : parties, victoires, en premier et
   en second, durée moyenne, réflexion moyenne par coup.
+- **Mains de départ** : pour toi et pour chaque robot, les parties gagnées selon
+  sa main de départ, faible, moyenne ou forte (`src/sim/hand-classes.js`, environ
+  10 % de mains faibles et 9 % de fortes). Le paquet de chaque replay suffit : les
+  anciennes parties comptent aussi.
 - **Les combinaisons qui gagnent les bornes** : la part de chacune des cinq dans
   les bornes gagnées, pour toi et pour les robots.
 

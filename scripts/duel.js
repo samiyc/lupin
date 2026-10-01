@@ -19,6 +19,9 @@ import { runPool } from "./lib/pool.js";
  * the pair is the unit of measure. Wilson's, game by game, is printed beside
  * it for comparison.
  *
+ * `--hands weak|strong` deals only decks whose first player starts with a
+ * weak or a strong hand (src/sim/hand-classes.js), the same for both seats.
+ *
  * Borders settle as soon as they are full (`early`), the rule every Elo line
  * was measured with. `--page` plays the page's own rule instead
  * (`OFFICIAL_RULES.endMode`, claimed as soon as proved): slower, since every
@@ -32,7 +35,9 @@ import { runPool } from "./lib/pool.js";
  *   npm run duel -- experimental:400 stratege --long
  */
 const args = process.argv.slice(2);
-const [a = "experimental", b = "stratege"] = args.filter((arg) => !arg.startsWith("--") && !/^\d+$/.test(arg));
+// A flag's value (`--hands weak`) is not a bot.
+const flagValue = (i) => i > 0 && args[i - 1] === "--hands";
+const [a = "experimental", b = "stratege"] = args.filter((arg, i) => !arg.startsWith("--") && !/^\d+$/.test(arg) && !flagValue(i));
 const valueOf = (flag) => (args.includes(flag) ? Number(args[args.indexOf(flag) + 1]) : 0);
 const exact = valueOf("--games") || null;
 // `--offset K` deals other decks (and seeds the bots otherwise): a second run to pool with the first.
@@ -43,6 +48,10 @@ const profileName = ["long", "screen"].find((name) => args.includes(`--${name}`)
 const profile = PROFILES[profileName];
 const profileLabel = exact ? `${exact} parties` : profileName;
 const endMode = args.includes("--page") ? OFFICIAL_RULES.endMode : "early";
+// `--hands weak|strong`: every deck gives the first player a hand of that class (src/sim/hand-classes.js).
+const handClass = args.includes("--hands") ? args[args.indexOf("--hands") + 1] : null;
+const HAND_LABELS = { weak: "faibles", strong: "fortes" };
+const handsNote = handClass ? `, mains ${HAND_LABELS[handClass]} au 1er joueur` : "";
 
 const engine = (id) => (id in BOT_LINEUP ? engineOf(id) : id);
 const tag = (id) => (id in BOT_LINEUP ? botTag(id) : id);
@@ -86,7 +95,7 @@ while (!verdict.stop) {
   for (const players of [[engine(a), engine(b)], [engine(b), engine(a)]]) {
     for (let t = 0; t < tasksPerSeat; t += 1) {
       tally.tasks += 1;
-      tasks.push({ ...DUEL_ROW, endMode, keepWinners: true, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
+      tasks.push({ ...DUEL_ROW, endMode, handClass, keepWinners: true, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
     }
   }
   const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks);
@@ -119,7 +128,7 @@ function conclusion() {
 }
 process.stdout.write(
   [
-    `${tag(a)} contre ${tag(b)} — ${2 * tally.games} parties (${tally.games} de chaque côté), règle ${endMode}, profil ${profileLabel}, ${((Date.now() - started) / 1000).toFixed(1)} s`,
+    `${tag(a)} contre ${tag(b)} — ${2 * tally.games} parties (${tally.games} de chaque côté), règle ${endMode}${handsNote}, profil ${profileLabel}, ${((Date.now() - started) / 1000).toFixed(1)} s`,
     `  ${a} gagne ${pct(share)}  (fourchette à 95 % par paires : ${pct(verdict.low)} – ${pct(verdict.high)} ; partie par partie : ${pct(verdict.wilson[0])} – ${pct(verdict.wilson[1])})`,
     `  en commençant : ${pct(tally.first / tally.games)} · en second : ${pct(tally.second / tally.games)}`,
     `  paires : ${pairStats(tally.pairs)}${offsetNote}`,

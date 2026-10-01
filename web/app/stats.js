@@ -4,7 +4,7 @@ import { fetchStats } from "./replays-api.js";
 
 /**
  * The "Stats" tab: the Elo table, then each human's record against each bot
- * version (wins, seats, time), then which formations won the borders — all
+ * version (wins, seats, time), then wins by starting hand, then which formations won the borders — all
  * from the saved games (`/api/stats`, `src/replay/stats.js`).
  */
 const pct = (part, whole) => (whole ? `${Math.round((100 * part) / whole)} %` : "—");
@@ -64,11 +64,21 @@ function formationBlock(formations) {
   return [el("h3", {}, "Les combinaisons qui gagnent les bornes"), table(["Combinaison", `Toi (${totals.human} bornes)`, `Robots (${totals.bot} bornes)`], rows)];
 }
 
+const HAND_HEADERS = { weak: "Main faible", medium: "Moyenne", strong: "Main forte" };
+
+/** Games and wins by starting hand: do weak hands lose and strong ones win, for you and for each bot? */
+function handsBlock(hands = []) {
+  const cell = ({ games, won }) => el("td", { class: "num" }, games ? `${won}/${games} (${pct(won, games)})` : "—");
+  const rows = hands.map((row) => el("tr", { class: row.human ? "human" : "" }, el("td", {}, name(row.player)), ...Object.keys(HAND_HEADERS).map((id) => cell(row[id]))));
+  const hint = "Gagnées / parties, selon la main de départ de chacun. Faible : pas de joker ni de départ, au plus une paire, somme ≤ 36 (≈ 10 % des mains). Forte : un départ et une somme ≥ 44 (≈ 9 %).";
+  return [el("h3", {}, "Mains de départ"), table(["Joueur", ...Object.values(HAND_HEADERS)], rows), el("p", { class: "hint" }, hint)];
+}
+
 export async function renderStats() {
   const view = $("stats-view");
   try {
-    const { elo, lines, formations } = await fetchStats();
-    view.replaceChildren(el("h2", {}, "Statistiques"), ...eloBlock(elo), ...recordBlock(lines), ...formationBlock(formations));
+    const { elo, lines, formations, hands } = await fetchStats();
+    view.replaceChildren(el("h2", {}, "Statistiques"), ...eloBlock(elo), ...recordBlock(lines), ...handsBlock(hands), ...formationBlock(formations));
   } catch (error) {
     view.replaceChildren(el("p", { class: "hint" }, `Statistiques indisponibles (${error.message}). La page est-elle servie par npm run play ?`));
   }

@@ -3,6 +3,7 @@ import { buildDeck } from "../core/cards.js";
 import { createRng } from "../core/random.js";
 import { engineFor } from "./bots.js";
 import { playGame } from "./game.js";
+import { dealFor } from "./hand-classes.js";
 
 const zeroCounts = () => Object.fromEntries(FORMATIONS.map((f) => [f, 0]));
 
@@ -58,10 +59,15 @@ function record(tally, state) {
   countJokerEdge(tally, state);
 }
 
+/** Game `g` of a batch: its deck from `deals`, dealt to give the first player a `handClass` hand when one is asked (`hand-classes.js`). */
+function dealOf(spec, deals, handClass, g) {
+  if (deals === null) return null;
+  return handClass ? dealFor(spec, deals + 7919 * g, handClass) : createRng(deals + 7919 * g).shuffle(buildDeck(spec));
+}
+
 /** Game `g` of a batch: its rules, and its deck when the batch fixes one. */
-function gameRules(spec, { order, jokerRule, deals = null, deck: fixed = null, endMode = "early" }, g) {
-  const deck = fixed ?? (deals === null ? null : createRng(deals + 7919 * g).shuffle(buildDeck(spec)));
-  return { order, jokerRule, deck, endMode };
+function gameRules(spec, { order, jokerRule, deals = null, handClass = null, deck: fixed = null, endMode = "early" }, g) {
+  return { order, jokerRule, deck: fixed ?? dealOf(spec, deals, handClass, g), endMode };
 }
 
 /**
