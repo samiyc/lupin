@@ -451,7 +451,8 @@ git) :
 - Son coup diffère de celui du jeu en direct dans 35 % des ouvertures, sans preuve
   qu'il soit meilleur. Pour le 0.7, chercher plus ne rapportait rien. Pour
   ISMCTS, qui gagne avec le budget, un répertoire calculé à 5 000 itérations
-  reste à essayer.
+  restait à essayer : c'est fait plus bas (« Le répertoire : le plafond »), sans
+  gain.
 
 ## L'étape 2 : apprendre l'évaluation par auto-jeu (01/10, evol-exp-080)
 
@@ -512,3 +513,39 @@ git) :
     lentes que cœur contre cœur) ;
   - laisser le SPSA converger : sa température descendait encore à la fin ;
   - et surtout des **workers dans la page**, puisque le budget, lui, paie.
+
+## Le répertoire d'ouvertures : le plafond d'abord (01/10)
+
+**L'idée de Sami** : faire jouer le Stratège contre le 0.8, calculer en
+profondeur les ouvertures des parties que le 0.8 perd, recommencer sur d'autres
+donnes, puis opposer un 0.8 avec répertoire au 0.8 sans.
+
+**Le plafond, mesuré avant de calculer** (`ismcts+open=N`) :
+- Un 0.8 qui cherche ses premiers coups à 5 000 itérations joue exactement comme
+  un 0.8 qui lirait un répertoire **complet** calculé à 5 000.
+- 1er coup à 5 000, contre le 0.8 : **45,1 % (37,8 – 52,4)**, 144 parties, règle de
+  la page.
+- 3 premiers coups de chaque joueur à 5 000 : 39,6 % (27,8 – 51,4), sur
+  48 parties seulement : chaque partie coûte trois recherches de près d'une
+  minute.
+- Aucun gain, et plutôt une tendance contraire. Le coup profond diffère du coup à
+  800 deux fois sur trois, sans gagner plus : **au premier coup, les bons coups se
+  valent**. Le premier coup est le plus incertain, mais pas le plus décisif :
+  presque tout reste à jouer.
+
+**Un lot du processus, pour les vrais chiffres** (`npm run openings`, donnes 0) :
+- En 20 minutes, 322 parties où le 0.8 commence contre le Stratège : **121
+  perdues (37,6 %)**. À la règle de la page, le Stratège résiste mieux que ses
+  Elo ne le disent (mesurés à la règle `early`).
+- 121 entrées, 55 s chacune sur un fil quand les 23 tournent ensemble.
+- **Recouvrement : 0,06 %** des donnes neuves. Il y a environ 191 000 ouvertures,
+  toutes également probables : une position perdue ne revient pas, et le
+  répertoire ne sert qu'en proportion de sa taille.
+- Tout le 1er coup demanderait environ 130 h à ce rythme, pour un plafond qui ne
+  gagne rien.
+
+**Décision : le répertoire est abandonné.** Une erreur ne se reproduit pas parce
+qu'on a mémorisé sa position, mais parce que le jugement du robot change : le
+cœur, les simulations, ou le budget de l'arbre. Le livre du 0.7
+(`data/openings/book-0.7.bin`) et celui de ce lot (`book.bin`, `entries.json`)
+restent sur le disque, hors de git.
