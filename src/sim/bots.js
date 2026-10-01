@@ -2,6 +2,7 @@ import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
+import { ROLLOUT_CORE, tunedCore } from "./tuning.js";
 import { createValue } from "./value.js";
 import { mixBot } from "./mix.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
@@ -252,6 +253,9 @@ export const BOTS = Object.freeze({
   // Strategist 1.1 plus look-ahead: the line-up's Stratège 2. Too slow for the report's simulations.
   lookahead: lookaheadOf({ ideas: STRATEGIST_IDEAS }, "lookahead"),
   experimental: searchOf(EXPERIMENT),
+  // The core that plays the rollouts, as today and as `npm run tune` left it.
+  core: (rng) => strategistBot(rng, { ...ROLLOUT_CORE, name: "core" }),
+  "core:tuned": (rng) => strategistBot(rng, { ...tunedCore(), name: "core:tuned" }),
   // One habit at a time, to weigh each against the plain greedy bot.
   "strategist:joker": (rng) => strategistBot(rng, { habits: ["joker"] }),
   "strategist:opening": (rng) => strategistBot(rng, { habits: ["opening"] }),
@@ -270,10 +274,15 @@ const mixOf = (ids) => {
   return (rng) => mixBot(factories.map((factory) => factory(rng)));
 };
 
-/** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves, `value` judges some leaves by the learned value. */
-const ismctsOf = ({ sample, ...tree }, budget) => (rng) => {
+/**
+ * The ISMCTS bot on the experimental core; `sample` makes its rollouts draw
+ * their moves, `value` judges some leaves by the learned value, `core` plays
+ * with the weights `npm run tune` found.
+ */
+const ismctsOf = ({ sample, core, ...tree }, budget) => (rng) => {
   const judgeValue = tree.value ? createValue(borderOdds) : null;
-  return ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), judgeValue, ...tree, ...budget });
+  const settings = core ? tunedCore(EXPERIMENT) : EXPERIMENT;
+  return ismctsBot(rng, { base: strategistBot(rng, settings), policy: rolloutPolicyOf({ ...settings, rolloutSample: sample }), judgeValue, ...tree, ...budget });
 };
 
 /**

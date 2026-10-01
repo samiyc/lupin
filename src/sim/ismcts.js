@@ -144,7 +144,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
 /**
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+value=15`
- * (the learned value judges leaves from turn 15) — or null.
+ * (the learned value judges leaves from turn 15), `+core=1` (the tuned core) — or null.
  */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
@@ -152,7 +152,7 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      if (!["depth", "widen", "exploration", "candidates", "sample", "value"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "value", "core"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

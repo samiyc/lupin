@@ -36,7 +36,8 @@
     "cases": "node scripts/cases.js",
     "openings": "node scripts/openings.js",
     "bretagne": "node scripts/bretagne.js",
-    "value": "node scripts/value.js"
+    "value": "node scripts/value.js",
+    "tune": "node scripts/tune.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
