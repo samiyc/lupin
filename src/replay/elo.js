@@ -26,7 +26,7 @@ function newtonStep(player, pairs, strength) {
 }
 
 /** `results`: `[{ a, b, score, games }]`, `score` being A's points (a win 1, a draw ½). */
-export function fitElo(results, { anchor, anchorRating = 1000, iterations = 300 } = {}) {
+export function fitElo(results, { anchor, anchorRating = 500, iterations = 300 } = {}) {
   const players = [...new Set(results.flatMap(({ a, b }) => [a, b]))];
   const pairs = [...results, ...players.filter((p) => p !== anchor).map((p) => ({ a: p, b: anchor, score: 0.5, games: 1 }))];
   const strength = Object.fromEntries(players.map((p) => [p, 0]));

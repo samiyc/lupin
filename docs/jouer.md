@@ -135,7 +135,7 @@ la main adverse, ce sont les cartes vues nulle part.
 **Stats.** Tout est tiré de tes replays, anciens compris (`/api/stats`,
 `src/replay/stats.js`).
 - **Classement Elo** : toi et chaque version de robot, avec sa marge à 95 %.
-  - Le Basique vaut 1000.
+  - Le Basique vaut 500, comme un joueur qui débute au tennis de table (1000 avant le 01/10 : tout a baissé de 500, les écarts sont les mêmes).
   - Le calcul prend toutes tes parties enregistrées (y compris `replays/OLD/`) et
     les duels entre robots de `data/elo-duels.json`, en un seul ajustement
     (modèle de Bradley-Terry, `src/replay/elo.js`). Un robot que tu n'as pas

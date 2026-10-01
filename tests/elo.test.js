@@ -11,15 +11,15 @@ describe("Elo ratings", () => {
       ],
       { anchor: "A" },
     );
-    assert.equal(ratings.A.elo, 1000);
-    assert.ok(Math.abs(ratings.B.elo - 1200) < 15, `B ${ratings.B.elo}`);
-    assert.ok(Math.abs(ratings.C.elo - 1400) < 25, `C ${ratings.C.elo}`);
+    assert.equal(ratings.A.elo, 500);
+    assert.ok(Math.abs(ratings.B.elo - 700) < 15, `B ${ratings.B.elo}`);
+    assert.ok(Math.abs(ratings.C.elo - 900) < 25, `C ${ratings.C.elo}`);
     assert.ok(ratings.C.margin > ratings.B.margin, "further from the anchor, less certain");
   });
 
   it("keep a player with a single won game finite", () => {
     const ratings = fitElo([{ a: "lucky", b: "A", score: 1, games: 1 }], { anchor: "A" });
-    assert.ok(Number.isFinite(ratings.lucky.elo) && ratings.lucky.elo < 1400);
+    assert.ok(Number.isFinite(ratings.lucky.elo) && ratings.lucky.elo < 900);
   });
 
   it("read human results from replay logs", () => {

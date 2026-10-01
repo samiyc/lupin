@@ -25,11 +25,11 @@ function eloBlock(elo) {
       el("td", {}, name(row.player)),
       el("td", { class: "num" }, String(row.elo)),
       el("td", { class: "num" }, `±${row.margin}`),
-      el("td", { class: "bar-cell" }, el("span", { class: "bar", style: `width:${(100 * (row.elo - 900)) / (top - 900)}%` })),
+      el("td", { class: "bar-cell" }, el("span", { class: "bar", style: `width:${(100 * (row.elo - 400)) / (top - 400)}%` })),
       el("td", { class: "num" }, String(row.games)),
     ),
   );
-  return [el("h3", {}, "Classement Elo"), table(["Joueur", "Elo", "Marge", "", "Parties"], rows), el("p", { class: "hint" }, "Basique = 1000. Tes parties et les duels entre robots, en un seul ajustement (npm run elo).")];
+  return [el("h3", {}, "Classement Elo"), table(["Joueur", "Elo", "Marge", "", "Parties"], rows), el("p", { class: "hint" }, "Basique = 500. Tes parties et les duels entre robots, en un seul ajustement (npm run elo).")];
 }
 
 function recordBlock(lines) {

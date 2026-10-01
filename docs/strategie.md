@@ -421,7 +421,7 @@ le 0.7, qui ne gagne rien à chercher plus.
   pour le 0.7. Dans les 10 s de la page, il en fait 3 000 à 4 500, au-delà des 800
   mesurés.
 - **Expérimental 0.8.0 = ISMCTS à 800 itérations** (moteur `ismcts@800`), Elo
-  **1504 ± 40**. Le navigateur a trouvé une régression que les tests ne voyaient
+  **1504 ± 40** (≈ 1010 depuis que le Basique vaut 500). Le navigateur a trouvé une régression que les tests ne voyaient
   pas : la page cherchait le moteur dans `BOTS`. C'est corrigé (`engineFor`) et
   couvert par un test.
 

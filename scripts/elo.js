@@ -39,4 +39,4 @@ if (process.argv.includes("--duels")) {
 }
 
 const rows = await eloTable();
-process.stdout.write(["Classement Elo (Basique = 1000, marge à 95 %)", ...rows.map((r) => `  ${String(r.elo).padStart(5)} ±${String(r.margin).padEnd(4)} ${r.player}${r.human ? " (humain)" : ""} — ${r.games} parties`), ""].join("\n"));
+process.stdout.write(["Classement Elo (Basique = 500, marge à 95 %)", ...rows.map((r) => `  ${String(r.elo).padStart(5)} ±${String(r.margin).padEnd(4)} ${r.player}${r.human ? " (humain)" : ""} — ${r.games} parties`), ""].join("\n"));

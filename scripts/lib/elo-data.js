@@ -8,7 +8,7 @@ import { REPLAY_DIRS, isSafeName } from "./replay-files.js";
 /**
  * The Elo table as the server and `npm run elo` compute it: every saved human
  * game (replays/, replays/OLD/, data/replays/) plus the bot duels of
- * data/elo-duels.json, anchored on Basique at 1000.
+ * data/elo-duels.json, anchored on Basique at 500 (as table tennis starts its players).
  */
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 export const DUELS_FILE = join(ROOT, "data/elo-duels.json");
