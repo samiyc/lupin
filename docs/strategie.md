@@ -549,3 +549,38 @@ qu'on a mémorisé sa position, mais parce que le jugement du robot change : le
 cœur, les simulations, ou le budget de l'arbre. Le livre du 0.7
 (`data/openings/book-0.7.bin`) et celui de ce lot (`book.bin`, `entries.json`)
 restent sur le disque, hors de git.
+
+## Le répertoire ciblé : les mains faibles et les fortes (01/10)
+
+**L'idée de Sami** : ne couvrir que les deux bouts du répertoire. D'un côté, les
+mains les plus faibles ; de l'autre, les mains fortes que le robot a perdues
+(avec un backlog). Puis en tirer des tendances, un « Merlin des ouvertures ».
+
+**Les classes** (`src/sim/hand-classes.js`, environ 10 % à chaque bout, comptées
+exactement sur les 5 245 786 mains) :
+- La version stricte des mains faibles (tout sous 6, sans paire ni cartes qui se
+  suivent) ne contient **aucune main** : six cartes de cinq valeurs font toujours
+  une paire.
+- **Faible, 9,9 %** : pas de joker, pas deux cartes de même couleur qui se
+  suivent, pas trois d'une couleur, au plus une paire, somme ≤ 36.
+- **Forte, 8,9 %** : un départ (paire, cartes de même couleur qui se suivent,
+  trois d'une couleur, ou joker), somme ≥ 44.
+- Elles prédisent bien : dans les duels ci-dessous, le joueur qui commence avec
+  une main faible ne gagne qu'environ 40 % de ses parties.
+- `npm run duel -- … --hands weak|strong` ne distribue que ces mains au 1er
+  joueur. L'onglet Stats compte les victoires de chacun selon sa main de départ.
+
+**Le plafond par classe** (1er coup à 5 000 itérations, le répertoire complet de
+la classe, contre le 0.8 ; 144 parties chacun, règle de la page) :
+- mains faibles : **47,9 % (39,8 – 56,0)** ;
+- mains fortes : **44,4 % (38,5 – 50,4)**.
+- Aucune classe ne gagne. Avec les 45,1 % sur toutes les mains, les trois mesures
+  réunies donnent **45,8 % (41,7 – 50,0)** sur 432 parties : chercher le 1er coup
+  plus longtemps n'aide pas, et nuit peut-être un peu. Le budget profite à
+  l'arbre en milieu de partie, pas au 1er coup.
+
+**Décision** : le répertoire ciblé est écarté, comme le complet. Le backlog des
+mains fortes perdues et le Merlin ne sont pas construits : ils apprendraient d'un
+coup profond qui ne gagne pas plus que le coup joué. **Reste le suivi des mains
+de départ dans l'onglet Stats**, pour ajuster le tir plus tard, par exemple voir
+si un robot perd ses mains fortes plus souvent qu'il ne devrait.
