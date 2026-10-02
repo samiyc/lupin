@@ -135,6 +135,10 @@ export const CORES = Object.freeze({
   jt2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.2 } },
   jt4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.4 } },
   jt8: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.8 } },
+  // Sami's bait (bait.js): low starts on borders that matter to neither side.
+  bt1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "bait"], weights: { ...EXPERIMENT.weights, bait: 0.1 } },
+  bt2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "bait"], weights: { ...EXPERIMENT.weights, bait: 0.2 } },
+  bt4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "bait"], weights: { ...EXPERIMENT.weights, bait: 0.4 } },
   sh: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights } },
   shx: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid", "exposure", "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
 });

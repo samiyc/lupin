@@ -50,6 +50,7 @@ mesures détaillées sont plus bas, section par section.
 | Règles des replays : face à un côté plein, répondre plus bas, à côté d'une borne gagnée | 02/10 | cœur seul 48,0 – 50,6 % | écartées ; `junk` (53 %) va au duel long | — |
 | Placer le joker (face à un côté plein, attendre, brelan du milieu) ; `deepen` | 02/10 | cœur seul 49,5 – 50,3 % | écartés : le cœur le fait déjà ; `jokerRuns` +0,8, rien de plus avec `jkx` | — |
 | Le piège du joker : une paire morte, joker en main (`jokerTrap`) | 02/10 | cœur seul 49,7 – 50,3 % | neutre entre robots : ils ne lisent pas le signal ; le cœur le joue déjà (2 323 fois dans les replays) | — |
+| L'appât : débuts bas hors des zones qui comptent (`bait`) | 02/10 | cœur seul 49,5 – 51,0 % | neutre : l'adversaire mord à peine, la borne appât se perd plus | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1217,3 +1218,39 @@ valeurs ou moins d'écart) :
   suites du milieu et les suites basses se voit dans les parties. Le cœur la
   connaît déjà (`midRuns`, `weakRuns` neutres ou en baisse plus haut) : il note
   une borne d'après sa figure et sa somme.
+
+## L'appât : des suites et brelans faibles pour vider la main adverse (02/10)
+
+**L'idée de Sami** : poser des débuts bas (brelan ou suite de couleur) sur des
+bornes qui ne comptent ni pour moi ni pour l'adversaire, pour y attirer ses
+suites de couleur puissantes — des cartes qui lui manqueront là où ça compte.
+L'arbre pourrait voir à travers ; et en cœur contre cœur ?
+
+**`bait`** (`src/sim/bait.js`) : ma zone est la série de trois bornes côte à côte
+où mes chances additionnées sont les meilleures, celle de l'adversaire la
+série où les siennes le sont. Une borne hors des deux est un appât ; une carte
+de 1 à 3 qui y commence ou y prolonge une paire basse ou une suite de couleur
+basse reçoit le poids.
+
+| Poids | Donnes 0 | Donnes 1 | Donnes 2 |
+| --- | --- | --- | --- |
+| 0,1 | 50,9 % | 50,0 % | 51,0 % |
+| 0,2 | 49,5 % | — | — |
+| 0,4 | 50,8 % | 49,6 % | 50,6 % |
+
+**Neutre.** Ce qui se passe (600 parties, poids 0,4, contre le cœur du 0.9) :
+
+| | Cœur du 0.9 | Avec l'appât |
+| --- | --- | --- |
+| départs bas (paire ou suite de couleur) par partie | 1,26 | 1,47 |
+| cartes adverses posées en face, par départ bas | 1,29 | 1,48 |
+| dont cartes de 7 ou plus | 0,58 | 0,62 |
+| borne appât gagnée | 51 % | 46 % |
+
+- **L'appât est tendu et l'adversaire mord un peu** : il pose 0,2 carte de plus
+  en face, mais presque pas de cartes hautes en plus (+0,04) — ses suites de
+  couleur puissantes ne sont pas vidées.
+- **L'appât se paie** : la borne est perdue plus souvent. Les deux s'annulent.
+- Contre un humain, qui lit une paire basse comme une borne facile, l'appât
+  mordrait peut-être plus fort ; entre robots, l'adversaire compte les cartes
+  sans lire d'intention.
