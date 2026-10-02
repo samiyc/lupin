@@ -47,6 +47,7 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 | `web/` | le jeu dans le navigateur (`npm run play`) |
 | `out/statistiques.html` | le rapport complet, interactif (s'ouvre d'un double-clic) |
 | `out/statistiques.md` | le même rapport en ASCII art |
+| `out/retrospective.html` | la rétrospective du robot : ses dix versions sur une timeline, son cœur, les tours où la partie se joue (`npm run retrospective`) |
 | `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
 | `data/replays/` | les replays gardés pour l'analyse (les autres vont dans `replays/`, hors git) |
 | `docs/jouer.md` | jouer, observer, replays, versions des robots |

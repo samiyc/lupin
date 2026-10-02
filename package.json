@@ -35,7 +35,8 @@
     "pivots": "node scripts/pivots.js",
     "games": "node scripts/games.js",
     "branch": "node scripts/branch.js",
-    "error-impact": "node scripts/error-impact.js"
+    "error-impact": "node scripts/error-impact.js",
+    "retrospective": "node scripts/retrospective.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

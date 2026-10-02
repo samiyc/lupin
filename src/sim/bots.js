@@ -92,6 +92,15 @@ function scoreGreedy(state, moves) {
   return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
 }
 
+/** One move's score taken apart (the retrospective page, `scripts/retrospective.js`): potentials, odds before and after, the card's price. */
+export function explainMove(state, move) {
+  const { mine, threat } = views(state);
+  const view = withoutCard(state, mine, move.card);
+  const side = state.borders[move.border].sides[state.current];
+  const [now, next, theirs] = [sidePotential(side, view), sidePotential([...side, move.card], view), threat[move.border]];
+  return { mine: now, mineAfter: next, theirs, before: winChance(now, theirs), after: winChance(next, theirs), cost: cardCost(state.spec, move.card) };
+}
+
 /** The bot's own odds of winning each border, as things stand. */
 function borderChances(state, player, { mine, threat }) {
   const withHand = { ...mine, hand: state.hands[player] };
