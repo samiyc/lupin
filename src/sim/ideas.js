@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { exposurePenalty, outbidBonus } from "./outbid.js";
 import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
 
 /**
@@ -17,7 +18,7 @@ import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js"
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", ...PRINCIPLES]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", "outbid", "exposure", ...PRINCIPLES]);
 
 /**
  * What the strategist plays. 1.1: measured against 1.0 over 24 000 games
@@ -33,6 +34,10 @@ export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"])
  */
 export const IDEA_WEIGHTS = Object.freeze({
   neighbors: 1,
+  // outbid.js; `outbidWide` 1 keeps `outbid` to a board where the opponent has started more borders.
+  outbid: 0.2,
+  outbidWide: 0,
+  exposure: 0.2,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
@@ -120,9 +125,17 @@ export function ideasBonus(context, border, card) {
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
   if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
   bonus += principlesBonus(context, border, card);
-  if (mine.length > 0) return bonus;
+  return mine.length > 0 ? bonus : bonus + firstCardBonus(context, border, card);
+}
+
+/** The ideas that only judge the first card on my side of a border. */
+function firstCardBonus(context, border, card) {
+  const { ideas } = context;
+  let bonus = 0;
   if (ideas.has("middle") || ideas.has("edges")) bonus += placeBonus(context, border, card);
   if (ideas.has("spread")) bonus += spreadPenalty(context, card);
+  if (ideas.has("outbid")) bonus += outbidBonus(context, border, card);
+  if (ideas.has("exposure")) bonus += exposurePenalty(context, border, card);
   return bonus;
 }
 

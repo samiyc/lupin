@@ -942,3 +942,46 @@ que 7 % plus sensible, et l'échantillon ne serait plus le jeu normal (une donne
 sur 100 environ remplit les deux conditions), justement sur le début de partie
 que le nouveau cœur change. Utile en question secondaire : le cœur riche
 récupère-t-il mieux d'une main faible ?
+
+## La première carte : surenchérir d'un cran, payer une ouverture (02/10)
+
+**L'idée de Sami, tirée de ses parties** : quand l'adversaire joue sur plus de
+bornes que moi, je remplis mes côtés vides de ses bornes avec une carte un cran
+au-dessus de la sienne (un 3 contre un 2). Si les deux côtés finissent avec la
+même figure (deux brelans, deux suites de même couleur), la somme la plus
+haute prend la borne. Et dans l'autre sens, ouvrir une borne vierge offre à
+l'adversaire cette même réponse.
+
+**Deux idées** (`src/sim/outbid.js`), qui ne jugent que la première carte de mon
+côté. `counter`, plus ancienne, compare des figures et ne joue qu'à partir de
+deux cartes :
+- `outbid` : sur une borne où l'adversaire a une carte seule et moi aucune, la
+  valeur juste au-dessus reçoit un bonus. Avec `outbidWide`, seulement quand
+  l'adversaire a entamé plus de bornes que moi.
+- `exposure` : ouvrir une borne vierge avec un v coûte en proportion de la
+  chance que l'adversaire tienne un v + 1, lue sur les cartes encore invisibles.
+
+**Le cœur seul, contre le cœur du 0.9** (8 000 parties par duel, règle de la
+page, fourchette par paires) :
+
+| Cœur | Donnes 0 | Donnes 1 | Donnes 2 |
+| --- | --- | --- | --- |
+| `ob1` (outbid 0,1) | 50,6 % | 50,5 % | 51,1 % |
+| `ob2` (outbid 0,2) | 51,1 % (50,2 – 52,1) | 50,4 % | 51,2 % |
+| `ob4` (outbid 0,4) | 50,3 % | — | — |
+| `obw2`, `obw4` (seulement en retard de bornes) | 50,3 %, 50,5 % | — | — |
+| `ex1`, `ex2`, `ex4` (exposure 0,1, 0,2, 0,4) | 50,3 %, 50,2 %, 48,9 % | ex2 : 49,8 % | ex2 : 50,2 % |
+| **`obex`** (outbid 0,2 + exposure 0,2) | **51,2 % (50,2 – 52,2)** | **51,9 % (50,7 – 53,1)** | **51,2 % (50,3 – 52,2)** |
+
+- **`obex` gagne sur les trois jeux de donnes**, environ +1,4 point : petit,
+  mais régulier. Les deux idées vont ensemble : `exposure` seule ne fait rien,
+  `outbid` seule moins bien.
+- **Elles changent vraiment le jeu** (400 parties `obex` contre `exp`) :
+  1,17 surenchère par partie au lieu de 0,20 ; 3,3 bornes ouvertes à vide
+  au lieu de 3,7, dont 50 % avec un 5 ou moins au lieu de 54 %.
+- **La restriction « en retard de bornes »** ne fait pas mieux que la règle
+  générale.
+- **Reste l'arbre** : un gain du cœur seul ne passe pas toujours dans l'arbre
+  (SPSA : 52,9 % seul, 50,7 % dans l'arbre). Deux duels longs
+  `ismcts+…+core=obex@800` contre le 0.9 sont au backlog (`duel-obex-0`,
+  `duel-obex-1`).

@@ -80,6 +80,16 @@ export const CORES = Object.freeze({
   nb2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "neighbors"], weights: { ...EXPERIMENT.weights, neighbors: 2 } },
   runs: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "runs"] },
   plain: { ...EXPERIMENT, habits: [], ideas: [] },
+  // Sami's first-card ideas (outbid.js), at a few weights: `ob` outbid, `obw` only when outnumbered, `ex` exposure.
+  ob1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid"], weights: { ...EXPERIMENT.weights, outbid: 0.1 } },
+  ob2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid"], weights: { ...EXPERIMENT.weights, outbid: 0.2 } },
+  ob4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid"], weights: { ...EXPERIMENT.weights, outbid: 0.4 } },
+  obw2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid"], weights: { ...EXPERIMENT.weights, outbid: 0.2, outbidWide: 1 } },
+  obw4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid"], weights: { ...EXPERIMENT.weights, outbid: 0.4, outbidWide: 1 } },
+  ex1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "exposure"], weights: { ...EXPERIMENT.weights, exposure: 0.1 } },
+  ex2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "exposure"], weights: { ...EXPERIMENT.weights, exposure: 0.2 } },
+  ex4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "exposure"], weights: { ...EXPERIMENT.weights, exposure: 0.4 } },
+  obex: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid", "exposure"], weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
 });
 
 export function coreOf(name) {

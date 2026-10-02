@@ -43,7 +43,11 @@ if (process.argv.includes("--list")) {
 }
 await mkdir(RUNS, { recursive: true });
 console.log(`${pending.length} traitement(s) à faire.`);
-for (const job of pending) {
+// The next job is read from the file each time: one added while another ran is played too.
+const tried = new Set();
+const nextJob = async () => (await readBacklog()).jobs.find((job) => job.status === "todo" && !tried.has(job.id));
+for (let job = await nextJob(); job; job = await nextJob()) {
+  tried.add(job.id);
   const started = Date.now();
   const stamp = localTimestamp().slice(0, 16).replace(/[:T]/g, "-");
   const output = `backlog-runs/${stamp}_${job.id}.txt`;

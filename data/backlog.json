@@ -14,6 +14,20 @@
       "estimate": "2 h 30",
       "why": "Le robot à deux phases (cœur avec voisinage au début, cœur nu et 7 coups à la fin), bascule au tour 20 ou à la première borne gagnée, contre le Stratège sur les mêmes donnes que le 0.9. La fin seule est neutre depuis 18, 20 et 22 : ce traitement mesure le début de partie.",
       "status": "todo"
+    },
+    {
+      "id": "duel-obex-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=obex@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
+      "estimate": "20 min",
+      "why": "Les idées de Sami sur la première carte (outbid.js : surenchérir d'un cran sur une carte seule, payer l'ouverture d'une borne vierge) : le cœur seul gagne 51,2 %, 51,9 % et 51,2 % contre celui du 0.9 sur trois jeux de donnes. Reste à voir si ça passe dans l'arbre, sur une partie entière.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-obex-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=obex@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "Les idées de Sami sur la première carte (outbid.js : surenchérir d'un cran sur une carte seule, payer l'ouverture d'une borne vierge) : le cœur seul gagne 51,2 %, 51,9 % et 51,2 % contre celui du 0.9 sur trois jeux de donnes. Reste à voir si ça passe dans l'arbre, sur une partie entière. Confirmation sur d'autres donnes.",
+      "status": "todo"
     }
   ]
 }
