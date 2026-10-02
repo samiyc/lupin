@@ -118,21 +118,68 @@ oui.
 
 ## Le portable
 
-Le portable (4 cœurs, 8 fils) fait environ le tiers du travail du PC fixe. Pour
-qu'il ne chauffe pas trop sur la durée, on limite le nombre de fils de calcul
-avec **`LOPIN_THREADS`**, qui vaut pour tous les scripts :
+Le portable (4 cœurs, 8 fils) fait environ le tiers du travail du PC fixe.
 
-```sh
-LOPIN_THREADS=4 npm run backlog
-```
+### Le passage par git, le plus simple
 
-- **Sur 4 fils**, il garde de la marge. On surveille la température les
+Les deux machines communiquent par le dépôt GitHub. Le portable a **sa propre
+file**, `data/backlog-laptop.json`, pour que les deux machines n'écrivent
+jamais le même fichier. Ses sorties vont dans `data/runs-laptop/`, que git
+rapporte.
+
+**Une seule fois, sur le portable** :
+1. Installer **Node 20 LTS** (installateur de nodejs.org) et **Git pour Windows**.
+2. Cloner le dépôt : `git clone https://github.com/samiyc/lupin.git`, puis se
+   connecter à GitHub pour pouvoir pousser.
+3. Copier le dossier `duels/` du PC fixe (37 Mo, absent de git) dans le
+   dossier cloné, par une clé USB par exemple. À refaire seulement si de
+   nouvelles parties gardées doivent servir au portable.
+
+**À chaque lot** :
+1. **Sur le PC fixe** : Claude met les traitements dans `data/backlog-laptop.json`
+   et fait le commit ; Sami fait `git push`.
+2. **Sur le portable**, dans Git Bash, depuis le dossier du projet :
+
+   ```sh
+   git pull
+   LOPIN_THREADS=4 npm run backlog -- --queue laptop
+   git add data && git commit -m "Résultats du portable" && git push
+   ```
+
+   En PowerShell, la deuxième ligne s'écrit
+   `$env:LOPIN_THREADS=4; npm run backlog -- --queue laptop`.
+3. **Sur le PC fixe** : `git pull`. Claude lit `data/runs-laptop/` et intègre
+   les résultats.
+
+**Ce que le portable ne fait pas** : partager un traitement avec le PC fixe.
+L'oracle, par exemple, garde ses positions sur la machine qui calcule ; le
+lancer des deux côtés referait les mêmes positions. On confie au portable des
+traitements distincts, comme une passe `error-impact` sur d'autres tours.
+
+### Plus tard : le piloter par le réseau local
+
+Pour que Claude lance les traitements du portable lui-même, sans les trois
+commandes, il faut que le portable accepte une connexion SSH sur le réseau de
+la box :
+- activer « Serveur OpenSSH » dans les fonctionnalités facultatives de Windows ;
+- ouvrir le port 22 sur le réseau privé uniquement ;
+- ajouter la clé publique du PC fixe ;
+- empêcher la mise en veille pendant un calcul.
+
+Le portable se pilote ensuite comme un serveur loué. C'est plus de réglages
+pour un gain de trois commandes : à faire seulement si le portable sert souvent.
+
+### La chaleur
+
+On limite le nombre de fils de calcul avec **`LOPIN_THREADS`**, qui vaut pour
+tous les scripts.
+- **Sur 4 fils**, le portable garde de la marge. On surveille la température les
   premières fois, avec l'outil du fabricant ou HWiNFO.
 - **Sur une surface dure**, jamais sur un lit ou un canapé.
-- **Il faut lui donner un travail à part.** Deux machines ne se partagent pas
-  automatiquement la même file. On lui confie un traitement qui ne dépend pas
-  du reste, par exemple une passe `error-impact`, avec sa propre copie du
-  projet et de `duels/`. On rapporte ensuite son fichier de `data/`.
+- **Les traitements durent environ 3 fois plus longtemps** que sur le PC fixe,
+  et le plafond de 2 h par traitement s'applique aussi. On y met donc des
+  traitements courts, par exemple un tour d'`error-impact` à la fois (environ
+  50 min).
 
 Le même réglage sert au PC fixe : `LOPIN_THREADS=16` laisse quelques cœurs
 libres pour travailler pendant un calcul.

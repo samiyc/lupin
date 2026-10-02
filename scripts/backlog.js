@@ -15,11 +15,21 @@ import { localTimestamp } from "../src/replay/log.js";
  * No job runs longer than its `limit` in minutes (`LIMIT`, 2 h, by default:
  * Sami, 03/10), so that a job gone wrong does not eat the night. One that
  * reaches it is stopped, with every process under it, and marked `timeout`.
+ *
+ * `--queue laptop`: another machine's own queue, data/backlog-laptop.json,
+ * so that two machines never write the same file. Its outputs go to
+ * data/runs-laptop/, which git carries back: `git pull`, run, then commit and
+ * `git push` (docs/cloud.md).
  */
 const LIMIT = 120;
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
-const FILE = `${ROOT}data/backlog.json`;
-const RUNS = `${ROOT}backlog-runs/`;
+const args = process.argv.slice(2);
+const queue = args.includes("--queue") ? args[args.indexOf("--queue") + 1] : null;
+if (queue !== null && !/^[a-z0-9-]+$/.test(queue)) throw new Error(`File inconnue : « ${queue} »`);
+const suffix = queue ? `-${queue}` : "";
+const FILE = `${ROOT}data/backlog${suffix}.json`;
+const RUNS_DIR = queue ? `data/runs${suffix}/` : "backlog-runs/";
+const RUNS = `${ROOT}${RUNS_DIR}`;
 const readBacklog = async () => JSON.parse(await readFile(FILE, "utf8"));
 const saveBacklog = (backlog) => writeFile(FILE, `${JSON.stringify(backlog, null, 2)}\n`);
 
@@ -62,7 +72,7 @@ const statusOf = (code) => {
 
 const backlog = await readBacklog();
 const pending = backlog.jobs.filter((job) => job.status === "todo");
-if (process.argv.includes("--list")) {
+if (args.includes("--list")) {
   for (const job of backlog.jobs) {
     const done = job.doneAt ? " (fait le " + job.doneAt + ", " + job.minutes + " min)" : "";
     console.log(`[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}`);
@@ -78,7 +88,7 @@ for (let job = await nextJob(); job; job = await nextJob()) {
   tried.add(job.id);
   const started = Date.now();
   const stamp = localTimestamp().slice(0, 16).replace(/[:T]/g, "-");
-  const output = `backlog-runs/${stamp}_${job.id}.txt`;
+  const output = `${RUNS_DIR}${stamp}_${job.id}.txt`;
   console.log(`\n▶ ${job.id} (${job.estimate}) : ${job.command}`);
   const code = await run(job.command, `${ROOT}${output}`, job.limit ?? LIMIT);
   // Re-read the file: someone may have added jobs while this one ran.
