@@ -2,7 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { DECKS } from "../src/config/decks.js";
 import { JOKER, cardOf } from "../src/core/cards.js";
-import { IDEA_WEIGHTS, ideasBonus, solidStart } from "../src/sim/ideas.js";
+import { IDEA_WEIGHTS, borderFactors, ideasBonus, solidStart } from "../src/sim/ideas.js";
 
 const spec = DECKS.classique;
 const at = (value, suit) => cardOf(spec, suit, value);
@@ -111,5 +111,26 @@ describe("Sami's principles (principles.js)", () => {
     assert.equal(ideasBonus(closed, 4, at(9, SPADE)), 0, "7♠ already played: one end left, no pair worth keeping");
     const hearts = contextOf({ ideas: ["connector"], hand: [at(10, HEART)], mine: { 3: [at(9, HEART)] } });
     assert.equal(ideasBonus(hearts, 4, at(10, HEART)), 0, "9♥ 10♥ has a single out, the 8♥");
+  });
+});
+
+describe("judging a border with its neighbours (neighbors)", () => {
+  const factorsOf = (chances, weight = 1) => borderFactors({ ideas: new Set(["neighbors"]), weights: { ...IDEA_WEIGHTS, neighbors: weight } }, chances.length, chances);
+
+  it("weighs the centre, which three runs cross, above an edge, which one run crosses", () => {
+    const factors = factorsOf([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]);
+    assert.ok(factors[3] > factors[1] && factors[1] > factors[0], factors.join(" "));
+    assert.equal(factors[0], factors[6], "both edges alike");
+  });
+
+  it("weighs a border that would complete a run well under way above a lone one", () => {
+    // Borders 1 and 2 nearly won: border 3 completes 1-2-3; border 6 has nothing around it.
+    const factors = factorsOf([0.95, 0.95, 0.5, 0.5, 0.1, 0.5, 0.1]);
+    assert.ok(factors[2] > factors[5], factors.join(" "));
+  });
+
+  it("does nothing when the idea is off", () => {
+    const off = borderFactors({ ideas: new Set(), weights: IDEA_WEIGHTS }, 7, [0.9, 0.9, 0.5, 0.5, 0.5, 0.5, 0.5]);
+    assert.deepEqual(off, [1, 1, 1, 1, 1, 1, 1]);
   });
 });

@@ -202,7 +202,8 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300` (`createIsmcts`) — or null.
+ * `+pw=1`, `+rave=300` (`createIsmcts`), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
@@ -210,6 +211,8 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
+      // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
+      if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
       if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),

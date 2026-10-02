@@ -12,13 +12,15 @@ import { DUELS_DIR, readIndex, rowOf, writeIndex } from "./game-index.js";
  *
  * Saved when asked (`--save`), and whenever the games are solid enough to
  * build on: a long duel, or one where every bot plays at full strength — a
- * line-up version, a bot that does not search, or a search of 800 iterations
- * or more, or on a clock (`@t`).
+ * line-up version, or a search of 800 iterations or more, or on a clock
+ * (`@t`). A core alone, which plays thousands of games, is kept only when asked.
  */
 const LINEUP_ENGINES = new Set(Object.values(BOT_LINEUP).map((bot) => bot.engine));
 
 const solid = (engine) => {
-  if (!isSlowEngine(engine) || LINEUP_ENGINES.has(engine)) return true;
+  if (LINEUP_ENGINES.has(engine)) return true;
+  // A core alone (`core:nb1`, `strategist`…) plays thousands of games in seconds: kept only with --save.
+  if (!isSlowEngine(engine)) return false;
   const budget = /@(t?)(\d+)/.exec(engine);
   return Boolean(budget) && (budget[1] === "t" || Number(budget[2]) >= 800);
 };

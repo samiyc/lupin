@@ -17,7 +17,7 @@ import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js"
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", ...PRINCIPLES]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", ...PRINCIPLES]);
 
 /**
  * What the strategist plays. 1.1: measured against 1.0 over 24 000 games
@@ -32,6 +32,7 @@ export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"])
  * higher weight did better.
  */
 export const IDEA_WEIGHTS = Object.freeze({
+  neighbors: 1,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
@@ -153,6 +154,10 @@ function runStakes(chances) {
 /** A multiplier on each border's gain; all 1 unless `weight` or `runs` is on. */
 export function borderFactors({ ideas, weights }, count, chances) {
   const factors = Array.from({ length: count }, () => 1);
+  // `neighbors` (Sami, after the retrospective): a border is worth 1 for the majority, plus what it adds to
+  // each run of three through it — the product of the other two borders' odds. The centre (three runs) and a
+  // border that would complete a run well under way weigh more than an edge or a lone border.
+  if (ideas.has("neighbors") && chances) runStakes(chances).forEach((stake, border) => (factors[border] *= 1 + weights.neighbors * stake));
   if (ideas.has("weight")) runsThrough(count).forEach((runs, border) => (factors[border] *= 1 + weights.weight * (runs - 2)));
   if (ideas.has("runs") && chances) {
     const stakes = runStakes(chances);

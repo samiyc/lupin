@@ -1,6 +1,6 @@
 import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
-import { EXPERIMENT, budgetOf, experimentalSettings } from "./experimental.js";
+import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
@@ -114,6 +114,9 @@ function boardCards(state) {
   return cards;
 }
 
+/** A border already won counts 1, lost 0, whatever its sides would say. */
+const ownedOdds = (state, player, chances) => state.borders.map((border, i) => (border.owner === null ? chances[i] : Number(border.owner === player)));
+
 /** What the ideas read on top of the strategist's context; nothing when none is on. */
 function ideasContext(state, player, { ideas, weights }, seen) {
   if (ideas.size === 0) return {};
@@ -124,7 +127,7 @@ function ideasContext(state, player, { ideas, weights }, seen) {
     theirSides: state.borders.map((border) => border.sides[1 - player]),
     boardCards: boardCards(state),
     pile: state.pile.length,
-    chances: ideas.has("runs") || ideas.has("dump") ? borderChances(state, player, seen) : null,
+    chances: ["runs", "dump", "neighbors"].some((idea) => ideas.has(idea)) ? ownedOdds(state, player, borderChances(state, player, seen)) : null,
   };
 }
 
@@ -260,11 +263,13 @@ export const BOTS = Object.freeze({
   "strategist:1.1": (rng) => strategistBot(rng, { ideas: ["middle", "spread"], name: "strategist:1.1" }),
   // The three habits plus one idea at a time, to weigh each idea on its own.
   ...Object.fromEntries(IDEAS.map((idea) => [`idea:${idea}`, (rng) => strategistBot(rng, { ideas: [idea], name: `idea:${idea}` })])),
+  // The named cores (experimental.js), alone: `core:nb1` against `core:exp`, in seconds.
+  ...coreEngines((settings) => (rng) => strategistBot(rng, settings)),
 });
 
 /** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
-const ismctsOf = ({ sample, ...tree }, budget) => (rng) =>
-  ismctsBot(rng, { base: strategistBot(rng, EXPERIMENT), policy: rolloutPolicyOf({ ...EXPERIMENT, rolloutSample: sample }), ...tree, ...budget });
+const ismctsOf = ({ sample, core = "exp", shortlist = core, rollout = core, ...tree }, budget) => (rng) =>
+  ismctsBot(rng, { base: strategistBot(rng, coreOf(shortlist)), policy: rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample }), ...tree, ...budget });
 
 /**
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot

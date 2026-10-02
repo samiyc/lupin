@@ -37,7 +37,8 @@
     "branch": "node scripts/branch.js",
     "error-impact": "node scripts/error-impact.js",
     "retrospective": "node scripts/retrospective.js",
-    "backlog": "node scripts/backlog.js"
+    "backlog": "node scripts/backlog.js",
+    "core-test": "node scripts/core-test.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

@@ -67,3 +67,30 @@ export function budgetOf(at) {
   if (at === undefined) return {};
   return at.startsWith("t") ? { budget: Infinity, budgetMs: Number(at.slice(1)) } : { budget: Number(at) };
 }
+
+/**
+ * Named cores for the tree (`ismcts+core=nb1`, `+shortlist=plain`, `+rollout=plain`)
+ * and for core duels (`core:nb1`): the 0.9's core, with neighbours (`neighbors`,
+ * ideas.js, λ 1 or 2), with `runs`, or plain — the border odds and the cards'
+ * price only, no habit, idea nor certainty: does the bonus steer the search?
+ */
+export const CORES = Object.freeze({
+  exp: EXPERIMENT,
+  nb1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "neighbors"], weights: { ...EXPERIMENT.weights, neighbors: 1 } },
+  nb2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "neighbors"], weights: { ...EXPERIMENT.weights, neighbors: 2 } },
+  runs: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "runs"] },
+  plain: { ...EXPERIMENT, habits: [], ideas: [] },
+});
+
+export function coreOf(name) {
+  if (!Object.hasOwn(CORES, name)) throw new Error(`Cœur inconnu : « ${name} » (connus : ${Object.keys(CORES).join(", ")})`);
+  return CORES[name];
+}
+
+/**
+ * `{ "core:<name>": engine }` for every named core, built by `make(settings)` — as
+ * it plays the rollouts, without `certain`: proving certainties on every move
+ * makes a core game many times slower, and the rollouts never ran them.
+ */
+export const coreEngines = (make) =>
+  Object.fromEntries(Object.entries(CORES).map(([name, settings]) => [`core:${name}`, make({ ...settings, ideas: settings.ideas.filter((idea) => idea !== "certain"), name: `core:${name}` })]));
