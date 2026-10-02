@@ -34,6 +34,13 @@ mesures détaillées sont plus bas, section par section.
 | Cœur réglé par auto-jeu (SPSA) | 01/10 | 52,9 % seul, mais 50,7 % (42,8 – 58,6) dans l'arbre | écarté | 2207a8d |
 | Répertoire d'ouvertures complet (plafond : 1er coup à 5 000) | 01/10 | 45,1 % (37,8 – 52,4) | écarté | 9a8b980, 6c0e13a |
 | Répertoire ciblé, mains faibles / fortes | 01/10 | 47,9 % (39,8 – 56,0) / 44,4 % (38,5 – 50,4) | écarté ; le suivi des mains de départ reste | eb9d1c0 |
+| Solveur exact dès la pioche vide (+ chercher s'il ne voit pas de victoire) | 01/10 | 47,2 % (40,0 – 54,4) ; 48,6 % | écarté, l'option reste (`+exact`, `+hope`) | bbc1c7e |
+| Budget ×4 au point charnière (7 bornes adverses entamées) | 01/10 | 44,8 % (36,4 – 53,2) | écarté, l'option reste (`+pivot`) | bbc1c7e |
+| 2 réponses, 5 coups ; RAVE | 01/10 | 47,2 % ; 44,4 % | écartés | bbc1c7e |
+| Élargissement progressif sur le 0.9 (6 réponses, 6 coups) | 02/10 | 60,4 % au tri, puis 49,0 % (43,2 – 54,7) au duel long | écarté : le tri était un coup de chance | — |
+| Exploration 0,5 sur le 0.9 | 02/10 | 56,9 % au tri, puis 49,0 % (43,5 – 54,5) au duel long | écarté, même leçon | — |
+| Élargissement progressif (4 réponses, 5 coups) ; exploration 1,0 ; 6 ou 12 candidats | 02/10 | 45,8 % ; 52,8 % ; 51,4 % ; 47,9 % | écartés | — |
+| Deux fois plus d'itérations pour le 0.9 (1 600 contre 800) | 02/10 | 52,1 % (42,9 – 61,3) | pas net : pas de workers dans la page pour l'instant | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -690,7 +697,8 @@ toutes gardées dans `duels/` (avec l'avantage au tour 30) :
 | Expérimental 0.9 contre Stratège 2.1 | 60 % | 50,3 – 69,7 |
 
 - **Le classement descend pour les Expérimental** : 0.9.0 à **920 ± 29** (1032
-  avant ces duels), 0.8.0 à 892, 0.7.0 à 862, Stratège 2.1 à 811. Ils n'étaient
+  avant ces duels ; **978 ± 30** le 02/10, une fois les duels réenregistrés avec un
+  robot par partie : Stratège–Basique 85 %, 0.9–Basique 95 %, 0.9–Stratège 68 %), 0.8.0 à 892, 0.7.0 à 862, Stratège 2.1 à 811. Ils n'étaient
   reliés aux Stratège que par une chaîne de duels anciens, à la règle `early` et
   à 400 simulations. Le duel direct, à la règle de la page, dit que l'écart est
   plus petit. C'est lui qu'il faut croire.
@@ -699,3 +707,76 @@ toutes gardées dans `duels/` (avec l'avantage au tour 30) :
   entre robots imparfaits. Les parties se jouent avant le tour 30. C'est là
   qu'un rejeu « à partir du tour 15, un seul changement » a le plus de chances
   de montrer quelque chose.
+
+## Rejouer depuis le milieu, et le prix d'une erreur (02/10, evol-exp-090)
+
+**Le rejeu est fidèle.** Chaque partie gardée construit ses robots à partir de
+sa graine. Rejouée depuis la première borne gagnée, elle redonne la même fin,
+coup pour coup, dans **100 / 100** parties du 0.9 contre lui-même
+(`npm run branch -- --check`). On peut donc changer un seul coup, ou un seul
+moteur, sur une position réelle, sans rejouer le début.
+
+**Le piège : le chaos du début de partie.** Forcer une erreur et comparer au
+replay gardé donnait des effets absurdes : au tour 2, une erreur « aidait » le
+fautif de 20 points. Au début, n'importe quel changement rebat la suite, et la
+partie redevient presque pile ou face. Le bon témoin, c'est la même suite
+**sans erreur**, avec seulement la graine des robots changée (`reseed`).
+
+**Le prix d'une erreur au hasard** (`npm run error-impact`, 0.9 contre
+lui-même, mains moyennes, 30 parties par tour ; qui tient la partie au tour 30,
+par le solveur exact) :
+
+| Erreur au tour | Le fautif tient la partie : témoin | avec l'erreur | Impact (± 95 %) |
+| --- | --- | --- | --- |
+| 2 | 36,7 % | 40,0 % | −3 ± 15 |
+| 6 | 56,7 % | 23,3 % | 33 ± 25 |
+| 10 | 53,3 % | 30,0 % | 23 ± 22 |
+| 14 | 43,3 % | 40,0 % | 3 ± 20 |
+| 18 | 26,7 % | 36,7 % | −10 ± 20 |
+| 22 | 40,0 % | 20,0 % | **20 ± 15** |
+| 26 | 40,0 % | 16,7 % | **23 ± 15** |
+| 29 | 66,7 % | 46,7 % | **20 ± 15** |
+| au coup qui entame la 7e borne | 53,3 % | 43,3 % | 10 ± 17 |
+| au coup qui gagne la 1re borne | 46,7 % | 23,3 % | **23 ± 15** |
+
+- **Au premier coup, une erreur ne coûte rien de mesurable**, comme l'avaient
+  montré les essais de répertoire.
+- **À partir du tour 22, et au coup qui gagne la première borne, une erreur
+  coûte nettement** : un cinquième des parties changent de camp. C'est la
+  phase où les bornes se décident. C'est là qu'un meilleur jugement paierait,
+  et là qu'il faut tester les prochains changements (`npm run branch --
+  --from first-border`).
+- Entre les tours 6 et 18, 30 parties par tour ne suffisent pas à trancher : il
+  en faudrait environ 120 pour une fourchette de ± 10.
+
+## Les pistes du 0.9 (02/10, evol-exp-090)
+
+**Tris de 10 min à temps égal (1,4 s par coup) contre le 0.9** :
+
+| Variante | Tri | Duel long, autres donnes |
+| --- | --- | --- |
+| élargissement progressif, 6 réponses, 6 coups | 60,4 % (53,2 – 67,7) | **49,0 % (43,2 – 54,7)** |
+| exploration 0,5 | 56,9 % (49,4 – 64,5) | **49,0 % (43,5 – 54,5)** |
+| la même exploration, sur l'élargissement progressif | 56,9 % (50,7 – 63,2) | — |
+| exploration 1,0 | 52,8 % | — |
+| 6 candidats à la racine | 51,4 % | — |
+| 12 candidats | 47,9 % | — |
+| élargissement progressif, 4 réponses, 5 coups | 45,8 % | — |
+
+- **La leçon** : en triant 6 variantes sur les mêmes 144 parties, la meilleure
+  sort à 57-60 % par hasard. Les deux confirmations, sur d'autres donnes,
+  retombent à 49 %. Un tri ne désigne qu'un candidat ; seul le duel long, sur
+  d'autres donnes, décide. Le 0.9 reste.
+- **Les workers dans la page attendent.** Deux fois plus d'itérations
+  (`0.9@1600` contre `0.9@800`) ne font que 52,1 % (42,9 – 61,3), sur 96
+  parties. Paralléliser la recherche sur 8 fils ne paierait pas plus : le 0.9
+  plafonne déjà avec ses 800 itérations en duel, et les 10 s de la page lui en
+  donnent beaucoup plus.
+- **D'autres pistes encore jamais testées** :
+  - un temps de réflexion qui suit l'incertitude : s'arrêter tôt quand un coup
+    domine, chercher plus quand deux coups se valent ;
+  - les transpositions dans l'arbre (deux ordres de coups, une même position) ;
+  - un meilleur jugement autour des tours 22 à 29 et de la première borne,
+    là où une erreur coûte le plus (`npm run error-impact`) : à tester avec
+    `npm run branch -- --from first-border --engine <variante>`, sur les
+    positions réelles où le 0.9 a perdu.

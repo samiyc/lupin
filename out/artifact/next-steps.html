@@ -146,13 +146,14 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
     <h1>Au-delà du 0.7</h1>
     <p>Tes idées pour dépasser l'Expérimental 0.7 — plus de budget, des cas difficiles, une mixture d'experts, un répertoire d'ouvertures — mesurées cette nuit, et comparées aux deux grandes voies qui restent : l'auto-jeu et la recherche en arbre profonde. Chaque chiffre vient d'une commande du projet.</p>
     <ul class="verdicts">
-      <li><b>Expérimental 0.9.0</b>L'arbre du 0.8, plus étroit et plus profond : 3 réponses, 5 coups d'avance, même vitesse. <span class="num">55,3 %</span> contre le 0.8 sur 432 parties, Elo <span class="num">920</span> après les duels directs.</li>
+      <li><b>Expérimental 0.9.0</b>L'arbre du 0.8, plus étroit et plus profond : 3 réponses, 5 coups d'avance, même vitesse. <span class="num">55,3 %</span> contre le 0.8 sur 432 parties, Elo <span class="num">978</span> après les duels directs.</li>
       <li><b>Plafond de verre</b>Réel pour l'arbre : ISMCTS fait <span class="num">49 %</span> à 400 simulations, <span class="num">56 %</span> à 800. C'est l'<strong>Expérimental 0.8.0</strong>, Elo <span class="num">1010</span> (Basique = 500).</li>
       <li><b>Mixture d'experts</b><span class="num">45,8 %</span> contre ISMCTS partout : l'arbre vaut aussi en début et en fin de partie. Écartée.</li>
       <li><b>Cas difficiles</b>5 cas nets en 20 minutes : quand le 0.7 hésite, ses coups se valent presque toujours pour de bon.</li>
       <li><b>Ouvertures</b>Même complet, le répertoire ne gagnerait rien : <span class="num">45,1 %</span> pour le 1er coup à 5 000. Abandonné.</li>
       <li><b>Arbre plus profond</b>Profondeur 4 : <span class="num">53,5 %</span>, pas net. À 800 itérations, 0,2 % seulement atteignent le 5e coup. La profondeur 3 reste.</li>
       <li><b>Auto-jeu (étape 2)</b>Le cœur réglé par SPSA bat le cœur actuel (<span class="num">52,9 %</span>), mais pas dans l'arbre (<span class="num">50,7 %</span>). La valeur apprise y perd. Le 0.8 reste.</li>
+      <li><b>Pistes du 0.9</b>Élargissement progressif et exploration 0,5 gagnent au tri (60 %, 57 %) puis retombent à <span class="num">49 %</span> au duel long. Le 0.9 reste ; pas de workers (×2 d'itérations : 52 %).</li>
     </ul>
   </div>
 </div>
@@ -251,8 +252,13 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
           <tr><td>3 réponses, 5 coups d'avance, tri</td><td><code>npm run duel -- ismcts+widen=3+depth=5@t1400 ismcts@t1400 --screen --page</code></td><td>54,2 % (46,0 – 62,3)</td></tr>
           <tr><td>La même chose, duel long</td><td><code>… --long --page --offset 1</code></td><td>55,9 % (50,3 – 61,5), 288 parties : Expérimental 0.9.0</td></tr>
           <tr><td>2 réponses / élargissement progressif / RAVE, tri</td><td><code>… --screen --page</code></td><td>47,2 % / 52,8 % / 44,4 %</td></tr>
-          <tr><td>Classement</td><td><code>npm run elo</code></td><td>0.9.0 : 920 ± 29 ; 0.8.0 : 892 ; Stratège 2.1 : 811 (Basique = 500), après trois duels directs de 100 parties à la règle de la page</td></tr>
+          <tr><td>Classement</td><td><code>npm run elo</code></td><td>0.9.0 : 978 ± 30 ; 0.8.0 : 946 ; Stratège 2.1 : 817 (Basique = 500)</td></tr>
           <tr><td>Duels directs entre versions (100 parties chacun)</td><td><code>npm run duel -- experimental stratege --games 50 --page (etc.)</code></td><td>Stratège 2.1 – Basique 82 % ; 0.9 – Basique 92 % ; 0.9 – Stratège 60 % ; le camp en avance au tour 30 gagne dans 95 à 99 %</td></tr>
+          <tr><td>Rejeu fidèle depuis la 1re borne gagnée</td><td><code>npm run branch -- --vs experimental@0.9.0 --from first-border --check</code></td><td>100 / 100 parties identiques</td></tr>
+          <tr><td>Prix d'une erreur au hasard, par tour</td><td><code>npm run error-impact -- --games 30</code></td><td>rien au tour 2 ; 20 à 23 % à partir du tour 22 et au coup qui gagne la 1re borne</td></tr>
+          <tr><td>Élargissement progressif 6 réponses, 6 coups</td><td><code>tri, puis --long --offset 1</code></td><td>60,4 %, puis 49,0 % (43,2 – 54,7)</td></tr>
+          <tr><td>Exploration 0,5</td><td><code>tri, puis --long --offset 1</code></td><td>56,9 %, puis 49,0 % (43,5 – 54,5)</td></tr>
+          <tr><td>0.9 à 1 600 contre 800 itérations</td><td><code>npm run duel -- ismcts+widen=3+depth=5@1600 … @800 --long --page</code></td><td>52,1 % (42,9 – 61,3), 96 parties</td></tr>
         </tbody>
       </table>
     </div>

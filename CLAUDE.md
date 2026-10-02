@@ -199,6 +199,16 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
 - **Engine ids stack**: `experimental+sample=0.05+prior=0.15`, `@N` budgets
   (`@t1400`: 1.4 s a move, for variants of unequal speed), `ismcts+depth=2`;
   `--hands weak|strong` deals only such starting hands (`src/sim/hand-classes.js`).
+- **Kept bot games restart from any turn** (`src/replay/`: `bot-games.js`,
+  `game-analysis.js`, `branch.js`; `npm run games|branch|error-impact`). Each
+  game builds its bots from its own seed (`seatRng`), so a replay from turn T
+  gives back the same moves (100 / 100 checked). Judge a change at turn 30
+  with the exact solver, and against a `reseed` control: early in a game any
+  perturbation reshuffles the rest, so comparing with the kept game measures
+  chaos, not the change.
+- **A screen only names a candidate.** Six variants screened on the same 144
+  games produced 57-60 % winners that fell to 49 % on fresh decks: confirm with
+  `--long --offset 1` before believing it.
 - **Failed attempts are listed, not kept** (`docs/strategie.md`, « Tentatives
   écartées »): their code was removed on 01/10 and lives at commit eb9d1c0.
   Do not reintroduce one without a new reason to expect a different result.
