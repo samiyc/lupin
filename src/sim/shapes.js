@@ -64,8 +64,12 @@ function runBonus({ spec, weights, ideas }, shape) {
   return bonus;
 }
 
+const anyShapeIdea = (ideas) => ideas.has("plan") || ideas.has("ends") || ideas.has("midRuns") || ideas.has("weakRuns");
+
 /** The shape ideas' bonus for adding `card` to my side `mine`. */
 export function shapesBonus(context, mine, card) {
+  // Read the shape only when an idea asks: this runs on every move of every rollout.
+  if (!anyShapeIdea(context.ideas)) return 0;
   const shape = shapeOf(context.spec, [...mine, card]);
   if (!shape) return 0;
   let bonus = shape.kind === "trips" ? tripsBonus(context, shape, card) : runBonus(context, shape);
