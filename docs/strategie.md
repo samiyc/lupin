@@ -1285,3 +1285,33 @@ remplacées ; le tour 6 retombe exactement sur la mesure d'avant : à graine
   agit : côtés sans figure, surenchère, ouverture), avant que l'arbre ne voie la
   fin.
 
+
+## L'oracle sur les replays (03/10, en cours)
+
+**L'idée de Sami** : il ne trouve plus, en jouant, ce que le cœur rate. Un
+arbre très large sur des positions réelles le trouvera peut-être : un coup que
+l'arbre préfère et que le cœur ne met pas dans son top 3 est une omission du
+cœur, donc une piste d'évolution.
+
+**Ce que regarde le 0.9** : à la racine, les **8** meilleurs coups du cœur
+(`candidates`) ; en dessous, ses **3** meilleures réponses (`widen`). Un coup
+hors du top 8 n'est jamais examiné.
+
+**L'oracle** (`npm run oracle`, `src/replay/oracle.js`) :
+`ismcts+candidates=99+widen=6+depth=5@20000`, soit **tous** les coups légaux à
+la racine (jokers refusés par l'habitude compris), 6 réponses par nœud, 25 fois
+le budget du 0.9. Deux recherches de graines différentes ; un **écart** est leur
+coup commun hors du top 3 du cœur (et noté s'il est hors du top 8).
+- Positions : tours 15-16, 20-21 et 25-26 des 600 parties du 0.9 contre lui-même
+  (les deux joueurs) ; et, avec `--at last-column`, le coup où chaque joueur
+  remplit sa dernière colonne vide (1 187 positions, tour médian 16 — l'intuition
+  de Sami : ce coup pèse lourd sur la suite).
+- **Le coût** : 1,5 à 2,5 min de calcul par position au tour 25, environ 6 min
+  au tour 15 (42 coups légaux) — cinq fois l'estimation faite sur le 0.9, l'arbre
+  étant bien plus large. Environ 10 à 14 s par position sur 23 fils.
+- Chaque position est écrite dès qu'elle est lue (`oracle/positions.jsonl`, hors
+  de git) ; une nouvelle passe reprend où la précédente s'est arrêtée. Le résumé
+  va dans `data/oracle-diffs.json`.
+- **Ensuite** : confirmer chaque écart par le jeu (le coup de l'oracle contre le
+  premier du cœur, suite jouée par le 0.9, jugée au tour 30 ; `branchFrom` accepte
+  désormais un coup à forcer), puis chercher les motifs.

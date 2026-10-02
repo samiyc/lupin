@@ -15,7 +15,8 @@ import { stateAt } from "./log.js";
  * shows what that change does. No need to replay the start of the game.
  *
  * - `force: "random"`: the first move is a random legal move other than the
- *   one played — an error, to see what it costs;
+ *   one played — an error, to see what it costs; `force: { card, border }`:
+ *   that move, to weigh it against another (the oracle, scripts/oracle.js);
  * - `engines`: other engines for one or both seats from that turn on — a new
  *   strategy tried on the same positions;
  * - `reseed`: the same bots with another seed — no change of play, only of
@@ -49,6 +50,14 @@ function forceError(log, turn, state) {
   return move;
 }
 
+/** The first move `force` asks for, played: none, a random error, or the move given. */
+function forcedMoves(log, turn, state, force) {
+  if (force === "random") return [forceError(log, turn, state)];
+  if (!force) return [];
+  applyMove(state, force);
+  return [force];
+}
+
 /** Lets `bots` play `state` on until it is over or `until` moves are played, noting each move. */
 function playOn(state, bots, until, moves) {
   while (!state.over && state.turn < until) {
@@ -67,7 +76,7 @@ function playOn(state, bots, until, moves) {
 export function branchFrom(log, turn, { force = null, engines = null, reseed = 0, until = Infinity } = {}) {
   const state = stateAt(log, turn);
   const bots = botsFor(log, engines, reseed);
-  const moves = force === "random" ? [forceError(log, turn, state)] : [];
+  const moves = forcedMoves(log, turn, state, force);
   playOn(state, bots, until, moves);
   return { state, moves };
 }

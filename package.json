@@ -42,7 +42,8 @@
     "ab": "node scripts/ab.js",
     "rules": "node scripts/rules.js",
     "jokers": "node scripts/jokers.js",
-    "weak-wins": "node scripts/weak-wins.js"
+    "weak-wins": "node scripts/weak-wins.js",
+    "oracle": "node scripts/oracle.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

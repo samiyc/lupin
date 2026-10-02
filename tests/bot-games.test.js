@@ -7,6 +7,7 @@ import { branchFrom, reproduces } from "../src/replay/branch.js";
 import { TURNING_TURN, gameKey } from "../src/replay/game-analysis.js";
 import { formatCard } from "../src/core/notation.js";
 import { replayStates, stateAt } from "../src/replay/log.js";
+import { legalMoves } from "../src/sim/game.js";
 
 const spec = DECKS.classique;
 const batch = playRecordedBatch(spec, {
@@ -82,5 +83,13 @@ describe("kept games restart from any turn", () => {
       const logged = log.turns[11].move;
       assert.ok(moves[0].border !== logged.border - 1 || formatCard(spec, moves[0].card) !== logged.card, "the forced move is another move");
     }
+  });
+
+  it("start from a move given, then let the game's bots play on", () => {
+    const [log] = tree.logs;
+    const [move] = legalMoves(stateAt(log, 12)).slice(-1);
+    const { moves } = branchFrom(log, 12, { force: move, until: 13 });
+    assert.deepEqual(moves[0], move);
+    assert.equal(moves.length, 2, "one move forced, then one played by the bot to move");
   });
 });

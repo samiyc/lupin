@@ -40,3 +40,6 @@ yarn-error.log*
 # Outputs of the night jobs (npm run backlog).
 /backlog-runs/
 
+
+# Oracle positions (npm run oracle): appended as they land, the summary goes to data/.
+/oracle/
