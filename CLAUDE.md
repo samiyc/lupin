@@ -206,6 +206,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   with the exact solver, and against a `reseed` control: early in a game any
   perturbation reshuffles the rest, so comparing with the kept game measures
   chaos, not the change.
+- **The search budget lives in `src/sim/budget.js`** (`+late`/`+early` by
+  phase, `+smart` by uncertainty, at equal cost per game, with `usage` to check
+  it). Neither beat the 0.9: its limit is what it evaluates, not how much.
 - **A screen only names a candidate.** Six variants screened on the same 144
   games produced 57-60 % winners that fell to 49 % on fresh decks: confirm with
   `--long --offset 1` before believing it.

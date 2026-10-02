@@ -41,6 +41,8 @@ mesures détaillées sont plus bas, section par section.
 | Exploration 0,5 sur le 0.9 | 02/10 | 56,9 % au tri, puis 49,0 % (43,5 – 54,5) au duel long | écarté, même leçon | — |
 | Élargissement progressif (4 réponses, 5 coups) ; exploration 1,0 ; 6 ou 12 candidats | 02/10 | 45,8 % ; 52,8 % ; 51,4 % ; 47,9 % | écartés | — |
 | Deux fois plus d'itérations pour le 0.9 (1 600 contre 800) | 02/10 | 52,1 % (42,9 – 61,3) | pas net : pas de workers dans la page pour l'instant | — |
+| Plus de budget après le tour 22, moins avant (au même total) | 02/10 | 45,8 % (×2 / ×0,5) ; 48,6 % (×1,5 / ×0,75) | écarté, l'option reste (`+late`, `+early`) | a1b3de5 |
+| Temps qui suit l'incertitude (au même total) | 02/10 | 54,2 % puis 50,0 % ; ≈ 51,7 % réunis | écarté, l'option reste (`+smart`) | a1b3de5 |
 
 ## Comment le Stratège choisit un coup
 
@@ -780,3 +782,71 @@ par le solveur exact) :
     là où une erreur coûte le plus (`npm run error-impact`) : à tester avec
     `npm run branch -- --from first-border --engine <variante>`, sur les
     positions réelles où le 0.9 a perdu.
+
+## Le tour critique, avec 4 fois plus de parties (02/10)
+
+600 parties de plus du 0.9 contre lui-même, gardées (363 à mains moyennes et
+résolues au tour 30). Pour chaque tour, 120 parties ; à chacune, une erreur au
+hasard et **deux** témoins sans erreur (`npm run error-impact -- --turns 18-29
+--games 120 --explain`).
+
+| Erreur au tour | Le fautif tient la partie : témoins | avec l'erreur | Impact (± 95 %) | Part de son avantage perdue |
+| --- | --- | --- | --- | --- |
+| 2 | 47,1 % | 55,0 % | −7,9 ± 9,3 | — |
+| 6 | 51,7 % | 39,2 % | 12,5 ± 9,4 | 24 % |
+| 10 (100 parties) | 53,0 % | 33,0 % | **20,0 ± 10,0** | 38 % |
+| 14 (100 parties) | 44,0 % | 34,0 % | 10,0 ± 10,8 | 23 % |
+| 18 | 37,9 % | 35,0 % | 2,9 ± 8,1 | 8 % |
+| 19 | 64,6 % | 35,8 % | **28,7 ± 8,7** | 44 % |
+| 20 | 37,5 % | 24,2 % | 13,3 ± 8,2 | 35 % |
+| 21 | 57,9 % | 38,3 % | **19,6 ± 7,6** | 34 % |
+| 22 | 44,2 % | 29,2 % | 15,0 ± 8,1 | 34 % |
+| 23 | 57,9 % | 33,3 % | **24,6 ± 8,6** | 42 % |
+| 24 | 42,1 % | 24,2 % | 17,9 ± 8,1 | 43 % |
+| 25 | 61,7 % | 30,8 % | **30,8 ± 8,1** | 50 % |
+| 26 | 36,7 % | 27,5 % | 9,2 ± 7,1 | 25 % |
+| 27 | 64,2 % | 31,7 % | **32,5 ± 8,7** | 51 % |
+| 28 | 36,3 % | 28,3 % | 7,9 ± 5,7 | 22 % |
+| 29 | 64,2 % | 42,5 % | **21,7 ± 7,4** | 34 % |
+| au coup qui entame la 7e borne (100) | 48,0 % | 38,0 % | 10,0 ± 10,3 | 21 % |
+| au coup qui gagne la 1re borne (100) | 51,0 % | 32,0 % | **19,0 ± 8,2** | 37 % |
+
+- **Seules les toutes premières erreurs ne coûtent rien** (tour 2). Dès le
+  tour 6, une erreur au hasard coûte 10 à 20 points. **La zone la plus chère va
+  du tour 19 à la pioche vide**, avec un sommet aux tours 23-27 : le fautif y
+  perd **un tiers à la moitié** de ses chances de tenir la partie au tour 30.
+  Le coup qui gagne la 1re borne (19 ± 8) est un vrai tour charnière ; celui
+  qui entame la 7e borne l'est moins (10 ± 10).
+- Réunis par paires de tours, pour effacer l'effet du siège : 18-19 : 15,8 ;
+  20-21 : 16,5 ; 22-23 : 19,8 ; 24-25 : 24,4 ; 26-27 : 20,9 ; 28-29 : 14,8.
+- **Les tours impairs coûtent plus que les pairs** : ce sont ceux du joueur qui
+  a commencé. Dans ces parties, il tient l'avantage plus souvent (58-65 % chez
+  les témoins, contre 36-44 % pour l'autre), et l'on perd plus quand on a plus à
+  perdre. Rapporté à son avantage, l'écart se resserre (34-51 % contre 22-43 %).
+- **Ce qui distingue une erreur qui coûte** (`--explain`) : presque rien de
+  visible dans les traits mesurés. Seul signe, un peu plus de jokers en main
+  (0,80-0,85 contre 0,65-0,68) : une erreur au hasard gâche parfois un joker. Le
+  coût vient du coup lui-même, pas d'un type de position qu'on saurait filtrer.
+
+**Dépenser plus là où l'erreur coûte** (`+late=K+early=E`, au même budget total
+par partie, vérifié : 6 667 itérations par partie à 200 comme le 0.9) :
+- ×2 à partir du tour 22, ×0,5 avant : **45,8 % (38,4 – 53,3)** ;
+- ×1,5 et ×0,75 : 48,6 % (40,9 – 56,4).
+- **Écarté.** Les erreurs coûtent en fin de partie, mais le 0.9 n'en fait pas
+  davantage là qu'ailleurs : 800 itérations suffisent déjà, et ce qu'on enlève
+  au début se paie.
+
+**Un temps qui suit l'incertitude** (`+smart=1` : un coup s'arrête dès que son
+meilleur coup ne peut plus être rattrapé, et l'épargne va aux coups serrés ;
+797 itérations par coup en moyenne, contre 800) :
+- 54,2 % (45,5 – 62,8) sur 96 parties, puis 50,0 % (42,2 – 57,8) sur d'autres
+  donnes ; réunis, environ 51,7 %. **Écarté, pas net.**
+
+**Pour les versions futures** :
+- Le 0.9 ne gagne plus rien à redistribuer son calcul (fin de partie, coups
+  serrés, points charnières) ni à en ajouter (×2 : 52 %). Sa limite est dans
+  ce qu'il évalue, pas dans combien il cherche.
+- C'est entre les tours 19 et 29 qu'une erreur coûte le plus. Un nouveau
+  jugement (cœur, politique de simulation) se teste d'abord là, sur les
+  positions réelles : `npm run branch -- --vs experimental@0.9.0 --from 23
+  --engine <variante>`.

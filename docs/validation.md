@@ -223,7 +223,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | vérifier que le rejeu redonne la même fin | `npm run branch -- --vs experimental@0.9.0 --from first-border --check` |
 | voir ce qu'une erreur change | `npm run branch -- … --force random` |
 | essayer un autre moteur depuis un tour | `npm run branch -- --lost-by experimental@0.9.0 --from first-border --engine <moteur>` |
-| savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --games 60` |
+| savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |
 
 - **Les filtres** : `--lost-by` ou `--won-by` (un joueur), `--hands` (sa main de
   départ), `--balanced` (deux mains moyennes), `--vs` (les deux sièges sont ce

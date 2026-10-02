@@ -154,6 +154,7 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
       <li><b>Arbre plus profond</b>Profondeur 4 : <span class="num">53,5 %</span>, pas net. À 800 itérations, 0,2 % seulement atteignent le 5e coup. La profondeur 3 reste.</li>
       <li><b>Auto-jeu (étape 2)</b>Le cœur réglé par SPSA bat le cœur actuel (<span class="num">52,9 %</span>), mais pas dans l'arbre (<span class="num">50,7 %</span>). La valeur apprise y perd. Le 0.8 reste.</li>
       <li><b>Pistes du 0.9</b>Élargissement progressif et exploration 0,5 gagnent au tri (60 %, 57 %) puis retombent à <span class="num">49 %</span> au duel long. Le 0.9 reste ; pas de workers (×2 d'itérations : 52 %).</li>
+      <li><b>Le tour critique</b>Une erreur coûte peu au début, puis <span class="num">10 à 20</span> points dès le tour 6, et le plus entre les tours 19 et 29 (jusqu'à <span class="num">33</span> points). Redistribuer le calcul ne l'améliore pas.</li>
     </ul>
   </div>
 </div>
@@ -259,6 +260,11 @@ footer { padding-block: 32px 48px; color: var(--ink-3); font-size: 0.9rem; }
           <tr><td>Élargissement progressif 6 réponses, 6 coups</td><td><code>tri, puis --long --offset 1</code></td><td>60,4 %, puis 49,0 % (43,2 – 54,7)</td></tr>
           <tr><td>Exploration 0,5</td><td><code>tri, puis --long --offset 1</code></td><td>56,9 %, puis 49,0 % (43,5 – 54,5)</td></tr>
           <tr><td>0.9 à 1 600 contre 800 itérations</td><td><code>npm run duel -- ismcts+widen=3+depth=5@1600 … @800 --long --page</code></td><td>52,1 % (42,9 – 61,3), 96 parties</td></tr>
+          <tr><td>Prix d'une erreur, tours 18 à 29 (120 parties, 2 témoins)</td><td><code>npm run error-impact -- --turns 18-29 --games 120 --explain</code></td><td>de 3 à 33 points selon le tour ; par paires de tours : 15,8 / 16,5 / 19,8 / 24,4 / 20,9 / 14,8</td></tr>
+          <tr><td>Prix d'une erreur, tours 2, 6, 10, 14</td><td><code>… --turns 2,6 puis 10, puis 14</code></td><td>−7,9 / 12,5 / 20,0 / 10,0 points (± 9 à 11)</td></tr>
+          <tr><td>Au coup qui gagne la 1re borne / qui entame la 7e</td><td><code>… --turns 22 --points</code></td><td>19,0 ± 8,2 / 10,0 ± 10,3</td></tr>
+          <tr><td>Plus de budget après le tour 22 (même total)</td><td><code>npm run duel -- …+late=2+early=0.5@800 …@800 --long --page</code></td><td>45,8 % ; ×1,5 / ×0,75 : 48,6 %</td></tr>
+          <tr><td>Temps qui suit l'incertitude (même total)</td><td><code>… +smart=1@800, puis --offset 1</code></td><td>54,2 %, puis 50,0 % (≈ 51,7 % réunis)</td></tr>
         </tbody>
       </table>
     </div>
