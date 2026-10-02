@@ -1,6 +1,6 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { exposurePenalty, outbidBonus } from "./outbid.js";
-import { JOKER_IDEAS } from "./joker-ideas.js";
+import { JOKER_IDEAS, jokerTrapBonus } from "./joker-ideas.js";
 import { MINED_IDEAS, minedBonus } from "./mined.js";
 import { SHAPE_IDEAS, shapesBonus } from "./shapes.js";
 import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
@@ -56,6 +56,7 @@ export const IDEA_WEIGHTS = Object.freeze({
   jokerFull: 0.1,
   jokerWait: 0.1,
   jokerMid: 0.1,
+  jokerTrap: 0.1,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
@@ -143,7 +144,7 @@ export function ideasBonus(context, border, card) {
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
   if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
   bonus += principlesBonus(context, border, card);
-  bonus += minedBonus(context, border, card);
+  bonus += minedBonus(context, border, card) + jokerTrapBonus(context, mine, card);
   if (mine.length > 0) return bonus + shapesBonus(context, mine, card);
   return bonus + firstCardBonus(context, border, card);
 }

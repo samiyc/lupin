@@ -131,6 +131,10 @@ export const CORES = Object.freeze({
   dp1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "deepen"], weights: { ...EXPERIMENT.weights, deepen: 0.1 } },
   dp2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "deepen"], weights: { ...EXPERIMENT.weights, deepen: 0.2 } },
   dp4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "deepen"], weights: { ...EXPERIMENT.weights, deepen: 0.4 } },
+  jt1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.1 } },
+  jt2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.2 } },
+  jt4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.4 } },
+  jt8: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "jokerTrap"], weights: { ...EXPERIMENT.weights, jokerTrap: 0.8 } },
   sh: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights } },
   shx: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid", "exposure", "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
 });

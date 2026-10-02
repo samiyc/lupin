@@ -49,6 +49,7 @@ mesures détaillées sont plus bas, section par section.
 | Choisir son jeu : brelans ou suites (`plan`, `ends`, `midRuns`, `weakRuns`) | 02/10 | cœur seul de 45,9 % (les quatre) à 50,6 % (joker seul) | écarté sans duel long, les idées restent (`shapes.js`) | — |
 | Règles des replays : face à un côté plein, répondre plus bas, à côté d'une borne gagnée | 02/10 | cœur seul 48,0 – 50,6 % | écartées ; `junk` (53 %) va au duel long | — |
 | Placer le joker (face à un côté plein, attendre, brelan du milieu) ; `deepen` | 02/10 | cœur seul 49,5 – 50,3 % | écartés : le cœur le fait déjà ; `jokerRuns` +0,8, rien de plus avec `jkx` | — |
+| Le piège du joker : une paire morte, joker en main (`jokerTrap`) | 02/10 | cœur seul 49,7 – 50,3 % | neutre entre robots : ils ne lisent pas le signal ; le cœur le joue déjà (2 323 fois dans les replays) | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1141,3 +1142,30 @@ testé plus haut, n'avait donc jamais joué.
   (86 %). Transformée en idée (`deepen` : une 2e carte quand l'adversaire a
   entamé plus de bornes), elle est neutre (50,0 à 50,3 %) : le 0.9 le fait déjà,
   la règle décrivait l'erreur du Basique.
+
+## Le piège du joker (02/10)
+
+**L'idée de Sami** : avec un joker en main, poser une paire dont les deux
+autres cartes sont déjà en jeu. Pour l'adversaire, ce brelan n'aboutira
+presque jamais : il part sur une couleur ou une suite. Puis le joker tombe, et
+la borne est gagnée.
+
+**Dans les replays** (`npm run jokers`, 3 048 parties entre robots de même
+force) — une paire posée avec un joker en main :
+
+| Paire | Nombre | Finie au joker | Borne gagnée | Partie gagnée |
+| --- | --- | --- | --- | --- |
+| morte (les 2 autres cartes déjà en jeu) | 2 323 | 57 % | 78 % | 60 % |
+| vivante | 4 641 | 49 % | 74 % | 58 % |
+
+Le piège arrive souvent (0,76 fois par partie) et paie un peu mieux qu'une
+paire vivante : le cœur le joue déjà, sans le savoir, puisqu'il compte le joker
+de sa main pour finir la paire.
+
+**En cœur contre cœur** (`jokerTrap`, `src/sim/joker-ideas.js` : bonus pour la
+2e carte d'une paire morte, joker en main) : 50,0 %, 50,3 %, 50,2 %, 49,7 % aux
+poids 0,1 à 0,8. **Neutre**, et c'est attendu : un robot ne se fait pas piéger.
+Le cœur adverse ne lit pas de signal, il compte les cartes invisibles, jokers
+compris : une paire morte reste pour lui une menace tant qu'un joker manque.
+Le piège joue sur la lecture d'un humain, que seuls des parties contre Sami ou
+d'autres joueurs pourraient mesurer.

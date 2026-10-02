@@ -58,3 +58,20 @@ export function jokerTraits(state, player, border, turn) {
   const [mine, theirs] = [state.borders[border].sides[player], state.borders[border].sides[1 - player]];
   return [mySideTrait(spec, mine), theirSideTrait(spec, theirs), borderTrait(border, state.borders.length), phaseTrait(turn)];
 }
+
+/**
+ * Sami's joker trap: a pair whose last two real cards are already on the
+ * board, built with a joker in hand. To the opponent it looks dead; the joker
+ * makes it trips. Returns null unless the move makes a pair with a joker in
+ * hand; otherwise whether that pair is dead (no real card left to finish it).
+ */
+export function pairWithJoker(state, player, hand, move) {
+  const { spec } = state;
+  const mine = state.borders[move.border].sides[player];
+  if (isJoker(move.card) || mine.length !== 1 || isJoker(mine[0]) || !hand.some(isJoker)) return null;
+  const value = valueOf(spec, move.card);
+  if (valueOf(spec, mine[0]) !== value) return null;
+  const board = state.borders.flatMap((border) => border.sides.flat());
+  const seen = [...board, ...hand].filter((card) => !isJoker(card) && valueOf(spec, card) === value).length;
+  return { dead: seen === spec.colors, value };
+}

@@ -15,8 +15,12 @@ import { colorOf, isJoker, valueOf } from "../core/cards.js";
  *   spares a suit the real card would have cut (Sami's reading; the games
  *   show 94 % of borders won against 91 % at the ends).
  * - `jokerRuns`: the habit also lets a joker complete a suited run.
+ * - `jokerTrap` (Sami's trap): with a joker in hand, the second card of a pair
+ *   whose last two real cards are already on the board earns `jokerTrap`. The
+ *   pair looks dead to the opponent; the joker makes it trips. In the kept
+ *   games such pairs win their border 78 % of the time, live ones 74 %.
  */
-export const JOKER_IDEAS = Object.freeze(["jokerFull", "jokerWait", "jokerMid", "jokerRuns"]);
+export const JOKER_IDEAS = Object.freeze(["jokerFull", "jokerWait", "jokerMid", "jokerRuns", "jokerTrap"]);
 
 const realCards = (side) => side.filter((card) => !isJoker(card));
 
@@ -43,4 +47,13 @@ export function jokerBonus({ spec, ideas, weights, theirSides }, side, border) {
 function midTrips(spec, side) {
   const values = realCards(side).map((card) => valueOf(spec, card));
   return values.length === 2 && values[0] === values[1] && values[0] >= 4 && values[0] <= 7;
+}
+
+/** The trap's bonus for a real `card` added to my side `mine` (ideas.js). */
+export function jokerTrapBonus({ spec, ideas, weights, hand, boardCards }, mine, card) {
+  if (!ideas.has("jokerTrap") || mine.length !== 1 || isJoker(mine[0]) || !hand.some(isJoker)) return 0;
+  const value = valueOf(spec, card);
+  if (valueOf(spec, mine[0]) !== value) return 0;
+  const seen = [...boardCards, ...hand].filter((other) => !isJoker(other) && valueOf(spec, other) === value).length;
+  return seen === spec.colors ? weights.jokerTrap : 0;
 }
