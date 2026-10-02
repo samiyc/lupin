@@ -802,8 +802,14 @@ hasard et **deux** témoins sans erreur (`npm run error-impact -- --turns 18-29
 | --- | --- | --- | --- | --- |
 | 2 | 47,1 % | 55,0 % | −7,9 ± 9,3 | — |
 | 6 | 51,7 % | 39,2 % | 12,5 ± 9,4 | 24 % |
-| 10 (100 parties) | 53,0 % | 33,0 % | **20,0 ± 10,0** | 38 % |
-| 14 (100 parties) | 44,0 % | 34,0 % | 10,0 ± 10,8 | 23 % |
+| 7 | 46,3 % | 40,0 % | 6,3 ± 9,7 | 14 % |
+| 8 | 50,8 % | 41,7 % | 9,2 ± 9,5 | 18 % |
+| 9 | 45,8 % | 39,2 % | 6,7 ± 10,2 | 15 % |
+| 10 | 51,7 % | 33,3 % | **18,3 ± 9,6** | 35 % |
+| 11 | 50,8 % | 33,3 % | **17,5 ± 8,6** | 34 % |
+| 12 | 48,8 % | 43,3 % | 5,4 ± 9,8 | 11 % |
+| 13 | 54,2 % | 36,7 % | **17,5 ± 10,1** | 32 % |
+| 14 | 45,8 % | 32,5 % | 13,3 ± 9,7 | 29 % |
 | 18 | 37,9 % | 35,0 % | 2,9 ± 8,1 | 8 % |
 | 19 | 64,6 % | 35,8 % | **28,7 ± 8,7** | 44 % |
 | 20 | 37,5 % | 24,2 % | 13,3 ± 8,2 | 35 % |
@@ -1254,3 +1260,28 @@ basse reçoit le poids.
 - Contre un humain, qui lit une paire basse comme une borne facile, l'appât
   mordrait peut-être plus fort ; entre robots, l'adversaire compte les cartes
   sans lire d'intention.
+
+## Le prix d'une erreur aux tours 6 à 14 (backlog de nuit, 02/10)
+
+`npm run error-impact -- --turns 6-14 --games 120 --explain` : 120 parties par
+tour, deux témoins chacune, 167 min. Les neuf tours sont dans le tableau du
+« tour critique » plus haut (les mesures à 100 parties des tours 10 et 14 sont
+remplacées ; le tour 6 retombe exactement sur la mesure d'avant : à graine
+égale, le banc est reproductible).
+
+- **Une erreur au milieu coûte 12 ± 3 points en moyenne** (tours 6 à 14), contre
+  **20 ± 2** de 19 à 29. Le début du milieu coûte un peu moins (6-9 : 8,7 ± 4,9)
+  que sa fin (10-14 : 14,4 ± 4,3).
+- **Le « pic du tour 10 » n'en est pas un** : 18,3 ± 9,6, autant que les tours 11
+  (17,5) et 13 (17,5), alors que 12 tombe à 5,4. À ± 10 points par tour, ces
+  écarts sont du bruit ; seule la pente compte. Par paires de tours : 6-7 : 9,4 ;
+  8-9 : 8,0 ; 10-11 : 17,9 ; 12-13 : 11,5.
+- **`--explain` ne voit rien au milieu** : les traits mesurés (bornes
+  disputées, côtés complets, jokers, pioche) sont les mêmes pour une erreur qui
+  coûte et une erreur sans effet — à ce stade, les 7 bornes sont ouvertes et
+  aucune n'est disputée. Ces traits ont été pensés pour la fin de partie.
+- **Pour les versions futures** : le milieu (10-14) vaut déjà les deux tiers de
+  la zone chère. C'est là qu'un meilleur jugement du cœur paierait (`jkx` y
+  agit : côtés sans figure, surenchère, ouverture), avant que l'arbre ne voie la
+  fin.
+

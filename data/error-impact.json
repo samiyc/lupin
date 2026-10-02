@@ -1,32 +1,221 @@
 {
   "note": "Le prix d'une erreur au hasard, tour par tour : l'Expérimental 0.9.0 contre lui-même, parties à mains moyennes gardées dans duels/. Pour chaque partie, une erreur au hasard au tour T et deux témoins sans erreur (graine changée) ; qui tient la partie au tour 30, par le solveur exact. impact = points de pourcentage perdus par le fautif, ci = demi-fourchette à 95 %. Mesures du 02/10 (npm run error-impact), relues par npm run retrospective.",
-  "source": "npm run error-impact -- --turns 18-29 --games 120 --explain ; --turns 2,6 ; --turns 10 ; --turns 14 ; --turns 22 --points --games 100",
+  "source": "npm run error-impact -- --turns 18-29 --games 120 --explain ; --turns 6-14 --games 120 --explain (backlog de nuit) ; --turns 2 ; --turns 22 --points --games 100",
   "turns": [
-    { "turn": 2, "games": 120, "control": 47.1, "error": 55.0, "impact": -7.9, "ci": 9.3 },
-    { "turn": 6, "games": 120, "control": 51.7, "error": 39.2, "impact": 12.5, "ci": 9.4 },
-    { "turn": 10, "games": 100, "control": 53.0, "error": 33.0, "impact": 20.0, "ci": 10.0 },
-    { "turn": 14, "games": 100, "control": 44.0, "error": 34.0, "impact": 10.0, "ci": 10.8 },
-    { "turn": 18, "games": 120, "control": 37.9, "error": 35.0, "impact": 2.9, "ci": 8.1 },
-    { "turn": 19, "games": 120, "control": 64.6, "error": 35.8, "impact": 28.7, "ci": 8.7 },
-    { "turn": 20, "games": 120, "control": 37.5, "error": 24.2, "impact": 13.3, "ci": 8.2 },
-    { "turn": 21, "games": 120, "control": 57.9, "error": 38.3, "impact": 19.6, "ci": 7.6 },
-    { "turn": 22, "games": 120, "control": 44.2, "error": 29.2, "impact": 15.0, "ci": 8.1 },
-    { "turn": 23, "games": 120, "control": 57.9, "error": 33.3, "impact": 24.6, "ci": 8.6 },
-    { "turn": 24, "games": 120, "control": 42.1, "error": 24.2, "impact": 17.9, "ci": 8.1 },
-    { "turn": 25, "games": 120, "control": 61.7, "error": 30.8, "impact": 30.8, "ci": 8.1 },
-    { "turn": 26, "games": 120, "control": 36.7, "error": 27.5, "impact": 9.2, "ci": 7.1 },
-    { "turn": 27, "games": 120, "control": 64.2, "error": 31.7, "impact": 32.5, "ci": 8.7 },
-    { "turn": 28, "games": 120, "control": 36.3, "error": 28.3, "impact": 7.9, "ci": 5.7 },
-    { "turn": 29, "games": 120, "control": 64.2, "error": 42.5, "impact": 21.7, "ci": 7.4 }
+    {
+      "turn": 2,
+      "games": 120,
+      "control": 47.1,
+      "error": 55,
+      "impact": -7.9,
+      "ci": 9.3
+    },
+    {
+      "turn": 6,
+      "games": 120,
+      "control": 51.7,
+      "error": 39.2,
+      "impact": 12.5,
+      "ci": 9.4
+    },
+    {
+      "turn": 7,
+      "games": 120,
+      "control": 46.3,
+      "error": 40,
+      "impact": 6.3,
+      "ci": 9.7
+    },
+    {
+      "turn": 8,
+      "games": 120,
+      "control": 50.8,
+      "error": 41.7,
+      "impact": 9.2,
+      "ci": 9.5
+    },
+    {
+      "turn": 9,
+      "games": 120,
+      "control": 45.8,
+      "error": 39.2,
+      "impact": 6.7,
+      "ci": 10.2
+    },
+    {
+      "turn": 10,
+      "games": 120,
+      "control": 51.7,
+      "error": 33.3,
+      "impact": 18.3,
+      "ci": 9.6
+    },
+    {
+      "turn": 11,
+      "games": 120,
+      "control": 50.8,
+      "error": 33.3,
+      "impact": 17.5,
+      "ci": 8.6
+    },
+    {
+      "turn": 12,
+      "games": 120,
+      "control": 48.8,
+      "error": 43.3,
+      "impact": 5.4,
+      "ci": 9.8
+    },
+    {
+      "turn": 13,
+      "games": 120,
+      "control": 54.2,
+      "error": 36.7,
+      "impact": 17.5,
+      "ci": 10.1
+    },
+    {
+      "turn": 14,
+      "games": 120,
+      "control": 45.8,
+      "error": 32.5,
+      "impact": 13.3,
+      "ci": 9.7
+    },
+    {
+      "turn": 18,
+      "games": 120,
+      "control": 37.9,
+      "error": 35,
+      "impact": 2.9,
+      "ci": 8.1
+    },
+    {
+      "turn": 19,
+      "games": 120,
+      "control": 64.6,
+      "error": 35.8,
+      "impact": 28.7,
+      "ci": 8.7
+    },
+    {
+      "turn": 20,
+      "games": 120,
+      "control": 37.5,
+      "error": 24.2,
+      "impact": 13.3,
+      "ci": 8.2
+    },
+    {
+      "turn": 21,
+      "games": 120,
+      "control": 57.9,
+      "error": 38.3,
+      "impact": 19.6,
+      "ci": 7.6
+    },
+    {
+      "turn": 22,
+      "games": 120,
+      "control": 44.2,
+      "error": 29.2,
+      "impact": 15,
+      "ci": 8.1
+    },
+    {
+      "turn": 23,
+      "games": 120,
+      "control": 57.9,
+      "error": 33.3,
+      "impact": 24.6,
+      "ci": 8.6
+    },
+    {
+      "turn": 24,
+      "games": 120,
+      "control": 42.1,
+      "error": 24.2,
+      "impact": 17.9,
+      "ci": 8.1
+    },
+    {
+      "turn": 25,
+      "games": 120,
+      "control": 61.7,
+      "error": 30.8,
+      "impact": 30.8,
+      "ci": 8.1
+    },
+    {
+      "turn": 26,
+      "games": 120,
+      "control": 36.7,
+      "error": 27.5,
+      "impact": 9.2,
+      "ci": 7.1
+    },
+    {
+      "turn": 27,
+      "games": 120,
+      "control": 64.2,
+      "error": 31.7,
+      "impact": 32.5,
+      "ci": 8.7
+    },
+    {
+      "turn": 28,
+      "games": 120,
+      "control": 36.3,
+      "error": 28.3,
+      "impact": 7.9,
+      "ci": 5.7
+    },
+    {
+      "turn": 29,
+      "games": 120,
+      "control": 64.2,
+      "error": 42.5,
+      "impact": 21.7,
+      "ci": 7.4
+    }
   ],
   "points": [
-    { "label": "au coup qui entame la 7e borne", "games": 100, "impact": 10.0, "ci": 10.3 },
-    { "label": "au coup qui gagne la 1re borne", "games": 100, "impact": 19.0, "ci": 8.2 }
+    {
+      "label": "au coup qui entame la 7e borne",
+      "games": 100,
+      "impact": 10,
+      "ci": 10.3
+    },
+    {
+      "label": "au coup qui gagne la 1re borne",
+      "games": 100,
+      "impact": 19,
+      "ci": 8.2
+    }
   ],
   "turningPoints": [
-    { "label": "un joueur a une carte sur les 7 bornes", "median": 13, "low": 13, "high": 15 },
-    { "label": "la 1re borne prouvée", "median": 22, "low": 18, "high": 27 },
-    { "label": "la pioche vide : tout est connu, le solveur tranche", "median": 30, "low": 30, "high": 30 }
+    {
+      "label": "un joueur a une carte sur les 7 bornes",
+      "median": 13,
+      "low": 13,
+      "high": 15
+    },
+    {
+      "label": "la 1re borne prouvée",
+      "median": 22,
+      "low": 18,
+      "high": 27
+    },
+    {
+      "label": "la pioche vide : tout est connu, le solveur tranche",
+      "median": 30,
+      "low": 30,
+      "high": 30
+    }
   ],
-  "conversion": { "low": 92, "high": 99, "note": "le camp qui tient la partie au tour 30, en jeu parfait, la gagne dans 92 à 99 % des duels gardés" }
+  "conversion": {
+    "low": 92,
+    "high": 99,
+    "note": "le camp qui tient la partie au tour 30, en jeu parfait, la gagne dans 92 à 99 % des duels gardés"
+  }
 }

@@ -242,7 +242,7 @@ td.wrap { white-space: normal; text-align: left; min-width: 16rem; color: var(--
       <svg class="chart" id="impact" viewBox="0 0 960 320" role="img" aria-label="Prix d'une erreur au hasard selon le tour"></svg>
       <div class="legend" id="impact-notes"></div>
     </div>
-    <div class="lists" id="moment-facts"></div>
+    <div class="lists" id="moment-facts" style="grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr))"></div>
     <div class="seal" id="hiding"></div>
   </section>
 
@@ -627,13 +627,16 @@ function drawImpact() {
     im.append(make("rect", { x: IX(r.turn) - 8, y: IY(top), width: 16, height: Math.abs(IY(r.impact) - IY(0)), rx: 3, fill: odd ? "var(--seal)" : "var(--mark)", opacity: 0.85 }));
     im.append(make("line", { x1: IX(r.turn), x2: IX(r.turn), y1: IY(r.impact - r.ci), y2: IY(r.impact + r.ci), stroke: "var(--ink-2)", "stroke-width": 1.5, fill: "none" }));
   }
-  const pairs = [];
-  for (let t = 18; t <= 28; t += 2) {
-    const a = E.turns.find((r) => r.turn === t);
-    const b = E.turns.find((r) => r.turn === t + 1);
-    if (a && b) pairs.push(`${IX(t + 0.5)},${IY((a.impact + b.impact) / 2)}`);
+  // The mean of each pair of turns, drawn as one line per stretch of measured turns (6-13, 18-29).
+  for (const [from, to] of [[6, 12], [18, 28]]) {
+    const pairs = [];
+    for (let t = from; t <= to; t += 2) {
+      const a = E.turns.find((r) => r.turn === t);
+      const b = E.turns.find((r) => r.turn === t + 1);
+      if (a && b) pairs.push(`${IX(t + 0.5)},${IY((a.impact + b.impact) / 2)}`);
+    }
+    if (pairs.length > 1) im.append(make("polyline", { points: pairs.join(" "), fill: "none", stroke: "var(--brass)", "stroke-width": 3 }));
   }
-  im.append(make("polyline", { points: pairs.join(" "), fill: "none", stroke: "var(--brass)", "stroke-width": 3 }));
   im.append(make("text", { x: IX(13.4), y: 64, "text-anchor": "middle", fill: "var(--brass)" }, "7 bornes entamées"));
   im.append(make("text", { x: IX(22), y: 80, "text-anchor": "middle", fill: "var(--brass)" }, "1re borne prouvée"));
 }
@@ -643,8 +646,14 @@ notes.append(html("span", {}, html("i", { style: "background: var(--seal)" }), "
 notes.append(html("span", {}, html("i", { style: "background: var(--mark)" }), "tour de l'autre joueur"));
 notes.append(html("span", {}, html("i", { style: "background: var(--brass)" }), "moyenne par paires de tours"));
 notes.append(html("span", {}, "trait : fourchette à 95 %"));
+/** The mean impact over turns `a` to `b`, as measured. */
+const meanImpact = (a, b) => {
+  const rows = E.turns.filter((r) => r.turn >= a && r.turn <= b);
+  return Math.round((10 * rows.reduce((s, r) => s + r.impact, 0)) / rows.length) / 10;
+};
 const facts = [
   ["Le début est un brouillard", "Au tour 2, une erreur ne coûte rien de mesurable : la partie redevient presque pile ou face, quoi qu'on joue. C'est pour cela qu'aucun répertoire d'ouvertures n'a aidé."],
+  ["Le milieu coûte déjà", `Des tours 6 à 14, une erreur coûte ${fr(meanImpact(6, 14))} points en moyenne, contre ${fr(meanImpact(19, 29))} de 19 à 29 : un peu moins au début du milieu, plus vers le tour 10. Le « pic du tour 10 » n'en était pas un : ses voisins 11 et 13 coûtent autant.`],
   ["L'écart se creuse entre les tours 19 et 29", `Une erreur y coûte au fautif un tiers à la moitié de ses chances, jusqu'à ${fr(Math.max(...E.turns.map((r) => r.impact)))} points. Au coup qui gagne la première borne : ${fr(E.points[1].impact)} ± ${fr(E.points[1].ci)}.`],
   ["La pioche vide tranche", `Au tour 30, tout est visible : le solveur sait qui gagne. ${E.conversion.note.charAt(0).toUpperCase()}${E.conversion.note.slice(1)}.`],
 ];
