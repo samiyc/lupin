@@ -1,7 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import os from "node:os";
 import { fileURLToPath } from "node:url";
-import { runPool } from "./lib/pool.js";
+import { runPool, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run selfplay -- [engine] [--minutes N]`: the engine plays itself on
@@ -12,7 +11,7 @@ import { runPool } from "./lib/pool.js";
 const args = process.argv.slice(2);
 const engine = args.find((arg) => !arg.startsWith("--") && !/^\d+$/.test(arg)) ?? "experimental:80";
 const minutes = Math.min(20, Number(args[args.indexOf("--minutes") + 1]) || 20);
-const threads = Math.max(1, os.cpus().length - 1);
+const threads = workerCount();
 const started = Date.now();
 const tasks = Array.from({ length: threads }, (_, i) => ({ engine, seconds: minutes * 60, seed: 424242 + 104729 * i }));
 const logs = (await runPool(new URL("./lib/selfplay-worker.js", import.meta.url), tasks)).flat();

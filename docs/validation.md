@@ -232,6 +232,8 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | l'oracle au coup qui remplit la dernière colonne vide de chaque joueur | `npm run oracle -- --at last-column --minutes 240` |
 | relire le résumé de l'oracle (data/oracle-diffs.json) | `npm run oracle -- --summary` |
 | lancer les traitements longs de la nuit (2 h au plus chacun, arrêtés au-delà) | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
+| limiter le nombre de fils de calcul (portable, ou garder la main pendant un calcul) | `LOPIN_THREADS=4 npm run …` (docs/cloud.md) |
+| envoyer les calculs sur un serveur loué | voir docs/cloud.md |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs) | `npm run retrospective` → `out/retrospective.html` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |
 

@@ -1,11 +1,10 @@
-import os from "node:os";
 import { BOT_IDS, BOT_LINEUP, botTag, engineOf } from "../src/config/bots.js";
 import { OFFICIAL_RULES } from "../src/config/rules.js";
 import { DUEL_ROW, SEED } from "../src/config/simulations.js";
 import { BOTS, engineFor } from "../src/sim/bots.js";
 import { PROFILES, duelVerdict, isSlowEngine, pointsOf } from "./lib/duel-plan.js";
 import { saveDuel, shouldSave } from "./lib/duel-save.js";
-import { runPool } from "./lib/pool.js";
+import { runPool, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run duel -- <bot A> <bot B> [--quick | --screen | --long] [--games N] [--page]`:
@@ -76,7 +75,7 @@ const save = shouldSave({ asked: args.includes("--save"), profileName, engines: 
 const logs = [];
 const scale = slow ? profile.slow : profile.fast;
 const plan = exact ? { min: exact, max: exact, chunk: Math.max(1, Math.ceil(exact / 20)) } : scale;
-const threads = Math.max(2, os.cpus().length - 1);
+const threads = Math.max(2, workerCount());
 const pct = (share) => `${(100 * share).toFixed(1).replace(".", ",")} %`;
 
 const tally = { games: 0, first: 0, second: 0, tasks: 0, pairs: [] };

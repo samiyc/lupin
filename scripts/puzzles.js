@@ -1,7 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
 import { fileURLToPath } from "node:url";
-import { runPool } from "./lib/pool.js";
+import { runPool, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run puzzles -- [--minutes N]`: endgame puzzles from the self-play games
@@ -25,7 +24,7 @@ const logs = JSON.parse(await readFile(source, "utf8"));
 
 const started = Date.now();
 const items = logs.flatMap((log, index) => TURNS.map((turn) => ({ index, log, turn })));
-const threads = Math.max(1, os.cpus().length - 1);
+const threads = workerCount();
 const tasks = Array.from({ length: threads }, (_, t) => ({ items: items.filter((_, i) => i % threads === t), share: SHARE, seconds: minutes * 60 }));
 const found = (await runPool(new URL("./lib/puzzle-worker.js", import.meta.url), tasks)).flat();
 

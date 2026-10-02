@@ -1,8 +1,7 @@
 import { readFile } from "node:fs/promises";
-import os from "node:os";
 import { fileURLToPath } from "node:url";
 import { createRng } from "../src/core/random.js";
-import { runPool } from "./lib/pool.js";
+import { runPool, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run time-study`: does more thinking time make a better move? Positions
@@ -22,7 +21,7 @@ const reference = 2 * checkpoints.at(-1);
 const logs = JSON.parse(await readFile(fileURLToPath(new URL("../selfplay/experimental_80.json", import.meta.url)), "utf8"));
 const rng = createRng(2026);
 const items = Array.from({ length: POSITIONS }, () => ({ log: logs[rng.int(logs.length)], turn: 3 + rng.int(33) }));
-const threads = Math.max(1, os.cpus().length - 1);
+const threads = workerCount();
 const started = Date.now();
 const tasks = Array.from({ length: threads }, (_, t) => ({ items: items.filter((_, i) => i % threads === t), checkpoints, reference, seconds: MINUTES * 60 }));
 const results = (await runPool(new URL("./lib/time-study-worker.js", import.meta.url), tasks)).flat();
