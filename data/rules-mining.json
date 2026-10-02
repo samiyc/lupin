@@ -5,6 +5,8 @@
   "games": 3048,
   "rules": [
    {
+    "moves": 21336,
+    "precision": 0.4962504686914136,
     "context": "partout",
     "trait": "ouvre une borne vierge",
     "games": 3048,
@@ -23,6 +25,8 @@
     ]
    },
    {
+    "moves": 14126,
+    "precision": 0.4987257539289254,
     "context": "partout",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 3043,
@@ -41,6 +45,8 @@
     ]
    },
    {
+    "moves": 30525,
+    "precision": 0.47085995085995086,
     "context": "partout",
     "trait": "carte faible (3-)",
     "games": 3048,
@@ -59,6 +65,8 @@
     ]
    },
    {
+    "moves": 30379,
+    "precision": 0.4981730800882188,
     "context": "partout",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 3048,
@@ -77,6 +85,8 @@
     ]
    },
    {
+    "moves": 21275,
+    "precision": 0.5040658049353701,
     "context": "partout",
     "trait": "répond à une borne adverse",
     "games": 3048,
@@ -95,6 +105,8 @@
     ]
    },
    {
+    "moves": 21508,
+    "precision": 0.5041379951645899,
     "context": "partout",
     "trait": "ouvre sans suite prévue en main",
     "games": 3048,
@@ -113,6 +125,8 @@
     ]
    },
    {
+    "moves": 30499,
+    "precision": 0.5113282402701728,
     "context": "partout",
     "trait": "carte forte (8+)",
     "games": 3048,
@@ -131,6 +145,8 @@
     ]
    },
    {
+    "moves": 41070,
+    "precision": 0.5102264426588751,
     "context": "partout",
     "trait": "carte moyenne (4-7)",
     "games": 3048,
@@ -149,6 +165,8 @@
     ]
    },
    {
+    "moves": 45555,
+    "precision": 0.5090110855010427,
     "context": "partout",
     "trait": "au centre (bornes 3-5)",
     "games": 3048,
@@ -167,6 +185,8 @@
     ]
    },
    {
+    "moves": 7882,
+    "precision": 0.4799543263131185,
     "context": "partout",
     "trait": "répond plus bas",
     "games": 2920,
@@ -185,6 +205,8 @@
     ]
    },
    {
+    "moves": 37559,
+    "precision": 0.4946084826539578,
     "context": "partout",
     "trait": "pose une 2e carte",
     "games": 3048,
@@ -203,6 +225,8 @@
     ]
    },
    {
+    "moves": 21174,
+    "precision": 0.5435439690186077,
     "context": "partout",
     "trait": "bâtit une suite de couleur",
     "games": 3045,
@@ -221,6 +245,8 @@
     ]
    },
    {
+    "moves": 26174,
+    "precision": 0.5227324826163369,
     "context": "partout",
     "trait": "complète un côté (3e carte)",
     "games": 3048,
@@ -239,6 +265,8 @@
     ]
    },
    {
+    "moves": 23998,
+    "precision": 0.4370780898408201,
     "context": "partout",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 3046,
@@ -257,6 +285,8 @@
     ]
    },
    {
+    "moves": 18245,
+    "precision": 0.5541244176486708,
     "context": "partout",
     "trait": "bâtit un brelan",
     "games": 3010,
@@ -275,6 +305,8 @@
     ]
    },
    {
+    "moves": 10616,
+    "precision": 0.5936322532027128,
     "context": "partout",
     "trait": "face à un côté adverse plein",
     "games": 2968,
@@ -293,6 +325,8 @@
     ]
    },
    {
+    "moves": 11541,
+    "precision": 0.6333073390520753,
     "context": "partout",
     "trait": "à côté d'une borne gagnée",
     "games": 3022,
@@ -311,6 +345,8 @@
     ]
    },
    {
+    "moves": 4250,
+    "precision": 0.6230588235294118,
     "context": "partout",
     "trait": "joker",
     "games": 2701,
@@ -329,6 +365,8 @@
     ]
    },
    {
+    "moves": 20551,
+    "precision": 0.4976400175173957,
     "context": "début (tours 1-12)",
     "trait": "ouvre une borne vierge",
     "games": 3048,
@@ -347,6 +385,8 @@
     ]
    },
    {
+    "moves": 11675,
+    "precision": 0.4980728051391863,
     "context": "début (tours 1-12)",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 3032,
@@ -365,6 +405,8 @@
     ]
    },
    {
+    "moves": 11307,
+    "precision": 0.47943751658264794,
     "context": "début (tours 1-12)",
     "trait": "carte faible (3-)",
     "games": 3048,
@@ -383,6 +425,8 @@
     ]
    },
    {
+    "moves": 10847,
+    "precision": 0.49423803816723516,
     "context": "début (tours 1-12)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 3048,
@@ -401,6 +445,8 @@
     ]
    },
    {
+    "moves": 14183,
+    "precision": 0.5004582951420715,
     "context": "début (tours 1-12)",
     "trait": "répond à une borne adverse",
     "games": 3048,
@@ -419,6 +465,8 @@
     ]
    },
    {
+    "moves": 17376,
+    "precision": 0.5021293738489871,
     "context": "début (tours 1-12)",
     "trait": "ouvre sans suite prévue en main",
     "games": 3047,
@@ -437,6 +485,8 @@
     ]
    },
    {
+    "moves": 10217,
+    "precision": 0.5080747773318978,
     "context": "début (tours 1-12)",
     "trait": "carte forte (8+)",
     "games": 3044,
@@ -455,6 +505,8 @@
     ]
    },
    {
+    "moves": 15037,
+    "precision": 0.510008645341491,
     "context": "début (tours 1-12)",
     "trait": "carte moyenne (4-7)",
     "games": 3048,
@@ -473,6 +525,8 @@
     ]
    },
    {
+    "moves": 14630,
+    "precision": 0.5056049213943951,
     "context": "début (tours 1-12)",
     "trait": "au centre (bornes 3-5)",
     "games": 3048,
@@ -491,6 +545,8 @@
     ]
    },
    {
+    "moves": 5800,
+    "precision": 0.4770689655172414,
     "context": "début (tours 1-12)",
     "trait": "répond plus bas",
     "games": 2735,
@@ -509,6 +565,8 @@
     ]
    },
    {
+    "moves": 6908,
+    "precision": 0.5098436595251882,
     "context": "milieu (13-24)",
     "trait": "répond à une borne adverse",
     "games": 3037,
@@ -527,6 +585,8 @@
     ]
    },
    {
+    "moves": 4066,
+    "precision": 0.5110673880964093,
     "context": "milieu (13-24)",
     "trait": "ouvre sans suite prévue en main",
     "games": 2563,
@@ -545,6 +605,8 @@
     ]
    },
    {
+    "moves": 14377,
+    "precision": 0.5125547749878278,
     "context": "milieu (13-24)",
     "trait": "carte moyenne (4-7)",
     "games": 3048,
@@ -563,6 +625,8 @@
     ]
    },
    {
+    "moves": 16721,
+    "precision": 0.5028407391902399,
     "context": "milieu (13-24)",
     "trait": "au centre (bornes 3-5)",
     "games": 3048,
@@ -581,6 +645,8 @@
     ]
    },
    {
+    "moves": 23028,
+    "precision": 0.49079381622372764,
     "context": "milieu (13-24)",
     "trait": "pose une 2e carte",
     "games": 3048,
@@ -599,6 +665,8 @@
     ]
    },
    {
+    "moves": 12581,
+    "precision": 0.5206263413083221,
     "context": "milieu (13-24)",
     "trait": "bâtit une suite de couleur",
     "games": 3007,
@@ -617,6 +685,8 @@
     ]
    },
    {
+    "moves": 10845,
+    "precision": 0.4662056247118488,
     "context": "milieu (13-24)",
     "trait": "carte faible (3-)",
     "games": 3041,
@@ -635,6 +705,8 @@
     ]
    },
    {
+    "moves": 5855,
+    "precision": 0.5299743808710504,
     "context": "milieu (13-24)",
     "trait": "complète un côté (3e carte)",
     "games": 2902,
@@ -653,6 +725,8 @@
     ]
    },
    {
+    "moves": 7247,
+    "precision": 0.4439078239271423,
     "context": "milieu (13-24)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 2760,
@@ -671,6 +745,8 @@
     ]
    },
    {
+    "moves": 10677,
+    "precision": 0.5141893790390559,
     "context": "milieu (13-24)",
     "trait": "carte forte (8+)",
     "games": 3032,
@@ -689,6 +765,8 @@
     ]
    },
    {
+    "moves": 9003,
+    "precision": 0.5120515383760968,
     "context": "milieu (13-24)",
     "trait": "bâtit un brelan",
     "games": 2886,
@@ -707,6 +785,8 @@
     ]
    },
    {
+    "moves": 9972,
+    "precision": 0.49518652226233456,
     "context": "milieu (13-24)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 3019,
@@ -725,6 +805,8 @@
     ]
    },
    {
+    "moves": 12691,
+    "precision": 0.4974391300921913,
     "context": "fin (25+)",
     "trait": "pose une 2e carte",
     "games": 3019,
@@ -743,6 +825,8 @@
     ]
    },
    {
+    "moves": 6917,
+    "precision": 0.5882608067081104,
     "context": "fin (25+)",
     "trait": "bâtit une suite de couleur",
     "games": 2674,
@@ -761,6 +845,8 @@
     ]
    },
    {
+    "moves": 9802,
+    "precision": 0.5960008161599674,
     "context": "fin (25+)",
     "trait": "face à un côté adverse plein",
     "games": 2926,
@@ -779,6 +865,8 @@
     ]
    },
    {
+    "moves": 9605,
+    "precision": 0.5116085372201978,
     "context": "fin (25+)",
     "trait": "carte forte (8+)",
     "games": 2956,
@@ -797,6 +885,8 @@
     ]
    },
    {
+    "moves": 10567,
+    "precision": 0.6280874420365288,
     "context": "fin (25+)",
     "trait": "à côté d'une borne gagnée",
     "games": 2987,
@@ -815,6 +905,8 @@
     ]
    },
    {
+    "moves": 16702,
+    "precision": 0.43443898934259373,
     "context": "fin (25+)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 3013,
@@ -833,6 +925,8 @@
     ]
    },
    {
+    "moves": 11656,
+    "precision": 0.5076355525051476,
     "context": "fin (25+)",
     "trait": "carte moyenne (4-7)",
     "games": 2982,
@@ -851,6 +945,8 @@
     ]
    },
    {
+    "moves": 14204,
+    "precision": 0.5197831596733314,
     "context": "fin (25+)",
     "trait": "au centre (bornes 3-5)",
     "games": 3003,
@@ -869,6 +965,8 @@
     ]
    },
    {
+    "moves": 20317,
+    "precision": 0.5206477334252104,
     "context": "fin (25+)",
     "trait": "complète un côté (3e carte)",
     "games": 3025,
@@ -887,6 +985,8 @@
     ]
    },
    {
+    "moves": 9125,
+    "precision": 0.5964931506849315,
     "context": "fin (25+)",
     "trait": "bâtit un brelan",
     "games": 2835,
@@ -905,6 +1005,8 @@
     ]
    },
    {
+    "moves": 3558,
+    "precision": 0.6374367622259697,
     "context": "fin (25+)",
     "trait": "joker",
     "games": 2448,
@@ -923,6 +1025,8 @@
     ]
    },
    {
+    "moves": 9560,
+    "precision": 0.5057531380753139,
     "context": "fin (25+)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 2925,
@@ -941,6 +1045,8 @@
     ]
    },
    {
+    "moves": 8889,
+    "precision": 0.4898188772640342,
     "context": "partout",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 2949,
@@ -959,6 +1065,8 @@
     ]
    },
    {
+    "moves": 12120,
+    "precision": 0.4161716171617162,
     "context": "partout",
     "trait": "à côté d'une borne perdue",
     "games": 2982,
@@ -977,6 +1085,8 @@
     ]
    },
    {
+    "moves": 7194,
+    "precision": 0.4886016124548235,
     "context": "début (tours 1-12)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 2849,
@@ -995,6 +1105,8 @@
     ]
    },
    {
+    "moves": 814,
+    "precision": 0.5651105651105651,
     "context": "milieu (13-24)",
     "trait": "face à un côté adverse plein",
     "games": 723,
@@ -1013,6 +1125,8 @@
     ]
    },
    {
+    "moves": 8373,
+    "precision": 0.46530514749790997,
     "context": "fin (25+)",
     "trait": "carte faible (3-)",
     "games": 2910,
@@ -1031,6 +1145,8 @@
     ]
    },
    {
+    "moves": 10948,
+    "precision": 0.4234563390573621,
     "context": "fin (25+)",
     "trait": "à côté d'une borne perdue",
     "games": 2940,
@@ -1049,6 +1165,8 @@
     ]
    },
    {
+    "moves": 2357,
+    "precision": 0.5167585914297836,
     "context": "partout",
     "trait": "surenchérit d'un cran",
     "games": 1672,
@@ -1067,6 +1185,8 @@
     ]
    },
    {
+    "moves": 1687,
+    "precision": 0.5127445168938944,
     "context": "début (tours 1-12)",
     "trait": "surenchérit d'un cran",
     "games": 1339,
@@ -1085,6 +1205,8 @@
     ]
    },
    {
+    "moves": 1172,
+    "precision": 0.34812286689419797,
     "context": "milieu (13-24)",
     "trait": "à côté d'une borne perdue",
     "games": 875,
@@ -1103,6 +1225,8 @@
     ]
    },
    {
+    "moves": 11387,
+    "precision": 0.40976552208658995,
     "context": "après une borne perdue",
     "trait": "pose une 2e carte",
     "games": 2446,
@@ -1121,6 +1245,8 @@
     ]
    },
    {
+    "moves": 7833,
+    "precision": 0.5176816034724881,
     "context": "après une borne perdue",
     "trait": "bâtit un brelan",
     "games": 2288,
@@ -1139,6 +1265,8 @@
     ]
    },
    {
+    "moves": 8531,
+    "precision": 0.4473098112765209,
     "context": "après une borne perdue",
     "trait": "carte forte (8+)",
     "games": 2423,
@@ -1157,6 +1285,8 @@
     ]
    },
    {
+    "moves": 12120,
+    "precision": 0.4161716171617162,
     "context": "après une borne perdue",
     "trait": "à côté d'une borne perdue",
     "games": 2470,
@@ -1175,6 +1305,8 @@
     ]
    },
    {
+    "moves": 17306,
+    "precision": 0.47220617127007974,
     "context": "après une borne perdue",
     "trait": "complète un côté (3e carte)",
     "games": 2494,
@@ -1193,6 +1325,8 @@
     ]
    },
    {
+    "moves": 6246,
+    "precision": 0.516010246557797,
     "context": "après une borne perdue",
     "trait": "bâtit une suite de couleur",
     "games": 2181,
@@ -1211,6 +1345,8 @@
     ]
    },
    {
+    "moves": 7365,
+    "precision": 0.3953835709436524,
     "context": "après une borne perdue",
     "trait": "carte faible (3-)",
     "games": 2367,
@@ -1229,6 +1365,8 @@
     ]
    },
    {
+    "moves": 14351,
+    "precision": 0.37899797923489653,
     "context": "après une borne perdue",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 2480,
@@ -1247,6 +1385,8 @@
     ]
    },
    {
+    "moves": 10247,
+    "precision": 0.4432516834195374,
     "context": "après une borne perdue",
     "trait": "carte moyenne (4-7)",
     "games": 2464,
@@ -1265,6 +1405,8 @@
     ]
    },
    {
+    "moves": 7850,
+    "precision": 0.5634394904458598,
     "context": "après une borne perdue",
     "trait": "face à un côté adverse plein",
     "games": 2413,
@@ -1283,6 +1425,8 @@
     ]
    },
    {
+    "moves": 8415,
+    "precision": 0.4400475341651812,
     "context": "après une borne perdue",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 2404,
@@ -1301,6 +1445,8 @@
     ]
    },
    {
+    "moves": 8734,
+    "precision": 0.5893061598351271,
     "context": "après une borne perdue",
     "trait": "à côté d'une borne gagnée",
     "games": 2444,
@@ -1319,6 +1465,8 @@
     ]
    },
    {
+    "moves": 2913,
+    "precision": 0.5870236869207003,
     "context": "après une borne perdue",
     "trait": "joker",
     "games": 1935,
@@ -1337,6 +1485,8 @@
     ]
    },
    {
+    "moves": 11114,
+    "precision": 0.5800791794133525,
     "context": "après une borne gagnée",
     "trait": "pose une 2e carte",
     "games": 2299,
@@ -1355,6 +1505,8 @@
     ]
    },
    {
+    "moves": 5794,
+    "precision": 0.6620642043493269,
     "context": "après une borne gagnée",
     "trait": "bâtit une suite de couleur",
     "games": 1971,
@@ -1373,6 +1525,8 @@
     ]
    },
    {
+    "moves": 6802,
+    "precision": 0.5324904439870626,
     "context": "après une borne gagnée",
     "trait": "carte faible (3-)",
     "games": 2200,
@@ -1391,6 +1545,8 @@
     ]
    },
    {
+    "moves": 15322,
+    "precision": 0.5842579297741809,
     "context": "après une borne gagnée",
     "trait": "complète un côté (3e carte)",
     "games": 2326,
@@ -1409,6 +1565,8 @@
     ]
    },
    {
+    "moves": 13023,
+    "precision": 0.4973508408200875,
     "context": "après une borne gagnée",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 2317,
@@ -1427,6 +1585,8 @@
     ]
    },
    {
+    "moves": 9455,
+    "precision": 0.5832892649391856,
     "context": "après une borne gagnée",
     "trait": "carte moyenne (4-7)",
     "games": 2295,
@@ -1445,6 +1605,8 @@
     ]
    },
    {
+    "moves": 8446,
+    "precision": 0.636277527823822,
     "context": "après une borne gagnée",
     "trait": "face à un côté adverse plein",
     "games": 2262,
@@ -1463,6 +1625,8 @@
     ]
    },
    {
+    "moves": 7893,
+    "precision": 0.5852020777904472,
     "context": "après une borne gagnée",
     "trait": "carte forte (8+)",
     "games": 2238,
@@ -1481,6 +1645,8 @@
     ]
    },
    {
+    "moves": 7735,
+    "precision": 0.5824175824175825,
     "context": "après une borne gagnée",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 2190,
@@ -1499,6 +1665,8 @@
     ]
    },
    {
+    "moves": 8744,
+    "precision": 0.4739249771271729,
     "context": "après une borne gagnée",
     "trait": "à côté d'une borne perdue",
     "games": 2274,
@@ -1517,6 +1685,8 @@
     ]
    },
    {
+    "moves": 7382,
+    "precision": 0.6725819561094555,
     "context": "après une borne gagnée",
     "trait": "bâtit un brelan",
     "games": 2081,
@@ -1535,6 +1705,8 @@
     ]
    },
    {
+    "moves": 11541,
+    "precision": 0.6333073390520753,
     "context": "après une borne gagnée",
     "trait": "à côté d'une borne gagnée",
     "games": 2317,
@@ -1553,6 +1725,8 @@
     ]
    },
    {
+    "moves": 2784,
+    "precision": 0.7108477011494253,
     "context": "après une borne gagnée",
     "trait": "joker",
     "games": 1707,
@@ -1571,6 +1745,8 @@
     ]
    },
    {
+    "moves": 2382,
+    "precision": 0.4995801847187238,
     "context": "milieu (13-24)",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 1828,
@@ -1589,6 +1765,8 @@
     ]
    },
    {
+    "moves": 11528,
+    "precision": 0.5896946564885496,
     "context": "après une borne gagnée",
     "trait": "au centre (bornes 3-5)",
     "games": 2308,
@@ -1607,6 +1785,8 @@
     ]
    },
    {
+    "moves": 12345,
+    "precision": 0.4553260429323613,
     "context": "après une borne perdue",
     "trait": "au centre (bornes 3-5)",
     "games": 2488,
@@ -1625,6 +1805,8 @@
     ]
    },
    {
+    "moves": 17142,
+    "precision": 0.4903745187259363,
     "context": "main medium",
     "trait": "ouvre une borne vierge",
     "games": 1988,
@@ -1643,6 +1825,8 @@
     ]
    },
    {
+    "moves": 7421,
+    "precision": 0.4895566635224363,
     "context": "main medium",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 1946,
@@ -1661,6 +1845,8 @@
     ]
    },
    {
+    "moves": 25097,
+    "precision": 0.4695780372156035,
     "context": "main medium",
     "trait": "carte faible (3-)",
     "games": 1988,
@@ -1679,6 +1865,8 @@
     ]
    },
    {
+    "moves": 17072,
+    "precision": 0.49496251171508904,
     "context": "main medium",
     "trait": "ouvre sans suite prévue en main",
     "games": 1988,
@@ -1697,6 +1885,8 @@
     ]
    },
    {
+    "moves": 33502,
+    "precision": 0.5042087039579727,
     "context": "main medium",
     "trait": "carte moyenne (4-7)",
     "games": 1988,
@@ -1715,6 +1905,8 @@
     ]
    },
    {
+    "moves": 24508,
+    "precision": 0.49236983842010773,
     "context": "main medium",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 1988,
@@ -1733,6 +1925,8 @@
     ]
    },
    {
+    "moves": 23762,
+    "precision": 0.5055550879555593,
     "context": "main medium",
     "trait": "carte forte (8+)",
     "games": 1988,
@@ -1751,6 +1945,8 @@
     ]
    },
    {
+    "moves": 17207,
+    "precision": 0.49845992909862263,
     "context": "main medium",
     "trait": "répond à une borne adverse",
     "games": 1988,
@@ -1769,6 +1965,8 @@
     ]
    },
    {
+    "moves": 6514,
+    "precision": 0.4800429843414185,
     "context": "main medium",
     "trait": "répond plus bas",
     "games": 1899,
@@ -1787,6 +1985,8 @@
     ]
    },
    {
+    "moves": 36732,
+    "precision": 0.5041653054557335,
     "context": "main medium",
     "trait": "au centre (bornes 3-5)",
     "games": 1988,
@@ -1805,6 +2005,8 @@
     ]
    },
    {
+    "moves": 11417,
+    "precision": 0.4947008846457038,
     "context": "main medium",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 1985,
@@ -1823,6 +2025,8 @@
     ]
    },
    {
+    "moves": 30324,
+    "precision": 0.4896451655454426,
     "context": "main medium",
     "trait": "pose une 2e carte",
     "games": 1988,
@@ -1841,6 +2045,8 @@
     ]
    },
    {
+    "moves": 14627,
+    "precision": 0.5430368496615847,
     "context": "main medium",
     "trait": "bâtit un brelan",
     "games": 1957,
@@ -1859,6 +2065,8 @@
     ]
    },
    {
+    "moves": 17232,
+    "precision": 0.5429433611884865,
     "context": "main medium",
     "trait": "bâtit une suite de couleur",
     "games": 1985,
@@ -1877,6 +2085,8 @@
     ]
    },
    {
+    "moves": 21058,
+    "precision": 0.5188526925633964,
     "context": "main medium",
     "trait": "complète un côté (3e carte)",
     "games": 1988,
@@ -1895,6 +2105,8 @@
     ]
    },
    {
+    "moves": 9204,
+    "precision": 0.6354845719252499,
     "context": "main medium",
     "trait": "à côté d'une borne gagnée",
     "games": 1970,
@@ -1913,6 +2125,8 @@
     ]
    },
    {
+    "moves": 19265,
+    "precision": 0.43379185050609914,
     "context": "main medium",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 1988,
@@ -1931,6 +2145,8 @@
     ]
    },
    {
+    "moves": 8529,
+    "precision": 0.5894008676280924,
     "context": "main medium",
     "trait": "face à un côté adverse plein",
     "games": 1940,
@@ -1949,6 +2165,8 @@
     ]
    },
    {
+    "moves": 9749,
+    "precision": 0.40999076828392655,
     "context": "main medium",
     "trait": "à côté d'une borne perdue",
     "games": 1937,
@@ -1967,6 +2185,8 @@
     ]
    },
    {
+    "moves": 974,
+    "precision": 0.6899383983572895,
     "context": "milieu (13-24)",
     "trait": "à côté d'une borne gagnée",
     "games": 756,
@@ -1985,6 +2205,8 @@
     ]
    },
    {
+    "moves": 2074,
+    "precision": 0.4869816779170685,
     "context": "milieu (13-24)",
     "trait": "répond plus bas",
     "games": 1680,
@@ -2003,6 +2225,8 @@
     ]
    },
    {
+    "moves": 1882,
+    "precision": 0.5132837407013815,
     "context": "main medium",
     "trait": "surenchérit d'un cran",
     "games": 1088,
@@ -2021,6 +2245,8 @@
     ]
    },
    {
+    "moves": 3370,
+    "precision": 0.613353115727003,
     "context": "main medium",
     "trait": "joker",
     "games": 1748,
@@ -2039,6 +2265,8 @@
     ]
    },
    {
+    "moves": 665,
+    "precision": 0.5278195488721804,
     "context": "milieu (13-24)",
     "trait": "surenchérit d'un cran",
     "games": 614,
@@ -2057,6 +2285,8 @@
     ]
    },
    {
+    "moves": 1840,
+    "precision": 0.5228260869565218,
     "context": "début (tours 1-12)",
     "trait": "pose une 2e carte",
     "games": 1537,
@@ -2075,6 +2305,8 @@
     ]
    },
    {
+    "moves": 1676,
+    "precision": 0.5310262529832935,
     "context": "début (tours 1-12)",
     "trait": "bâtit une suite de couleur",
     "games": 1433,
@@ -2093,6 +2325,8 @@
     ]
    },
    {
+    "moves": 1632,
+    "precision": 0.4944852941176471,
     "context": "milieu (13-24)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 1362,
@@ -2111,6 +2345,8 @@
     ]
    },
    {
+    "moves": 785,
+    "precision": 0.45987261146496816,
     "context": "milieu (13-24)",
     "trait": "ouvre une borne vierge",
     "games": 769,
@@ -2129,6 +2365,8 @@
     ]
    },
    {
+    "moves": 677,
+    "precision": 0.55096011816839,
     "context": "milieu (13-24)",
     "trait": "joker",
     "games": 638,
@@ -2147,6 +2385,8 @@
     ]
    },
    {
+    "moves": 4183,
+    "precision": 0.5352617738465216,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "pose une 2e carte",
     "games": 668,
@@ -2165,6 +2405,8 @@
     ]
    },
    {
+    "moves": 3008,
+    "precision": 0.5628324468085106,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit une suite de couleur",
     "games": 553,
@@ -2183,6 +2425,8 @@
     ]
    },
    {
+    "moves": 10951,
+    "precision": 0.534106474294585,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte moyenne (4-7)",
     "games": 860,
@@ -2201,6 +2445,8 @@
     ]
    },
    {
+    "moves": 11405,
+    "precision": 0.5271372205173169,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "au centre (bornes 3-5)",
     "games": 862,
@@ -2219,6 +2465,8 @@
     ]
    },
    {
+    "moves": 12285,
+    "precision": 0.5238095238095238,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "répond à une borne adverse",
     "games": 862,
@@ -2237,6 +2485,8 @@
     ]
    },
    {
+    "moves": 10435,
+    "precision": 0.5251557259223766,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre sans suite prévue en main",
     "games": 857,
@@ -2255,6 +2505,8 @@
     ]
    },
    {
+    "moves": 4568,
+    "precision": 0.49802977232924694,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "répond plus bas",
     "games": 706,
@@ -2273,6 +2525,8 @@
     ]
    },
    {
+    "moves": 7549,
+    "precision": 0.5212610941846603,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 854,
@@ -2291,6 +2545,8 @@
     ]
    },
    {
+    "moves": 8990,
+    "precision": 0.5234705228031146,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre une borne vierge",
     "games": 862,
@@ -2309,6 +2565,8 @@
     ]
    },
    {
+    "moves": 7236,
+    "precision": 0.5261194029850746,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 823,
@@ -2327,6 +2585,8 @@
     ]
    },
    {
+    "moves": 1311,
+    "precision": 0.528604118993135,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "surenchérit d'un cran",
     "games": 296,
@@ -2345,6 +2605,8 @@
     ]
    },
    {
+    "moves": 8073,
+    "precision": 0.5004335439118048,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte faible (3-)",
     "games": 849,
@@ -2363,6 +2625,8 @@
     ]
    },
    {
+    "moves": 7380,
+    "precision": 0.5402439024390244,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte forte (8+)",
     "games": 839,
@@ -2381,6 +2645,8 @@
     ]
    },
    {
+    "moves": 117,
+    "precision": 0.48717948717948717,
     "context": "début (tours 1-12)",
     "trait": "bâtit un brelan",
     "games": 117,
@@ -2399,6 +2665,8 @@
     ]
    },
    {
+    "moves": 4589,
+    "precision": 0.5166702985399869,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 744,
@@ -2417,6 +2685,8 @@
     ]
    },
    {
+    "moves": 488,
+    "precision": 0.680327868852459,
     "context": "après une borne gagnée",
     "trait": "répond à une borne adverse",
     "games": 357,
@@ -2435,6 +2705,8 @@
     ]
    },
    {
+    "moves": 125,
+    "precision": 0.6,
     "context": "après une borne gagnée",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 99,
@@ -2453,6 +2725,8 @@
     ]
    },
    {
+    "moves": 2033,
+    "precision": 0.44171175602557794,
     "context": "main weak",
     "trait": "ouvre une borne vierge",
     "games": 34,
@@ -2471,6 +2745,8 @@
     ]
    },
    {
+    "moves": 2323,
+    "precision": 0.47955230305639257,
     "context": "main weak",
     "trait": "ouvre sans suite prévue en main",
     "games": 34,
@@ -2489,6 +2765,8 @@
     ]
    },
    {
+    "moves": 3085,
+    "precision": 0.426904376012966,
     "context": "main weak",
     "trait": "carte faible (3-)",
     "games": 34,
@@ -2507,6 +2785,8 @@
     ]
    },
    {
+    "moves": 2956,
+    "precision": 0.4519621109607578,
     "context": "main weak",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 34,
@@ -2525,6 +2805,8 @@
     ]
    },
    {
+    "moves": 1249,
+    "precision": 0.433146517213771,
     "context": "main weak",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 34,
@@ -2543,6 +2825,8 @@
     ]
    },
    {
+    "moves": 3049,
+    "precision": 0.445719908166612,
     "context": "main weak",
     "trait": "carte forte (8+)",
     "games": 34,
@@ -2561,6 +2845,8 @@
     ]
    },
    {
+    "moves": 4454,
+    "precision": 0.45172878311629994,
     "context": "main weak",
     "trait": "au centre (bornes 3-5)",
     "games": 34,
@@ -2579,6 +2865,8 @@
     ]
    },
    {
+    "moves": 2103,
+    "precision": 0.4574417498811222,
     "context": "main weak",
     "trait": "répond à une borne adverse",
     "games": 34,
@@ -2597,6 +2885,8 @@
     ]
    },
    {
+    "moves": 3917,
+    "precision": 0.45928006127138116,
     "context": "main weak",
     "trait": "carte moyenne (4-7)",
     "games": 34,
@@ -2615,6 +2905,8 @@
     ]
    },
    {
+    "moves": 710,
+    "precision": 0.37183098591549296,
     "context": "main weak",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 28,
@@ -2633,6 +2925,8 @@
     ]
    },
    {
+    "moves": 3674,
+    "precision": 0.44202504082743604,
     "context": "main weak",
     "trait": "pose une 2e carte",
     "games": 34,
@@ -2651,6 +2945,8 @@
     ]
    },
    {
+    "moves": 2555,
+    "precision": 0.38082191780821917,
     "context": "main weak",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 34,
@@ -2669,6 +2965,8 @@
     ]
    },
    {
+    "moves": 2564,
+    "precision": 0.46489859594383776,
     "context": "main weak",
     "trait": "complète un côté (3e carte)",
     "games": 34,
@@ -2687,6 +2985,8 @@
     ]
    },
    {
+    "moves": 1983,
+    "precision": 0.45940494200706,
     "context": "main weak",
     "trait": "bâtit une suite de couleur",
     "games": 34,
@@ -2705,6 +3005,8 @@
     ]
    },
    {
+    "moves": 1228,
+    "precision": 0.3745928338762215,
     "context": "main weak",
     "trait": "à côté d'une borne perdue",
     "games": 34,
@@ -2723,6 +3025,8 @@
     ]
    },
    {
+    "moves": 1133,
+    "precision": 0.5533980582524272,
     "context": "main weak",
     "trait": "à côté d'une borne gagnée",
     "games": 33,
@@ -2741,6 +3045,8 @@
     ]
    },
    {
+    "moves": 1087,
+    "precision": 0.5216191352345906,
     "context": "main weak",
     "trait": "face à un côté adverse plein",
     "games": 33,
@@ -2759,6 +3065,8 @@
     ]
    },
    {
+    "moves": 229,
+    "precision": 0.4279475982532751,
     "context": "main weak",
     "trait": "surenchérit d'un cran",
     "games": 14,
@@ -2777,6 +3085,8 @@
     ]
    },
    {
+    "moves": 816,
+    "precision": 0.4325980392156863,
     "context": "main weak",
     "trait": "répond plus bas",
     "games": 33,
@@ -2795,6 +3105,8 @@
     ]
    },
    {
+    "moves": 1685,
+    "precision": 0.5495548961424332,
     "context": "main weak",
     "trait": "bâtit un brelan",
     "games": 34,
@@ -2813,6 +3125,8 @@
     ]
    },
    {
+    "moves": 323,
+    "precision": 0.6222910216718266,
     "context": "main weak",
     "trait": "joker",
     "games": 33,
@@ -2831,6 +3145,8 @@
     ]
    },
    {
+    "moves": 1057,
+    "precision": 0.5288552507095553,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "complète un côté (3e carte)",
     "games": 274,
@@ -2849,6 +3165,8 @@
     ]
    },
    {
+    "moves": 909,
+    "precision": 0.43234323432343236,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 212,
@@ -2867,6 +3185,8 @@
     ]
    },
    {
+    "moves": 173,
+    "precision": 0.6936416184971098,
     "context": "après une borne gagnée",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 132,
@@ -2885,6 +3205,8 @@
     ]
    },
    {
+    "moves": 184,
+    "precision": 0.5652173913043478,
     "context": "fin (25+)",
     "trait": "répond à une borne adverse",
     "games": 183,
@@ -2903,6 +3225,8 @@
     ]
    },
    {
+    "moves": 63,
+    "precision": 0.5079365079365079,
     "context": "fin (25+)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 63,
@@ -2921,6 +3245,8 @@
     ]
    },
    {
+    "moves": 1323,
+    "precision": 0.5381708238851096,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit un brelan",
     "games": 308,
@@ -2939,6 +3265,8 @@
     ]
    },
    {
+    "moves": 346,
+    "precision": 0.3988439306358382,
     "context": "après une borne perdue",
     "trait": "répond à une borne adverse",
     "games": 272,
@@ -2957,6 +3285,8 @@
     ]
    },
    {
+    "moves": 104,
+    "precision": 0.4326923076923077,
     "context": "après une borne perdue",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 84,
@@ -2975,6 +3305,8 @@
     ]
    },
    {
+    "moves": 28,
+    "precision": 0.39285714285714285,
     "context": "après une borne perdue",
     "trait": "surenchérit d'un cran",
     "games": 26,
@@ -2993,6 +3325,8 @@
     ]
    },
    {
+    "moves": 412,
+    "precision": 0.6553398058252428,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne gagnée",
     "games": 120,
@@ -3011,6 +3345,8 @@
     ]
    },
    {
+    "moves": 69,
+    "precision": 0.5797101449275363,
     "context": "fin (25+)",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 68,
@@ -3029,6 +3365,8 @@
     ]
    },
    {
+    "moves": 66,
+    "precision": 0.6060606060606061,
     "context": "fin (25+)",
     "trait": "ouvre sans suite prévue en main",
     "games": 66,
@@ -3047,6 +3385,8 @@
     ]
    },
    {
+    "moves": 143,
+    "precision": 0.3986013986013986,
     "context": "après une borne perdue",
     "trait": "ouvre sans suite prévue en main",
     "games": 114,
@@ -3065,6 +3405,8 @@
     ]
    },
    {
+    "moves": 225,
+    "precision": 0.7111111111111111,
     "context": "après une borne gagnée",
     "trait": "ouvre sans suite prévue en main",
     "games": 176,
@@ -3083,6 +3425,8 @@
     ]
    },
    {
+    "moves": 64,
+    "precision": 0.421875,
     "context": "après une borne perdue",
     "trait": "répond plus bas",
     "games": 52,
@@ -3101,6 +3445,8 @@
     ]
    },
    {
+    "moves": 63,
+    "precision": 0.7142857142857143,
     "context": "après une borne gagnée",
     "trait": "répond plus bas",
     "games": 47,
@@ -3119,6 +3465,8 @@
     ]
    },
    {
+    "moves": 142,
+    "precision": 0.34507042253521125,
     "context": "après une borne perdue",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 114,
@@ -3137,6 +3485,8 @@
     ]
    },
    {
+    "moves": 283,
+    "precision": 0.3568904593639576,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne perdue",
     "games": 73,
@@ -3155,6 +3505,8 @@
     ]
    },
    {
+    "moves": 33,
+    "precision": 0.7272727272727273,
     "context": "après une borne gagnée",
     "trait": "surenchérit d'un cran",
     "games": 28,
@@ -3173,6 +3525,8 @@
     ]
    },
    {
+    "moves": 49,
+    "precision": 0.32653061224489793,
     "context": "début (tours 1-12)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 49,
@@ -3191,6 +3545,8 @@
     ]
    },
    {
+    "moves": 111,
+    "precision": 0.5675675675675675,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "joker",
     "games": 45,
@@ -3209,6 +3565,8 @@
     ]
    },
    {
+    "moves": 126,
+    "precision": 0.5476190476190477,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "face à un côté adverse plein",
     "games": 33,
@@ -3227,6 +3585,8 @@
     ]
    },
    {
+    "moves": 8,
+    "precision": 0.75,
     "context": "fin (25+)",
     "trait": "répond plus bas",
     "games": 8,
@@ -3245,6 +3605,8 @@
     ]
    },
    {
+    "moves": 255,
+    "precision": 0.396078431372549,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre une borne vierge",
     "games": 7,
@@ -3263,6 +3625,8 @@
     ]
    },
    {
+    "moves": 227,
+    "precision": 0.4581497797356828,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 4,
@@ -3281,6 +3645,8 @@
     ]
    },
    {
+    "moves": 2310,
+    "precision": 0.47748917748917746,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte moyenne (4-7)",
     "games": 9,
@@ -3299,6 +3665,8 @@
     ]
    },
    {
+    "moves": 2583,
+    "precision": 0.4564459930313589,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "au centre (bornes 3-5)",
     "games": 10,
@@ -3317,6 +3685,8 @@
     ]
    },
    {
+    "moves": 4374,
+    "precision": 0.45496113397347965,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "pose une 2e carte",
     "games": 10,
@@ -3335,6 +3705,8 @@
     ]
    },
    {
+    "moves": 2377,
+    "precision": 0.4867480016827934,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "bâtit une suite de couleur",
     "games": 8,
@@ -3353,6 +3725,8 @@
     ]
    },
    {
+    "moves": 1734,
+    "precision": 0.458477508650519,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 7,
@@ -3371,6 +3745,8 @@
     ]
    },
    {
+    "moves": 1579,
+    "precision": 0.4863837872070931,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "bâtit un brelan",
     "games": 9,
@@ -3389,6 +3765,8 @@
     ]
    },
    {
+    "moves": 1761,
+    "precision": 0.42759795570698467,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte faible (3-)",
     "games": 10,
@@ -3407,6 +3785,8 @@
     ]
    },
    {
+    "moves": 10,
+    "precision": 0.4,
     "context": "après une borne gagnée",
     "trait": "ouvre une borne vierge",
     "games": 8,
@@ -3425,6 +3805,8 @@
     ]
    },
    {
+    "moves": 385,
+    "precision": 0.3922077922077922,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre sans suite prévue en main",
     "games": 5,
@@ -3443,6 +3825,8 @@
     ]
    },
    {
+    "moves": 1266,
+    "precision": 0.4060031595576619,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 8,
@@ -3461,6 +3845,8 @@
     ]
    },
    {
+    "moves": 1735,
+    "precision": 0.46570605187319886,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte forte (8+)",
     "games": 8,
@@ -3479,6 +3865,8 @@
     ]
    },
    {
+    "moves": 17,
+    "precision": 0.23529411764705882,
     "context": "après une borne perdue",
     "trait": "ouvre une borne vierge",
     "games": 13,
@@ -3497,6 +3885,8 @@
     ]
    },
    {
+    "moves": 5,
+    "precision": 0.4,
     "context": "fin (25+)",
     "trait": "surenchérit d'un cran",
     "games": 4,
@@ -3515,6 +3905,8 @@
     ]
    },
    {
+    "moves": 346,
+    "precision": 0.41329479768786126,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne perdue",
     "games": 3,
@@ -3533,6 +3925,8 @@
     ]
    },
    {
+    "moves": 2161,
+    "precision": 0.5941693660342434,
     "context": "main strong",
     "trait": "ouvre une borne vierge",
     "games": 6,
@@ -3551,6 +3945,8 @@
     ]
    },
    {
+    "moves": 2113,
+    "precision": 0.6053005205868434,
     "context": "main strong",
     "trait": "ouvre sans suite prévue en main",
     "games": 6,
@@ -3569,6 +3965,8 @@
     ]
    },
    {
+    "moves": 2343,
+    "precision": 0.5424669227486129,
     "context": "main strong",
     "trait": "carte faible (3-)",
     "games": 6,
@@ -3587,6 +3985,8 @@
     ]
    },
    {
+    "moves": 2915,
+    "precision": 0.5938250428816466,
     "context": "main strong",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 6,
@@ -3605,6 +4005,8 @@
     ]
    },
    {
+    "moves": 1460,
+    "precision": 0.5863013698630137,
     "context": "main strong",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 6,
@@ -3623,6 +4025,8 @@
     ]
    },
    {
+    "moves": 3688,
+    "precision": 0.6027657266811279,
     "context": "main strong",
     "trait": "carte forte (8+)",
     "games": 6,
@@ -3641,6 +4045,8 @@
     ]
    },
    {
+    "moves": 4369,
+    "precision": 0.6081483176928358,
     "context": "main strong",
     "trait": "au centre (bornes 3-5)",
     "games": 6,
@@ -3659,6 +4065,8 @@
     ]
    },
    {
+    "moves": 1965,
+    "precision": 0.6030534351145038,
     "context": "main strong",
     "trait": "répond à une borne adverse",
     "games": 6,
@@ -3677,6 +4085,8 @@
     ]
    },
    {
+    "moves": 3651,
+    "precision": 0.6201040810736784,
     "context": "main strong",
     "trait": "carte moyenne (4-7)",
     "games": 6,
@@ -3695,6 +4105,8 @@
     ]
    },
    {
+    "moves": 552,
+    "precision": 0.5489130434782609,
     "context": "main strong",
     "trait": "répond plus bas",
     "games": 6,
@@ -3713,6 +4125,8 @@
     ]
    },
    {
+    "moves": 3561,
+    "precision": 0.5911260881774782,
     "context": "main strong",
     "trait": "pose une 2e carte",
     "games": 6,
@@ -3731,6 +4145,8 @@
     ]
    },
    {
+    "moves": 1959,
+    "precision": 0.6339969372128637,
     "context": "main strong",
     "trait": "bâtit une suite de couleur",
     "games": 6,
@@ -3749,6 +4165,8 @@
     ]
    },
    {
+    "moves": 1933,
+    "precision": 0.6420072426280393,
     "context": "main strong",
     "trait": "bâtit un brelan",
     "games": 6,
@@ -3767,6 +4185,8 @@
     ]
    },
    {
+    "moves": 2552,
+    "precision": 0.6128526645768025,
     "context": "main strong",
     "trait": "complète un côté (3e carte)",
     "games": 6,
@@ -3785,6 +4205,8 @@
     ]
    },
    {
+    "moves": 2178,
+    "precision": 0.532139577594123,
     "context": "main strong",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 6,
@@ -3803,6 +4225,8 @@
     ]
    },
    {
+    "moves": 1000,
+    "precision": 0.708,
     "context": "main strong",
     "trait": "face à un côté adverse plein",
     "games": 6,
@@ -3821,6 +4245,8 @@
     ]
    },
    {
+    "moves": 1204,
+    "precision": 0.6918604651162791,
     "context": "main strong",
     "trait": "à côté d'une borne gagnée",
     "games": 6,
@@ -3839,6 +4265,8 @@
     ]
    },
    {
+    "moves": 1143,
+    "precision": 0.5135608048993876,
     "context": "main strong",
     "trait": "à côté d'une borne perdue",
     "games": 6,
@@ -3857,6 +4285,8 @@
     ]
    },
    {
+    "moves": 557,
+    "precision": 0.6822262118491921,
     "context": "main strong",
     "trait": "joker",
     "games": 6,
@@ -3875,6 +4305,8 @@
     ]
    },
    {
+    "moves": 455,
+    "precision": 0.42857142857142855,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "répond à une borne adverse",
     "games": 2,
@@ -3893,6 +4325,8 @@
     ]
    },
    {
+    "moves": 115,
+    "precision": 0.3739130434782609,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "répond plus bas",
     "games": 1,
@@ -3911,6 +4345,8 @@
     ]
    },
    {
+    "moves": 2,
+    "precision": 0.5,
     "context": "début (tours 1-12)",
     "trait": "complète un côté (3e carte)",
     "games": 2,
@@ -3929,6 +4365,8 @@
     ]
    },
    {
+    "moves": 863,
+    "precision": 0.5283893395133256,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "complète un côté (3e carte)",
     "games": 5,
@@ -3947,6 +4385,8 @@
     ]
    },
    {
+    "moves": 246,
+    "precision": 0.6260162601626016,
     "context": "main strong",
     "trait": "surenchérit d'un cran",
     "games": 4,
@@ -3965,6 +4405,8 @@
     ]
    },
    {
+    "moves": 758,
+    "precision": 0.6029023746701847,
     "context": "main strong",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 1,
@@ -3983,6 +4425,8 @@
     ]
    },
    {
+    "moves": 215,
+    "precision": 0.641860465116279,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne gagnée",
     "games": 2,
@@ -4001,6 +4445,8 @@
     ]
    },
    {
+    "moves": 294,
+    "precision": 0.6020408163265306,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "face à un côté adverse plein",
     "games": 2,
@@ -4019,6 +4465,8 @@
     ]
    },
    {
+    "moves": 141,
+    "precision": 0.5531914893617021,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "joker",
     "games": 2,
@@ -4037,6 +4485,8 @@
     ]
    },
    {
+    "moves": 122,
+    "precision": 0.4344262295081967,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 1,
@@ -4055,6 +4505,8 @@
     ]
    },
    {
+    "moves": 15,
+    "precision": 0.4666666666666667,
     "context": "début (tours 1-12)",
     "trait": "joker",
     "games": 15,
@@ -4078,6 +4530,8 @@
   "games": 200,
   "rules": [
    {
+    "moves": 1400,
+    "precision": 0.5114285714285715,
     "context": "partout",
     "trait": "ouvre une borne vierge",
     "games": 200,
@@ -4096,6 +4550,8 @@
     ]
    },
    {
+    "moves": 861,
+    "precision": 0.5284552845528455,
     "context": "partout",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 200,
@@ -4114,6 +4570,8 @@
     ]
    },
    {
+    "moves": 2043,
+    "precision": 0.48164464023494863,
     "context": "partout",
     "trait": "carte faible (3-)",
     "games": 200,
@@ -4132,6 +4590,8 @@
     ]
    },
    {
+    "moves": 1987,
+    "precision": 0.49119275289380976,
     "context": "partout",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 200,
@@ -4150,6 +4610,8 @@
     ]
    },
    {
+    "moves": 1516,
+    "precision": 0.4782321899736148,
     "context": "partout",
     "trait": "ouvre sans suite prévue en main",
     "games": 200,
@@ -4168,6 +4630,8 @@
     ]
    },
    {
+    "moves": 2689,
+    "precision": 0.5046485682409818,
     "context": "partout",
     "trait": "carte moyenne (4-7)",
     "games": 200,
@@ -4186,6 +4650,8 @@
     ]
    },
    {
+    "moves": 559,
+    "precision": 0.5044722719141324,
     "context": "partout",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 192,
@@ -4204,6 +4670,8 @@
     ]
    },
    {
+    "moves": 1977,
+    "precision": 0.5245321193727871,
     "context": "partout",
     "trait": "carte forte (8+)",
     "games": 200,
@@ -4222,6 +4690,8 @@
     ]
    },
    {
+    "moves": 3023,
+    "precision": 0.515051273569302,
     "context": "partout",
     "trait": "au centre (bornes 3-5)",
     "games": 200,
@@ -4240,6 +4710,8 @@
     ]
    },
    {
+    "moves": 1397,
+    "precision": 0.4881889763779528,
     "context": "partout",
     "trait": "répond à une borne adverse",
     "games": 200,
@@ -4258,6 +4730,8 @@
     ]
    },
    {
+    "moves": 2505,
+    "precision": 0.49740518962075847,
     "context": "partout",
     "trait": "pose une 2e carte",
     "games": 200,
@@ -4276,6 +4750,8 @@
     ]
    },
    {
+    "moves": 1195,
+    "precision": 0.5723849372384937,
     "context": "partout",
     "trait": "bâtit une suite de couleur",
     "games": 198,
@@ -4294,6 +4770,8 @@
     ]
    },
    {
+    "moves": 1184,
+    "precision": 0.5641891891891891,
     "context": "partout",
     "trait": "bâtit un brelan",
     "games": 200,
@@ -4312,6 +4790,8 @@
     ]
    },
    {
+    "moves": 1709,
+    "precision": 0.5196021064950264,
     "context": "partout",
     "trait": "complète un côté (3e carte)",
     "games": 200,
@@ -4330,6 +4810,8 @@
     ]
    },
    {
+    "moves": 1750,
+    "precision": 0.44114285714285717,
     "context": "partout",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 200,
@@ -4348,6 +4830,8 @@
     ]
    },
    {
+    "moves": 581,
+    "precision": 0.6626506024096386,
     "context": "partout",
     "trait": "face à un côté adverse plein",
     "games": 195,
@@ -4366,6 +4850,8 @@
     ]
    },
    {
+    "moves": 302,
+    "precision": 0.5099337748344371,
     "context": "partout",
     "trait": "joker",
     "games": 181,
@@ -4384,6 +4870,8 @@
     ]
    },
    {
+    "moves": 767,
+    "precision": 0.6727509778357236,
     "context": "partout",
     "trait": "à côté d'une borne gagnée",
     "games": 200,
@@ -4402,6 +4890,8 @@
     ]
    },
    {
+    "moves": 1377,
+    "precision": 0.5134350036310821,
     "context": "début (tours 1-12)",
     "trait": "ouvre une borne vierge",
     "games": 200,
@@ -4420,6 +4910,8 @@
     ]
    },
    {
+    "moves": 724,
+    "precision": 0.5151933701657458,
     "context": "début (tours 1-12)",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 199,
@@ -4438,6 +4930,8 @@
     ]
    },
    {
+    "moves": 861,
+    "precision": 0.42857142857142855,
     "context": "début (tours 1-12)",
     "trait": "carte faible (3-)",
     "games": 200,
@@ -4456,6 +4950,8 @@
     ]
    },
    {
+    "moves": 713,
+    "precision": 0.4964936886395512,
     "context": "début (tours 1-12)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 200,
@@ -4474,6 +4970,8 @@
     ]
    },
    {
+    "moves": 1239,
+    "precision": 0.47538337368845845,
     "context": "début (tours 1-12)",
     "trait": "ouvre sans suite prévue en main",
     "games": 200,
@@ -4492,6 +4990,8 @@
     ]
    },
    {
+    "moves": 991,
+    "precision": 0.4883955600403633,
     "context": "début (tours 1-12)",
     "trait": "carte moyenne (4-7)",
     "games": 200,
@@ -4510,6 +5010,8 @@
     ]
    },
    {
+    "moves": 449,
+    "precision": 0.48775055679287305,
     "context": "début (tours 1-12)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 186,
@@ -4528,6 +5030,8 @@
     ]
    },
    {
+    "moves": 548,
+    "precision": 0.6332116788321168,
     "context": "début (tours 1-12)",
     "trait": "carte forte (8+)",
     "games": 196,
@@ -4546,6 +5050,8 @@
     ]
    },
    {
+    "moves": 976,
+    "precision": 0.492827868852459,
     "context": "début (tours 1-12)",
     "trait": "au centre (bornes 3-5)",
     "games": 200,
@@ -4564,6 +5070,8 @@
     ]
    },
    {
+    "moves": 918,
+    "precision": 0.4596949891067538,
     "context": "début (tours 1-12)",
     "trait": "répond à une borne adverse",
     "games": 200,
@@ -4582,6 +5090,8 @@
     ]
    },
    {
+    "moves": 473,
+    "precision": 0.5391120507399577,
     "context": "milieu (13-24)",
     "trait": "répond à une borne adverse",
     "games": 199,
@@ -4600,6 +5110,8 @@
     ]
    },
    {
+    "moves": 137,
+    "precision": 0.5985401459854015,
     "context": "milieu (13-24)",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 101,
@@ -4618,6 +5130,8 @@
     ]
    },
    {
+    "moves": 703,
+    "precision": 0.465149359886202,
     "context": "milieu (13-24)",
     "trait": "carte forte (8+)",
     "games": 200,
@@ -4636,6 +5150,8 @@
     ]
    },
    {
+    "moves": 1111,
+    "precision": 0.5292529252925292,
     "context": "milieu (13-24)",
     "trait": "au centre (bornes 3-5)",
     "games": 200,
@@ -4654,6 +5170,8 @@
     ]
    },
    {
+    "moves": 1509,
+    "precision": 0.48641484426772696,
     "context": "milieu (13-24)",
     "trait": "pose une 2e carte",
     "games": 200,
@@ -4672,6 +5190,8 @@
     ]
    },
    {
+    "moves": 670,
+    "precision": 0.5611940298507463,
     "context": "milieu (13-24)",
     "trait": "bâtit une suite de couleur",
     "games": 193,
@@ -4690,6 +5210,8 @@
     ]
    },
    {
+    "moves": 607,
+    "precision": 0.5420098846787479,
     "context": "milieu (13-24)",
     "trait": "bâtit un brelan",
     "games": 191,
@@ -4708,6 +5230,8 @@
     ]
    },
    {
+    "moves": 395,
+    "precision": 0.5113924050632911,
     "context": "milieu (13-24)",
     "trait": "complète un côté (3e carte)",
     "games": 187,
@@ -4726,6 +5250,8 @@
     ]
    },
    {
+    "moves": 562,
+    "precision": 0.400355871886121,
     "context": "milieu (13-24)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 188,
@@ -4744,6 +5270,8 @@
     ]
    },
    {
+    "moves": 925,
+    "precision": 0.5308108108108108,
     "context": "milieu (13-24)",
     "trait": "carte moyenne (4-7)",
     "games": 200,
@@ -4762,6 +5290,8 @@
     ]
    },
    {
+    "moves": 650,
+    "precision": 0.536923076923077,
     "context": "milieu (13-24)",
     "trait": "carte faible (3-)",
     "games": 199,
@@ -4780,6 +5310,8 @@
     ]
    },
    {
+    "moves": 648,
+    "precision": 0.47685185185185186,
     "context": "milieu (13-24)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 195,
@@ -4798,6 +5330,8 @@
     ]
    },
    {
+    "moves": 1314,
+    "precision": 0.5220700152207002,
     "context": "fin (25+)",
     "trait": "complète un côté (3e carte)",
     "games": 194,
@@ -4816,6 +5350,8 @@
     ]
    },
    {
+    "moves": 1174,
+    "precision": 0.46422487223168657,
     "context": "fin (25+)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 191,
@@ -4834,6 +5370,8 @@
     ]
    },
    {
+    "moves": 726,
+    "precision": 0.5,
     "context": "fin (25+)",
     "trait": "carte forte (8+)",
     "games": 192,
@@ -4852,6 +5390,8 @@
     ]
    },
    {
+    "moves": 571,
+    "precision": 0.5936952714535902,
     "context": "fin (25+)",
     "trait": "bâtit un brelan",
     "games": 183,
@@ -4870,6 +5410,8 @@
     ]
    },
    {
+    "moves": 529,
+    "precision": 0.6710775047258979,
     "context": "fin (25+)",
     "trait": "face à un côté adverse plein",
     "games": 184,
@@ -4888,6 +5430,8 @@
     ]
    },
    {
+    "moves": 180,
+    "precision": 0.6722222222222223,
     "context": "fin (25+)",
     "trait": "joker",
     "games": 131,
@@ -4906,6 +5450,8 @@
     ]
    },
    {
+    "moves": 936,
+    "precision": 0.5213675213675214,
     "context": "fin (25+)",
     "trait": "au centre (bornes 3-5)",
     "games": 193,
@@ -4924,6 +5470,8 @@
     ]
    },
    {
+    "moves": 703,
+    "precision": 0.6642958748221907,
     "context": "fin (25+)",
     "trait": "à côté d'une borne gagnée",
     "games": 194,
@@ -4942,6 +5490,8 @@
     ]
    },
    {
+    "moves": 891,
+    "precision": 0.494949494949495,
     "context": "fin (25+)",
     "trait": "pose une 2e carte",
     "games": 193,
@@ -4960,6 +5510,8 @@
     ]
    },
    {
+    "moves": 440,
+    "precision": 0.5431818181818182,
     "context": "fin (25+)",
     "trait": "bâtit une suite de couleur",
     "games": 170,
@@ -4978,6 +5530,8 @@
     ]
    },
    {
+    "moves": 532,
+    "precision": 0.5,
     "context": "fin (25+)",
     "trait": "carte faible (3-)",
     "games": 183,
@@ -4996,6 +5550,8 @@
     ]
    },
    {
+    "moves": 773,
+    "precision": 0.49417852522639066,
     "context": "fin (25+)",
     "trait": "carte moyenne (4-7)",
     "games": 192,
@@ -5014,6 +5570,8 @@
     ]
    },
    {
+    "moves": 626,
+    "precision": 0.5,
     "context": "fin (25+)",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 191,
@@ -5032,6 +5590,8 @@
     ]
    },
    {
+    "moves": 515,
+    "precision": 0.3786407766990291,
     "context": "partout",
     "trait": "répond plus bas",
     "games": 192,
@@ -5050,6 +5610,8 @@
     ]
    },
    {
+    "moves": 839,
+    "precision": 0.3766388557806913,
     "context": "partout",
     "trait": "à côté d'une borne perdue",
     "games": 195,
@@ -5068,6 +5630,8 @@
     ]
    },
    {
+    "moves": 403,
+    "precision": 0.315136476426799,
     "context": "début (tours 1-12)",
     "trait": "répond plus bas",
     "games": 181,
@@ -5086,6 +5650,8 @@
     ]
    },
    {
+    "moves": 105,
+    "precision": 0.6761904761904762,
     "context": "début (tours 1-12)",
     "trait": "pose une 2e carte",
     "games": 90,
@@ -5104,6 +5670,8 @@
     ]
    },
    {
+    "moves": 14,
+    "precision": 0.14285714285714285,
     "context": "début (tours 1-12)",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 13,
@@ -5122,6 +5690,8 @@
     ]
    },
    {
+    "moves": 108,
+    "precision": 0.5648148148148148,
     "context": "milieu (13-24)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 82,
@@ -5140,6 +5710,8 @@
     ]
    },
    {
+    "moves": 52,
+    "precision": 0.5769230769230769,
     "context": "milieu (13-24)",
     "trait": "face à un côté adverse plein",
     "games": 47,
@@ -5158,6 +5730,8 @@
     ]
    },
    {
+    "moves": 122,
+    "precision": 0.27049180327868855,
     "context": "milieu (13-24)",
     "trait": "joker",
     "games": 96,
@@ -5176,6 +5750,8 @@
     ]
    },
    {
+    "moves": 762,
+    "precision": 0.3858267716535433,
     "context": "fin (25+)",
     "trait": "à côté d'une borne perdue",
     "games": 187,
@@ -5194,6 +5770,8 @@
     ]
    },
    {
+    "moves": 85,
+    "precision": 0.8117647058823529,
     "context": "début (tours 1-12)",
     "trait": "bâtit une suite de couleur",
     "games": 79,
@@ -5212,6 +5790,8 @@
     ]
    },
    {
+    "moves": 64,
+    "precision": 0.765625,
     "context": "milieu (13-24)",
     "trait": "à côté d'une borne gagnée",
     "games": 48,
@@ -5230,6 +5810,8 @@
     ]
    },
    {
+    "moves": 770,
+    "precision": 0.6207792207792208,
     "context": "après une borne gagnée",
     "trait": "pose une 2e carte",
     "games": 139,
@@ -5248,6 +5830,8 @@
     ]
    },
    {
+    "moves": 484,
+    "precision": 0.7045454545454546,
     "context": "après une borne gagnée",
     "trait": "bâtit un brelan",
     "games": 124,
@@ -5266,6 +5850,8 @@
     ]
    },
    {
+    "moves": 433,
+    "precision": 0.5889145496535797,
     "context": "après une borne gagnée",
     "trait": "carte faible (3-)",
     "games": 132,
@@ -5284,6 +5870,8 @@
     ]
    },
    {
+    "moves": 764,
+    "precision": 0.6204188481675392,
     "context": "après une borne gagnée",
     "trait": "au centre (bornes 3-5)",
     "games": 142,
@@ -5302,6 +5890,8 @@
     ]
    },
    {
+    "moves": 22,
+    "precision": 0.8181818181818182,
     "context": "après une borne gagnée",
     "trait": "répond à une borne adverse",
     "games": 16,
@@ -5320,6 +5910,8 @@
     ]
    },
    {
+    "moves": 5,
+    "precision": 1,
     "context": "après une borne gagnée",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 4,
@@ -5338,6 +5930,8 @@
     ]
    },
    {
+    "moves": 594,
+    "precision": 0.5925925925925926,
     "context": "après une borne gagnée",
     "trait": "carte forte (8+)",
     "games": 139,
@@ -5356,6 +5950,8 @@
     ]
    },
    {
+    "moves": 490,
+    "precision": 0.6020408163265306,
     "context": "après une borne gagnée",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 130,
@@ -5374,6 +5970,8 @@
     ]
    },
    {
+    "moves": 767,
+    "precision": 0.6727509778357236,
     "context": "après une borne gagnée",
     "trait": "à côté d'une borne gagnée",
     "games": 142,
@@ -5392,6 +5990,8 @@
     ]
    },
    {
+    "moves": 335,
+    "precision": 0.6776119402985075,
     "context": "après une borne gagnée",
     "trait": "bâtit une suite de couleur",
     "games": 115,
@@ -5410,6 +6010,8 @@
     ]
    },
    {
+    "moves": 625,
+    "precision": 0.6032,
     "context": "après une borne gagnée",
     "trait": "carte moyenne (4-7)",
     "games": 140,
@@ -5428,6 +6030,8 @@
     ]
    },
    {
+    "moves": 992,
+    "precision": 0.5967741935483871,
     "context": "après une borne gagnée",
     "trait": "complète un côté (3e carte)",
     "games": 142,
@@ -5446,6 +6050,8 @@
     ]
    },
    {
+    "moves": 132,
+    "precision": 0.7878787878787878,
     "context": "après une borne gagnée",
     "trait": "joker",
     "games": 81,
@@ -5464,6 +6070,8 @@
     ]
    },
    {
+    "moves": 460,
+    "precision": 0.7043478260869566,
     "context": "après une borne gagnée",
     "trait": "face à un côté adverse plein",
     "games": 132,
@@ -5482,6 +6090,8 @@
     ]
    },
    {
+    "moves": 928,
+    "precision": 0.5377155172413793,
     "context": "après une borne gagnée",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 141,
@@ -5500,6 +6110,8 @@
     ]
    },
    {
+    "moves": 556,
+    "precision": 0.45323741007194246,
     "context": "après une borne gagnée",
     "trait": "à côté d'une borne perdue",
     "games": 138,
@@ -5518,6 +6130,8 @@
     ]
    },
    {
+    "moves": 198,
+    "precision": 0.803030303030303,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "pose une 2e carte",
     "games": 33,
@@ -5536,6 +6150,8 @@
     ]
    },
    {
+    "moves": 66,
+    "precision": 0.8181818181818182,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit un brelan",
     "games": 12,
@@ -5554,6 +6170,8 @@
     ]
    },
    {
+    "moves": 573,
+    "precision": 0.5602094240837696,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte faible (3-)",
     "games": 47,
@@ -5572,6 +6190,8 @@
     ]
    },
    {
+    "moves": 703,
+    "precision": 0.5903271692745377,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "au centre (bornes 3-5)",
     "games": 48,
@@ -5590,6 +6210,8 @@
     ]
    },
    {
+    "moves": 787,
+    "precision": 0.5641677255400254,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "répond à une borne adverse",
     "games": 48,
@@ -5608,6 +6230,8 @@
     ]
    },
    {
+    "moves": 445,
+    "precision": 0.5865168539325842,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 47,
@@ -5626,6 +6250,8 @@
     ]
    },
    {
+    "moves": 343,
+    "precision": 0.6967930029154519,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte forte (8+)",
     "games": 35,
@@ -5644,6 +6270,8 @@
     ]
    },
    {
+    "moves": 461,
+    "precision": 0.5943600867678959,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 46,
@@ -5662,6 +6290,8 @@
     ]
    },
    {
+    "moves": 25,
+    "precision": 0.92,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne gagnée",
     "games": 7,
@@ -5680,6 +6310,8 @@
     ]
    },
    {
+    "moves": 1093,
+    "precision": 0.4492223238792315,
     "context": "après une borne perdue",
     "trait": "complète un côté (3e carte)",
     "games": 160,
@@ -5698,6 +6330,8 @@
     ]
    },
    {
+    "moves": 471,
+    "precision": 0.5222929936305732,
     "context": "après une borne perdue",
     "trait": "bâtit un brelan",
     "games": 142,
@@ -5716,6 +6350,8 @@
     ]
    },
    {
+    "moves": 421,
+    "precision": 0.6128266033254157,
     "context": "après une borne perdue",
     "trait": "face à un côté adverse plein",
     "games": 149,
@@ -5734,6 +6370,8 @@
     ]
    },
    {
+    "moves": 651,
+    "precision": 0.41781874039938555,
     "context": "après une borne perdue",
     "trait": "carte forte (8+)",
     "games": 157,
@@ -5752,6 +6390,8 @@
     ]
    },
    {
+    "moves": 550,
+    "precision": 0.6145454545454545,
     "context": "après une borne perdue",
     "trait": "à côté d'une borne gagnée",
     "games": 160,
@@ -5770,6 +6410,8 @@
     ]
    },
    {
+    "moves": 828,
+    "precision": 0.38164251207729466,
     "context": "après une borne perdue",
     "trait": "pose une 2e carte",
     "games": 158,
@@ -5788,6 +6430,8 @@
     ]
    },
    {
+    "moves": 547,
+    "precision": 0.3857404021937843,
     "context": "après une borne perdue",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 153,
@@ -5806,6 +6450,8 @@
     ]
    },
    {
+    "moves": 1041,
+    "precision": 0.37752161383285304,
     "context": "après une borne perdue",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 158,
@@ -5824,6 +6470,8 @@
     ]
    },
    {
+    "moves": 457,
+    "precision": 0.4026258205689278,
     "context": "après une borne perdue",
     "trait": "carte faible (3-)",
     "games": 149,
@@ -5842,6 +6490,8 @@
     ]
    },
    {
+    "moves": 380,
+    "precision": 0.42894736842105263,
     "context": "après une borne perdue",
     "trait": "bâtit une suite de couleur",
     "games": 137,
@@ -5860,6 +6510,8 @@
     ]
    },
    {
+    "moves": 819,
+    "precision": 0.44078144078144077,
     "context": "après une borne perdue",
     "trait": "au centre (bornes 3-5)",
     "games": 159,
@@ -5878,6 +6530,8 @@
     ]
    },
    {
+    "moves": 839,
+    "precision": 0.3766388557806913,
     "context": "après une borne perdue",
     "trait": "à côté d'une borne perdue",
     "games": 157,
@@ -5896,6 +6550,8 @@
     ]
    },
    {
+    "moves": 125,
+    "precision": 0.504,
     "context": "partout",
     "trait": "surenchérit d'un cran",
     "games": 100,
@@ -5914,6 +6570,8 @@
     ]
    },
    {
+    "moves": 311,
+    "precision": 0.4630225080385852,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "répond plus bas",
     "games": 44,
@@ -5932,6 +6590,8 @@
     ]
    },
    {
+    "moves": 301,
+    "precision": 0.5448504983388704,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 38,
@@ -5950,6 +6610,8 @@
     ]
    },
    {
+    "moves": 717,
+    "precision": 0.5704323570432357,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "carte moyenne (4-7)",
     "games": 47,
@@ -5968,6 +6630,8 @@
     ]
    },
    {
+    "moves": 610,
+    "precision": 0.5573770491803278,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre une borne vierge",
     "games": 48,
@@ -5986,6 +6650,8 @@
     ]
    },
    {
+    "moves": 734,
+    "precision": 0.5435967302452316,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "ouvre sans suite prévue en main",
     "games": 47,
@@ -6004,6 +6670,8 @@
     ]
    },
    {
+    "moves": 43,
+    "precision": 0.7209302325581395,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "complète un côté (3e carte)",
     "games": 10,
@@ -6022,6 +6690,8 @@
     ]
    },
    {
+    "moves": 136,
+    "precision": 0.8308823529411765,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit une suite de couleur",
     "games": 28,
@@ -6040,6 +6710,8 @@
     ]
    },
    {
+    "moves": 80,
+    "precision": 0.5375,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "surenchérit d'un cran",
     "games": 17,
@@ -6058,6 +6730,8 @@
     ]
    },
    {
+    "moves": 45,
+    "precision": 0.4444444444444444,
     "context": "milieu (13-24)",
     "trait": "surenchérit d'un cran",
     "games": 41,
@@ -6076,6 +6750,8 @@
     ]
    },
    {
+    "moves": 273,
+    "precision": 0.48717948717948717,
     "context": "milieu (13-24)",
     "trait": "ouvre sans suite prévue en main",
     "games": 165,
@@ -6094,6 +6770,8 @@
     ]
    },
    {
+    "moves": 77,
+    "precision": 0.2857142857142857,
     "context": "milieu (13-24)",
     "trait": "à côté d'une borne perdue",
     "games": 54,
@@ -6112,6 +6790,8 @@
     ]
    },
    {
+    "moves": 14,
+    "precision": 0.5,
     "context": "après une borne perdue",
     "trait": "répond à une borne adverse",
     "games": 11,
@@ -6130,6 +6810,8 @@
     ]
    },
    {
+    "moves": 8,
+    "precision": 0.625,
     "context": "après une borne perdue",
     "trait": "ouvre sans suite prévue en main",
     "games": 7,
@@ -6148,6 +6830,8 @@
     ]
    },
    {
+    "moves": 687,
+    "precision": 0.4002911208151383,
     "context": "après une borne perdue",
     "trait": "carte moyenne (4-7)",
     "games": 158,
@@ -6166,6 +6850,8 @@
     ]
    },
    {
+    "moves": 140,
+    "precision": 0.5928571428571429,
     "context": "après une borne perdue",
     "trait": "joker",
     "games": 97,
@@ -6184,6 +6870,8 @@
     ]
    },
    {
+    "moves": 1110,
+    "precision": 0.5,
     "context": "main medium",
     "trait": "ouvre une borne vierge",
     "games": 132,
@@ -6202,6 +6890,8 @@
     ]
    },
    {
+    "moves": 457,
+    "precision": 0.49671772428884026,
     "context": "main medium",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 128,
@@ -6220,6 +6910,8 @@
     ]
    },
    {
+    "moves": 1684,
+    "precision": 0.47624703087885983,
     "context": "main medium",
     "trait": "carte faible (3-)",
     "games": 132,
@@ -6238,6 +6930,8 @@
     ]
    },
    {
+    "moves": 1213,
+    "precision": 0.4765045342126958,
     "context": "main medium",
     "trait": "ouvre sans suite prévue en main",
     "games": 132,
@@ -6256,6 +6950,8 @@
     ]
    },
    {
+    "moves": 2176,
+    "precision": 0.4977022058823529,
     "context": "main medium",
     "trait": "carte moyenne (4-7)",
     "games": 132,
@@ -6274,6 +6970,8 @@
     ]
    },
    {
+    "moves": 1587,
+    "precision": 0.4788909892879647,
     "context": "main medium",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 132,
@@ -6292,6 +6990,8 @@
     ]
    },
    {
+    "moves": 1127,
+    "precision": 0.48092280390417036,
     "context": "main medium",
     "trait": "répond à une borne adverse",
     "games": 132,
@@ -6310,6 +7010,8 @@
     ]
    },
    {
+    "moves": 1514,
+    "precision": 0.5105680317040951,
     "context": "main medium",
     "trait": "carte forte (8+)",
     "games": 132,
@@ -6328,6 +7030,8 @@
     ]
    },
    {
+    "moves": 684,
+    "precision": 0.5058479532163743,
     "context": "main medium",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 132,
@@ -6346,6 +7050,8 @@
     ]
    },
    {
+    "moves": 2421,
+    "precision": 0.5076414704667492,
     "context": "main medium",
     "trait": "au centre (bornes 3-5)",
     "games": 132,
@@ -6364,6 +7070,8 @@
     ]
    },
    {
+    "moves": 2017,
+    "precision": 0.48834903321765,
     "context": "main medium",
     "trait": "pose une 2e carte",
     "games": 132,
@@ -6382,6 +7090,8 @@
     ]
    },
    {
+    "moves": 941,
+    "precision": 0.536663124335813,
     "context": "main medium",
     "trait": "bâtit un brelan",
     "games": 132,
@@ -6400,6 +7110,8 @@
     ]
    },
    {
+    "moves": 1358,
+    "precision": 0.5117820324005891,
     "context": "main medium",
     "trait": "complète un côté (3e carte)",
     "games": 132,
@@ -6418,6 +7130,8 @@
     ]
    },
    {
+    "moves": 980,
+    "precision": 0.5714285714285714,
     "context": "main medium",
     "trait": "bâtit une suite de couleur",
     "games": 131,
@@ -6436,6 +7150,8 @@
     ]
    },
    {
+    "moves": 607,
+    "precision": 0.6639209225700164,
     "context": "main medium",
     "trait": "à côté d'une borne gagnée",
     "games": 132,
@@ -6454,6 +7170,8 @@
     ]
    },
    {
+    "moves": 1390,
+    "precision": 0.4366906474820144,
     "context": "main medium",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 132,
@@ -6472,6 +7190,8 @@
     ]
    },
    {
+    "moves": 464,
+    "precision": 0.6400862068965517,
     "context": "main medium",
     "trait": "face à un côté adverse plein",
     "games": 127,
@@ -6490,6 +7210,8 @@
     ]
    },
    {
+    "moves": 684,
+    "precision": 0.3786549707602339,
     "context": "main medium",
     "trait": "à côté d'une borne perdue",
     "games": 129,
@@ -6508,6 +7230,8 @@
     ]
    },
    {
+    "moves": 427,
+    "precision": 0.3770491803278688,
     "context": "main medium",
     "trait": "répond plus bas",
     "games": 125,
@@ -6526,6 +7250,8 @@
     ]
    },
    {
+    "moves": 238,
+    "precision": 0.5,
     "context": "main medium",
     "trait": "joker",
     "games": 116,
@@ -6544,6 +7270,8 @@
     ]
    },
    {
+    "moves": 110,
+    "precision": 0.6,
     "context": "milieu (13-24)",
     "trait": "répond plus bas",
     "games": 94,
@@ -6562,6 +7290,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 0.3333333333333333,
     "context": "après une borne perdue",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 5,
@@ -6580,6 +7310,8 @@
     ]
    },
    {
+    "moves": 4,
+    "precision": 0.75,
     "context": "après une borne perdue",
     "trait": "répond plus bas",
     "games": 4,
@@ -6598,6 +7330,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 0.6666666666666666,
     "context": "après une borne gagnée",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 6,
@@ -6616,6 +7350,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 1,
     "context": "après une borne gagnée",
     "trait": "répond plus bas",
     "games": 6,
@@ -6634,6 +7370,8 @@
     ]
    },
    {
+    "moves": 153,
+    "precision": 0.48366013071895425,
     "context": "main weak",
     "trait": "ouvre une borne vierge",
     "games": 4,
@@ -6652,6 +7390,8 @@
     ]
    },
    {
+    "moves": 163,
+    "precision": 0.43558282208588955,
     "context": "main weak",
     "trait": "ouvre sans suite prévue en main",
     "games": 4,
@@ -6670,6 +7410,8 @@
     ]
    },
    {
+    "moves": 210,
+    "precision": 0.44761904761904764,
     "context": "main weak",
     "trait": "carte faible (3-)",
     "games": 4,
@@ -6688,6 +7430,8 @@
     ]
    },
    {
+    "moves": 94,
+    "precision": 0.5319148936170213,
     "context": "main weak",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 4,
@@ -6706,6 +7450,8 @@
     ]
    },
    {
+    "moves": 244,
+    "precision": 0.5163934426229508,
     "context": "main weak",
     "trait": "carte forte (8+)",
     "games": 4,
@@ -6724,6 +7470,8 @@
     ]
    },
    {
+    "moves": 223,
+    "precision": 0.4798206278026906,
     "context": "main weak",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 4,
@@ -6742,6 +7490,8 @@
     ]
    },
    {
+    "moves": 155,
+    "precision": 0.47096774193548385,
     "context": "main weak",
     "trait": "répond à une borne adverse",
     "games": 4,
@@ -6760,6 +7510,8 @@
     ]
    },
    {
+    "moves": 292,
+    "precision": 0.4828767123287671,
     "context": "main weak",
     "trait": "carte moyenne (4-7)",
     "games": 4,
@@ -6778,6 +7530,8 @@
     ]
    },
    {
+    "moves": 329,
+    "precision": 0.49240121580547114,
     "context": "main weak",
     "trait": "au centre (bornes 3-5)",
     "games": 4,
@@ -6796,6 +7550,8 @@
     ]
    },
    {
+    "moves": 59,
+    "precision": 0.3559322033898305,
     "context": "main weak",
     "trait": "répond plus bas",
     "games": 4,
@@ -6814,6 +7570,8 @@
     ]
    },
    {
+    "moves": 60,
+    "precision": 0.45,
     "context": "main weak",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 4,
@@ -6832,6 +7590,8 @@
     ]
    },
    {
+    "moves": 13,
+    "precision": 0.38461538461538464,
     "context": "main weak",
     "trait": "surenchérit d'un cran",
     "games": 3,
@@ -6850,6 +7610,8 @@
     ]
    },
    {
+    "moves": 270,
+    "precision": 0.48518518518518516,
     "context": "main weak",
     "trait": "pose une 2e carte",
     "games": 4,
@@ -6868,6 +7630,8 @@
     ]
    },
    {
+    "moves": 201,
+    "precision": 0.42786069651741293,
     "context": "main weak",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 4,
@@ -6886,6 +7650,8 @@
     ]
    },
    {
+    "moves": 189,
+    "precision": 0.49206349206349204,
     "context": "main weak",
     "trait": "complète un côté (3e carte)",
     "games": 4,
@@ -6904,6 +7670,8 @@
     ]
    },
    {
+    "moves": 124,
+    "precision": 0.6209677419354839,
     "context": "main weak",
     "trait": "bâtit un brelan",
     "games": 4,
@@ -6922,6 +7690,8 @@
     ]
    },
    {
+    "moves": 21,
+    "precision": 0.47619047619047616,
     "context": "main weak",
     "trait": "joker",
     "games": 4,
@@ -6940,6 +7710,8 @@
     ]
    },
    {
+    "moves": 78,
+    "precision": 0.6282051282051282,
     "context": "main weak",
     "trait": "à côté d'une borne gagnée",
     "games": 4,
@@ -6958,6 +7730,8 @@
     ]
    },
    {
+    "moves": 65,
+    "precision": 0.6461538461538462,
     "context": "main weak",
     "trait": "face à un côté adverse plein",
     "games": 4,
@@ -6976,6 +7750,8 @@
     ]
    },
    {
+    "moves": 83,
+    "precision": 0.2891566265060241,
     "context": "main weak",
     "trait": "à côté d'une borne perdue",
     "games": 3,
@@ -6994,6 +7770,8 @@
     ]
    },
    {
+    "moves": 80,
+    "precision": 0.5375,
     "context": "début (tours 1-12)",
     "trait": "surenchérit d'un cran",
     "games": 71,
@@ -7012,6 +7790,8 @@
     ]
    },
    {
+    "moves": 127,
+    "precision": 0.48031496062992124,
     "context": "main weak",
     "trait": "bâtit une suite de couleur",
     "games": 4,
@@ -7030,6 +7810,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 0,
     "context": "début (tours 1-12)",
     "trait": "bâtit un brelan",
     "games": 6,
@@ -7048,6 +7830,8 @@
     ]
    },
    {
+    "moves": 23,
+    "precision": 0.391304347826087,
     "context": "milieu (13-24)",
     "trait": "ouvre une borne vierge",
     "games": 23,
@@ -7066,6 +7850,8 @@
     ]
    },
    {
+    "moves": 100,
+    "precision": 0.48,
     "context": "main medium",
     "trait": "surenchérit d'un cran",
     "games": 64,
@@ -7084,6 +7870,8 @@
     ]
    },
    {
+    "moves": 18,
+    "precision": 0.4444444444444444,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre une borne vierge",
     "games": 1,
@@ -7102,6 +7890,8 @@
     ]
    },
    {
+    "moves": 17,
+    "precision": 0.35294117647058826,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "ouvre avec de quoi faire un brelan",
     "games": 1,
@@ -7120,6 +7910,8 @@
     ]
    },
    {
+    "moves": 80,
+    "precision": 0.35,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte faible (3-)",
     "games": 1,
@@ -7138,6 +7930,8 @@
     ]
    },
    {
+    "moves": 207,
+    "precision": 0.19806763285024154,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "pose une 2e carte",
     "games": 1,
@@ -7156,6 +7950,8 @@
     ]
    },
    {
+    "moves": 80,
+    "precision": 0.275,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "bâtit une suite de couleur",
     "games": 1,
@@ -7174,6 +7970,8 @@
     ]
    },
    {
+    "moves": 130,
+    "precision": 0.3384615384615385,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "au centre (bornes 3-5)",
     "games": 1,
@@ -7192,6 +7990,8 @@
     ]
    },
    {
+    "moves": 3,
+    "precision": 1,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "face à un côté adverse plein",
     "games": 1,
@@ -7210,6 +8010,8 @@
     ]
    },
    {
+    "moves": 5,
+    "precision": 1,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "joker",
     "games": 2,
@@ -7228,6 +8030,8 @@
     ]
    },
    {
+    "moves": 39,
+    "precision": 0.5897435897435898,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 11,
@@ -7246,6 +8050,8 @@
     ]
    },
    {
+    "moves": 88,
+    "precision": 0.2727272727272727,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte moyenne (4-7)",
     "games": 1,
@@ -7264,6 +8070,8 @@
     ]
    },
    {
+    "moves": 20,
+    "precision": 0.1,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne perdue",
     "games": 1,
@@ -7282,6 +8090,8 @@
     ]
    },
    {
+    "moves": 25,
+    "precision": 0.16,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "joker",
     "games": 1,
@@ -7300,6 +8110,8 @@
     ]
    },
    {
+    "moves": 83,
+    "precision": 0.13253012048192772,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "sur un bord (borne 1 ou 7)",
     "games": 1,
@@ -7318,6 +8130,8 @@
     ]
    },
    {
+    "moves": 63,
+    "precision": 0.12698412698412698,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "bâtit un côté ni brelan ni suite de couleur",
     "games": 1,
@@ -7336,6 +8150,8 @@
     ]
    },
    {
+    "moves": 102,
+    "precision": 0.13725490196078433,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "carte forte (8+)",
     "games": 1,
@@ -7354,6 +8170,8 @@
     ]
    },
    {
+    "moves": 32,
+    "precision": 0.3125,
     "context": "plus de bornes ouvertes que l'adversaire",
     "trait": "complète un côté (3e carte)",
     "games": 1,
@@ -7372,6 +8190,8 @@
     ]
    },
    {
+    "moves": 11,
+    "precision": 0.8181818181818182,
     "context": "après une borne gagnée",
     "trait": "ouvre sans suite prévue en main",
     "games": 7,
@@ -7390,6 +8210,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 0.8333333333333334,
     "context": "fin (25+)",
     "trait": "répond à une borne adverse",
     "games": 6,
@@ -7408,6 +8230,8 @@
     ]
    },
    {
+    "moves": 4,
+    "precision": 0.75,
     "context": "fin (25+)",
     "trait": "ouvre sans suite prévue en main",
     "games": 4,
@@ -7426,6 +8250,8 @@
     ]
    },
    {
+    "moves": 2,
+    "precision": 1,
     "context": "fin (25+)",
     "trait": "répond plus bas",
     "games": 2,
@@ -7444,6 +8270,8 @@
     ]
    },
    {
+    "moves": 3,
+    "precision": 0.6666666666666666,
     "context": "après une borne gagnée",
     "trait": "surenchérit d'un cran",
     "games": 3,
@@ -7462,6 +8290,8 @@
     ]
    },
    {
+    "moves": 2,
+    "precision": 1,
     "context": "fin (25+)",
     "trait": "ouvre avec de quoi faire une suite de couleur",
     "games": 2,
@@ -7480,6 +8310,8 @@
     ]
    },
    {
+    "moves": 6,
+    "precision": 0.3333333333333333,
     "context": "moins de bornes ouvertes que l'adversaire",
     "trait": "à côté d'une borne perdue",
     "games": 1,

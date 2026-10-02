@@ -73,11 +73,26 @@ function addRates(stats, key, winner, loser) {
   stats.set(key, stat);
 }
 
+/** Moves with each (moment, trait), played by the game's winner and by its loser. */
+function addMoves(moves, win, loss) {
+  for (const [side, tally] of [["win", win], ["loss", loss]]) {
+    for (const [context, slot] of tally) {
+      for (const [trait, count] of slot.traits) {
+        const entry = moves.get(`${context}|${trait}`) ?? { win: 0, loss: 0 };
+        entry[side] += count;
+        moves.set(`${context}|${trait}`, entry);
+      }
+    }
+  }
+}
+
 async function mine(rows) {
   const stats = new Map();
+  const moves = new Map();
   for (const row of rows) {
     const tallies = tallyGame(await loadGame(row), row.handClasses);
     const [win, loss] = [tallies[row.winner], tallies[1 - row.winner]];
+    addMoves(moves, win, loss);
     for (const key of pairsOf(tallies)) {
       const [context, trait] = key.split("|");
       const [winner, loser] = [rateOf(win, context, trait), rateOf(loss, context, trait)];
@@ -87,7 +102,10 @@ async function mine(rows) {
   return [...stats].map(([key, s]) => {
     const [context, trait] = key.split("|");
     const decided = s.more + s.less;
+    const played = moves.get(key);
     return {
+      moves: played.win + played.loss,
+      precision: played.win / (played.win + played.loss),
       context,
       trait,
       games: s.both,

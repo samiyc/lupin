@@ -1,0 +1,777 @@
+{
+ "built": "2026-10-02",
+ "games": 3048,
+ "jokers": 4250,
+ "stats": [
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10)",
+   "count": 2506,
+   "game": 0.627294493216281,
+   "border": 0.9121706398996235,
+   "decided": 2391
+  },
+  {
+   "key": "face à deux cartes adverses sans figure",
+   "count": 599,
+   "game": 0.6160267111853088,
+   "border": 0.9881756756756757,
+   "decided": 592
+  },
+  {
+   "key": "borne du centre (3-5)",
+   "count": 1825,
+   "game": 0.6334246575342466,
+   "border": 0.9018475750577367,
+   "decided": 1732
+  },
+  {
+   "key": "fin (25+)",
+   "count": 3558,
+   "game": 0.6374367622259697,
+   "border": 0.9249925882004151,
+   "decided": 3373
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à deux cartes adverses sans figure",
+   "count": 374,
+   "game": 0.6443850267379679,
+   "border": 1,
+   "decided": 373
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · borne du centre (3-5)",
+   "count": 1094,
+   "game": 0.6224862888482633,
+   "border": 0.8970163618864293,
+   "decided": 1039
+  },
+  {
+   "key": "face à deux cartes adverses sans figure · borne du centre (3-5)",
+   "count": 243,
+   "game": 0.6090534979423868,
+   "border": 0.9915966386554622,
+   "decided": 238
+  },
+  {
+   "key": "borne du bord (1 ou 7)",
+   "count": 1153,
+   "game": 0.6209887250650477,
+   "border": 0.9095890410958904,
+   "decided": 1095
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · borne du bord (1 ou 7)",
+   "count": 667,
+   "game": 0.6341829085457271,
+   "border": 0.9012539184952978,
+   "decided": 638
+  },
+  {
+   "key": "face à deux cartes adverses sans figure · borne du bord (1 ou 7)",
+   "count": 186,
+   "game": 0.6075268817204301,
+   "border": 0.9945652173913043,
+   "decided": 184
+  },
+  {
+   "key": "complète un brelan, milieu (4-7)",
+   "count": 1423,
+   "game": 0.6444132115249473,
+   "border": 0.9371387283236994,
+   "decided": 1384
+  },
+  {
+   "key": "face à un côté adverse plein",
+   "count": 1381,
+   "game": 0.7429398986241854,
+   "border": 0.9859363434492968,
+   "decided": 1351
+  },
+  {
+   "key": "borne intermédiaire (2 ou 6)",
+   "count": 1272,
+   "game": 0.610062893081761,
+   "border": 0.9338296112489661,
+   "decided": 1209
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à un côté adverse plein",
+   "count": 468,
+   "game": 0.7200854700854701,
+   "border": 1,
+   "decided": 465
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · borne intermédiaire (2 ou 6)",
+   "count": 428,
+   "game": 0.6285046728971962,
+   "border": 0.9427207637231504,
+   "decided": 419
+  },
+  {
+   "key": "face à un côté adverse plein · borne intermédiaire (2 ou 6)",
+   "count": 413,
+   "game": 0.6876513317191283,
+   "border": 0.9850746268656716,
+   "decided": 402
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à deux cartes adverses sans figure",
+   "count": 199,
+   "game": 0.6231155778894473,
+   "border": 1,
+   "decided": 199
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · borne du bord (1 ou 7)",
+   "count": 398,
+   "game": 0.6055276381909548,
+   "border": 0.9373368146214099,
+   "decided": 383
+  },
+  {
+   "key": "face à un début de suite de couleur adverse",
+   "count": 762,
+   "game": 0.5354330708661418,
+   "border": 0.7862266857962698,
+   "decided": 697
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à un début de suite de couleur adverse",
+   "count": 445,
+   "game": 0.5258426966292135,
+   "border": 0.7705314009661836,
+   "decided": 414
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · borne intermédiaire (2 ou 6)",
+   "count": 745,
+   "game": 0.6281879194630873,
+   "border": 0.9439775910364145,
+   "decided": 714
+  },
+  {
+   "key": "face à un début de suite de couleur adverse · borne intermédiaire (2 ou 6)",
+   "count": 230,
+   "game": 0.5478260869565217,
+   "border": 0.8591549295774648,
+   "decided": 213
+  },
+  {
+   "key": "face à un début de brelan adverse",
+   "count": 509,
+   "game": 0.593320235756385,
+   "border": 0.8382352941176471,
+   "decided": 476
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à un début de brelan adverse",
+   "count": 317,
+   "game": 0.6025236593059937,
+   "border": 0.8093645484949833,
+   "decided": 299
+  },
+  {
+   "key": "face à un début de brelan adverse · borne intermédiaire (2 ou 6)",
+   "count": 144,
+   "game": 0.5833333333333334,
+   "border": 0.8615384615384616,
+   "decided": 130
+  },
+  {
+   "key": "face à un début de suite de couleur adverse · borne du bord (1 ou 7)",
+   "count": 176,
+   "game": 0.5,
+   "border": 0.7452229299363057,
+   "decided": 157
+  },
+  {
+   "key": "face à une carte adverse seule",
+   "count": 982,
+   "game": 0.5468431771894093,
+   "border": 0.8986784140969163,
+   "decided": 908
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à une carte adverse seule",
+   "count": 618,
+   "game": 0.5210355987055016,
+   "border": 0.9017857142857143,
+   "decided": 560
+  },
+  {
+   "key": "face à une carte adverse seule · borne du centre (3-5)",
+   "count": 438,
+   "game": 0.541095890410959,
+   "border": 0.890818858560794,
+   "decided": 403
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à un côté adverse plein",
+   "count": 743,
+   "game": 0.784656796769852,
+   "border": 1,
+   "decided": 740
+  },
+  {
+   "key": "face à un côté adverse plein · borne du bord (1 ou 7)",
+   "count": 399,
+   "game": 0.7443609022556391,
+   "border": 0.9897435897435898,
+   "decided": 390
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à un début de brelan adverse",
+   "count": 155,
+   "game": 0.6451612903225806,
+   "border": 0.9,
+   "decided": 150
+  },
+  {
+   "key": "face à un début de brelan adverse · borne du bord (1 ou 7)",
+   "count": 158,
+   "game": 0.569620253164557,
+   "border": 0.8266666666666667,
+   "decided": 150
+  },
+  {
+   "key": "milieu (13-24)",
+   "count": 677,
+   "game": 0.55096011816839,
+   "border": 0.8602150537634409,
+   "decided": 651
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à une carte adverse seule",
+   "count": 319,
+   "game": 0.6050156739811913,
+   "border": 0.9225806451612903,
+   "decided": 310
+  },
+  {
+   "key": "face à une carte adverse seule · borne intermédiaire (2 ou 6)",
+   "count": 313,
+   "game": 0.5527156549520766,
+   "border": 0.9249146757679181,
+   "decided": 293
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · borne du centre (3-5)",
+   "count": 597,
+   "game": 0.6817420435510888,
+   "border": 0.9329896907216495,
+   "decided": 582
+  },
+  {
+   "key": "face à deux cartes adverses sans figure · borne intermédiaire (2 ou 6)",
+   "count": 170,
+   "game": 0.6352941176470588,
+   "border": 0.9764705882352941,
+   "decided": 170
+  },
+  {
+   "key": "face à un côté adverse plein · borne du centre (3-5)",
+   "count": 569,
+   "game": 0.7820738137082601,
+   "border": 0.9838998211091234,
+   "decided": 559
+  },
+  {
+   "key": "face à une carte adverse seule · borne du bord (1 ou 7)",
+   "count": 231,
+   "game": 0.5497835497835498,
+   "border": 0.8773584905660378,
+   "decided": 212
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à un début de suite de couleur adverse",
+   "count": 279,
+   "game": 0.5734767025089605,
+   "border": 0.8132295719844358,
+   "decided": 257
+  },
+  {
+   "key": "face à un début de suite de couleur adverse · borne du centre (3-5)",
+   "count": 356,
+   "game": 0.5449438202247191,
+   "border": 0.7584097859327217,
+   "decided": 327
+  },
+  {
+   "key": "complète un côté ni brelan ni suite",
+   "count": 43,
+   "game": 0.4186046511627907,
+   "border": 0.75,
+   "decided": 36
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · face à une carte adverse seule",
+   "count": 3,
+   "game": 0,
+   "border": 0,
+   "decided": 1
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · borne du centre (3-5)",
+   "count": 14,
+   "game": 0.5714285714285714,
+   "border": 0.7692307692307693,
+   "decided": 13
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7)",
+   "count": 59,
+   "game": 0.4745762711864407,
+   "border": 0.7906976744186046,
+   "decided": 43
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · face à un début de brelan adverse",
+   "count": 10,
+   "game": 0.3,
+   "border": 1,
+   "decided": 6
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · borne intermédiaire (2 ou 6)",
+   "count": 17,
+   "game": 0.35294117647058826,
+   "border": 0.8461538461538461,
+   "decided": 13
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10)",
+   "count": 97,
+   "game": 0.41237113402061853,
+   "border": 0.7464788732394366,
+   "decided": 71
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à un côté adverse plein",
+   "count": 50,
+   "game": 0.56,
+   "border": 0.8,
+   "decided": 35
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · borne intermédiaire (2 ou 6)",
+   "count": 30,
+   "game": 0.36666666666666664,
+   "border": 0.6842105263157895,
+   "decided": 19
+  },
+  {
+   "key": "face à un début de brelan adverse · borne du centre (3-5)",
+   "count": 207,
+   "game": 0.6183574879227053,
+   "border": 0.8316326530612245,
+   "decided": 196
+  },
+  {
+   "key": "face à un côté adverse vide",
+   "count": 17,
+   "game": 0.35294117647058826,
+   "border": 0.5833333333333334,
+   "decided": 12
+  },
+  {
+   "key": "complète un brelan, milieu (4-7) · face à un côté adverse vide",
+   "count": 3,
+   "game": 1,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "face à un côté adverse vide · borne du centre (3-5)",
+   "count": 12,
+   "game": 0.3333333333333333,
+   "border": 0.6666666666666666,
+   "decided": 9
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · face à un côté adverse plein",
+   "count": 19,
+   "game": 0.6842105263157895,
+   "border": 0.8947368421052632,
+   "decided": 19
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · borne intermédiaire (2 ou 6)",
+   "count": 16,
+   "game": 0.3125,
+   "border": 0.6923076923076923,
+   "decided": 13
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10)",
+   "count": 22,
+   "game": 0.45454545454545453,
+   "border": 0.631578947368421,
+   "decided": 19
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · face à un côté adverse plein",
+   "count": 11,
+   "game": 0.36363636363636365,
+   "border": 0.5454545454545454,
+   "decided": 11
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · borne intermédiaire (2 ou 6)",
+   "count": 9,
+   "game": 0.2222222222222222,
+   "border": 0.6666666666666666,
+   "decided": 6
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · face à un côté adverse plein",
+   "count": 33,
+   "game": 0.5151515151515151,
+   "border": 0.8,
+   "decided": 25
+  },
+  {
+   "key": "rejoint un autre joker",
+   "count": 69,
+   "game": 0.6956521739130435,
+   "border": 0.9846153846153847,
+   "decided": 65
+  },
+  {
+   "key": "rejoint un autre joker · face à un côté adverse plein",
+   "count": 54,
+   "game": 0.7777777777777778,
+   "border": 1,
+   "decided": 53
+  },
+  {
+   "key": "rejoint un autre joker · borne intermédiaire (2 ou 6)",
+   "count": 18,
+   "game": 0.5555555555555556,
+   "border": 1,
+   "decided": 17
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · borne du bord (1 ou 7)",
+   "count": 26,
+   "game": 0.4230769230769231,
+   "border": 0.75,
+   "decided": 20
+  },
+  {
+   "key": "rejoint un autre joker · borne du bord (1 ou 7)",
+   "count": 21,
+   "game": 0.8095238095238095,
+   "border": 1,
+   "decided": 20
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · borne du bord (1 ou 7)",
+   "count": 13,
+   "game": 0.38461538461538464,
+   "border": 0.8,
+   "decided": 10
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · borne du centre (3-5)",
+   "count": 41,
+   "game": 0.43902439024390244,
+   "border": 0.78125,
+   "decided": 32
+  },
+  {
+   "key": "rejoint un autre joker · borne du centre (3-5)",
+   "count": 30,
+   "game": 0.7,
+   "border": 0.9642857142857143,
+   "decided": 28
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à un début de suite de couleur adverse",
+   "count": 18,
+   "game": 0.16666666666666666,
+   "border": 0.7272727272727273,
+   "decided": 11
+  },
+  {
+   "key": "complète un brelan, bouts (1-3, 8-10) · face à un côté adverse vide",
+   "count": 9,
+   "game": 0.1111111111111111,
+   "border": 0.4,
+   "decided": 5
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · face à deux cartes adverses sans figure",
+   "count": 10,
+   "game": 0,
+   "border": 0.3333333333333333,
+   "decided": 9
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · face à un début de suite de couleur adverse",
+   "count": 1,
+   "game": 0,
+   "border": 0,
+   "decided": 1
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · borne du centre (3-5)",
+   "count": 9,
+   "game": 0.5555555555555556,
+   "border": 0.5555555555555556,
+   "decided": 9
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7)",
+   "count": 5,
+   "game": 0.6,
+   "border": 1,
+   "decided": 4
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · face à un côté adverse plein",
+   "count": 3,
+   "game": 0.6666666666666666,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · borne du centre (3-5)",
+   "count": 3,
+   "game": 0.3333333333333333,
+   "border": 1,
+   "decided": 2
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · face à un début de brelan adverse",
+   "count": 4,
+   "game": 0.75,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · borne du bord (1 ou 7)",
+   "count": 20,
+   "game": 0.7,
+   "border": 0.8125,
+   "decided": 16
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · face à un début de suite de couleur adverse",
+   "count": 7,
+   "game": 0.5714285714285714,
+   "border": 0.8,
+   "decided": 5
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · borne du centre (3-5)",
+   "count": 22,
+   "game": 0.36363636363636365,
+   "border": 0.7142857142857143,
+   "decided": 14
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · face à un début de suite de couleur adverse",
+   "count": 5,
+   "game": 0.6,
+   "border": 1,
+   "decided": 4
+  },
+  {
+   "key": "complète un côté ni brelan ni suite · face à un début de brelan adverse",
+   "count": 6,
+   "game": 0.3333333333333333,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · borne du bord (1 ou 7)",
+   "count": 1,
+   "game": 1,
+   "border": 1,
+   "decided": 1
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · face à deux cartes adverses sans figure",
+   "count": 3,
+   "game": 0.6666666666666666,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · borne du bord (1 ou 7)",
+   "count": 4,
+   "game": 0.75,
+   "border": 0.75,
+   "decided": 4
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à une carte adverse seule",
+   "count": 10,
+   "game": 0.7,
+   "border": 0.7,
+   "decided": 10
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à un début de brelan adverse",
+   "count": 11,
+   "game": 0.09090909090909091,
+   "border": 0.5555555555555556,
+   "decided": 9
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à deux cartes adverses sans figure",
+   "count": 7,
+   "game": 0.14285714285714285,
+   "border": 1,
+   "decided": 5
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · face à deux cartes adverses sans figure",
+   "count": 4,
+   "game": 0.25,
+   "border": 0.5,
+   "decided": 2
+  },
+  {
+   "key": "rejoint un autre joker · face à un début de suite de couleur adverse",
+   "count": 5,
+   "game": 0.4,
+   "border": 1,
+   "decided": 3
+  },
+  {
+   "key": "face à un côté adverse vide · borne intermédiaire (2 ou 6)",
+   "count": 2,
+   "game": 0.5,
+   "border": 1,
+   "decided": 1
+  },
+  {
+   "key": "rejoint un autre joker · face à un début de brelan adverse",
+   "count": 6,
+   "game": 0.3333333333333333,
+   "border": 0.8333333333333334,
+   "decided": 6
+  },
+  {
+   "key": "face à un côté adverse vide · borne du bord (1 ou 7)",
+   "count": 3,
+   "game": 0.3333333333333333,
+   "border": 0,
+   "decided": 2
+  },
+  {
+   "key": "complète une suite de couleur, bouts (1-3, 8-10) · face à une carte adverse seule",
+   "count": 3,
+   "game": 0.3333333333333333,
+   "border": 0,
+   "decided": 1
+  },
+  {
+   "key": "rejoint un autre joker · face à deux cartes adverses sans figure",
+   "count": 1,
+   "game": 0,
+   "border": 1,
+   "decided": 1
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · face à deux cartes adverses sans figure",
+   "count": 1,
+   "game": 0,
+   "border": null,
+   "decided": 0
+  },
+  {
+   "key": "ouvre une borne avec le joker",
+   "count": 26,
+   "game": 0.46153846153846156,
+   "border": 0.6521739130434783,
+   "decided": 23
+  },
+  {
+   "key": "début (tours 1-12)",
+   "count": 15,
+   "game": 0.4666666666666667,
+   "border": 0.5833333333333334,
+   "decided": 12
+  },
+  {
+   "key": "ouvre une borne avec le joker · face à une carte adverse seule",
+   "count": 21,
+   "game": 0.42857142857142855,
+   "border": 0.6842105263157895,
+   "decided": 19
+  },
+  {
+   "key": "ouvre une borne avec le joker · borne intermédiaire (2 ou 6)",
+   "count": 8,
+   "game": 0.5,
+   "border": 0.7142857142857143,
+   "decided": 7
+  },
+  {
+   "key": "ouvre une borne avec le joker · borne du bord (1 ou 7)",
+   "count": 3,
+   "game": 0.3333333333333333,
+   "border": 0.6666666666666666,
+   "decided": 3
+  },
+  {
+   "key": "rejoint une carte seule, bouts (1-3, 8-10) · face à un côté adverse vide",
+   "count": 1,
+   "game": 0,
+   "border": 0,
+   "decided": 1
+  },
+  {
+   "key": "ouvre une borne avec le joker · borne du centre (3-5)",
+   "count": 15,
+   "game": 0.4666666666666667,
+   "border": 0.6153846153846154,
+   "decided": 13
+  },
+  {
+   "key": "rejoint un autre joker · face à une carte adverse seule",
+   "count": 3,
+   "game": 0.6666666666666666,
+   "border": 1,
+   "decided": 2
+  },
+  {
+   "key": "rejoint une carte seule, milieu (4-7) · face à une carte adverse seule",
+   "count": 5,
+   "game": 0.6,
+   "border": 0.6,
+   "decided": 5
+  },
+  {
+   "key": "ouvre une borne avec le joker · face à un côté adverse vide",
+   "count": 4,
+   "game": 0.5,
+   "border": 0.6666666666666666,
+   "decided": 3
+  },
+  {
+   "key": "ouvre une borne avec le joker · face à un début de suite de couleur adverse",
+   "count": 1,
+   "game": 1,
+   "border": 0,
+   "decided": 1
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · face à un début de suite de couleur adverse",
+   "count": 1,
+   "game": 1,
+   "border": 1,
+   "decided": 1
+  },
+  {
+   "key": "complète une suite de couleur, milieu (4-7) · borne intermédiaire (2 ou 6)",
+   "count": 1,
+   "game": 1,
+   "border": 1,
+   "decided": 1
+  }
+ ]
+}

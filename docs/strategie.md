@@ -48,6 +48,7 @@ mesures détaillées sont plus bas, section par section.
 | Fin de partie : cœur nu et 7 coups d'avance, à temps égal (880 itérations) | 02/10 | depuis le tour 22 +0,0 ± 3,3 ; 20 : +1,3 ± 3,2 ; 18 : −2,0 ± 3,5 | écarté ; la bascule reste (`phase:`), le début de partie est au backlog | — |
 | Choisir son jeu : brelans ou suites (`plan`, `ends`, `midRuns`, `weakRuns`) | 02/10 | cœur seul de 45,9 % (les quatre) à 50,6 % (joker seul) | écarté sans duel long, les idées restent (`shapes.js`) | — |
 | Règles des replays : face à un côté plein, répondre plus bas, à côté d'une borne gagnée | 02/10 | cœur seul 48,0 – 50,6 % | écartées ; `junk` (53 %) va au duel long | — |
+| Placer le joker (face à un côté plein, attendre, brelan du milieu) ; `deepen` | 02/10 | cœur seul 49,5 – 50,3 % | écartés : le cœur le fait déjà ; `jokerRuns` +0,8, rien de plus avec `jkx` | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1090,3 +1091,53 @@ gagnant est surtout le plus fort) sont séparées. Résultats complets :
   corrélation.
 - **Au backlog** : deux duels longs pour `jkx`, deux pour `junk` seul, dans
   l'arbre du 0.9, avant ceux de `obex`.
+
+## Les jokers dans les replays, et « présent chez les gagnants, absent chez les perdants » (02/10)
+
+**La lecture de Sami** : une règle « vraie dans 80 % des cas » est un coup que
+l'on trouve dans les parties gagnées et presque pas dans les perdues. La mesure
+est donc la part des fois où celui qui joue le coup gagne la partie (50 % au
+hasard entre robots de même force). `npm run rules` l'affiche en premier.
+
+**Les jokers** (`npm run jokers`, `src/replay/joker-features.js`) : les 4 250
+jokers posés dans les 3 048 parties entre robots de même force, lus par ce
+qu'ils rejoignent (brelan, suite de couleur, carte seule ; milieu 4-7 ou
+bouts), la borne (centre, bord), et ce qu'il y a en face.
+- **Celui qui pose un joker gagne 62 % des parties** : tenir un joker est déjà
+  un avantage. C'est la base à laquelle comparer un placement, pas 50 %.
+- **Le cœur les pose déjà tard et sur des brelans** : 84 % en fin de partie, 92 %
+  pour compléter un brelan. L'habitude `joker` ne l'autorise qu'à compléter une
+  paire ; aucun joker sur une suite de couleur.
+- **Le meilleur placement : face à un côté adverse plein** — la borne est gagnée
+  99 % du temps, la partie 74 %. Face à une carte seule ou un début de suite
+  adverse : 54 à 55 %. Un joker sur une carte seule, aux bouts : 41 %.
+- **Brelan du milieu ou des bouts** : 64 % contre 63 % des parties, 94 % contre
+  91 % des bornes. Un léger avantage au milieu, comme le pensait Sami.
+
+**Les idées joker** (`src/sim/joker-ideas.js`) — les premiers bonus qu'un joker
+reçoit : `ideasBonus` ne lisait que les vraies cartes. Le volet joker de `ends`,
+testé plus haut, n'avait donc jamais joué.
+
+| Idée | Cœur seul, contre le cœur du 0.9 |
+| --- | --- |
+| `jokerFull` : bonus face à un côté plein (0,1 / 0,2 / 0,4) | 50,0 % / 49,8 % / 49,9 % |
+| `jokerWait` : malus tant que le côté adverse est ouvert | 50,0 % / 49,6 % / 49,5 % |
+| `jokerMid` : bonus sur un brelan de 4 à 7 | 50,0 % / 49,7 % / 50,2 % |
+| `jokerRuns` : le joker peut aussi compléter une suite de couleur | 50,7 %, 50,7 %, 51,0 % sur trois jeux de donnes |
+| `jkx` + `jokerRuns` (cœur `jkxr`) | 53,7 %, 54,3 %, 54,2 % : comme `jkx` seul |
+
+- **Le placement ne change rien** : le cœur fait déjà ce que les replays
+  montrent (tard, sur un brelan, souvent face à un côté plein).
+- **`jokerRuns`** gagne un peu, régulièrement (+0,8), mais n'ajoute rien à `jkx`.
+
+**La lecture de Sami sur tous les coups** :
+- **Entre robots de même force, aucune règle n'atteint 80 %, ni 70 % pour un
+  choix.** Le plus haut côté gagnant : un joker après une borne gagnée (71 %),
+  qui dit l'avance. Côté perdant : jouer à côté d'une borne perdue au milieu de
+  la partie (65 %).
+- **Entre robots de force inégale** (200 parties), on dépasse 80 % : avec moins
+  de bornes ouvertes que l'adversaire, le gagnant pose une 2e carte ou bâtit
+  une suite de couleur (80 à 83 %) ; le perdant ouvre encore avec une carte forte
+  (86 %). Transformée en idée (`deepen` : une 2e carte quand l'adversaire a
+  entamé plus de bornes), elle est neutre (50,0 à 50,3 %) : le 0.9 le fait déjà,
+  la règle décrivait l'erreur du Basique.

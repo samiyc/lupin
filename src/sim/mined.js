@@ -14,8 +14,11 @@ import { shapeOf } from "./shapes.js";
  * - `underbid`: answering a lone card lower costs `underbid` (against the 0.9,
  *   losers do it on 25 % of their early moves, winners on 12 %).
  * - `nextToWon`: next to a border I have won earns `nextToWon`.
+ * - `deepen`: while the opponent has started more borders than me, a second
+ *   card on a border I have started earns `deepen` (unequal games: the winner
+ *   does it in 80 % of such moves, the loser keeps opening with high cards).
  */
-export const MINED_IDEAS = Object.freeze(["junk", "facing", "underbid", "nextToWon"]);
+export const MINED_IDEAS = Object.freeze(["junk", "facing", "underbid", "nextToWon", "deepen"]);
 
 function junkPenalty({ spec, weights }, mine, card) {
   const next = [...mine, card];
@@ -29,6 +32,17 @@ function underbidPenalty({ spec, weights }, mine, theirs, card) {
 }
 
 const nextToWon = ({ owners, me }, border) => owners[border - 1] === me || owners[border + 1] === me;
+const startedCount = (sides) => sides.filter((side) => side.length > 0).length;
+const outnumbered = ({ mySides, theirSides }) => startedCount(theirSides) > startedCount(mySides);
+
+/** The bonuses that read the board around the border: borders won, borders started. */
+function boardBonus(context, border, mine) {
+  const { ideas, weights } = context;
+  let bonus = 0;
+  if (ideas.has("nextToWon") && nextToWon(context, border)) bonus += weights.nextToWon;
+  if (ideas.has("deepen") && mine.length === 1 && outnumbered(context)) bonus += weights.deepen;
+  return bonus;
+}
 
 export function minedBonus(context, border, card) {
   const { ideas, weights } = context;
@@ -37,6 +51,5 @@ export function minedBonus(context, border, card) {
   if (ideas.has("junk")) bonus += junkPenalty(context, mine, card);
   if (ideas.has("facing") && theirs.length === 3) bonus += weights.facing;
   if (ideas.has("underbid")) bonus += underbidPenalty(context, mine, theirs, card);
-  if (ideas.has("nextToWon") && nextToWon(context, border)) bonus += weights.nextToWon;
-  return bonus;
+  return bonus + boardBonus(context, border, mine);
 }

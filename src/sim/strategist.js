@@ -1,5 +1,6 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { ideasBonus } from "./ideas.js";
+import { jokerBonus, jokerCompletesRun } from "./joker-ideas.js";
 
 /**
  * Sami's three habits from his real games, as adjustments on top of the
@@ -82,7 +83,8 @@ function habitsBonus(context, side, card) {
 
 export function strategistAdjust(side, card, context, border) {
   if (isJoker(card)) {
-    return { allowed: !context.habits.has("joker") || jokerCompletesTrips(context.spec, side), bonus: 0 };
+    const runs = Boolean(context.ideas?.has("jokerRuns")) && jokerCompletesRun(context.spec, side);
+    return { allowed: !context.habits.has("joker") || jokerCompletesTrips(context.spec, side) || runs, bonus: jokerBonus(context, side, border) };
   }
   let bonus = habitsBonus(context, side, card);
   if (context.ideas?.size > 0) bonus += ideasBonus(context, border, card);

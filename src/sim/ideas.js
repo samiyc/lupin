@@ -1,5 +1,6 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { exposurePenalty, outbidBonus } from "./outbid.js";
+import { JOKER_IDEAS } from "./joker-ideas.js";
 import { MINED_IDEAS, minedBonus } from "./mined.js";
 import { SHAPE_IDEAS, shapesBonus } from "./shapes.js";
 import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
@@ -20,7 +21,7 @@ import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js"
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", "outbid", "exposure", ...SHAPE_IDEAS, ...MINED_IDEAS, ...PRINCIPLES]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", "outbid", "exposure", ...SHAPE_IDEAS, ...MINED_IDEAS, ...JOKER_IDEAS, ...PRINCIPLES]);
 
 /**
  * What the strategist plays. 1.1: measured against 1.0 over 24 000 games
@@ -50,6 +51,11 @@ export const IDEA_WEIGHTS = Object.freeze({
   facing: 0.1,
   underbid: 0.1,
   nextToWon: 0.1,
+  deepen: 0.1,
+  // joker-ideas.js
+  jokerFull: 0.1,
+  jokerWait: 0.1,
+  jokerMid: 0.1,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
