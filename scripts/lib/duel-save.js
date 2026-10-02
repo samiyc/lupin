@@ -1,20 +1,20 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { fileURLToPath } from "node:url";
 import { BOT_LINEUP } from "../../src/config/bots.js";
 import { localTimestamp } from "../../src/replay/log.js";
 import { isSlowEngine } from "./duel-plan.js";
+import { DUELS_DIR, readIndex, rowOf, writeIndex } from "./game-index.js";
 
 /**
  * Keeping a duel's games as replays (`src/replay/bot-games.js`), in duels/
- * (ignored by git): one file per duel, its settings and every game.
+ * (ignored by git): one file per duel, its settings and every new game, and
+ * a row per game in duels/index.json (`game-index.js`). A game already kept —
+ * same rules, deck, players and seed (`gameKey`) — is not written twice.
  *
  * Saved when asked (`--save`), and whenever the games are solid enough to
  * build on: a long duel, or one where every bot plays at full strength — a
  * line-up version, a bot that does not search, or a search of 800 iterations
  * or more, or on a clock (`@t`).
  */
-export const DUELS_DIR = fileURLToPath(new URL("../../duels/", import.meta.url));
-
 const LINEUP_ENGINES = new Set(Object.values(BOT_LINEUP).map((bot) => bot.engine));
 
 const solid = (engine) => {
@@ -35,12 +35,24 @@ function advantageSummary(logs) {
   return `${ended} finies avant le tour 30 ; sur les ${solved.length} résolues au tour 30, le camp en avance gagne dans ${pct} %`;
 }
 
-/** Writes the duel and returns a line for the report. */
+/** Writes the duel's new games and their index rows, and returns a line for the report. */
 export async function saveDuel({ a, b, engines, settings, logs }) {
   await mkdir(DUELS_DIR, { recursive: true });
-  const stamp = localTimestamp().slice(0, 19).replace(/[:T]/g, "-");
-  const name = `${stamp}_${a}_vs_${b}.json`.replace(/[^\w.@+=-]/g, "_");
-  const file = `${DUELS_DIR}${name}`;
-  await writeFile(file, JSON.stringify({ format: "lopin-duel/1", a, b, engines, ...settings, games: logs }));
-  return `  replays : ${logs.length} parties → duels/${name} (${advantageSummary(logs)})`;
+  const rows = await readIndex();
+  const known = new Set(rows.map((row) => row.key));
+  const name = `${localTimestamp().slice(0, 19).replace(/[:T]/g, "-")}_${a}_vs_${b}.json`.replace(/[^\w.@+=-]/g, "_");
+  const fresh = [];
+  for (const log of logs) {
+    const row = rowOf(name, fresh.length, log);
+    if (known.has(row.key)) continue;
+    known.add(row.key);
+    fresh.push(log);
+    rows.push(row);
+  }
+  const duplicates = logs.length - fresh.length;
+  const skipped = duplicates ? `, ${duplicates} doublons ignorés` : "";
+  if (fresh.length === 0) return `  replays : aucune partie nouvelle (${duplicates} doublons ignorés)`;
+  await writeFile(`${DUELS_DIR}${name}`, JSON.stringify({ format: "lopin-duel/1", a, b, engines, ...settings, games: fresh }));
+  await writeIndex(rows);
+  return `  replays : ${fresh.length} parties → duels/${name}${skipped} (${advantageSummary(fresh)})`;
 }

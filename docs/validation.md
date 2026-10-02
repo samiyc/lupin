@@ -200,3 +200,34 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
   mécanisme, sur un seul coup, et on rejoue la suite : une partie qui bascule au
   tour 30 se voit sur la même donne. Valable tant que la version des robots est
   la même.
+
+### Retrouver une partie, et la rejouer depuis un tour (02/10)
+
+- **Ce que l'analyse note en plus** (`src/replay/game-analysis.js`) :
+  - `columns` : le tour où chaque joueur a une carte sur les 7 bornes ;
+  - `firstBorder` : la première borne gagnée, par qui et à quel tour ;
+  - la pioche vide n'est pas notée : c'est toujours le tour 30.
+- **Un robot par partie**, construit à partir de la graine de la partie
+  (`seatRng`) : la même graine et la même position donnent les mêmes coups.
+  Une partie rejouée depuis n'importe quel tour redonne exactement la même
+  fin.
+- **L'index** `duels/index.json` : une ligne par partie, avec la clé
+  (`gameKey` : règle, paquet, joueurs, graine). Une partie déjà gardée n'est pas
+  réécrite (« N doublons ignorés »). `npm run games -- --reindex` le refait à
+  partir des fichiers.
+- **Les commandes** :
+
+| Je veux… | Commande |
+| --- | --- |
+| trouver des parties | `npm run games -- --lost-by experimental@0.9.0 --hands medium --from first-border --limit 100` |
+| vérifier que le rejeu redonne la même fin | `npm run branch -- --vs experimental@0.9.0 --from first-border --check` |
+| voir ce qu'une erreur change | `npm run branch -- … --force random` |
+| essayer un autre moteur depuis un tour | `npm run branch -- --lost-by experimental@0.9.0 --from first-border --engine <moteur>` |
+| savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --games 60` |
+
+- **Les filtres** : `--lost-by` ou `--won-by` (un joueur), `--hands` (sa main de
+  départ), `--balanced` (deux mains moyennes), `--vs` (les deux sièges sont ce
+  joueur), `--from first-border|columns|N`, `--limit`.
+- **Une suite modifiée n'est pas jouée jusqu'au bout** : elle s'arrête au tour 30,
+  et le solveur exact dit qui tient la partie. Le camp en avance à ce moment
+  gagne 92 à 97 % des parties.

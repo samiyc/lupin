@@ -32,7 +32,10 @@
     "hiding": "node scripts/hiding.js",
     "policy": "node scripts/policy.js",
     "bretagne": "node scripts/bretagne.js",
-    "pivots": "node scripts/pivots.js"
+    "pivots": "node scripts/pivots.js",
+    "games": "node scripts/games.js",
+    "branch": "node scripts/branch.js",
+    "error-impact": "node scripts/error-impact.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

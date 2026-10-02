@@ -60,23 +60,23 @@
     {
       "a": "stratege@2.1.0",
       "b": "basique@1.0.0",
-      "wins": 82,
+      "wins": 85,
       "games": 100,
-      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
+      "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
     },
     {
       "a": "experimental@0.9.0",
       "b": "basique@1.0.0",
-      "wins": 92,
+      "wins": 95,
       "games": 100,
-      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
+      "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
     },
     {
       "a": "experimental@0.9.0",
       "b": "stratege@2.1.0",
-      "wins": 60,
+      "wins": 68,
       "games": 100,
-      "source": "duel de 100 parties du 01/10, règle de la page, gardé dans duels/"
+      "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
     }
   ]
 }
