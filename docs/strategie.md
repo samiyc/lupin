@@ -45,6 +45,7 @@ mesures détaillées sont plus bas, section par section.
 | Temps qui suit l'incertitude (au même total) | 02/10 | 54,2 % puis 50,0 % ; ≈ 51,7 % réunis | écarté, l'option reste (`+smart`) | a1b3de5 |
 | Juger une borne avec ses voisines (`neighbors`) | 02/10 | seul 47,0 % ; depuis le tour 23 +0,8 ± 2,4 ; partie entière 46,9 % | écarté, l'idée reste (`+core=nb1`) | b9cbecc |
 | L'arbre sans les bonus du cœur | 02/10 | depuis le tour 23 +0,3 ± 2,6 ; partie entière 42,4 % | les bonus restent : ils servent avant la fin | b9cbecc |
+| Fin de partie : cœur nu et 7 coups d'avance, à temps égal (880 itérations) | 02/10 | depuis le tour 22 +0,0 ± 3,3 ; 20 : +1,3 ± 3,2 ; 18 : −2,0 ± 3,5 | écarté ; la bascule reste (`phase:`), le début de partie est au backlog | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -896,3 +897,48 @@ pour 200 parties. **Il voit une vraie différence** : le Basique, depuis le tour
 - **Où le cœur pèse** : avant le tour 23, quand l'arbre ne voit pas encore la
   fin. C'est là qu'un meilleur jugement servirait ; le banc d'essai peut partir
   plus tôt (`--from 14`, `--from first-border`), au prix d'un bruit plus grand.
+
+## Deux phases : un cœur riche au début, un arbre profond à la fin (02/10)
+
+**L'idée de Sami** : jusqu'au tour 20 environ, un cœur plus riche, qui juge une
+borne avec ses voisines, quitte à réduire l'arbre ; ensuite, un cœur aussi
+rapide que possible pour que l'arbre aille à 6 ou 7 coups d'avance. Bascule
+testée aux tours 18, 20 et 22.
+
+**Le robot à deux phases** (`src/sim/phase.js`) : `phase:<bascule>:<début>/<fin>`,
+chaque moitié un moteur ordinaire avec son budget. La bascule est un tour, ou
+un événement de la partie : `border` (une première borne gagnée), `board`
+(les deux joueurs ont entamé les 7 bornes), `pileN` (N cartes ou moins dans la
+pioche).
+
+**Ce que coûte une itération** (ms, positions à graine fixe) :
+
+| Moteur | Tours 4 à 16 | Tours 20 à 26 |
+| --- | --- | --- |
+| le 0.9 (3 réponses, 5 coups) | 2,51 | 0,86 |
+| voisinage, 3 × 5 | 2,79 | 0,98 |
+| voisinage, 2 réponses, 4 coups | 2,79 | 0,98 |
+| cœur nu, 7 coups | 2,23 | 0,78 |
+
+- **Réduire l'arbre ne libère pas de temps** : presque tout est dans la
+  simulation jouée jusqu'au bout, pas dans la largeur ni la profondeur.
+- **Le cœur nu ne fait gagner que 9 %** en fin de partie. À temps égal : 720
+  itérations au début avec le voisinage, 880 à la fin avec le cœur nu.
+
+**La fin de partie, depuis le tour de bascule** (`npm run core-test`, 200 parties
+× 2 sièges, contre le 0.9 au témoin) : depuis 22, +0,0 ± 3,3 ; depuis 20,
++1,3 ± 3,2 ; depuis 18, −2,0 ± 3,5. **Rien** : 10 % d'itérations en plus et
+deux coups de profondeur ne changent pas qui tient la partie au tour 30.
+
+**Le début de partie** ne se mesure que sur une partie entière. Le 0.9 et ses
+variantes contre le Stratège (`npm run ab`, mêmes donnes, deux sièges) coûtent
+un seul camp qui cherche, mais 24 donnes prennent 6 min : un écart de 3 points
+demande de l'ordre de 1 000 donnes par variante. C'est au backlog de nuit
+(`ab-phase`). Le voisinage sur toute la partie donnait déjà 46,9 %.
+
+**Donner une main forte au Stratège et une faible au robot**, pour équilibrer
+le match : écarté pour le test principal. Ramener 68 % à 50 % ne rend la mesure
+que 7 % plus sensible, et l'échantillon ne serait plus le jeu normal (une donne
+sur 100 environ remplit les deux conditions), justement sur le début de partie
+que le nouveau cœur change. Utile en question secondaire : le cœur riche
+récupère-t-il mieux d'une main faible ?

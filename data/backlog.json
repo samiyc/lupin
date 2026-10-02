@@ -7,6 +7,13 @@
       "estimate": "3 à 4 h",
       "why": "Le pic du tour 10 (20 ± 10 points) : chaque tour de 6 à 14, avec 120 parties et deux témoins, comme les tours 19 à 29. À reporter ensuite dans data/error-impact.json et la rétrospective.",
       "status": "todo"
+    },
+    {
+      "id": "ab-phase",
+      "command": "npm run ab -- \"ismcts+widen=3+depth=5@800\" \"phase:20:ismcts+widen=3+depth=5+core=nb1@720/ismcts+widen=3+depth=7+core=plain@880\" \"phase:border:ismcts+widen=3+depth=5+core=nb1@720/ismcts+widen=3+depth=7+core=plain@880\" --pairs 400 --page",
+      "estimate": "2 h 30",
+      "why": "Le robot à deux phases (cœur avec voisinage au début, cœur nu et 7 coups à la fin), bascule au tour 20 ou à la première borne gagnée, contre le Stratège sur les mêmes donnes que le 0.9. La fin seule est neutre depuis 18, 20 et 22 : ce traitement mesure le début de partie.",
+      "status": "todo"
     }
   ]
 }

@@ -5,6 +5,7 @@ import { ismctsBot, ismctsSettings } from "./ismcts.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
+import { phaseBot, phaseSettings } from "./phase.js";
 import { pickBest, pickSampled } from "./pick.js";
 import { searchBot } from "./search.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
@@ -273,9 +274,12 @@ const ismctsOf = ({ sample, core = "exp", shortlist = core, rollout = core, ...t
 
 /**
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot
- * with a budget of N rollouts a move, to weigh depth against time in duels.
+ * with a budget of N rollouts a move, to weigh depth against time in duels —
+ * or `phase:<switch>:<early>/<late>`, two engines in turn (phase.js).
  */
 export function engineFor(id) {
+  const phases = phaseSettings(id);
+  if (phases) return phaseBot({ ...phases, early: engineFor(phases.early), late: engineFor(phases.late) });
   const [name, at] = id.split("@");
   const budget = budgetOf(at);
   const settings = experimentalSettings(name);
