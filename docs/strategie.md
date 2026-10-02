@@ -46,6 +46,7 @@ mesures détaillées sont plus bas, section par section.
 | Juger une borne avec ses voisines (`neighbors`) | 02/10 | seul 47,0 % ; depuis le tour 23 +0,8 ± 2,4 ; partie entière 46,9 % | écarté, l'idée reste (`+core=nb1`) | b9cbecc |
 | L'arbre sans les bonus du cœur | 02/10 | depuis le tour 23 +0,3 ± 2,6 ; partie entière 42,4 % | les bonus restent : ils servent avant la fin | b9cbecc |
 | Fin de partie : cœur nu et 7 coups d'avance, à temps égal (880 itérations) | 02/10 | depuis le tour 22 +0,0 ± 3,3 ; 20 : +1,3 ± 3,2 ; 18 : −2,0 ± 3,5 | écarté ; la bascule reste (`phase:`), le début de partie est au backlog | — |
+| Choisir son jeu : brelans ou suites (`plan`, `ends`, `midRuns`, `weakRuns`) | 02/10 | cœur seul de 45,9 % (les quatre) à 50,6 % (joker seul) | écarté sans duel long, les idées restent (`shapes.js`) | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -985,3 +986,58 @@ page, fourchette par paires) :
   (SPSA : 52,9 % seul, 50,7 % dans l'arbre). Deux duels longs
   `ismcts+…+core=obex@800` contre le 0.9 sont au backlog (`duel-obex-0`,
   `duel-obex-1`).
+
+## Choisir son jeu : brelans ou suites de couleur (02/10)
+
+**Les remarques de Sami** :
+- Dès qu'une borne est complète de mon côté, il faut choisir son jeu entre les
+  suites de couleur et les brelans : on ne peut pas toujours avoir les deux, et
+  il est plus facile de finir avec des brelans partout, ou des suites partout,
+  qu'avec un mélange.
+- Avec une main faible au début, mieux vaut partir sur des brelans que sur des
+  suites de couleur basses, qu'une suite plus haute dépassera presque à coup
+  sûr.
+- Pour mélanger les deux, les brelans vont plutôt aux bouts (1-2, 9-10) et les
+  suites au milieu (4-5-6). Un brelan de 5 coupe en deux toutes les suites qui
+  passent par le 5 (3-4-5, 4-5-6, 5-6-7), et cela dans trois couleurs.
+- Le joker se place plutôt sur un brelan du milieu : il y remplace une vraie
+  carte, et le brelan ne bloque plus que deux couleurs.
+
+**Quatre idées** (`src/sim/shapes.js`). Chacune juge un côté de deux ou trois
+cartes, dès que sa figure se lit ; une carte seule, avec ou sans joker, peut
+encore devenir l'une ou l'autre :
+- `plan` : la figure la plus fréquente de mes côtés complets est le plan ; un
+  côté qui la suit gagne le poids, un côté qui part dans l'autre sens le perd.
+- `ends` : une vraie carte qui bâtit un brelan paie le poids × la part des
+  suites qu'il coupe (0 pour 1 et 10, ½ pour 2 et 9, 1 de 3 à 8) ; un joker sur
+  un brelan reçoit ce même montant. `endsReal: 0` ne garde que le joker.
+- `midRuns` : une suite de couleur gagne le poids au centre des valeurs, et le
+  perd autant aux deux bouts.
+- `weakRuns` : une suite de couleur basse paie le poids × la hauteur qui lui
+  manque (1 − carte haute / 10).
+
+**Le cœur seul, contre le cœur du 0.9** (6 000 à 8 000 parties par duel,
+règle de la page, fourchette par paires) :
+
+| Cœur | Poids 0,1 | Poids 0,2 | Poids 0,4 |
+| --- | --- | --- | --- |
+| `plan` | 49,5 % | 48,0 % (47,0 – 49,1) | 47,7 % (46,6 – 48,7) |
+| `ends` | 47,7 % (46,6 – 48,7) | 47,9 % | 47,2 % |
+| `ends`, le joker seul | — | 50,6 % ; 50,5 % sur d'autres donnes | 50,2 % |
+| `midRuns` | 50,5 % ; 50,3 % et 50,2 % sur d'autres donnes | 50,1 % | — |
+| `weakRuns` | 49,5 % | 49,2 % | — |
+| les quatre (0,15) | 45,9 % (44,8 – 47,1) | — | — |
+| les quatre avec `obex` | 45,5 % (44,3 – 46,6) | — | — |
+
+- **Écarté, pas de duel long.** `plan` et `ends` font nettement perdre ; le
+  joker seul et `midRuns` restent dans le bruit (+0,2 à +0,6) ; ensemble, les
+  quatre perdent 4 points, et ils effacent le gain de `obex`.
+- **Pourquoi, sans doute** : le cœur estime déjà la chance de chaque côté face
+  à ce que l'adversaire y bâtit, cartes invisibles comprises, et il sait qu'une
+  suite de couleur bat un brelan. Une règle de forme le tire loin de ce calcul.
+  Et une partie se gagne avec 4 bornes, ou 3 côte à côte : finir les 7 dans une
+  même figure n'est pas le but.
+- **Le temps d'un duel cœur contre cœur** : environ 15 ms pour une partie sur
+  un fil, à la règle de la page ; 8 000 parties en 13 à 21 s sur les 23 fils,
+  backlog de nuit en cours. Une idée à trois poids, confirmée sur deux autres
+  jeux de donnes : environ 2 min.

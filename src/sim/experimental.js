@@ -90,6 +90,21 @@ export const CORES = Object.freeze({
   ex2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "exposure"], weights: { ...EXPERIMENT.weights, exposure: 0.2 } },
   ex4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "exposure"], weights: { ...EXPERIMENT.weights, exposure: 0.4 } },
   obex: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid", "exposure"], weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
+  // Choosing a game, trips or runs (shapes.js): `pl` plan, `en` ends, `mr` midRuns, `wr` weakRuns; `sh` all four, `shx` with obex.
+  pl1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan"], weights: { ...EXPERIMENT.weights, plan: 0.1 } },
+  pl2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan"], weights: { ...EXPERIMENT.weights, plan: 0.2 } },
+  pl4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan"], weights: { ...EXPERIMENT.weights, plan: 0.4 } },
+  en1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "ends"], weights: { ...EXPERIMENT.weights, ends: 0.1 } },
+  en2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "ends"], weights: { ...EXPERIMENT.weights, ends: 0.2 } },
+  en4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "ends"], weights: { ...EXPERIMENT.weights, ends: 0.4 } },
+  mr1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "midRuns"], weights: { ...EXPERIMENT.weights, midRuns: 0.1 } },
+  mr2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "midRuns"], weights: { ...EXPERIMENT.weights, midRuns: 0.2 } },
+  wr1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "weakRuns"], weights: { ...EXPERIMENT.weights, weakRuns: 0.1 } },
+  wr2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "weakRuns"], weights: { ...EXPERIMENT.weights, weakRuns: 0.2 } },
+  enj2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "ends"], weights: { ...EXPERIMENT.weights, ends: 0.2, endsReal: 0 } },
+  enj4: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "ends"], weights: { ...EXPERIMENT.weights, ends: 0.4, endsReal: 0 } },
+  sh: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights } },
+  shx: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "outbid", "exposure", "plan", "ends", "midRuns", "weakRuns"], weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
 });
 
 export function coreOf(name) {

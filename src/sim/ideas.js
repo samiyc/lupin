@@ -1,5 +1,6 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { exposurePenalty, outbidBonus } from "./outbid.js";
+import { SHAPE_IDEAS, shapesBonus } from "./shapes.js";
 import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
 
 /**
@@ -18,7 +19,7 @@ import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js"
  * - `spread`: never open a value that already sits alone on another border:
  *   two lone 7s want the same cards, and one of them will miss its trips.
  */
-export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", "outbid", "exposure", ...PRINCIPLES]);
+export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "weight", "runs", "dump", "whole", "certain", "neighbors", "outbid", "exposure", ...SHAPE_IDEAS, ...PRINCIPLES]);
 
 /**
  * What the strategist plays. 1.1: measured against 1.0 over 24 000 games
@@ -38,6 +39,11 @@ export const IDEA_WEIGHTS = Object.freeze({
   outbid: 0.2,
   outbidWide: 0,
   exposure: 0.2,
+  // shapes.js
+  plan: 0.15,
+  ends: 0.15,
+  midRuns: 0.15,
+  weakRuns: 0.15,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
@@ -125,7 +131,8 @@ export function ideasBonus(context, border, card) {
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
   if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
   bonus += principlesBonus(context, border, card);
-  return mine.length > 0 ? bonus : bonus + firstCardBonus(context, border, card);
+  if (mine.length > 0) return bonus + shapesBonus(context, mine, card);
+  return bonus + firstCardBonus(context, border, card);
 }
 
 /** The ideas that only judge the first card on my side of a border. */
