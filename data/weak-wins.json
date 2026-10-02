@@ -1,0 +1,47 @@
+{
+ "built": "2026-10-02",
+ "borders": 18789,
+ "low": 2928,
+ "questions": [
+  {
+   "label": "gagnée par une figure plus haute que celle d'en face",
+   "low": 0.32991803278688525,
+   "all": 0.27776890733940074
+  },
+  {
+   "label": "gagnée sur preuve, l'autre côté inachevé (claim)",
+   "low": 0.6506147540983607,
+   "all": 0.6075895470754165
+  },
+  {
+   "label": "côté d'en face : suite simple ou somme (pas de vraie figure)",
+   "low": 0.14685792349726776,
+   "all": 0.18297940284208847
+  },
+  {
+   "label": "côté d'en face : cartes hautes (moyenne 6 ou plus)",
+   "low": 0.41632513661202186,
+   "all": 0.3984246101442333
+  },
+  {
+   "label": "borne ouverte par le gagnant",
+   "low": 0.5471311475409836,
+   "all": 0.5202512108148385
+  },
+  {
+   "label": "le gagnant a fini son côté le premier",
+   "low": 0.7274590163934426,
+   "all": 0.6876363829900474
+  },
+  {
+   "label": "l'adversaire a encore joué dessus après",
+   "low": 0.17759562841530055,
+   "all": 0.16424503698972803
+  },
+  {
+   "label": "la partie aussi est gagnée",
+   "low": 0.6653005464480874,
+   "all": 0.6724679333652669
+  }
+ ]
+}

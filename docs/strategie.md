@@ -1169,3 +1169,51 @@ Le cœur adverse ne lit pas de signal, il compte les cartes invisibles, jokers
 compris : une paire morte reste pour lui une menace tant qu'un joker manque.
 Le piège joue sur la lecture d'un humain, que seuls des parties contre Sami ou
 d'autres joueurs pourraient mesurer.
+
+## Les bornes gagnées avec des cartes faibles : des pièges ? (02/10)
+
+**La question de Sami** : les bornes gagnées avec 1-2-3 ou 1-1-1, que s'est-il
+passé ? Des pièges ?
+
+**`npm run weak-wins`** (`scripts/weak-wins.js`) : sur les 18 789 bornes gagnées
+des 3 348 parties gardées, **2 928 (16 %)** l'ont été avec des cartes de 1 à 3
+seulement (joker admis).
+
+| Ce qui s'est passé | Cartes 1-3 | Toutes les bornes |
+| --- | --- | --- |
+| gagnée par une figure plus haute que celle d'en face | 33 % | 28 % |
+| gagnée sur preuve, l'autre côté inachevé | 65 % | 61 % |
+| en face : suite simple ou somme | 15 % | 18 % |
+| en face : cartes hautes (moyenne 6 ou plus) | 42 % | 40 % |
+| borne ouverte par le gagnant | 55 % | 52 % |
+| le gagnant a fini son côté le premier | 73 % | 69 % |
+| l'adversaire a encore joué dessus après | 18 % | 16 % |
+| la partie aussi est gagnée | 67 % | 67 % |
+
+- **Le côté faible est un brelan (77 %) ou une suite de couleur (21 %)** ; en
+  face, un côté inachevé (65 %), une couleur (17 %) ou une somme (12 %). C'est
+  la figure qui bat la hauteur : un brelan de 1 bat une couleur 8-9-10.
+- **Leur histoire ressemble à celle des autres bornes**, à 2 à 5 points près :
+  rien ne les distingue comme un piège.
+
+**Un début bas, pour l'adversaire** (3 048 parties entre robots de même force,
+chaque côté qui commence par une paire ou deux cartes de même couleur à deux
+valeurs ou moins d'écart) :
+
+| Début de côté | Borne gagnée | Cartes adverses posées ensuite | Nombre |
+| --- | --- | --- | --- |
+| paire basse (1-3) | 58 % | 1,09 | 3 525 |
+| paire moyenne (4-7) | 71 % | 0,89 | 3 132 |
+| paire haute (8-10) | 75 % | 0,80 | 2 584 |
+| suite de couleur basse | 53 % | 1,25 | 3 922 |
+| suite de couleur moyenne | 68 % | 1,04 | 6 580 |
+| suite de couleur haute | 66 % | 0,99 | 2 372 |
+
+- **Ce n'est pas un piège, c'est l'inverse** : un début bas attire l'adversaire
+  (+0,2 à +0,3 carte posée en face) et se perd plus souvent (58 % contre 71 à
+  75 % pour une paire). Quand il gagne, c'est que la figure a tenu.
+- **Les suites de couleur gagnent le plus au milieu** (68 %), un peu moins en
+  haut (66 %), nettement moins en bas (53 %) : l'intuition de Sami sur les
+  suites du milieu et les suites basses se voit dans les parties. Le cœur la
+  connaît déjà (`midRuns`, `weakRuns` neutres ou en baisse plus haut) : il note
+  une borne d'après sa figure et sa somme.
