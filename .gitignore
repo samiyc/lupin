@@ -37,4 +37,6 @@ yarn-error.log*
 /selfplay/
 # Bot duels kept as replays (npm run duel), to build later tests on.
 /duels/
+# Outputs of the night jobs (npm run backlog).
+/backlog-runs/
 

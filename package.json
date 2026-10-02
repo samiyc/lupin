@@ -36,7 +36,8 @@
     "games": "node scripts/games.js",
     "branch": "node scripts/branch.js",
     "error-impact": "node scripts/error-impact.js",
-    "retrospective": "node scripts/retrospective.js"
+    "retrospective": "node scripts/retrospective.js",
+    "backlog": "node scripts/backlog.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
