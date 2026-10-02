@@ -55,9 +55,10 @@ const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
 function rates(positions, groupOf) {
   const groups = new Map();
   for (const position of positions.filter((entry) => !entry.skipped)) {
-    const group = groups.get(groupOf(position)) ?? { positions: 0, stable: 0, gaps: 0, unseen: 0 };
+    const group = groups.get(groupOf(position)) ?? { positions: 0, checked: 0, stable: 0, gaps: 0, unseen: 0 };
     group.positions += 1;
-    group.stable += position.stable ? 1 : 0;
+    group.checked += position.stable === null ? 0 : 1;
+    group.stable += position.stable === true ? 1 : 0;
     group.gaps += position.gap ? 1 : 0;
     group.unseen += position.unseen ? 1 : 0;
     groups.set(groupOf(position), group);
@@ -67,7 +68,7 @@ function rates(positions, groupOf) {
 
 function printRates(title, table) {
   console.log(title);
-  for (const [name, g] of Object.entries(table)) console.log(`  ${String(name).padEnd(14)} ${String(g.positions).padStart(5)} positions, stables ${pct(g.stable / g.positions)}, écarts hors top 3 ${pct(g.gaps / g.positions)}, hors top 8 ${pct(g.unseen / g.positions)}`);
+  for (const [name, g] of Object.entries(table)) console.log(`  ${String(name).padEnd(14)} ${String(g.positions).padStart(5)} positions, candidats ${pct(g.checked / g.positions)} dont stables ${pct(g.stable / Math.max(1, g.checked))}, écarts hors top 3 ${pct(g.gaps / g.positions)}, hors top 8 ${pct(g.unseen / g.positions)}`);
 }
 
 /** On the move onto the last empty border: how often the oracle plays elsewhere, and how often it disagrees with the 0.9. */

@@ -231,7 +231,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | l'oracle sur les replays : un arbre sur tous les coups, aux tours 15-16, 20-21, 25-26 (≈ 10 s par position ; reprend où il s'est arrêté) | `npm run oracle -- --minutes 240` |
 | l'oracle au coup qui remplit la dernière colonne vide de chaque joueur | `npm run oracle -- --at last-column --minutes 240` |
 | relire le résumé de l'oracle (data/oracle-diffs.json) | `npm run oracle -- --summary` |
-| lancer les traitements longs de la nuit | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
+| lancer les traitements longs de la nuit (2 h au plus chacun, arrêtés au-delà) | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs) | `npm run retrospective` → `out/retrospective.html` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |
 

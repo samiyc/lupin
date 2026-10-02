@@ -1,5 +1,5 @@
 {
-  "note": "Les traitements longs, à lancer la nuit : npm run backlog (npm run backlog -- --list pour voir la file). Chaque traitement fait est marqué avec sa date, sa durée et sa sortie (backlog-runs/, hors de git).",
+  "note": "Les traitements longs, à lancer la nuit : npm run backlog (npm run backlog -- --list pour voir la file). Aucun ne dépasse 2 h (limit, en minutes ; au-delà il est arrêté et marqué timeout). Chaque traitement fait est marqué avec sa date, sa durée et sa sortie (backlog-runs/, hors de git). Un traitement plus urgent se place en tête des « todo ».",
   "jobs": [
     {
       "id": "error-impact-6-14",
@@ -61,24 +61,45 @@
       "status": "todo"
     },
     {
-      "id": "error-impact-1-5-15-17",
-      "command": "npm run error-impact -- --turns 1,3,4,5,15,16,17 --games 120 --explain",
-      "estimate": "2 h 20",
-      "why": "Compléter le graphique « où la partie se joue » de la rétrospective : les tours 1, 3, 4, 5, 15, 16 et 17 manquent (2, 6-14 et 18-29 sont mesurés). 120 parties par tour, deux témoins, comme les autres. À reporter dans data/error-impact.json.",
+      "id": "error-impact-1-5",
+      "command": "npm run error-impact -- --turns 1,3,4,5 --games 120 --explain",
+      "estimate": "1 h 40",
+      "why": "Compléter le graphique « où la partie se joue » : les tours 1, 3, 4 et 5 (2, 6-14 et 18-29 sont mesurés). 120 parties par tour, deux témoins. À reporter dans data/error-impact.json.",
       "status": "todo"
     },
     {
-      "id": "oracle-last-column",
-      "command": "npm run oracle -- --at last-column --minutes 240",
-      "estimate": "4 h (plafond)",
-      "why": "L'intuition de Sami (03/10) : le coup qui remplit la dernière colonne vide pèse lourd sur la suite. Pour chaque joueur des 600 parties du 0.9 (1 187 positions, tour médian 16) : l'oracle ouvre-t-il aussi cette colonne, ou joue-t-il ailleurs ? Joue-t-il le coup du 0.9 ? Environ 14 s par position sur 23 fils : ~1 000 positions en 4 h, la suite reprend à la prochaine nuit.",
+      "id": "error-impact-15-17",
+      "command": "npm run error-impact -- --turns 15,16,17 --games 120 --explain",
+      "estimate": "45 min",
+      "why": "Compléter le graphique : les tours 15, 16 et 17. À reporter dans data/error-impact.json.",
+      "status": "todo"
+    },
+    {
+      "id": "oracle-last-column-1",
+      "command": "npm run oracle -- --at last-column --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "L'intuition de Sami (03/10) : le coup qui remplit la dernière colonne vide pèse lourd sur la suite. Pour chaque joueur des 600 parties du 0.9 (1 187 positions, tour médian 16) : l'oracle ouvre-t-il aussi cette colonne, ou joue-t-il ailleurs ? Joue-t-il le coup du 0.9 ? Environ 14 s par position sur 23 fils : ~1 000 positions en 4 h, la suite reprend à la prochaine nuit. Passe 1 sur 2 : chaque passe reprend où la précédente s'est arrêtée.",
+      "status": "todo"
+    },
+    {
+      "id": "oracle-last-column-2",
+      "command": "npm run oracle -- --at last-column --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "L'intuition de Sami (03/10) : le coup qui remplit la dernière colonne vide pèse lourd sur la suite. Pour chaque joueur des 600 parties du 0.9 (1 187 positions, tour médian 16) : l'oracle ouvre-t-il aussi cette colonne, ou joue-t-il ailleurs ? Joue-t-il le coup du 0.9 ? Environ 14 s par position sur 23 fils : ~1 000 positions en 4 h, la suite reprend à la prochaine nuit. Passe 2 sur 2 : chaque passe reprend où la précédente s'est arrêtée.",
       "status": "todo"
     },
     {
       "id": "oracle-1",
-      "command": "npm run oracle -- --minutes 240",
-      "estimate": "4 h (plafond)",
-      "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl).",
+      "command": "npm run oracle -- --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl). Passe 1 : chaque passe reprend où la précédente s'est arrêtée.",
+      "status": "todo"
+    },
+    {
+      "id": "oracle-2",
+      "command": "npm run oracle -- --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl). Passe 2 : chaque passe reprend où la précédente s'est arrêtée.",
       "status": "todo"
     }
   ]

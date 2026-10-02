@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
-import { ORACLE, coreRanking, favouriteOf, rankOf, verdictOf } from "../src/replay/oracle.js";
+import { ORACLE, coreRanking, favouriteOf, needsSecondRun, rankOf, verdictOf } from "../src/replay/oracle.js";
 import { BOTS, engineFor } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 
@@ -25,6 +25,14 @@ describe("the oracle", () => {
     assert.equal(agreed.rank, 5);
     assert.equal(verdictOf(ranking, [runOn(m(5, 0)), runOn(m(4, 0))]).gap, false);
     assert.equal(verdictOf(ranking, [runOn(m(2, 0)), runOn(m(2, 0))]).gap, false);
+    assert.equal(verdictOf(ranking, [runOn(m(5, 0))]).stable, null, "one run alone confirms nothing");
+    assert.equal(verdictOf(ranking, [runOn(m(5, 0))]).gap, false);
+  });
+
+  it("asks for a second run only when the first leaves the core's top 3", () => {
+    const ranking = [m(1, 0), m(2, 0), m(3, 0), m(4, 0)];
+    assert.equal(needsSecondRun(ranking, [{ move: m(4, 0), gain: 9 }, { move: m(1, 0), gain: 1 }]), true);
+    assert.equal(needsSecondRun(ranking, [{ move: m(2, 0), gain: 9 }, { move: m(4, 0), gain: 1 }]), false);
   });
 
   it("searches every legal move at the root", () => {

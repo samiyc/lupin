@@ -3,7 +3,7 @@ import { formatCard } from "../../src/core/notation.js";
 import { createRng } from "../../src/core/random.js";
 import { stateAt } from "../../src/replay/log.js";
 import { contextsOf, traitsOf } from "../../src/replay/move-features.js";
-import { ORACLE, coreRanking, rankOf, verdictOf } from "../../src/replay/oracle.js";
+import { ORACLE, coreRanking, needsSecondRun, rankOf, verdictOf } from "../../src/replay/oracle.js";
 import { engineFor, strategistBot } from "../../src/sim/bots.js";
 import { EXPERIMENT } from "../../src/sim/experimental.js";
 import { legalMoves } from "../../src/sim/game.js";
@@ -26,8 +26,11 @@ const loggedLabel = (entry) => (entry?.move ? `${entry.move.card}→${entry.move
 
 const opensSide = (state, mover, move) => state.borders[move.border].sides[mover].length === 0;
 
-function oracleRuns(state, moves, key, budget) {
-  return [1, 2].map((run) => engineFor(`${ORACLE.engine}@${budget}`)(createRng(seedOf(key, run))).scoreMoves(state, moves, { keepAll: true }));
+/** One run of the oracle, or two when the first finds a move outside the core's top 3. */
+function oracleRuns(state, moves, { key, budget, ranking }) {
+  const search = (run) => engineFor(`${ORACLE.engine}@${budget}`)(createRng(seedOf(key, run))).scoreMoves(state, moves, { keepAll: true });
+  const first = search(1);
+  return needsSecondRun(ranking, first) ? [first, search(2)] : [first];
 }
 
 parentPort.on("message", async ({ row, turn, budget, at = "tours fixes" }) => {
@@ -41,7 +44,7 @@ parentPort.on("message", async ({ row, turn, budget, at = "tours fixes" }) => {
   const mover = state.current;
   const hand = [...state.hands[mover]];
   const ranking = coreRanking(strategistBot(createRng(1), EXPERIMENT).scoreMoves(state, moves, { keepAll: true }));
-  const runs = oracleRuns(state, moves, `${row.key}|${turn}`, budget);
+  const runs = oracleRuns(state, moves, { key: `${row.key}|${turn}`, budget, ranking });
   const verdict = verdictOf(ranking, runs);
   const played = loggedLabel(log.turns[turn - 1]);
   const playedRank = ranking.findIndex((move) => labelOf(spec, move) === played) + 1;
@@ -52,7 +55,7 @@ parentPort.on("message", async ({ row, turn, budget, at = "tours fixes" }) => {
     legal: moves.length,
     ...verdict,
     move: labelOf(spec, verdict.move),
-    other: labelOf(spec, verdictOf(ranking, [runs[1]]).move),
+    other: runs[1] ? labelOf(spec, verdictOf(ranking, [runs[1]]).move) : null,
     core: ranking.slice(0, ORACLE.top).map((move) => labelOf(spec, move)),
     played,
     playedRank,

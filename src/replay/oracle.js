@@ -6,9 +6,14 @@
  * The 0.9 searches the core's 8 best moves at the root (`candidates`) and its
  * 3 best replies below (`widen`). A gap is the oracle's move outside the
  * core's top 3; outside its top 8, the 0.9 never looks at it at all.
+ *
+ * Two economies (Sami, 03/10: no time lost): a search stops as soon as its
+ * favourite cannot be caught (`+smart=1`, budget.js), and the second run, the
+ * one that checks the first is not luck, is only made when the first finds a
+ * move outside the core's top 3 — elsewhere there is no gap to confirm.
  */
 export const ORACLE = Object.freeze({
-  engine: "ismcts+candidates=99+widen=6+depth=5",
+  engine: "ismcts+candidates=99+widen=6+depth=5+smart=1",
   budget: 20_000,
   turns: Object.freeze([15, 16, 20, 21, 25, 26]),
   top: 3,
@@ -33,12 +38,13 @@ export function favouriteOf(scored) {
 }
 
 /**
- * What one position says: the oracle's favourite in each run, whether the
- * runs agree (`stable`), its rank for the core, and whether it is a gap.
+ * What one position says: the oracle's favourite, its rank for the core,
+ * whether the runs agree (`stable`; null with a single run), and whether it
+ * is a gap — a stable move outside the core's top 3.
  */
 export function verdictOf(ranking, runs) {
   const [first, second] = runs.map(favouriteOf);
-  const stable = !second || same(first.move, second.move);
+  const stable = second ? same(first.move, second.move) : null;
   const rank = rankOf(ranking, first.move);
   return {
     move: first.move,
@@ -46,7 +52,10 @@ export function verdictOf(ranking, runs) {
     runnerUp: first.runnerUp,
     stable,
     rank,
-    gap: stable && rank > ORACLE.top,
-    unseen: stable && rank > ORACLE.shortlist,
+    gap: stable === true && rank > ORACLE.top,
+    unseen: stable === true && rank > ORACLE.shortlist,
   };
 }
+
+/** Is a second run worth making? Only when the first run's favourite is outside the core's top 3. */
+export const needsSecondRun = (ranking, firstRun) => rankOf(ranking, favouriteOf(firstRun).move) > ORACLE.top;

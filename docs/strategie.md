@@ -1309,6 +1309,13 @@ coup commun hors du top 3 du cœur (et noté s'il est hors du top 8).
 - **Le coût** : 1,5 à 2,5 min de calcul par position au tour 25, environ 6 min
   au tour 15 (42 coups légaux) — cinq fois l'estimation faite sur le 0.9, l'arbre
   étant bien plus large. Environ 10 à 14 s par position sur 23 fils.
+- **Deux économies** (Sami : ne pas perdre de temps) : une recherche s'arrête
+  dès que son coup favori ne peut plus être rattrapé (`+smart=1`), et la
+  seconde recherche, celle qui vérifie que la première n'a pas eu de chance,
+  n'est lancée que si la première sort du top 3 du cœur — ailleurs il n'y a pas
+  d'écart à confirmer.
+- **Le backlog plafonne chaque traitement à 2 h** (`limit`, arrêté au-delà avec
+  tous ses processus) ; l'oracle s'arrête de lui-même à 110 min.
 - Chaque position est écrite dès qu'elle est lue (`oracle/positions.jsonl`, hors
   de git) ; une nouvelle passe reprend où la précédente s'est arrêtée. Le résumé
   va dans `data/oracle-diffs.json`.
