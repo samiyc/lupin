@@ -1,4 +1,5 @@
 import { createRng } from "../core/random.js";
+import { createBudget } from "./budget.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
 import { determinize, playOut } from "./lookahead.js";
@@ -173,16 +174,12 @@ export function isPivot(state) {
  * `hope`: when the solver finds no win, search anyway — every lost move is
  * equal to the solver, not to an opponent who may still slip.
  */
-export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, exact = EXACT.maxCards, pivot = 1, hope = 0, ...settings }) {
+export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, exact = EXACT.maxCards, pivot = 1, hope = 0, late, early, smart, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createIsmcts(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
-  // `budgetMs`: a clock instead of a count, to compare variants of unequal speed at equal time.
-  const run = (search, factor) => {
-    const until = performance.now() + budgetMs * factor;
-    while (!search.done() && search.rollouts() < budget * factor && performance.now() < until) search.step();
-    return search;
-  };
+  // `budgetMs`: a clock instead of a count, to compare variants of unequal speed at equal time; `late`, `early`, `smart`: budget.js.
+  const { run, usage } = createBudget({ budget, budgetMs, late, early, smart });
   const solves = (state, moves) => moves.length > 1 && exactApplies(state, exact);
   const maxNodes = exact > EXACT.maxCards ? EXACT.nodes : Infinity;
   const winning = (scores) => scores && (!hope || scores.some((entry) => entry.exact && entry.gain > 0.5));
@@ -196,15 +193,16 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
     const exactly = solved(state, moves, options);
     if (exactly) return exactly;
-    return run(searchFor(state, moves, options), isPivot(state) ? pivot : 1).scored();
+    return run(searchFor(state, moves, options), state.turn, isPivot(state) ? pivot : 1).scored();
   };
-  return { name, base, policy, searchFor, solves, scoreMoves, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
+  return { name, base, policy, searchFor, solves, scoreMoves, usage, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
 }
 
 /**
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
- * `+pivot=4`, `+hope=1` (`ismctsBot`), `+pw=1`, `+rave=300` (`createIsmcts`) — or null.
+ * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
+ * `+pw=1`, `+rave=300` (`createIsmcts`) — or null.
  */
 export function ismctsSettings(name) {
   const [base, ...changes] = name.split("+");
@@ -212,7 +210,7 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );
