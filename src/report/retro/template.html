@@ -137,6 +137,19 @@ td.num, th.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .chip[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
 footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var(--ink-3); font-size: 0.88rem; }
 code { font-family: var(--mono); font-size: 0.88em; }
+.details { display: grid; gap: 10px; }
+details { background: var(--card); border: 1px solid var(--edge); border-radius: 12px; padding: 4px 16px; }
+details[open] { padding-bottom: 14px; }
+summary { cursor: pointer; padding: 10px 0; font: 700 1.05rem var(--display); list-style-position: outside; }
+summary span { font: 400 0.85rem var(--body); color: var(--ink-3); margin-left: 8px; }
+details .scroll { margin-top: 6px; }
+td.wrap { white-space: normal; text-align: left; min-width: 16rem; color: var(--ink-2); }
+.yes { color: var(--mark); font-weight: 700; }
+.no { color: var(--ink-3); }
+.formula { margin: 6px 0 0; padding-left: 1.3em; display: grid; gap: 8px; color: var(--ink-2); font-size: 0.96rem; max-width: 80ch; }
+.limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; margin-top: 6px; }
+.limits div { border-left: 3px solid var(--seal); padding-left: 12px; display: grid; gap: 4px; }
+.limits p { font-size: 0.95rem; color: var(--ink-2); }
 @media (prefers-reduced-motion: reduce) { .blk rect, .blk text, .arrow, .col { transition: none; } }
 </style>
 
@@ -215,6 +228,7 @@ code { font-family: var(--mono); font-size: 0.88em; }
       <div><h3>Ce qu'il ne voit pas</h3><ul id="limits"></ul></div>
       <div><h3>Pour les versions futures</h3><ul id="next-steps"></ul></div>
     </div>
+    <div class="details" id="core-details"></div>
     <div class="seal" id="core-maxim"></div>
   </section>
 
@@ -531,6 +545,56 @@ ex.moves.forEach((m, k) => {
   $("moves").append(row);
   if (k === 0) explainMove(m, row);
 });
+
+/* The core, in detail: costs, formula, every bonus, limits, tests */
+function detailsBlock(title, hint, open, ...children) {
+  const d = html("details", open ? { open: "" } : {}, html("summary", {}, title, html("span", {}, hint)));
+  children.forEach((c) => d.append(c));
+  $("core-details").append(d);
+}
+const table = (heads, rows) => {
+  const tbody = html("tbody");
+  rows.forEach((cells) => tbody.append(html("tr", { style: "cursor: default" }, ...cells)));
+  return html("div", { class: "scroll" }, html("table", {}, html("thead", {}, html("tr", {}, ...heads.map((h, i) => html("th", i ? { class: "num" } : {}, h)))), tbody));
+};
+const ms = (x) => `${fr(x, x < 1 ? 3 : 1)} ms`;
+const T = DATA.timings;
+detailsBlock("Ce que coûte le cœur", `mesuré sur ${T.positions} positions, un seul fil, à la construction de la page`, true,
+  table(["Opération", "Médiane", "9 fois sur 10 sous"], [
+    ...T.scoring.map((r) => [html("td", {}, r.label), html("td", { class: "num" }, ms(r.median)), html("td", { class: "num" }, ms(r.p90))]),
+    [html("td", {}, "une partie entière jouée par le cœur seul (comme une simulation)"), html("td", { class: "num" }, ms(T.game.exp)), html("td", { class: "num" }, `${ms(T.game.nb1)} avec le voisinage`)],
+    [html("td", {}, "une itération de l'arbre du 0.9 (une donne, 5 coups d'arbre, une simulation)"), html("td", { class: "num" }, ms(T.tree.ms)), html("td", { class: "num" }, `${ms(T.treeNb.ms)} avec le voisinage`)],
+    [html("td", {}, "un coup à 800 itérations (le budget des duels)"), html("td", { class: "num" }, ms(T.tree.move800)), html("td", { class: "num" }, `${ms(T.treeNb.move800)} avec le voisinage`)],
+    [html("td", {}, "itérations en 10 s (le temps de la page, sans réfléchir pendant ton tour)"), html("td", { class: "num" }, String(T.tree.page10s)), html("td", { class: "num" }, `${T.tree.perSecond} par seconde`)],
+  ]),
+  html("p", { style: "margin-top: 8px; color: var(--ink-2); font-size: 0.93rem" }, "Où passe le temps (profil mesuré au 0.7) : 93 % de la recherche se passe dans le cœur qui joue les simulations, dont 45 % pour la valeur des bornes, 18 % pour la vue de la table et 10 % pour le décompte des cartes invisibles. Rendre le cœur plus fin coûte donc directement des itérations."));
+const P = DATA.params;
+const formula = html("ol", { class: "formula" });
+R.core.formula.forEach((line) => formula.append(html("li", {}, line)));
+detailsBlock("Le calcul, pas à pas", `les réglages lus dans le code : température ${fr(P.temperature, 2)}, joker ${fr(P.jokerCost, 2)}, carte ${fr(P.cardCost, 2)}`, false, formula,
+  html("p", { style: "margin-top: 8px; color: var(--ink-2); font-size: 0.93rem" }, `Un rang de combinaison vaut ${fr(P.valueToChance, 2)} point de chance à égalité (1 / (4 × ${fr(P.temperature, 2)})) : c'est le taux qui convertit les bonus, exprimés en rangs, dans la note.`));
+detailsBlock("Tous les bonus", "habitudes, idées et principes, avec leurs poids tirés du code", false,
+  table(["Bonus", "Type", "Poids", "Dans le cœur du 0.9", "Ce qu'il fait", "Mesure"], R.bonuses.map((b) => [
+    html("td", {}, html("b", {}, b.label), html("br"), html("code", {}, b.key)),
+    html("td", { class: "num" }, b.kind),
+    html("td", { class: "num" }, b.values.length ? b.values.join(" · ") : "règle"),
+    html("td", { class: `num ${b.inCore ? "yes" : "no"}` }, b.inCore ? "oui" : "non"),
+    html("td", { class: "wrap" }, b.effect),
+    html("td", { class: "wrap" }, b.measure),
+  ])));
+const limits = html("div", { class: "limits" });
+R.core.limitsDetailed.forEach((l) => limits.append(html("div", {}, html("b", {}, l.title), html("p", {}, l.text))));
+detailsBlock("Ses limites, en détail", "ce qui les montre", false, limits);
+if (DATA.coreTests) {
+  const C = DATA.coreTests;
+  const blocks = [html("p", { style: "color: var(--ink-2); font-size: 0.95rem; max-width: 80ch" }, C.intro)];
+  for (const group of C.groups) {
+    blocks.push(html("h3", { style: "margin-top: 12px" }, group.title));
+    blocks.push(table(["Variante", "Mesure", "Verdict"], group.rows.map((r) => [html("td", {}, r.name), html("td", { class: "num" }, r.measure), html("td", { class: "wrap" }, r.verdict)])));
+  }
+  if (C.conclusion) blocks.push(html("p", { style: "margin-top: 10px; font-weight: 700; max-width: 80ch" }, C.conclusion));
+  detailsBlock("Changer le cœur : ce qu'on a mesuré", C.date, true, ...blocks);
+}
 
 /* Where the game is played */
 const E = DATA.impact;

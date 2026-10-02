@@ -43,6 +43,8 @@ mesures détaillées sont plus bas, section par section.
 | Deux fois plus d'itérations pour le 0.9 (1 600 contre 800) | 02/10 | 52,1 % (42,9 – 61,3) | pas net : pas de workers dans la page pour l'instant | — |
 | Plus de budget après le tour 22, moins avant (au même total) | 02/10 | 45,8 % (×2 / ×0,5) ; 48,6 % (×1,5 / ×0,75) | écarté, l'option reste (`+late`, `+early`) | a1b3de5 |
 | Temps qui suit l'incertitude (au même total) | 02/10 | 54,2 % puis 50,0 % ; ≈ 51,7 % réunis | écarté, l'option reste (`+smart`) | a1b3de5 |
+| Juger une borne avec ses voisines (`neighbors`) | 02/10 | seul 47,0 % ; depuis le tour 23 +0,8 ± 2,4 ; partie entière 46,9 % | écarté, l'idée reste (`+core=nb1`) | b9cbecc |
+| L'arbre sans les bonus du cœur | 02/10 | depuis le tour 23 +0,3 ± 2,6 ; partie entière 42,4 % | les bonus restent : ils servent avant la fin | b9cbecc |
 
 ## Comment le Stratège choisit un coup
 
@@ -850,3 +852,47 @@ meilleur coup ne peut plus être rattrapé, et l'épargne va aux coups serrés ;
   jugement (cœur, politique de simulation) se teste d'abord là, sur les
   positions réelles : `npm run branch -- --vs experimental@0.9.0 --from 23
   --engine <variante>`.
+
+## Changer le cœur : voisinage et bonus (02/10, après la rétrospective)
+
+**Les questions de Sami** : juger une borne avec ses voisines aide-t-il l'arbre
+à mieux jouer sur la durée ? Les bonus (habitudes, idées) orientent-ils trop la
+recherche en amont ?
+
+**Le voisinage** (`neighbors`, `src/sim/ideas.js`) : le gain d'une borne est
+multiplié par 1 + λ × son enjeu, c'est-à-dire la somme, sur chaque série de
+trois bornes qui la traverse, du produit des chances sur les deux autres. Le
+centre et la borne qui complète une série bien partie comptent plus. Il coûte
+environ 12 % de vitesse (0,14 ms au lieu de 0,13 pour noter tous les coups ;
+500 itérations par seconde au lieu de 556).
+
+**Les cœurs testés** (`CORES`, `src/sim/experimental.js`) : `nb1`, `nb2` (λ = 1, 2),
+`runs`, `plain` (le cœur nu, sans habitudes, idées ni certitudes). Dans l'arbre :
+`+core=X`, ou un seul rôle avec `+shortlist=X` (les coups examinés) et
+`+rollout=X` (les simulations).
+
+**Un nouveau banc d'essai, depuis le tour 23** (`npm run core-test`) : sur les
+600 parties gardées du 0.9 contre lui-même, la variante joue un siège puis
+l'autre à partir du tour 23 ; le témoin joue les mêmes positions avec le 0.9,
+graine changée ; tout est jugé au tour 30 par le solveur exact. Environ 6 min
+pour 200 parties. **Il voit une vraie différence** : le Basique, depuis le tour
+23, perd 13,8 ± 3,3 points.
+
+| Variante | Seul, contre le cœur du 0.9 | Dans l'arbre, depuis le tour 23 | Partie entière, contre le 0.9 |
+| --- | --- | --- | --- |
+| voisinage λ = 1 | 47,0 % | +0,8 ± 2,4 | 46,9 % (37,5 – 56,3), 96 parties |
+| voisinage λ = 2 | 45,1 % | +1,3 ± 2,7 | — |
+| `runs` | 49,2 % | −1,8 ± 2,6 | — |
+| cœur nu | 33,2 % | +0,3 ± 2,6 | **42,4 % (34,9 – 49,8)** |
+| sans bonus pour les coups examinés | — | −1,3 ± 2,8 | — |
+| sans bonus dans les simulations | — | −1,8 ± 3,0 | — |
+
+- **Les bonus n'orientent pas trop la recherche.** Sans eux, le cœur seul
+  tombe à 33 %, et l'arbre perd sur une partie entière (42,4 %). En fin de
+  partie, ils ne changent rien : depuis le tour 23, l'arbre décide seul, quel que
+  soit le cœur.
+- **Le voisinage ne paie pas** : moins bon seul, neutre en fin de partie, pas net
+  sur une partie entière (en baisse).
+- **Où le cœur pèse** : avant le tour 23, quand l'arbre ne voit pas encore la
+  fin. C'est là qu'un meilleur jugement servirait ; le banc d'essai peut partir
+  plus tôt (`--from 14`, `--from first-border`), au prix d'un bruit plus grand.

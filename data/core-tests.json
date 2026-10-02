@@ -1,0 +1,36 @@
+{
+  "note": "Les essais de changement du cœur, mesurés le 02/10 (npm run duel, npm run core-test). Relu par npm run retrospective.",
+  "date": "02/10, après la rétrospective",
+  "intro": "Trois questions : juger une borne avec ses voisines aide-t-il ? Les bonus (habitudes, idées) orientent-ils trop la recherche ? Et où le cœur pèse-t-il : en fin de partie, ou avant ? Chaque variante est mesurée seule (cœur contre cœur, 4 000 parties en quelques secondes), puis dans l'arbre du 0.9 depuis le tour 23 (200 parties jouées depuis chaque siège, contre un témoin, jugées au tour 30 par le solveur exact), puis sur des parties entières (duel long à la règle de la page).",
+  "groups": [
+    {
+      "title": "Le cœur seul, contre le cœur du 0.9",
+      "rows": [
+        { "name": "voisinage λ = 1", "measure": "47,0 % (45,6 – 48,5)", "verdict": "moins bon seul" },
+        { "name": "voisinage λ = 2", "measure": "45,1 % (43,7 – 46,5)", "verdict": "moins bon seul" },
+        { "name": "runs", "measure": "49,2 % (47,8 – 50,6)", "verdict": "neutre" },
+        { "name": "cœur nu, sans aucun bonus", "measure": "33,2 % (31,8 – 34,6)", "verdict": "les bonus valent beaucoup quand le cœur joue seul" }
+      ]
+    },
+    {
+      "title": "Dans l'arbre, depuis le tour 23 (écart en points avec le témoin)",
+      "rows": [
+        { "name": "le Basique (contrôle du banc d'essai)", "measure": "−13,8 ± 3,3", "verdict": "le banc voit bien une vraie différence" },
+        { "name": "voisinage λ = 1", "measure": "+0,8 ± 2,4", "verdict": "rien" },
+        { "name": "voisinage λ = 2", "measure": "+1,3 ± 2,7", "verdict": "rien" },
+        { "name": "runs", "measure": "−1,8 ± 2,6", "verdict": "rien" },
+        { "name": "cœur nu partout", "measure": "+0,3 ± 2,6", "verdict": "rien : en fin de partie, l'arbre décide seul" },
+        { "name": "sans bonus pour choisir les coups de l'arbre", "measure": "−1,3 ± 2,8", "verdict": "rien" },
+        { "name": "sans bonus dans les simulations", "measure": "−1,8 ± 3,0", "verdict": "rien" }
+      ]
+    },
+    {
+      "title": "Sur des parties entières, contre le 0.9",
+      "rows": [
+        { "name": "voisinage λ = 1", "measure": "46,9 % (37,5 – 56,3), 96 parties", "verdict": "pas net, plutôt en baisse" },
+        { "name": "cœur nu, sans aucun bonus", "measure": "42,4 % (34,9 – 49,8), 144 parties", "verdict": "moins bon : les bonus servent, au début et au milieu" }
+      ]
+    }
+  ],
+  "conclusion": "Les bonus n'orientent pas trop la recherche : sans eux, l'arbre perd sur une partie entière, et ils ne changent rien en fin de partie, où l'arbre décide. Le voisinage ne paie ni seul ni dans l'arbre. Dès le tour 23, le cœur ne pèse presque plus : c'est avant, quand l'arbre ne voit pas encore la fin, qu'un meilleur jugement servirait."
+}

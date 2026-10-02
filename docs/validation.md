@@ -223,6 +223,8 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | vérifier que le rejeu redonne la même fin | `npm run branch -- --vs experimental@0.9.0 --from first-border --check` |
 | voir ce qu'une erreur change | `npm run branch -- … --force random` |
 | essayer un autre moteur depuis un tour | `npm run branch -- --lost-by experimental@0.9.0 --from first-border --engine <moteur>` |
+| tester un changement de jugement depuis un tour décisif (6 min) | `npm run core-test -- "ismcts+widen=3+depth=5+core=nb1@800" --from 23` |
+| lancer les traitements longs de la nuit | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs) | `npm run retrospective` → `out/retrospective.html` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |
 

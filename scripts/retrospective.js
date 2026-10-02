@@ -7,6 +7,10 @@ import { rulesOf } from "../src/replay/log.js";
 import { explainMove, strategistBot } from "../src/sim/bots.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
+import { IDEA_WEIGHTS } from "../src/sim/ideas.js";
+import { HABITS, STRATEGY } from "../src/sim/strategist.js";
+import { BOT_PARAMS, VALUE_TO_CHANCE } from "../src/sim/bots.js";
+import { coreTimings } from "./lib/core-timing.js";
 import { ANCHOR, readAllLogs, readDuels } from "./lib/elo-data.js";
 
 /**
@@ -18,7 +22,11 @@ import { ANCHOR, readAllLogs, readDuels } from "./lib/elo-data.js";
  *   with their source, git abe6a0e), so that every version sits on one scale;
  * - the story of each version: data/retrospective.json;
  * - the price of an error, turn by turn: data/error-impact.json;
- * - a move scored by the experimental core, computed now on a seeded game.
+ * - a move scored by the experimental core, computed now on a seeded game;
+ * - what the core costs in ms (scripts/lib/core-timing.js), measured now:
+ *   build it on an idle machine;
+ * - every bonus with its weights read from the code, and the core tests of
+ *   data/core-tests.json when there are some.
  */
 const ROOT = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, ROOT), "utf8"));
@@ -56,11 +64,23 @@ function coreExample() {
   return { turn: state.turn + 1, hand: state.hands[me].map(label), borders, moves };
 }
 
+/** Each bonus of data/retrospective.json with its weights from the code and whether the 0.9's core plays it. */
+function bonusRows(bonuses) {
+  const weights = { ...STRATEGY, ...IDEA_WEIGHTS };
+  const inCore = (key) => HABITS.includes(key) || EXPERIMENT.ideas.includes(key);
+  return bonuses.map((bonus) => ({ ...bonus, values: bonus.weights.map((name) => `${name} ${String(weights[name]).replace(".", ",")}`), inCore: inCore(bonus.key) }));
+}
+
+const optional = (path) => read(path).catch(() => null);
 const elo = await ratings();
+const retro = await read("data/retrospective.json");
 const data = {
   built: new Date().toISOString().slice(0, 10).split("-").reverse().join("/"),
   elo,
-  retro: await read("data/retrospective.json"),
+  retro: { ...retro, bonuses: bonusRows(retro.bonuses) },
+  params: { ...BOT_PARAMS, valueToChance: VALUE_TO_CHANCE },
+  timings: coreTimings(),
+  coreTests: await optional("data/core-tests.json"),
   impact: await read("data/error-impact.json"),
   example: coreExample(),
 };
