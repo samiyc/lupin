@@ -226,6 +226,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | tester un changement de jugement depuis un tour décisif (6 min) | `npm run core-test -- "ismcts+widen=3+depth=5+core=nb1@800" --from 23` |
 | tester une fin de partie depuis un tour de bascule | `npm run core-test -- "ismcts+widen=3+depth=7+core=plain@880" --from 20` |
 | comparer des variantes contre le Stratège, mêmes donnes | `npm run ab -- "ismcts+widen=3+depth=5@800" "phase:20:…/…" --pairs 400 --page` |
+| chercher dans les replays ce que les gagnants font plus que les perdants (10 s) | `npm run rules -- --min 0.7` |
 | lancer les traitements longs de la nuit | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs) | `npm run retrospective` → `out/retrospective.html` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |

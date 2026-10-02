@@ -47,6 +47,7 @@ mesures détaillées sont plus bas, section par section.
 | L'arbre sans les bonus du cœur | 02/10 | depuis le tour 23 +0,3 ± 2,6 ; partie entière 42,4 % | les bonus restent : ils servent avant la fin | b9cbecc |
 | Fin de partie : cœur nu et 7 coups d'avance, à temps égal (880 itérations) | 02/10 | depuis le tour 22 +0,0 ± 3,3 ; 20 : +1,3 ± 3,2 ; 18 : −2,0 ± 3,5 | écarté ; la bascule reste (`phase:`), le début de partie est au backlog | — |
 | Choisir son jeu : brelans ou suites (`plan`, `ends`, `midRuns`, `weakRuns`) | 02/10 | cœur seul de 45,9 % (les quatre) à 50,6 % (joker seul) | écarté sans duel long, les idées restent (`shapes.js`) | — |
+| Règles des replays : face à un côté plein, répondre plus bas, à côté d'une borne gagnée | 02/10 | cœur seul 48,0 – 50,6 % | écartées ; `junk` (53 %) va au duel long | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1041,3 +1042,51 @@ règle de la page, fourchette par paires) :
   un fil, à la règle de la page ; 8 000 parties en 13 à 21 s sur les 23 fils,
   backlog de nuit en cours. Une idée à trois poids, confirmée sur deux autres
   jeux de donnes : environ 2 min.
+
+## Des règles tirées des replays (02/10)
+
+**La demande de Sami** : chercher dans les parties gardées des règles de haut
+niveau, vraies dans 80 % des parties gagnées, ou des perdues (70 % à défaut).
+Pas « un 7 de cœur », mais le moment du coup (la phase, après une borne gagnée
+ou perdue, en retard de bornes ouvertes, la main de départ) et ce qu'il fait
+(ouvrir une borne vierge, répondre, bâtir un brelan ou une suite de couleur,
+jouer face à un côté plein).
+
+**L'outil** : `npm run rules` (`scripts/rules.js`, traits dans
+`src/replay/move-features.js`), 10 s sur les 3 248 parties décidées de
+`duels/`. Deux lectures :
+- **par paires** : dans la même partie, le gagnant le fait-il plus souvent que
+  le perdant ? La donne est la même pour les deux, sa chance s'annule surtout ;
+- **par partie** : vrai (au moins une fois, ou sur la plupart des coups du
+  moment) dans X % des parties gagnées contre Y % des perdues. Une règle vraie
+  dans 80 % des gagnées et 80 % des perdues ne dit rien : seul l'écart compte.
+
+Les parties entre robots de même force (3 048) et de force inégale (200, où le
+gagnant est surtout le plus fort) sont séparées. Résultats complets :
+`data/rules-mining.json`.
+
+**Ce qui ressort, à 70 % et plus** :
+- **Aucune règle par paires n'atteint 80 %** ; une dizaine dépasse 70 %.
+- **La plupart décrivent la chance ou l'avance, pas un choix** : jouer à côté
+  d'une borne gagnée (96 % des gagnées, 69 % des perdues), c'est d'abord en
+  avoir gagné une ; jouer un joker en fin de partie (78 % / 48 %), c'est en avoir
+  pioché un.
+- **Quatre sont des choix**, transformées en idées du cœur (`src/sim/mined.js`) :
+
+| Règle (lecture par paires) | Idée | Poids 0,1 | Poids 0,2 |
+| --- | --- | --- | --- |
+| le perdant bâtit plus de côtés ni brelan ni suite de couleur (73 % des parties en fin de partie : 59 % de ses coups contre 41 %) | `junk` : un tel côté coûte le poids | 52,8 % | **53,6 % (52,5 – 54,6)** |
+| le gagnant joue plus face à un côté adverse plein (92 % / 75 %) | `facing` : bonus | 48,0 % | 48,3 % |
+| contre le 0.9, le perdant répond plus bas à une carte seule (73 % ; 25 % de ses coups du début contre 12 %) | `underbid` : malus | 50,3 % | 49,8 % |
+| le gagnant joue plus à côté d'une borne gagnée (71 %) | `nextToWon` : bonus | 50,6 % | 50,0 % |
+
+- **`junk` se confirme** : 53,6 %, 52,9 %, 53,0 % sur trois jeux de donnes (au
+  poids 0,2 ; 0,3 à 0,6 ne font pas mieux, autour de 52,5 %). C'est le plus gros
+  gain du cœur depuis `connector`.
+- **Avec `obex`** (cœur `jkx` : junk 0,2, outbid 0,2, exposure 0,2) : 53,6 %,
+  54,3 %, 54,7 %. Les deux s'additionnent.
+- **`facing` fait perdre** : jouer face à un côté plein est surtout ce qui
+  arrive au gagnant, pas ce qui le fait gagner — exactement le piège de la
+  corrélation.
+- **Au backlog** : deux duels longs pour `jkx`, deux pour `junk` seul, dans
+  l'arbre du 0.9, avant ceux de `obex`.

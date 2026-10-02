@@ -16,6 +16,34 @@
       "status": "todo"
     },
     {
+      "id": "duel-jkx-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
+      "estimate": "20 min",
+      "why": "Règle tirée des replays (npm run rules, mined.js) : ne pas bâtir un côté qui n'est ni brelan ni suite de couleur (junk 0,2), avec la surenchère et l'ouverture exposée (obex). Le cœur seul gagne 53,6 %, 54,3 %, 54,7 % contre celui du 0.9 sur trois jeux de donnes. Dans l'arbre, sur une partie entière ?",
+      "status": "todo"
+    },
+    {
+      "id": "duel-jkx-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "Règle tirée des replays (npm run rules, mined.js) : ne pas bâtir un côté qui n'est ni brelan ni suite de couleur (junk 0,2), avec la surenchère et l'ouverture exposée (obex). Le cœur seul gagne 53,6 %, 54,3 %, 54,7 % contre celui du 0.9 sur trois jeux de donnes. Dans l'arbre, sur une partie entière ? Confirmation sur d'autres donnes.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-jk2-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jk2@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
+      "estimate": "20 min",
+      "why": "La même règle seule (junk 0,2) : 53,6 %, 52,9 %, 53,0 % en cœur seul. Pour savoir ce que la surenchère ajoute dans l'arbre.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-jk2-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jk2@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "La même règle seule (junk 0,2) : 53,6 %, 52,9 %, 53,0 % en cœur seul. Pour savoir ce que la surenchère ajoute dans l'arbre. Confirmation sur d'autres donnes.",
+      "status": "todo"
+    },
+    {
       "id": "duel-obex-0",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=obex@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
       "estimate": "20 min",
