@@ -242,6 +242,11 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   hides that hand and ends the puzzle on the first move (`puzzle-kinds.js`);
   the bench skips them (the solver cannot see through a pile), and
   `npm run puzzles` keeps them when it rewrites the file.
+- **Puzzle ids are stable**: the browser keeps the solved ones and the
+  favourites by id. Add puzzles with `--add` (both generators): new ones are
+  numbered after the highest id, never renumbering the old (endgames #1-50
+  from self-play, #221-270 from duels/ at the claim rule; immediate #201-220,
+  #271-290).
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

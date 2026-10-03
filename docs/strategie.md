@@ -54,6 +54,7 @@ mesures détaillées sont plus bas, section par section.
 | `junk`, `obex` et les deux (`jkx`) dans l'arbre du 0.9 | 03/10 | 52,4 % ; 50,5 % ; 51,7 % (deux jeux de donnes réunis) | pas net ; `jkx` prolongé au backlog | — |
 | Deux phases (voisinage au début, cœur nu et 7 coups à la fin), partie entière contre le Stratège | 03/10 | −1,3 ± 4,2 pts (bascule au tour 20) ; −2,0 ± 4,3 (1re borne) | écarté | — |
 | Imiter l'oracle : répondre moins, ouvrir sans figure, côtés sans figure, jokers libres | 03/10 | cœur seul 38,8 – 50,4 % | écartés ; seul `stay` 0,4 reste (jkxs, au duel long) | — |
+| Bonus seulement aux tours 1-10 : junk, obex, jkx, whole, stfig | 03/10 | 47,9 – 52,1 % (arbre, 400 itérations, 10 min) | écartés ; seul stay (55,4 %) va en validation de nuit | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1505,6 +1506,34 @@ la bonne mesure.
   44,6 %).
 - **Au backlog de ce soir** : quatre duels longs de `stfig6` dans l'arbre (environ
   300 paires), à la place de ceux de `jkx` et `jkxs`.
+
+## Des bonus seulement aux tours 1 à 10 (03/10)
+
+**L'idée de Sami** : l'arbre est faible au début de la partie (trop de coups à
+examiner) et fort ensuite. Des bonus écartés alors qu'ils gagnaient 51 % ou plus
+pourraient aider aux tours 1 à 10 et nuire après. Chaque bonus est donc testé
+**actif seulement aux tours 1 à 10** (`earlyIdeas`, `earlyUntil`,
+`src/sim/tuning.js` : les idées s'ajoutent tant que `state.turn < 10`, dans les
+vrais coups comme dans les simulations de l'arbre).
+
+**Dans l'arbre, à 400 itérations, en miroir, 10 min par duel** (240 parties) :
+
+| Cœur | Bonus aux tours 1-10 | Contre le 0.9 |
+| --- | --- | --- |
+| `jk2e10` | `junk` 0,2 | 47,9 % (42,0 – 53,9) |
+| `obexe10` | `outbid` + `exposure` 0,2 | 52,1 % (46,4 – 57,8) |
+| `jkxe10` | les trois | 48,8 % (42,7 – 54,8) |
+| `wholee10` | `whole` | 49,2 % (43,3 – 55,1) |
+| **`stay4e10`** | **`stay` 0,4** | **55,4 % (49,5 – 61,3)** |
+| `stfig6e10` | `stfig` 0,6 | 51,7 % (45,5 – 57,8) |
+
+- **Seul `stay` limité au début passe le seuil du tri (55 %).** Deux duels longs
+  à 800 itérations sont au backlog de ce soir (`duel-stay4e10-0`, `-1`), comme le
+  veut la règle 400 / 800.
+- **`junk`, `obex`, `whole` limités au début ne gagnent rien** : leur faiblesse
+  n'était pas de nuire en fin de partie.
+- `stfig6` sur toute la partie (au backlog ce soir) dira si limiter `stfig` au
+  début lui fait perdre ou non : ici 51,7 %.
 
 ## La chance des jokers (03/10)
 

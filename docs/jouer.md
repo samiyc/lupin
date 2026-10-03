@@ -117,14 +117,27 @@ la main adverse, ce sont les cartes vues nulle part.
   faux pas est signalé, avec le coup qu'il fallait jouer.
 - **Boutons** : « Révéler le coup gagnant », « Recommencer ce puzzle », « Puzzle
   suivant ».
+  - « Puzzle suivant » reste blanc tant que le puzzle n'est pas fini, et passe
+    au vert sous une ligne « Résolu ✓ » quand tu l'as gagné. Il reste cliquable
+    à tout moment.
+  - Puzzle perdu : une ligne rouge « Perdu », et « Révéler » et « Recommencer »
+    passent au vert. « Révéler » montre alors le coup gagnant du départ.
+- **Identifiant** : chaque puzzle a un numéro fixe (« Puzzle #13 »).
+  « Copier l'identifiant » le met dans le presse-papier, pour en parler sans
+  capture d'écran.
+- **Favoris** : l'étoile ★ garde un puzzle dans tes favoris (dans ton
+  navigateur) ; la case « Favoris seulement » ne tire plus que parmi eux.
 - **Ordre** : au hasard, au démarrage comme au « Puzzle suivant » ; ceux que tu
   n'as pas encore résolus passent d'abord.
 - **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
   navigateur.
-- **Source** : les 50 puzzles de fin de partie viennent de l'auto-jeu de
-  l'Expérimental. Pour en générer d'autres : `npm run selfplay`, puis
-  `npm run puzzles`.
-- **Gain immédiat** (20 puzzles, `npm run puzzles:immediate`) : il reste une
+- **Source** : 100 puzzles de fin de partie. Les 50 premiers (#1 à #50)
+  viennent de l'auto-jeu de l'Expérimental ; les 50 suivants (#221 à #270),
+  des parties gardées entre robots, à la règle de la page. Pour en ajouter
+  sans changer les numéros des anciens : `npm run puzzles -- --add`
+  (`--source duels` pour les parties gardées).
+- **Gain immédiat** (40 puzzles, `npm run puzzles:immediate`, `-- --add` pour
+  en ajouter) : il reste une
   pioche, et la main adverse est cachée. Un seul coup, parfois deux ou trois, te
   fait revendiquer la victoire tout de suite, quoi que tienne l'adversaire : la
   preuve n'utilise que les cartes de la table. La partie s'arrête sur ce coup. Le Stratège, lui, ne le voit dans aucun d'eux.
@@ -220,8 +233,8 @@ npm run luck      # la chance de chaque paquet : rejoué 16 fois entre robots é
 npm run selfplay  # l'Expérimental contre lui-même, 20 min au plus → selfplay/ (hors git)
 npm run mine      # ce que l'auto-jeu dit des motifs prouvés (docs/strategie.md)
 npm run elo       # le classement Elo complet ; --duels rejoue les duels entre robots (~20 min)
-npm run puzzles   # 50 puzzles de fin de partie tirés de l'auto-jeu → web/data/puzzles.json (10 min au plus)
-npm run puzzles:immediate  # 20 puzzles « gain immédiat », règle de revendication (quelques secondes)
+npm run puzzles -- --add --source duels   # 50 puzzles de fin de partie de plus, tirés des parties gardées → web/data/puzzles.json (10 min au plus)
+npm run puzzles:immediate -- --add       # 20 puzzles « gain immédiat » de plus, règle de revendication (quelques secondes)
 npm run bench     # banc d'essai de l'Expérimental : puzzles difficiles et milieu de partie (~1 min)
 npm run hiding    # coups forts joués tout de suite ou gardés, dans l'auto-jeu (docs/strategie.md)
 npm run policy    # la politique de simulation face au solveur, sur les fins de partie de l'auto-jeu (1 s ; 4 min la 1re fois)
