@@ -233,6 +233,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | relire le résumé de l'oracle (data/oracle-diffs.json) | `npm run oracle -- --summary` |
 | confirmer les écarts de l'oracle par le jeu (suite jouée par le 0.9, jugée au tour 30) | `npm run oracle -- --confirm --seeds 4 --minutes 110` → `data/oracle-confirm.json` |
 | tester un moteur à arbre en journée | **400 itérations au plus** (`…@400`), sauf demande ; 800 pour valider, au backlog de nuit |
+| comparer deux cœurs de coût différent (plus de 3 % par itération) | à temps égal : `…@t400` contre `…@t400` (à ~1 000 itérations par seconde, `@400` ≈ `@t400`) ; sinon à itérations égales, reproductibles |
 | programmer un traitement pour la nuit | dans `data/backlog.json` : `"status": "scheduled", "notBefore": "2026-10-03T21:00"` |
 | lancer les traitements longs de la nuit (2 h au plus chacun, arrêtés au-delà) | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
 | ranger les traitements finis et lus (n'en garder que 3 dans la file) | `npm run backlog -- --archive` → `data/backlog-done.json` ; `--list` n'affiche que les 3 derniers finis |

@@ -161,6 +161,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   for validation**, and those duels and simulations go to the night backlog
   (`data/backlog.json`, `"status": "scheduled"`). Core-against-core duels take
   seconds and are not concerned. Night jobs stay under 2 h each.
+- **Equal iterations or equal time** (Sami, 03/10): measure first what a
+  variant costs per iteration against the 0.9. Over about 3 %, duel it at
+  equal time (`@tMS`; at ~1 000 iterations a second, `@400` ≈ `@t400`), since in
+  a real game the clock decides; otherwise at equal iterations, which are
+  reproducible and load-free. Each of the 0.9's bonuses costs 5-14 % an
+  iteration, all six 25 %.
 - **The experimental bot searches deeper** (`src/sim/search.js`): 8 candidates,
   successive halving on common deals, early stop on a clear leader; a rollout
   budget in Node (`experimental:N`), a clock in the page. There it runs in a

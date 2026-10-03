@@ -112,3 +112,17 @@ describe("habits for the first turns only", () => {
     assert.deepEqual(scores(early, after), scores(never, after));
   });
 });
+
+describe("ideas for the end of the game only", () => {
+  it("leave an idea out before lateFrom, and play it from then on", () => {
+    const without = EXPERIMENT.ideas.filter((idea) => idea !== "spread");
+    const late = strategistBot(createRng(1), { ...EXPERIMENT, ideas: without, lateIdeas: ["spread"], lateFrom: 15 });
+    const always = strategistBot(createRng(1), EXPERIMENT);
+    const never = strategistBot(createRng(1), { ...EXPERIMENT, ideas: without });
+    const scores = (bot, state) => bot.scoreMoves(state, legalMoves(state)).map(({ move, gain }) => `${move.card}:${move.border}:${gain}`);
+    const [before, after] = [position(7, 6), position(7, 18)];
+    assert.deepEqual(scores(late, before), scores(never, before));
+    assert.deepEqual(scores(late, after), scores(always, after));
+    assert.notDeepEqual(scores(always, before), scores(never, before), "spread does weigh at turn 6");
+  });
+});

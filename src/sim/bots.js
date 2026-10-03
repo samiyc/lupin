@@ -51,13 +51,13 @@ export const greedyBot = (rng) => ({
  * `greedy` plus some of Sami's habits (all three by default), and optionally
  * some of his later ideas (`ideas.js`, none by default).
  */
-const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], earlyIdeas: [], earlyUntil: 0, weights: IDEA_WEIGHTS, params: BOT_PARAMS });
+const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], earlyIdeas: [], earlyHabits: [], lateIdeas: [], lateHabits: [], earlyUntil: 0, lateFrom: Infinity, weights: IDEA_WEIGHTS, params: BOT_PARAMS });
 
 export const strategistBot = (rng, options = {}) => {
   const settings = { ...STRATEGIST_DEFAULTS, ...options };
-  const { habits, name, sample, earlyUntil } = settings;
-  const { early, late } = tuningsOf(settings);
-  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, state.turn < earlyUntil ? early : late, keepAll);
+  const { habits, name, sample } = settings;
+  const tuningAt = tuningsOf(settings);
+  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, tuningAt(state.turn), keepAll);
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
