@@ -19,6 +19,10 @@ import { localTimestamp } from "../src/replay/log.js";
  * A job `scheduled` with `notBefore` (an ISO date) waits until then: kept for
  * the night, it is not started by a run that goes on into the day.
  *
+ * `--list` shows the jobs to come and the last `SHOWN_DONE` finished ones;
+ * `--archive` moves the older finished ones (done, failed, timeout) to
+ * data/backlog-done.json, the queue's history, once their results are read.
+ *
  * `--queue laptop`: another machine's own queue, data/backlog-laptop.json,
  * so that two machines never write the same file. Its outputs go to
  * data/runs-laptop/, which git carries back: `git pull`, run, then commit and
@@ -78,12 +82,30 @@ const ready = (job) => job.status === "todo" || (job.status === "scheduled" && D
 
 const backlog = await readBacklog();
 const pending = backlog.jobs.filter(ready);
+const SHOWN_DONE = 3;
+const finished = (job) => ["done", "failed", "timeout"].includes(job.status);
+
+function lineOf(job) {
+  const done = job.doneAt ? " (fait le " + job.doneAt + ", " + job.minutes + " min)" : "";
+  const wait = job.status === "scheduled" ? ` (pas avant ${job.notBefore})` : "";
+  return `[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}${wait}`;
+}
+
 if (args.includes("--list")) {
-  for (const job of backlog.jobs) {
-    const done = job.doneAt ? " (fait le " + job.doneAt + ", " + job.minutes + " min)" : "";
-    const wait = job.status === "scheduled" ? ` (pas avant ${job.notBefore})` : "";
-    console.log(`[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}${wait}`);
-  }
+  const older = backlog.jobs.filter(finished).slice(0, -SHOWN_DONE);
+  if (older.length > 0) console.log(`(${older.length} traitements finis plus anciens masqués : npm run backlog -- --archive les range dans data/backlog-done.json)`);
+  for (const job of backlog.jobs) if (!older.includes(job)) console.log(lineOf(job));
+  process.exit(0);
+}
+
+if (args.includes("--archive")) {
+  const older = backlog.jobs.filter(finished).slice(0, -SHOWN_DONE);
+  const ARCHIVE = `${ROOT}data/backlog-done${suffix}.json`;
+  const history = await readFile(ARCHIVE, "utf8").then((text) => JSON.parse(text), () => ({ note: "Les traitements de nuit finis et lus, sortis de la file (npm run backlog -- --archive).", jobs: [] }));
+  await writeFile(ARCHIVE, `${JSON.stringify({ ...history, jobs: [...history.jobs, ...older] }, null, 2)}
+`);
+  await saveBacklog({ ...backlog, jobs: backlog.jobs.filter((job) => !older.includes(job)) });
+  console.log(`${older.length} traitements finis rangés dans ${ARCHIVE.slice(ROOT.length)}.`);
   process.exit(0);
 }
 await mkdir(RUNS, { recursive: true });

@@ -235,6 +235,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | tester un moteur à arbre en journée | **400 itérations au plus** (`…@400`), sauf demande ; 800 pour valider, au backlog de nuit |
 | programmer un traitement pour la nuit | dans `data/backlog.json` : `"status": "scheduled", "notBefore": "2026-10-03T21:00"` |
 | lancer les traitements longs de la nuit (2 h au plus chacun, arrêtés au-delà) | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
+| ranger les traitements finis et lus (n'en garder que 3 dans la file) | `npm run backlog -- --archive` → `data/backlog-done.json` ; `--list` n'affiche que les 3 derniers finis |
 | limiter le nombre de fils de calcul (portable, ou garder la main pendant un calcul) | `LOPIN_THREADS=4 npm run …` (docs/cloud.md) |
 | envoyer les calculs sur un serveur loué | voir docs/cloud.md |
 | la file du portable (git pull, lancer, git push) | `LOPIN_THREADS=4 npm run backlog -- --queue laptop` (docs/cloud.md) |
