@@ -1,37 +1,37 @@
 {
   "note": "Ce que coûte le cœur, mesuré sur une machine au repos par npm run retrospective -- --measure (scripts/lib/core-timing.js). Mesuré sous charge, il serait faux : la page lit donc ce fichier, et seul --measure le réécrit.",
-  "measured": "02/10/2026",
+  "measured": "03/10/2026",
   "positions": 70,
   "scoring": [
     {
       "label": "noter tous les coups, cœur du 0.9 (vrai coup, avec les certitudes)",
-      "median": 0.128,
-      "p90": 0.208
+      "median": 0.085,
+      "p90": 0.17
     },
     {
       "label": "noter tous les coups, cœur des simulations (sans certitudes)",
-      "median": 0.114,
-      "p90": 0.179
+      "median": 0.074,
+      "p90": 0.111
     },
     {
       "label": "noter tous les coups, avec le voisinage (nb1)",
-      "median": 0.144,
-      "p90": 0.229
+      "median": 0.103,
+      "p90": 0.278
     }
   ],
   "game": {
-    "exp": 4.1,
-    "nb1": 4.4
+    "exp": 2.7,
+    "nb1": 3.1
   },
   "tree": {
-    "ms": 1.8,
-    "perSecond": 556,
-    "move800": 1440,
-    "page10s": 5556
+    "ms": 1.1,
+    "perSecond": 909,
+    "move800": 880,
+    "page10s": 9091
   },
   "treeNb": {
-    "ms": 2,
-    "perSecond": 500,
-    "move800": 1600
+    "ms": 1.2,
+    "perSecond": 833,
+    "move800": 960
   }
 }
