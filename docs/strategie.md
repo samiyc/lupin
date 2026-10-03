@@ -1396,6 +1396,41 @@ l'oracle, hors du top 8). Un essai sur 3 écarts : 3,5 à 10 min de calcul par
 ces écarts, le coup de l'oracle est celui que le 0.9 avait joué : son arbre
 l'avait trouvé, hors du top 3 du cœur.
 
+**L'oracle sur toutes les positions** (4 331 positions lues le 03/10, en
+3 h 30 au total) — **non confirmé**, la confirmation par le jeu passe la nuit
+suivante :
+
+| Positions | Nombre | Écart hors du top 3 du cœur | hors du top 8 | L'oracle joue le coup du 0.9 |
+| --- | --- | --- | --- | --- |
+| tours 15-16 | 858 | 60 % | 40 % | 23 % |
+| tours 20-21 | 1 105 | 56 % | 35 % | 25 % |
+| tours 25-26 | 1 181 | 48 % | 31 % | 27 % |
+| dernière colonne | 1 187 | 50 % | 37 % | 23 % |
+
+- Les deux joueurs donnent les mêmes taux : celui qui a commencé 53,9 %
+  d'écarts, l'autre 52,3 %.
+- **Ce qui distingue le coup de l'oracle du premier coup du cœur**, sur les
+  2 300 écarts :
+
+  | Trait | oracle | cœur |
+  | --- | --- | --- |
+  | bâtit un côté ni brelan ni suite de couleur | 33 % | 9 % |
+  | répond à une borne adverse | 7 % | 30 % |
+  | pose une 2e carte | 65 % | 51 % |
+  | complète un côté (3e carte) | 27 % | 17 % |
+  | ouvre sans suite prévue en main | 4 % | 18 % |
+  | joker | 14 % | 4 % |
+
+- **L'oracle approfondit plutôt qu'il n'élargit** : il reste sur ses côtés déjà
+  entamés au lieu de répondre ou d'ouvrir. Et il bâtit bien plus de côtés sans
+  figure, à l'inverse de la règle `junk` — ce qui pourrait être une façon de
+  sacrifier une borne pour en tenir d'autres.
+- **Tant que la confirmation n'a pas parlé, ce sont des pistes, pas des
+  règles** : l'oracle joue ses simulations avec le cœur, et ses écarts
+  pourraient venir de sa dispersion (son favori ne reçoit que 27 % des visites
+  en médiane). Le résumé est dans `data/oracle-diffs.json` (les taux et ce
+  comparatif ; les écarts eux-mêmes restent dans `oracle/positions.jsonl`).
+
 ## La chance des jokers (03/10)
 
 **La question de Sami** : quel taux de victoire avec deux jokers, un, aucun ?

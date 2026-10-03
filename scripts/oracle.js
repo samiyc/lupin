@@ -83,6 +83,23 @@ function reportLastColumn(entries) {
   console.log(`  l'oracle joue le coup du 0.9 : ${share((entry) => entry.move === entry.played)} ; écart stable hors du top 3 du cœur : ${share((entry) => entry.gap)}`);
 }
 
+/** On the gaps: how often each trait is in the oracle's move, and in the core's favourite. The biggest differences first. */
+function traitGaps(gaps) {
+  const counts = new Map();
+  for (const gap of gaps) {
+    for (const [side, traits] of [["oracle", gap.traits.oracle], ["core", gap.traits.core]]) {
+      for (const trait of traits) {
+        const count = counts.get(trait) ?? { oracle: 0, core: 0 };
+        count[side] += 1;
+        counts.set(trait, count);
+      }
+    }
+  }
+  return [...counts]
+    .map(([trait, { oracle, core }]) => ({ trait, oracle: oracle / gaps.length, core: core / gaps.length }))
+    .sort((a, b) => Math.abs(b.oracle - b.core) - Math.abs(a.oracle - a.core));
+}
+
 async function summarize() {
   const positions = await readPositions();
   const byTurn = rates(positions, (entry) => `tour ${entry.turn}`);
@@ -92,7 +109,11 @@ async function summarize() {
   const gaps = positions.filter((entry) => entry.gap);
   printRates(`${positions.length} positions lues, ${gaps.length} écarts stables hors du top 3 du cœur`, byTurn);
   printRates("Par joueur", byPlayer);
-  const summary = { built: new Date().toISOString().slice(0, 10), engine: ORACLE.engine, budget, positions: positions.length, byTurn, byPlayer, gaps };
+  const traits = traitGaps(gaps);
+  console.log(`Les traits des écarts : coup de l'oracle / premier coup du cœur`);
+  for (const row of traits.slice(0, 10)) console.log(`  ${pct(row.oracle)} / ${pct(row.core)}  ${row.trait}`);
+  // The gaps themselves stay in oracle/positions.jsonl: here only what they add up to.
+  const summary = { built: new Date().toISOString().slice(0, 10), engine: ORACLE.engine, budget, positions: positions.length, gaps: gaps.length, byTurn, byPlayer, traits };
   await writeFile(new URL("data/oracle-diffs.json", ROOT), `${JSON.stringify(summary, null, 1)}\n`);
 }
 

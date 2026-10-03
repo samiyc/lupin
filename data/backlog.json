@@ -126,14 +126,20 @@
       "command": "npm run oracle -- --minutes 110",
       "estimate": "≤ 2 h",
       "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl). Passe 1 : chaque passe reprend où la précédente s'est arrêtée.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-03T09:11",
+      "minutes": 111,
+      "output": "backlog-runs/2026-10-03-07-20_oracle-1.txt"
     },
     {
       "id": "oracle-2",
       "command": "npm run oracle -- --minutes 110",
       "estimate": "≤ 2 h",
       "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl). Passe 2 : chaque passe reprend où la précédente s'est arrêtée.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-03T10:47",
+      "minutes": 96,
+      "output": "backlog-runs/2026-10-03-09-11_oracle-2.txt"
     },
     {
       "id": "oracle-confirm-1",
