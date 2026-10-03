@@ -44,7 +44,7 @@ describe("starting hand classes", () => {
     const [sami, bot] = startingHandStats([log]);
     assert.equal(sami.player, "Sami");
     assert.deepEqual(sami.weak, { games: 1, won: 0 });
-    assert.equal(bot.player, "experimental@0.8.0");
+    assert.equal(bot.player, "experimental@0.8");
     assert.equal(bot[handClass(spec, startingHands(spec, deck)[1])].won, 1);
   });
 });

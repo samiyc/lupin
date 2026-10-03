@@ -15,7 +15,7 @@ import { runPool } from "./lib/pool.js";
  * from there), against what the kept game said (`analysis.advantage`): how
  * often the change turned it, for or against that seat.
  *
- *   npm run branch -- --lost-by experimental@0.9.0 --from first-border --engine ismcts+pw=1+widen=4+depth=5@800
+ *   npm run branch -- --lost-by experimental@0.9 --from first-border --engine ismcts+pw=1+widen=4+depth=5@800
  */
 const args = process.argv.slice(2);
 const filters = readFilters(args);

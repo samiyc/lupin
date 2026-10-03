@@ -1,6 +1,7 @@
 import { parseCards } from "../core/notation.js";
 import { HAND_CLASS_IDS, handClass, startingHands } from "../sim/hand-classes.js";
 import { rulesOf } from "./log.js";
+import { playerTag } from "../config/bots.js";
 
 /**
  * Games and wins by starting hand, for every player of the saved games: the
@@ -11,7 +12,7 @@ import { rulesOf } from "./log.js";
  * weak hands lose and the strong ones win as they should.
  */
 const empty = () => Object.fromEntries(HAND_CLASS_IDS.map((id) => [id, { games: 0, won: 0 }]));
-const playerName = (player) => (player.kind === "human" ? player.name : `${player.bot}@${player.version}`);
+const playerName = (player) => (player.kind === "human" ? player.name : playerTag(player));
 
 /** Adds one finished game to `rows`, once per player. */
 function countGame(rows, log) {

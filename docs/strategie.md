@@ -1636,3 +1636,55 @@ les taux de victoire.
 **Sami contre les robots** (72 parties, son côté) : 28 % sans joker (18), 50 %
 avec un (38), 56 % avec les deux (16) — la même pente, sur trop peu de parties
 pour aller plus loin (± 20 points environ par case).
+
+## Expérimental 1.0 : rester sur ses côtés tant qu'une figure y est possible (03/10)
+
+**Ce qui change** : le cœur du 0.9 plus `stfig` 0,6 (`stay` avec `stayFigure`,
+`src/sim/oracle-ideas.js`). Une carte posée sur un de mes côtés déjà commencés
+reçoit 0,6, si ce côté peut encore devenir un brelan ou une suite de couleur.
+Moteur : `ismcts+widen=3+depth=5+core=stfig6@800`. Le 0.9 reste `ismcts+widen=3+depth=5@800`,
+et `EXPERIMENT` reste son cœur : les replays, l'oracle et les bancs qui lisent les
+parties du 0.9 gardent leur sens. Les tests à venir se font contre le 1.0, avec `core=stfig6`.
+
+**Ce qui l'a décidé** :
+- l'oracle reste sur ses côtés entamés bien plus que le cœur (2e carte : 65 % de ses
+  coups contre 51 %) ;
+- en cœur contre cœur, `stfig` 0,6 fait 58,0 / 57,9 / 58,0 % sur trois jeux de donnes ;
+- dans l'arbre, quatre duels longs à 800 itérations : 53,8 / 58,3 / 51,7 / 60,8 %,
+  soit **56,1 % (53,2 – 59,1) sur 480 donnes jouées des deux côtés** (`npm run versus`).
+
+**Le coût** : `stfig` demandait `shapeOf` à chaque coup de chaque simulation,
+et l'arbre allait 24,5 % plus lentement par itération. `keepsFigure` donne la même
+réponse sur les 65 763 côtés possibles, avec la même empreinte du 1.0
+(`152e2a9c9d66170c`, `npm run fingerprint -- "ismcts+widen=3+depth=5+core=stfig6@150,greedy" 40`).
+Le surcoût tombe à 2 % : sous les 3 % de la règle du temps égal, les duels à
+itérations égales valent aussi au temps.
+
+**Ce qu'il joue autrement** (`npm run versus`, 960 parties contre le 0.9) :
+
+| | 1.0 | 0.9 |
+| --- | --- | --- |
+| tours 1-12 : pose une 2e carte | 18 % | 6 % |
+| tours 1-12 : ouvre une borne vierge | 49 % | 60 % |
+| tours 1-12 : bâtit une suite de couleur | 16 % | 6 % |
+| tours 13-24 : répond à une borne adverse | 28 % | 17 % |
+| tours 13-24 : bâtit un côté sans figure | 10 % | 20 % |
+| bornes entamées au tour 10 | 4,3 | 4,9 |
+| côtés complets sans figure à la fin | 1,95 | 2,29 |
+| bornes gagnées | 2,97 | 2,63 |
+
+Il approfondit au début au lieu d'ouvrir, garde ses figures possibles, et répond
+plus tard, quand l'adversaire a déjà montré son jeu. Son gain ne dépend ni du
+siège (54,8 % quand il commence, 57,5 % sinon) ni des jokers.
+
+**Écarté le même jour** : `stay` limité aux tours 1-10 (`stay4e10`) : 55,4 % au tri à
+400, puis 50,6 % (47,1 – 54,2) en deux duels longs. Les autres essais du 0.9 sont
+dans `out/journal-0.9.html`.
+
+**La leçon** : les tris de 10 minutes à 400 itérations ont promu trois idées qui
+n'ont pas tenu (stay 0,4 à 58,3 %, connector dès 15 à 54,5 %, stay4e10 à 55,4 %). Un
+tri écarte, il ne promeut plus : voir la règle dans `CLAUDE.md` et `docs/validation.md`.
+
+**Les versions passent à deux chiffres** (Sami) : `experimental@1.0`,
+`stratege@2.1`, `basique@1.0`. Les parties enregistrées avant, en `x.y.0`, comptent
+pour la même version (`shortTag`, `src/config/bots.js`).

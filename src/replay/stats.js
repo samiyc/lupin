@@ -1,5 +1,6 @@
 import { FORMATIONS } from "../config/formations.js";
 import { startingHandStats } from "./hand-stats.js";
+import { playerTag } from "../config/bots.js";
 
 /**
  * What the "Stats" tab shows, from the saved games: for each human and each
@@ -10,9 +11,9 @@ import { startingHandStats } from "./hand-stats.js";
 const zero = () => Object.fromEntries(FORMATIONS.map((formation) => [formation, 0]));
 
 function lineFor(lines, human, bot) {
-  const key = `${human.name}|${bot.bot}@${bot.version}`;
+  const key = `${human.name}|${playerTag(bot)}`;
   if (!lines.has(key)) {
-    lines.set(key, { human: human.name, opponent: `${bot.bot}@${bot.version}`, games: 0, won: 0, first: { games: 0, won: 0 }, second: { games: 0, won: 0 }, activeMs: 0, timedGames: 0, thinkMs: 0, timedMoves: 0 });
+    lines.set(key, { human: human.name, opponent: playerTag(bot), games: 0, won: 0, first: { games: 0, won: 0 }, second: { games: 0, won: 0 }, activeMs: 0, timedGames: 0, thinkMs: 0, timedMoves: 0 });
   }
   return lines.get(key);
 }

@@ -39,7 +39,7 @@ function recordedGame(spec, rules, { players, seats, seed }) {
 /**
  * `playBatch` (`simulate.js`) for duels to keep: the same decks, but every
  * game logged, with bots of its own. `labels`: how each seat is named in the
- * logs (a line-up tag such as "experimental@0.9.0", or the engine id); `ids`:
+ * logs (a line-up tag such as "experimental@0.9", or the engine id); `ids`:
  * the rules as ids (deck, jokerRule, order). Returns `{ wins, winners, logs }`.
  */
 export function playRecordedBatch(spec, { games, seed, players, labels, ids, ...options }) {

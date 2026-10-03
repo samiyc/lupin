@@ -4,10 +4,10 @@ import { filterRows, readIndex, startTurn } from "./game-index.js";
  * The filters `npm run games`, `npm run branch` and `npm run error-impact`
  * share, read from the command line:
  *
- *   --lost-by experimental@0.9.0   games that player lost (or --won-by)
+ *   --lost-by experimental@0.9   games that player lost (or --won-by)
  *   --hands weak|medium|strong     that player's starting hand
  *   --balanced                     both starting hands medium
- *   --vs experimental@0.9.0        games where both seats are that player
+ *   --vs experimental@0.9        games where both seats are that player
  *   --from first-border|columns|N  the turn to start from (default 15)
  *   --limit 100                    how many games at most
  */

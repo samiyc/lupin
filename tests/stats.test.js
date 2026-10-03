@@ -20,7 +20,7 @@ describe("the stats tab", () => {
 
   it("counts games and wins by seat against each bot version", () => {
     const [line] = stats.lines;
-    assert.equal(line.opponent, "experimental@0.6.0");
+    assert.equal(line.opponent, "experimental@0.6");
     assert.deepEqual([line.games, line.won], [3, 2]);
     assert.deepEqual(line.first, { games: 1, won: 1 });
     assert.deepEqual(line.second, { games: 2, won: 1 });

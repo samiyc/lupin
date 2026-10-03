@@ -1,6 +1,7 @@
 import { FORMATIONS } from "../config/formations.js";
 import { JOKER_TEXT } from "../core/notation.js";
 import { replayStates } from "./log.js";
+import { playerTag } from "../config/bots.js";
 
 /**
  * What a pile of replay logs says: results against each bot version, the
@@ -11,7 +12,7 @@ import { replayStates } from "./log.js";
 const zeroFormations = () => Object.fromEntries(FORMATIONS.map((f) => [f, 0]));
 
 const opponentOf = (log, seat) => log.players.find((player) => player.seat !== seat);
-const tagOf = (player) => (player.kind === "human" ? "humain" : `${player.bot}@${player.version}`);
+const tagOf = (player) => (player.kind === "human" ? "humain" : playerTag(player));
 
 function tallyResult(summary, log) {
   const human = log.players.find((player) => player.kind === "human");

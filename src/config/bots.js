@@ -2,14 +2,18 @@
  * The bot line-up players see: in the web game, the replays and `npm run
  * duel`. Each entry names a bot engine id (`engineFor` in `src/sim/bots.js`).
  *
- * Versioning: any change of behaviour bumps the version — patch for a tuned
- * number, minor for a new rule, major for a new way of thinking. Every replay
- * records `id@version`, so games stay comparable across generations.
+ * Versioning (Sami, 03/10): two numbers, major.minor — minor for any change
+ * of behaviour, major for a new way of thinking. A version only moves once
+ * the change is validated (long duels on several deck sets), so the third
+ * number a tuned value used to take never served: games saved before it
+ * still carry it, always 0, and `shortTag` reads them as the same version.
+ * Every replay records `id@version`, so games stay comparable across
+ * generations.
  */
 export const BOT_LINEUP = Object.freeze({
   basique: Object.freeze({
     engine: "greedy",
-    version: "1.0.0",
+    version: "1.0",
     label: "Basique",
     description: "Le meilleur coup immédiat",
     examines: "tous les coups, un seul coup d'avance",
@@ -17,20 +21,21 @@ export const BOT_LINEUP = Object.freeze({
   }),
   stratege: Object.freeze({
     engine: "lookahead",
-    version: "2.1.0",
+    version: "2.1",
     label: "Stratège",
     description: "Tes habitudes et tes idées, et il anticipe",
     examines: "4 coups × 16 fins de partie",
     pace: "≈ 0,5 s par coup",
   }),
   experimental: Object.freeze({
-    // 0.9: the 0.8's tree (src/sim/ismcts.js), narrower and deeper — 3 replies, 5 plies — at the same speed.
-    // 0.8 is `ismcts@800`; the 0.7 search is still the `experimental` engine id, for duels and the bench.
-    engine: "ismcts+widen=3+depth=5@800",
-    version: "0.9.0",
+    // 1.0: the 0.9's tree with the stfig core (oracle-ideas.js): it stays on its started sides while they
+    // can still become trips or a suited run — the oracle's habit, 56.1 % (53.2-59.1) over 480 deck pairs.
+    // The 0.9 is `ismcts+widen=3+depth=5@800`, the 0.8 `ismcts@800`.
+    engine: "ismcts+widen=3+depth=5+core=stfig6@800",
+    version: "1.0",
     label: "Expérimental",
     description: "Le cœur du Stratège, qui cherche en arbre, plus loin",
-    examines: "ses 8 meilleurs coups, tes 3 meilleures réponses et les siennes, sur 5 coups d'avance ; la fin de partie calculée exactement",
+    examines: "ses 8 meilleurs coups, tes 3 meilleures réponses et les siennes, sur 5 coups d'avance ; il reste sur ses bornes entamées tant qu'une figure y est possible ; la fin de partie calculée exactement",
     pace: "jusqu'à 10 s, et pendant ton tour",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
@@ -46,20 +51,35 @@ export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
  * in git history.
  */
 export const KEPT_VERSIONS = Object.freeze({
-  basique: Object.freeze(["1.0.0"]),
-  stratege: Object.freeze(["2.1.0", "2.0.0", "1.1.0"]),
-  experimental: Object.freeze(["0.9.0", "0.8.0", "0.7.0"]),
+  basique: Object.freeze(["1.0"]),
+  stratege: Object.freeze(["2.1", "2.0", "1.1"]),
+  experimental: Object.freeze(["1.0", "0.9", "0.8"]),
 });
 
-/** Is `player` ("Sami", "stratege@2.1.0") one to show? Humans always are. */
+/** "2.1.0" → "2.1": the version a game saved with three numbers stands for. */
+export function shortVersion(version) {
+  const parts = String(version).split(".");
+  return parts.length === 3 && parts[2] === "0" ? `${parts[0]}.${parts[1]}` : String(version);
+}
+
+/** "stratege@2.1.0" → "stratege@2.1"; humans and engine ids ("ismcts…@800") are left as they are. */
+export function shortTag(tag) {
+  const at = tag.lastIndexOf("@");
+  return at < 0 ? tag : `${tag.slice(0, at)}@${shortVersion(tag.slice(at + 1))}`;
+}
+
+/** How a logged bot (`{ bot, version }`, the web game's way) is named: "stratege@2.1". */
+export const playerTag = (player) => `${player.bot}@${shortVersion(player.version)}`;
+
+/** Is `player` ("Sami", "stratege@2.1") one to show? Humans always are. */
 export function isShownPlayer(player) {
-  const [id, version] = player.split("@");
+  const [id, version] = shortTag(player).split("@");
   return version === undefined || Boolean(KEPT_VERSIONS[id]?.includes(version));
 }
 
 export const DEFAULT_OPPONENT = "stratege";
 
-/** "stratege@2.1.0": how a bot is named in replays. */
+/** "stratege@2.1": how a bot is named in replays. */
 export const botTag = (id) => `${id}@${BOT_LINEUP[id].version}`;
 
 export function engineOf(id) {

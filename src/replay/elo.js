@@ -1,3 +1,5 @@
+import { playerTag } from "../config/bots.js";
+
 /**
  * Elo ratings from game results, by the Bradley-Terry model: the chance that
  * A beats B is 1 / (1 + 10^((Rb − Ra) / 400)). Ratings are fitted to every
@@ -51,8 +53,8 @@ export function resultsFromLogs(logs) {
     const human = log.players.find((player) => player.kind === "human");
     const bot = log.players.find((player) => player.kind === "bot");
     if (!human || !bot || !log.result) continue;
-    const key = `${human.name}|${bot.bot}@${bot.version}`;
-    const entry = tally.get(key) ?? { a: human.name, b: `${bot.bot}@${bot.version}`, score: 0, games: 0 };
+    const key = `${human.name}|${playerTag(bot)}`;
+    const entry = tally.get(key) ?? { a: human.name, b: playerTag(bot), score: 0, games: 0 };
     entry.games += 1;
     if (log.result.winner === null) entry.score += 0.5;
     else if (log.result.winner === human.seat) entry.score += 1;

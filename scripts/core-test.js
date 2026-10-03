@@ -2,7 +2,7 @@ import { readIndex, startTurn } from "./lib/game-index.js";
 import { runPool } from "./lib/pool.js";
 
 /**
- * `npm run core-test -- <engine> [--from 23] [--games 200] [--player experimental@0.9.0]`:
+ * `npm run core-test -- <engine> [--from 23] [--games 200] [--player experimental@0.9]`:
  * a quick test of a change of judgement, from a decisive turn (Sami, after the
  * retrospective). On kept games of the player against itself (duels/), from
  * turn `--from`, the engine takes one seat and the player keeps the other,
@@ -25,7 +25,7 @@ if (!engine) {
   process.stderr.write('Usage : npm run core-test -- "<moteur>" [--from 23] [--games 200]\n');
   process.exit(1);
 }
-const player = option("--player", "experimental@0.9.0");
+const player = option("--player", "experimental@0.9");
 const from = option("--from", "23");
 const games = Number(option("--games", 200));
 const started = Date.now();

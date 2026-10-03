@@ -2,6 +2,7 @@ import { readFile, readdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { analyseGame, gameKey } from "../../src/replay/game-analysis.js";
 import { jokersOf } from "../../src/replay/jokers-held.js";
+import { shortTag } from "../../src/config/bots.js";
 
 /**
  * The index of the bot games kept in duels/ (`index.json`): one row per game,
@@ -19,7 +20,7 @@ export function rowOf(file, game, log) {
     key: gameKey(log),
     file,
     game,
-    players: log.players.map((player) => player.version),
+    players: log.players.map((player) => shortTag(player.version)),
     engines: log.players.map((player) => player.bot),
     endMode: log.rules.endMode,
     turns: log.turns.length,
@@ -62,7 +63,7 @@ export async function loadGame({ file, game }) {
   return files.get(file).games[game];
 }
 
-/** Which seat a player label (`experimental@0.9.0`) sat in, or -1. */
+/** Which seat a player label (`experimental@0.9`) sat in, or -1. */
 const seatOf = (row, player) => row.players.indexOf(player);
 
 /** The rows matching `filters`: `{ lostBy, wonBy, hands, balanced }` (hands: the class of `lostBy`'s or `wonBy`'s starting hand). */

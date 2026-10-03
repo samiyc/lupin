@@ -32,9 +32,9 @@ import { ANCHOR, readAllLogs, readDuels } from "./lib/elo-data.js";
 const ROOT = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, ROOT), "utf8"));
 const ARCHIVED = [
-  { a: "stratege@1.0.0", b: "basique@1.0.0", score: 2308, games: 4000 },
-  { a: "experimental@0.5.0", b: "stratege@2.1.0", score: 60, games: 96 },
-  { a: "experimental@0.6.0", b: "experimental@0.5.0", score: 121, games: 240 },
+  { a: "stratege@1.0", b: "basique@1.0", score: 2308, games: 4000 },
+  { a: "experimental@0.5", b: "stratege@2.1", score: 60, games: 96 },
+  { a: "experimental@0.6", b: "experimental@0.5", score: 121, games: 240 },
 ];
 const EXAMPLE = { seed: 7, turn: 8, shown: 8 };
 
@@ -106,4 +106,4 @@ const cut = page.indexOf('<header class="band">');
 const head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
 await writeFile(new URL("out/retrospective.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
 const line = (tag) => `${tag} ${elo[tag].elo}`;
-console.log(`Rétrospective : ${data.retro.versions.length} versions (${line("basique@1.0.0")} … ${line("experimental@0.9.0")}), exemple au tour ${data.example.turn} → out/retrospective.html`);
+console.log(`Rétrospective : ${data.retro.versions.length} versions (${line("basique@1.0")} … ${line("experimental@1.0")}), exemple au tour ${data.example.turn} → out/retrospective.html`);

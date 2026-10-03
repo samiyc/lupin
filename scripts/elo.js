@@ -10,12 +10,13 @@ import { DUELS_FILE, eloTable, readDuels } from "./lib/elo-data.js";
  * duels it has engines for, and rewrites their lines (about 20 minutes).
  */
 const RERUN = [
-  { a: "stratege@1.1.0", b: "basique@1.0.0", engines: ["strategist:1.1", "greedy"] },
-  { a: "stratege@2.1.0", b: "basique@1.0.0", engines: ["lookahead", "greedy"] },
-  { a: "experimental@0.6.0", b: "stratege@2.1.0", engines: ["experimental:0.6", "lookahead"] },
-  { a: "experimental@0.7.0", b: "experimental@0.6.0", engines: ["experimental:400", "experimental:0.6"] },
-  { a: "experimental@0.8.0", b: "experimental@0.7.0", engines: ["ismcts@800", "experimental@800"] },
-  { a: "experimental@0.9.0", b: "experimental@0.8.0", engines: ["ismcts+widen=3+depth=5@800", "ismcts@800"] },
+  { a: "stratege@1.1", b: "basique@1.0", engines: ["strategist:1.1", "greedy"] },
+  { a: "stratege@2.1", b: "basique@1.0", engines: ["lookahead", "greedy"] },
+  { a: "experimental@0.6", b: "stratege@2.1", engines: ["experimental:0.6", "lookahead"] },
+  { a: "experimental@0.7", b: "experimental@0.6", engines: ["experimental:400", "experimental:0.6"] },
+  { a: "experimental@0.8", b: "experimental@0.7", engines: ["ismcts@800", "experimental@800"] },
+  { a: "experimental@0.9", b: "experimental@0.8", engines: ["ismcts+widen=3+depth=5@800", "ismcts@800"] },
+  { a: "experimental@1.0", b: "experimental@0.9", engines: ["ismcts+widen=3+depth=5+core=stfig6@800", "ismcts+widen=3+depth=5@800"] },
 ];
 
 function duel([a, b]) {

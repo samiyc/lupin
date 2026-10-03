@@ -22,8 +22,8 @@ describe("Elo ratings", () => {
     assert.ok(Number.isFinite(ratings.lucky.elo) && ratings.lucky.elo < 900);
   });
 
-  it("read human results from replay logs", () => {
-    const log = (winner) => ({ players: [{ seat: 0, kind: "human", name: "Sami" }, { seat: 1, kind: "bot", bot: "stratege", version: "2.1.0" }], result: { winner } });
-    assert.deepEqual(resultsFromLogs([log(0), log(1), log(null)]), [{ a: "Sami", b: "stratege@2.1.0", score: 1.5, games: 3 }]);
+  it("read human results from replay logs, old three-number versions and new ones as one player", () => {
+    const log = (winner, version = "2.1") => ({ players: [{ seat: 0, kind: "human", name: "Sami" }, { seat: 1, kind: "bot", bot: "stratege", version }], result: { winner } });
+    assert.deepEqual(resultsFromLogs([log(0, "2.1.0"), log(1), log(null)]), [{ a: "Sami", b: "stratege@2.1", score: 1.5, games: 3 }]);
   });
 });

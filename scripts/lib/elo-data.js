@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { fitElo, resultsFromLogs } from "../../src/replay/elo.js";
 import { statsOf } from "../../src/replay/stats.js";
 import { REPLAY_DIRS, isSafeName } from "./replay-files.js";
-import { isShownPlayer } from "../../src/config/bots.js";
+import { isShownPlayer, shortTag } from "../../src/config/bots.js";
 
 /**
  * The Elo table as the server and `npm run elo` compute it: every saved human
@@ -13,7 +13,7 @@ import { isShownPlayer } from "../../src/config/bots.js";
  */
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 export const DUELS_FILE = join(ROOT, "data/elo-duels.json");
-export const ANCHOR = "basique@1.0.0";
+export const ANCHOR = "basique@1.0";
 
 async function readLogs(dir) {
   const names = await readdir(join(ROOT, dir)).catch(() => []);
@@ -21,7 +21,8 @@ async function readLogs(dir) {
 }
 
 export async function readDuels() {
-  return JSON.parse(await readFile(DUELS_FILE, "utf8"));
+  const file = JSON.parse(await readFile(DUELS_FILE, "utf8"));
+  return { ...file, duels: file.duels.map((duel) => ({ ...duel, a: shortTag(duel.a), b: shortTag(duel.b) })) };
 }
 
 /** Every saved game: recent, archived (replays/OLD) and kept. */

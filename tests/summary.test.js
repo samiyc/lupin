@@ -36,7 +36,7 @@ describe("summarizeReplays", () => {
   const summary = summarizeReplays(logs, { advisor: BOTS.strategist(createRng(1)) });
 
   it("counts the human's results against each bot version", () => {
-    const line = summary.vsBots["basique@1.0.0"];
+    const line = summary.vsBots["basique@1.0"];
     assert.equal(line.games, 2);
     assert.equal(line.won + line.lost + line.drawn, 2);
   });

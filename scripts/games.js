@@ -7,7 +7,7 @@ import { pickGames, readFilters } from "./lib/game-filters.js";
  * `scripts/lib/game-filters.js`. `--reindex` rebuilds duels/index.json from
  * the duel files first.
  *
- *   npm run games -- --lost-by experimental@0.9.0 --from first-border --limit 100
+ *   npm run games -- --lost-by experimental@0.9 --from first-border --limit 100
  */
 const args = process.argv.slice(2);
 if (args.includes("--reindex")) process.stderr.write(`Index refait : ${(await rebuildIndex()).length} parties\n`);

@@ -3,7 +3,7 @@ import { runPool } from "./lib/pool.js";
 
 /**
  * `npm run error-impact -- [--turns 18-29 | --turns 2,6,10] [--points]
- * [--games 120] [--player experimental@0.9.0] [--explain]`: at which turn
+ * [--games 120] [--player experimental@0.9] [--explain]`: at which turn
  * does an error cost the most? (Sami, evol-exp-090)
  *
  * On kept games where both seats are that player and both starting hands are
@@ -23,7 +23,7 @@ import { runPool } from "./lib/pool.js";
  */
 const args = process.argv.slice(2);
 const option = (flag, fallback) => (args.includes(flag) ? args[args.indexOf(flag) + 1] : fallback);
-const player = option("--player", "experimental@0.9.0");
+const player = option("--player", "experimental@0.9");
 const games = Number(option("--games", 120));
 const explain = args.includes("--explain");
 

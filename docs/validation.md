@@ -219,10 +219,10 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 
 | Je veux… | Commande |
 | --- | --- |
-| trouver des parties | `npm run games -- --lost-by experimental@0.9.0 --hands medium --from first-border --limit 100` |
-| vérifier que le rejeu redonne la même fin | `npm run branch -- --vs experimental@0.9.0 --from first-border --check` |
+| trouver des parties | `npm run games -- --lost-by experimental@0.9 --hands medium --from first-border --limit 100` |
+| vérifier que le rejeu redonne la même fin | `npm run branch -- --vs experimental@0.9 --from first-border --check` |
 | voir ce qu'une erreur change | `npm run branch -- … --force random` |
-| essayer un autre moteur depuis un tour | `npm run branch -- --lost-by experimental@0.9.0 --from first-border --engine <moteur>` |
+| essayer un autre moteur depuis un tour | `npm run branch -- --lost-by experimental@0.9 --from first-border --engine <moteur>` |
 | tester un changement de jugement depuis un tour décisif (6 min) | `npm run core-test -- "ismcts+widen=3+depth=5+core=nb1@800" --from 23` |
 | tester une fin de partie depuis un tour de bascule | `npm run core-test -- "ismcts+widen=3+depth=7+core=plain@880" --from 20` |
 | comparer des variantes contre le Stratège, mêmes donnes | `npm run ab -- "ismcts+widen=3+depth=5@800" "phase:20:…/…" --pairs 400 --page` |

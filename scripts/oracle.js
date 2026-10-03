@@ -38,7 +38,7 @@ const at = option("--at", null);
 const ROOT = new URL("../", import.meta.url);
 const OUT = new URL("oracle/positions.jsonl", ROOT);
 const WEAK_BOTS = /^(basique|stratege)@/;
-const SELF = "experimental@0.9.0";
+const SELF = "experimental@0.9";
 
 async function readPositions() {
   const text = await readFile(OUT, "utf8").catch(() => "");

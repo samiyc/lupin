@@ -2,81 +2,88 @@
   "note": "Duels entre versions de robots, pour le classement Elo (npm run elo). wins = victoires de a. Les Expérimental sont mesurés à 400 simulations par coup (environ 1 s), pas aux 10 s de la page. npm run elo -- --duels remplace les lignes qu'il sait rejouer.",
   "duels": [
     {
-      "a": "stratege@1.1.0",
-      "b": "basique@1.0.0",
+      "a": "stratege@1.1",
+      "b": "basique@1.0",
       "wins": 2580,
       "games": 4000,
       "source": "rapport : plus tes deux idées (1.1)"
     },
     {
-      "a": "stratege@2.0.0",
-      "b": "stratege@1.1.0",
+      "a": "stratege@2.0",
+      "b": "stratege@1.1",
       "wins": 595,
       "games": 800,
       "source": "docs/analyse-replays.md : anticipation 4 × 16"
     },
     {
-      "a": "stratege@2.1.0",
-      "b": "stratege@2.0.0",
+      "a": "stratege@2.1",
+      "b": "stratege@2.0",
       "wins": 443,
       "games": 800,
       "source": "docs/analyse-replays.md : 2.1 contre 2.0"
     },
     {
-      "a": "stratege@2.1.0",
-      "b": "basique@1.0.0",
+      "a": "stratege@2.1",
+      "b": "basique@1.0",
       "wins": 81,
       "games": 96,
       "source": "duel rapide du 25/09"
     },
     {
-      "a": "experimental@0.6.0",
-      "b": "stratege@2.1.0",
+      "a": "experimental@0.6",
+      "b": "stratege@2.1",
       "wins": 45,
       "games": 72,
       "source": "duel rapide du 01/10 : relie les Expérimental aux Stratège depuis le retrait du 0.5"
     },
     {
-      "a": "experimental@0.7.0",
-      "b": "experimental@0.6.0",
+      "a": "experimental@0.7",
+      "b": "experimental@0.6",
       "wins": 41,
       "games": 72,
       "source": "duel rapide du 30/09 : fin de partie exacte (docs/strategie.md)"
     },
     {
-      "a": "experimental@0.8.0",
-      "b": "experimental@0.7.0",
+      "a": "experimental@0.8",
+      "b": "experimental@0.7",
       "wins": 162,
       "games": 288,
       "source": "deux duels longs du 01/10, 800 simulations, règle de la page, donnes 0 et 1 : ISMCTS (docs/strategie.md)"
     },
     {
-      "a": "experimental@0.9.0",
-      "b": "experimental@0.8.0",
+      "a": "experimental@0.9",
+      "b": "experimental@0.8",
       "wins": 239,
       "games": 432,
       "source": "tri de 10 min et duel long du 01/10, à temps égal (1,4 s par coup), règle de la page, donnes 0 et 1 : ISMCTS à 3 réponses, 5 coups d'avance (docs/strategie.md)"
     },
     {
-      "a": "stratege@2.1.0",
-      "b": "basique@1.0.0",
+      "a": "stratege@2.1",
+      "b": "basique@1.0",
       "wins": 85,
       "games": 100,
       "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
     },
     {
-      "a": "experimental@0.9.0",
-      "b": "basique@1.0.0",
+      "a": "experimental@0.9",
+      "b": "basique@1.0",
       "wins": 95,
       "games": 100,
       "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
     },
     {
-      "a": "experimental@0.9.0",
-      "b": "stratege@2.1.0",
+      "a": "experimental@0.9",
+      "b": "stratege@2.1",
       "wins": 68,
       "games": 100,
       "source": "duel de 100 parties du 02/10, règle de la page, gardé dans duels/ (un robot par partie)"
+    },
+    {
+      "a": "experimental@1.0",
+      "b": "experimental@0.9",
+      "wins": 539,
+      "games": 960,
+      "source": "quatre duels longs du 03/10, 800 simulations, règle de la page, donnes 0 à 3 : le cœur stfig (npm run versus, 56,1 %, 53,2 – 59,1 par paires)"
     }
   ]
 }

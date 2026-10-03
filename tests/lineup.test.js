@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT, botTag, engineOf } from "../src/config/bots.js";
+import { BOT_IDS, BOT_LINEUP, DEFAULT_OPPONENT, botTag, engineOf, isShownPlayer, playerTag, shortTag, shortVersion } from "../src/config/bots.js";
 import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
@@ -14,9 +14,19 @@ describe("the bot line-up", () => {
     assert.ok(BOT_IDS.includes(DEFAULT_OPPONENT));
   });
 
-  it("gives every bot a semantic version and a tag for the replays", () => {
-    for (const id of BOT_IDS) assert.match(BOT_LINEUP[id].version, /^\d+\.\d+\.\d+$/);
+  it("gives every bot a two-number version and a tag for the replays", () => {
+    for (const id of BOT_IDS) assert.match(BOT_LINEUP[id].version, /^\d+\.\d+$/);
     assert.equal(botTag("stratege"), `stratege@${BOT_LINEUP.stratege.version}`);
+  });
+
+  it("reads a version saved with three numbers as the same version", () => {
+    assert.equal(shortVersion("2.1.0"), "2.1");
+    assert.equal(shortVersion("1.0"), "1.0");
+    assert.equal(shortTag("stratege@2.1.0"), "stratege@2.1");
+    assert.equal(shortTag("ismcts+widen=3+depth=5@800"), "ismcts+widen=3+depth=5@800", "an engine id is left alone");
+    assert.equal(shortTag("Sami"), "Sami");
+    assert.equal(playerTag({ bot: "experimental", version: "0.9.0" }), "experimental@0.9");
+    assert.ok(isShownPlayer("experimental@0.9.0") && isShownPlayer("experimental@0.9"));
   });
 
   it("refuses an unknown bot", () => {

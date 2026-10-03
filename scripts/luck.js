@@ -6,6 +6,7 @@ import { parseCards } from "../src/core/notation.js";
 import { rulesOf } from "../src/replay/log.js";
 import { runPool } from "./lib/pool.js";
 import { REPLAY_DIRS, isSafeName } from "./lib/replay-files.js";
+import { playerTag } from "../src/config/bots.js";
 
 /**
  * `npm run luck`: was it the cards? In this game each seat's cards are fixed
@@ -38,7 +39,7 @@ const rows = games.map(({ log }, index) => {
   const human = log.players.find((player) => player.kind === "human");
   const bot = log.players.find((player) => player.kind === "bot");
   const won = results[2 * index].wins[human.seat] + results[2 * index + 1].wins[human.seat];
-  return { date: log.startedAt.slice(0, 16), opponent: `${bot.bot}@${bot.version}`, seat: human.seat, luck: won / GAMES, won: log.result.winner === human.seat };
+  return { date: log.startedAt.slice(0, 16), opponent: playerTag(bot), seat: human.seat, luck: won / GAMES, won: log.result.winner === human.seat };
 });
 
 const pct = (x) => `${(100 * x).toFixed(0)} %`;
