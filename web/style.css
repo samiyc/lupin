@@ -221,3 +221,10 @@ dialog .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top
 @media (prefers-reduced-motion: reduce) {
   .stone, .stone.animate { transition: none; animation: none; }
 }
+
+/* Puzzles: favourite and id tools, and the status once a puzzle is over. */
+.puzzle-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.panel label.check { display: flex; align-items: center; gap: 6px; }
+.puzzle-status { margin: 0; padding: 8px 10px; border-radius: 8px; border-left: 4px solid var(--line); font-weight: 700; }
+.puzzle-status.won { border-left-color: var(--won); color: var(--won); background: color-mix(in oklab, var(--won) 10%, transparent); }
+.puzzle-status.lost { border-left-color: var(--lost); color: var(--lost); background: color-mix(in oklab, var(--lost) 10%, transparent); }

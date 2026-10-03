@@ -4,7 +4,8 @@ import { applyMove, legalMoves } from "../../src/sim/game.js";
 import { createRng } from "../../src/core/random.js";
 import { $, freshSeed, recall, remember } from "./dom.js";
 import { sortBySuit, syncOrder } from "./hand.js";
-import { hintOf, immediateMessage, isImmediate, namesOf, openingMessage, randomOrder, solutionOf } from "./puzzle-kinds.js";
+import { copyId, favoriteIds, flipFavorite, renderStatus } from "./puzzle-controls.js";
+import { favoritesOnly, hintOf, immediateMessage, isImmediate, namesOf, openingMessage, puzzleStatus, randomOrder, solutionOf } from "./puzzle-kinds.js";
 import { SPEC } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
@@ -21,7 +22,8 @@ const puzzle = { list: [], index: 0, order: [], cursor: 0, game: null, visible: 
 
 /** A random order, the puzzles not yet solved first: the next one is never predictable. */
 function shuffleOrder() {
-  puzzle.order = randomOrder(puzzle.list, solvedIds(), createRng(freshSeed()));
+  const order = randomOrder(puzzle.list, solvedIds(), createRng(freshSeed()));
+  puzzle.order = $("puzzle-favorites-only").checked ? favoritesOnly(order, puzzle.list, favoriteIds()) : order;
   puzzle.cursor = 0;
 }
 
@@ -73,9 +75,11 @@ export function render() {
   });
   const kind = isImmediate(current) ? `gain immédiat, pioche ${current.cardsLeft}` : `tour ${current.turn}`;
   $("puzzle-kind").textContent = hintOf(current);
-  $("puzzle-title").textContent = `Puzzle ${puzzle.index + 1} / ${puzzle.list.length} · ${kind} · ${current.moves} coups possibles`;
-  $("puzzle-solved").textContent = `Résolus : ${solvedIds().size} / ${puzzle.list.length}`;
+  $("puzzle-title").textContent = `Puzzle #${current.id} · ${kind} · ${current.moves} coups possibles`;
+  $("puzzle-solved").textContent = `Résolus : ${solvedIds().size} / ${puzzle.list.length} · favoris : ${favoriteIds().size}`;
+  renderStatus(current, puzzleStatus(game.result));
 }
+
 
 /** Plays `move` on the puzzle board and logs it, so the worker can rebuild the position. */
 function play(move) {
@@ -100,6 +104,7 @@ const markSolved = () => remember(SOLVED_KEY, JSON.stringify([...solvedIds(), pu
 function settleImmediate(slip) {
   const { game } = puzzle;
   if (!slip && !game.revealed) markSolved();
+  game.result = { won: !slip, helped: game.revealed };
   game.message = immediateMessage(slip, game.revealed);
   render();
 }
@@ -109,6 +114,7 @@ function finish() {
   const won = game.state.winner === game.mover;
   if (won && !game.slipped && !game.revealed) markSolved();
   const helped = game.slipped || game.revealed;
+  game.result = { won, helped };
   if (!won) game.message = "Perdu. Recommence ce puzzle, ou révèle le coup gagnant.";
   else game.message = helped ? "Gagné, mais avec de l'aide." : "Résolu ! Puzzle suivant ?";
   render();
@@ -189,11 +195,17 @@ export function start(index) {
   puzzle.game = { state, log: current.log, mover: state.current, played: [], order: sortBySuit(SPEC, state.hands[state.current]), selected: null, lastMove: null, thinking: false, slipped: false, revealed: false };
   puzzle.game.solution = solutionOf(current, legalMoves(state), text);
   puzzle.game.message = openingMessage(current);
+  $("puzzle-copied").textContent = "";
   render();
 }
 
 function reveal() {
   const { game } = puzzle;
+  // Once the puzzle is over (lost, most often), the winning move is the one from its starting position.
+  if (game?.result) {
+    game.message = `Coup gagnant au départ : ${puzzle.list[puzzle.index].solutions.join(" ou ")}.`;
+    return render();
+  }
   if (!game || !humanTurn()) return;
   const best = Math.max(...game.solution.map((entry) => entry.value));
   game.revealed = true;
@@ -222,4 +234,15 @@ export function wirePuzzles() {
   $("btn-puzzle-reveal").addEventListener("click", reveal);
   $("btn-puzzle-retry").addEventListener("click", () => start(puzzle.index));
   $("btn-puzzle-next").addEventListener("click", next);
+  $("btn-puzzle-star").addEventListener("click", () => {
+    flipFavorite(puzzle.list[puzzle.index].id);
+    render();
+  });
+  $("btn-puzzle-copy").addEventListener("click", () => copyId(puzzle.list[puzzle.index].id, $("puzzle-copied")));
+  // Favourites only: a new draw, and a move to the first favourite unless the current puzzle is one.
+  $("puzzle-favorites-only").addEventListener("change", () => {
+    shuffleOrder();
+    if (puzzle.game && !puzzle.order.includes(puzzle.index)) start(puzzle.order[0]);
+    else render();
+  });
 }

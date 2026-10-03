@@ -1,0 +1,29 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import { buttonsFor, favoritesOnly, puzzleStatus, statusLine, toggleFavorite } from "../web/app/puzzle-kinds.js";
+
+describe("where a puzzle stands", () => {
+  it("is playing until it is over, then solved, helped or lost", () => {
+    assert.equal(puzzleStatus(null), "playing");
+    assert.equal(puzzleStatus({ won: true, helped: false }), "solved");
+    assert.equal(puzzleStatus({ won: true, helped: true }), "helped");
+    assert.equal(puzzleStatus({ won: false, helped: false }), "lost");
+  });
+
+  it("turns the next button green once won, reveal and retry once lost", () => {
+    assert.deepEqual(buttonsFor("playing"), { next: false, reveal: false, retry: false });
+    assert.deepEqual(buttonsFor("solved"), { next: true, reveal: false, retry: false });
+    assert.deepEqual(buttonsFor("lost"), { next: false, reveal: true, retry: true });
+    assert.equal(statusLine("playing"), null);
+    assert.equal(statusLine("solved").tone, "won");
+    assert.equal(statusLine("lost").tone, "lost");
+  });
+
+  it("keeps favourites by id, and can draw from them alone", () => {
+    assert.deepEqual(toggleFavorite([3, 7], 5), [3, 7, 5]);
+    assert.deepEqual(toggleFavorite([3, 7], 7), [3]);
+    const list = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    assert.deepEqual(favoritesOnly([2, 0, 1], list, new Set([3, 1])), [2, 0]);
+    assert.deepEqual(favoritesOnly([2, 0, 1], list, new Set()), [2, 0, 1], "no favourite: the whole order");
+  });
+});

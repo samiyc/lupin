@@ -51,10 +51,17 @@
 
     <section class="panel" id="panel-puzzles" hidden>
       <p class="hint" id="puzzle-title"></p>
+      <div class="puzzle-tools">
+        <button type="button" id="btn-puzzle-star" class="quiet" aria-pressed="false">☆ Favori</button>
+        <button type="button" id="btn-puzzle-copy" class="quiet">Copier l'identifiant</button>
+      </div>
+      <p class="hint" id="puzzle-copied" aria-live="polite"></p>
       <p class="hint" id="puzzle-kind"></p>
+      <p class="puzzle-status" id="puzzle-status" aria-live="polite" hidden></p>
       <button type="button" id="btn-puzzle-reveal" class="quiet">Révéler le coup gagnant</button>
       <button type="button" id="btn-puzzle-retry" class="quiet">Recommencer ce puzzle</button>
-      <button type="button" id="btn-puzzle-next">Puzzle suivant</button>
+      <button type="button" id="btn-puzzle-next" class="quiet">Puzzle suivant</button>
+      <label class="check"><input type="checkbox" id="puzzle-favorites-only" /> Favoris seulement</label>
       <p class="hint" id="puzzle-solved"></p>
     </section>
 

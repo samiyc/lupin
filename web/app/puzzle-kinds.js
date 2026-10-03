@@ -41,3 +41,37 @@ export function randomOrder(list, solved, rng) {
   const fresh = rng.shuffle(indices.filter((i) => !solved.has(list[i].id)));
   return [...fresh, ...rng.shuffle(indices.filter((i) => solved.has(list[i].id)))];
 }
+
+/**
+ * Where a puzzle stands (Sami, 03/10): "playing" until it is over, then
+ * "solved", "helped" (won after a slip or a reveal) or "lost".
+ */
+export function puzzleStatus(result) {
+  if (!result) return "playing";
+  if (!result.won) return "lost";
+  return result.helped ? "helped" : "solved";
+}
+
+/** Which buttons stand out, green: "next" once the puzzle is won; "reveal" and "retry" once it is lost. */
+export const buttonsFor = (status) => ({ next: status === "solved" || status === "helped", reveal: status === "lost", retry: status === "lost" });
+
+/** The line under the board once a puzzle is over: its text and its colour ("won" or "lost"). */
+export function statusLine(status) {
+  if (status === "solved") return { text: "Résolu ✓", tone: "won" };
+  if (status === "helped") return { text: "Gagné, avec de l'aide", tone: "won" };
+  return status === "lost" ? { text: "Perdu — révèle le coup gagnant ou recommence", tone: "lost" } : null;
+}
+
+/** The favourites with `id` added, or taken out if it was there. */
+export function toggleFavorite(favorites, id) {
+  const next = new Set(favorites);
+  if (next.has(id)) next.delete(id);
+  else next.add(id);
+  return [...next];
+}
+
+/** The order kept to the favourites — or left whole when none of them is in it. */
+export function favoritesOnly(order, list, favorites) {
+  const kept = order.filter((index) => favorites.has(list[index].id));
+  return kept.length > 0 ? kept : order;
+}
