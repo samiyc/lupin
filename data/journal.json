@@ -794,15 +794,37 @@
    "note": ""
   },
   {
-   "name": "stay4e10, duels longs",
+   "name": "stay4e10, duel long n°0",
    "family": "fenetres",
    "bench": "long800",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "03/10 soir",
-   "note": "En cours dans le backlog."
+   "score": 54.5,
+   "lo": 49.4,
+   "hi": 59.6,
+   "verdict": "tendance",
+   "when": "03/10 18:37",
+   "note": "288 parties à 800 itérations."
+  },
+  {
+   "name": "stay4e10, duel long n°1",
+   "family": "fenetres",
+   "bench": "long800",
+   "score": 47.3,
+   "lo": 42.5,
+   "hi": 52.2,
+   "verdict": "neutre",
+   "when": "03/10 18:57",
+   "note": "336 parties à 800 itérations, d’autres donnes."
+  },
+  {
+   "name": "stay4e10, les deux duels longs réunis",
+   "family": "fenetres",
+   "bench": "long800",
+   "score": 50.9,
+   "lo": 47.4,
+   "hi": 54.4,
+   "verdict": "neutre",
+   "when": "03/10 19:17",
+   "note": "624 parties ; fourchette approchée. Le 55,4 % du tri à 400 ne tient pas : stay limité au début ne gagne rien."
   },
   {
    "name": "middle du 0.9, tours 1-10 seulement",

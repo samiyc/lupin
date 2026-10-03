@@ -1210,7 +1210,7 @@ function drawNext() {
   const cards = [
     ["Ce soir, 21 h", "Le cœur sans bonus, à temps égal", "nobonus et lean, deux jeux de donnes chacun, @t800 contre le 0.9 @t800. Si lean ne perd pas, cinq bonus sur six peuvent partir : un 0.9 plus simple et plus rapide."],
     ["Ce soir, ensuite", "L'oracle confirmé ou non", "Deux passes de 110 min : chaque écart joué jusqu'au tour 30. On saura si l'oracle voit juste, ou s'il se disperse."],
-    ["Le candidat au 0.10", "stfig6 gagne dans l'arbre", `Quatre duels longs : ${longs.map((a) => `${fr(a.score)} %`).join(", ")}, soit ${pooledText(longs)}. La fourchette reste au-dessus de 50 %. stay4e10 passe ensuite ; puis le 0.10 = le 0.9 avec stfig 0,6, à confirmer contre le Stratège.`],
+    ["Le candidat au 0.10", "stfig6 gagne dans l'arbre", `Quatre duels longs : ${longs.map((a) => `${fr(a.score)} %`).join(", ")}, soit ${pooledText(longs)}. La fourchette reste au-dessus de 50 %. stay4e10, lui, retombe à 50,9 % sur deux duels. Le 0.10 = le 0.9 avec stfig 0,6, à confirmer contre le Stratège.`],
   ];
   $("next").replaceChildren(...cards.map(([when, title, text]) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
   $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run journal</code> (scripts/journal.js) : les essais de <code>data/journal.json</code>, les mesures de <code>data/error-impact.json</code>, <code>oracle-diffs.json</code>, <code>jokers-mining.json</code>, <code>weak-wins.json</code>, <code>core-timings.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
