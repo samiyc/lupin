@@ -170,6 +170,15 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   oracle: `npm run oracle -- --disagree <core>` says which of the two cores'
   favourites it plays where they differ, `--summary --core <core>` whether the
   oracle's move entered the core's top 8 (stfig6: 54 % → 66 %).
+  `npm run oracle -- --bench <core>,<core>…` lines that up for every core with
+  long duels: on the 03/10 cores the top-8 agreement ranked them as the duels
+  did (rank correlation 0.93). Its positions are turns 14-26 only, so it is
+  blind to an idea that acts earlier (stay4e10).
+- **The oracle is frozen as version 1** (`ORACLE.version`, written into every
+  line it produces): its games and opinions are the reference for the V1 and
+  later. A speed-up keeps the version only if its fingerprint is unchanged;
+  anything that changes a move (a bug fixed, an idea) raises it, and the
+  reference is relabelled.
 - **Equal iterations or equal time** (Sami, 03/10): measure first what a
   variant costs per iteration against the 1.0. Over about 3 %, duel it at
   equal time (`@tMS`; at ~1 000 iterations a second, `@400` ≈ `@t400`), since in

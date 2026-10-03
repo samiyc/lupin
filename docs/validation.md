@@ -236,6 +236,9 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | décider une version (Sami, 03/10 : un tri à 400 écarte une idée, il ne la promeut plus) | 4 duels longs à 800 (`--long --page --offset 0` à `3`, ~1 000 parties), puis `npm run versus -- <A> <B>` : la borne basse réunie par paires au-dessus de 50 % |
 | demander à l'oracle avant les duels longs : quel coup joue-t-il là où deux cœurs divergent ? | `npm run oracle -- --disagree <cœur> --minutes 40` → `data/oracle-disagree.json` |
 | le coup de l'oracle est-il entré dans le top 8 d'un cœur ? (sans nouvelle recherche, quelques s) | `npm run oracle -- --summary --core <cœur>` → `data/oracle-diffs.json` |
+| le banc oracle : l'accord de chaque cœur avec l'oracle, à côté de ses duels longs (classe-t-il les cœurs comme les duels ?) | `npm run oracle -- --bench stfig6,lean,…` → `data/oracle-bench.json` |
+| l'oracle sur un autre corpus : les parties de deux moteurs, une plage de tours, toujours une ou deux recherches, classées par un autre cœur | `npm run oracle -- --source <A>,<B> --out <nom> --turns 1-30 --runs 2 --rank stfig6` → `oracle/positions-<nom>.jsonl`, `data/oracle-diffs-<nom>.json` (avec le temps médian par tour) |
+| les parties de l'oracle relues par le V1 : même coup, top 1/3/8 du cœur, visites perdues, par tranche de tours | `npm run shadow -- [<moteur oracle>] [--engine <V1>]` → `data/oracle-shadow.json` |
 | comparer deux moteurs sur toutes leurs parties gardées (score par paires, siège, jokers, ce que A joue autrement) | `npm run versus -- <moteur A> <moteur B> --label nom` → `data/versus.json` |
 | comparer deux cœurs de coût différent (plus de 3 % par itération) | à temps égal : `…@t400` contre `…@t400` (à ~1 000 itérations par seconde, `@400` ≈ `@t400`) ; sinon à itérations égales, reproductibles |
 | programmer un traitement pour la nuit | dans `data/backlog.json` : `"status": "scheduled", "notBefore": "2026-10-03T21:00"` |

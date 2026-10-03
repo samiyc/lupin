@@ -5,7 +5,7 @@ import { stateAt } from "../../src/replay/log.js";
 import { contextsOf, traitsOf } from "../../src/replay/move-features.js";
 import { ORACLE, coreRanking, needsSecondRun, rankOf, verdictOf } from "../../src/replay/oracle.js";
 import { engineFor, strategistBot } from "../../src/sim/bots.js";
-import { EXPERIMENT } from "../../src/sim/experimental.js";
+import { EXPERIMENT, coreOf } from "../../src/sim/experimental.js";
 import { legalMoves } from "../../src/sim/game.js";
 import { loadGame } from "./game-index.js";
 
@@ -26,26 +26,30 @@ const loggedLabel = (entry) => (entry?.move ? `${entry.move.card}→${entry.move
 
 const opensSide = (state, mover, move) => state.borders[move.border].sides[mover].length === 0;
 
-/** One run of the oracle, or two when the first finds a move outside the core's top 3. */
-function oracleRuns(state, moves, { key, budget, ranking }) {
+/** One run of the oracle, or two when the first finds a move outside the core's top 3 — or always `runs` when asked. */
+function oracleRuns(state, moves, { key, budget, ranking, runs }) {
   const search = (run) => engineFor(`${ORACLE.engine}@${budget}`)(createRng(seedOf(key, run))).scoreMoves(state, moves, { keepAll: true });
   const first = search(1);
-  return needsSecondRun(ranking, first) ? [first, search(2)] : [first];
+  const second = runs ? runs >= 2 : needsSecondRun(ranking, first);
+  return second ? [first, search(2)] : [first];
 }
 
-parentPort.on("message", async ({ row, turn, budget, at = "tours fixes" }) => {
+/** The core's ranking of every legal move: the 0.9's, or `rank`'s (`--rank stfig6`). */
+const rankingAt = (state, moves, rank) => coreRanking(strategistBot(createRng(1), rank ? coreOf(rank) : EXPERIMENT).scoreMoves(state, moves, { keepAll: true }));
+
+parentPort.on("message", async ({ row, turn, budget, runs, rank, at }) => {
   const started = Date.now();
   const log = await loadGame(row);
   const state = stateAt(log, turn);
   const moves = state.over ? [] : legalMoves(state);
-  const base = { key: row.key, file: row.file, game: row.game, turn, at };
+  const base = { key: row.key, file: row.file, game: row.game, turn, at, oracle: ORACLE.version };
   if (moves.length <= 1) return parentPort.postMessage({ ...base, skipped: true });
   const { spec } = state;
   const mover = state.current;
   const hand = [...state.hands[mover]];
-  const ranking = coreRanking(strategistBot(createRng(1), EXPERIMENT).scoreMoves(state, moves, { keepAll: true }));
-  const runs = oracleRuns(state, moves, { key: `${row.key}|${turn}`, budget, ranking });
-  const verdict = verdictOf(ranking, runs);
+  const ranking = rankingAt(state, moves, rank);
+  const searched = oracleRuns(state, moves, { key: `${row.key}|${turn}`, budget, ranking, runs });
+  const verdict = verdictOf(ranking, searched);
   const played = loggedLabel(log.turns[turn - 1]);
   const playedRank = ranking.findIndex((move) => labelOf(spec, move) === played) + 1;
   return parentPort.postMessage({
@@ -55,11 +59,11 @@ parentPort.on("message", async ({ row, turn, budget, at = "tours fixes" }) => {
     legal: moves.length,
     ...verdict,
     move: labelOf(spec, verdict.move),
-    other: runs[1] ? labelOf(spec, verdictOf(ranking, [runs[1]]).move) : null,
+    other: searched[1] ? labelOf(spec, verdictOf(ranking, [searched[1]]).move) : null,
     core: ranking.slice(0, ORACLE.top).map((move) => labelOf(spec, move)),
     played,
     playedRank,
-    oracleRankOfCore: rankOf(coreRanking(runs[0]), ranking[0]),
+    oracleRankOfCore: rankOf(coreRanking(searched[0]), ranking[0]),
     // Does the move put a first card on one of the mover's empty sides?
     opens: { oracle: opensSide(state, mover, verdict.move), core: opensSide(state, mover, ranking[0]) },
     traits: { oracle: traitsOf(state, mover, hand, verdict.move), core: traitsOf(state, mover, hand, ranking[0]) },

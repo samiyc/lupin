@@ -49,6 +49,7 @@ export const phaseBot = ({ switchName, early, late }) => {
       base: first.base,
       scoreMoves: (state, moves, options) => now(state).scoreMoves(state, moves, options),
       choose: (state, moves) => now(state).choose(state, moves),
+      pick: (state, moves) => (now(state).pick ? now(state).pick(state, moves) : { move: now(state).choose(state, moves), scored: null }),
     };
   };
 };

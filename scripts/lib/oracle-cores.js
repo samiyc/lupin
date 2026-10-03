@@ -40,19 +40,71 @@ const readJsonl = async (url) => (await readFile(url, "utf8").catch(() => "")).s
 /** The share of `ranks` at or under each cut-off. */
 const within = (ranks, cut) => ranks.filter((rank) => rank > 0 && rank <= cut).length / Math.max(1, ranks.length);
 
-export async function rerank(name) {
-  const core = coreOf(name);
+/** The positions read, without those where the oracle's two searches differ, with their states. */
+async function readPositions() {
   const positions = (await readJsonl(new URL("oracle/positions.jsonl", ROOT))).filter((entry) => !entry.skipped && entry.stable !== false);
-  const ranks = { base: [], alt: [] };
-  for (const entry of positions) {
-    const state = stateAt(await loadGame(entry), entry.turn);
-    ranks.base.push(entry.rank);
-    ranks.alt.push(rankingOf(core, state).indexOf(entry.move) + 1);
-  }
+  const states = [];
+  for (const entry of positions) states.push(stateAt(await loadGame(entry), entry.turn));
+  return { positions, states };
+}
+
+/** The rank of the oracle's move for `name`'s core, position by position. */
+const ranksFor = (name, { positions, states }) => positions.map((entry, i) => rankingOf(coreOf(name), states[i]).indexOf(entry.move) + 1);
+
+export async function rerank(name, read = null) {
+  const { positions, states } = read ?? (await readPositions());
+  const ranks = { base: positions.map((entry) => entry.rank), alt: ranksFor(name, { positions, states }) };
   const rows = [1, 3, 8].map((cut) => ({ cut, base: within(ranks.base, cut), alt: within(ranks.alt, cut) }));
   console.log(`Le coup de l'oracle, classé par le cœur du 0.9 et par « ${name} » (${positions.length} positions, sans celles où ses deux recherches divergent) :`);
   for (const row of rows) console.log(`  dans le top ${row.cut} : ${pct(row.base)} pour le 0.9, ${pct(row.alt)} pour ${name}`);
   return { core: name, positions: positions.length, rows };
+}
+
+/** Spearman's rank correlation of two lists (no ties expected). */
+function spearman(xs, ys) {
+  const ranks = (list) => list.map((x) => list.filter((y) => y < x).length + (list.filter((y) => y === x).length + 1) / 2);
+  const [rx, ry] = [ranks(xs), ranks(ys)];
+  const n = xs.length;
+  return 1 - (6 * rx.reduce((sum, r, i) => sum + (r - ry[i]) ** 2, 0)) / (n * (n * n - 1));
+}
+
+/**
+ * `--bench`: each core's agreement with the oracle beside its long duels'
+ * score against the 0.9 (data/versus.json, by label). The 0.9's core is the
+ * 50 % point. If the agreement orders the cores as the duels do, it can sort
+ * an idea in minutes before it gets duels.
+ */
+const CUTS = [1, 3, 8];
+const topsOf = (ranks) => Object.fromEntries(CUTS.map((cut) => [cut, within(ranks, cut)]));
+
+/** A core's line of the bench: its agreement with the oracle, and its duels if it has some. */
+function benchRow(core, ranks, duel = null) {
+  const measured = duel ? { score: duel.score, low: duel.low, high: duel.high, timed: duel.a.includes("@t") } : { score: null };
+  return { core, ...measured, top: topsOf(ranks) };
+}
+
+function printBench(rows, positions) {
+  console.log(`Le coup de l'oracle dans le top 1 / 3 / 8 de chaque cœur (${positions} positions), et son score en duels longs contre le 0.9 :`);
+  for (const row of rows) {
+    const timed = row.timed ? " (à temps égal)" : "";
+    const duel = row.score === null ? "—" : pct(row.score) + timed;
+    console.log(`  ${row.core.padEnd(10)} ${CUTS.map((cut) => pct(row.top[cut]).padStart(7)).join(" ")}   duels ${duel}`);
+  }
+}
+
+export async function benchCores(names) {
+  const read = await readPositions();
+  const { duels } = JSON.parse(await readFile(new URL("data/versus.json", ROOT), "utf8"));
+  const rows = [benchRow("0.9", read.positions.map((entry) => entry.rank), { score: 0.5, low: null, high: null, a: "" })];
+  for (const name of names) rows.push(benchRow(name, ranksFor(name, read), duels[name]));
+  printBench(rows, read.positions.length);
+  const measured = rows.filter((row) => row.score !== null);
+  const correlation = Object.fromEntries(CUTS.map((cut) => [cut, spearman(measured.map((row) => row.top[cut]), measured.map((row) => row.score))]));
+  const cells = CUTS.map((cut) => `top ${cut} ${correlation[cut].toFixed(2)}`);
+  console.log(`  corrélation de rang avec les duels : ${cells.join(", ")}`);
+  const bench = { built: new Date().toISOString().slice(0, 10), oracle: ORACLE.version, positions: read.positions.length, rows, correlation };
+  await writeFile(new URL("data/oracle-bench.json", ROOT), `${JSON.stringify(bench, null, 1)}\n`);
+  return bench;
 }
 
 /** The positions of the duels `name` played against the 0.9 where the two cores' favourites differ. */

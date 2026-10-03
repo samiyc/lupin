@@ -22,6 +22,13 @@ import { finishLog, playLogged, startLog } from "./log.js";
 /** The random stream a seat's bot is built from, in game `log.seed`. */
 export const seatRng = (seed, seat) => createRng((Math.imul(seed, 2) + seat + 1) >>> 0);
 
+/**
+ * A bot's move, with the scores it chose from when it has them (`pick`, the
+ * searches): the replay keeps its best candidates, so a game played by the
+ * oracle carries its opinion at every move (Sami, 03/10).
+ */
+const choice = (bot, state, moves) => (bot.pick ? bot.pick(state, moves) : { move: bot.choose(state, moves), scored: null });
+
 /** One game between `players` (engine ids), logged, with its analysis. */
 function recordedGame(spec, rules, { players, seats, seed }) {
   const bots = players.map((id, seat) => engineFor(id)(seatRng(seed, seat)));
@@ -29,7 +36,8 @@ function recordedGame(spec, rules, { players, seats, seed }) {
   const log = startLog(state, { rules: rules.ids, players: seats, seed });
   while (!state.over) {
     const moves = legalMoves(state);
-    playLogged(log, state, moves.length > 0 ? bots[state.current].choose(state, moves) : null);
+    const { move, scored } = moves.length > 0 ? choice(bots[state.current], state, moves) : { move: null, scored: null };
+    playLogged(log, state, move, scored);
   }
   finishLog(log, state);
   log.analysis = analyseGame(log);

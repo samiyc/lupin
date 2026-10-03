@@ -227,7 +227,13 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
     if (exactly) return exactly;
     return run(searchFor(state, moves, options), state.turn, isPivot(state) ? pivot : 1).scored();
   };
-  return { name, base, policy, searchFor, solves, scoreMoves, usage, choose: (state, moves) => (moves.length <= 1 ? moves[0] : bestOf(scoreMoves(state, moves))) };
+  // `pick` is `choose` with the scores it chose from, for the replays to keep (bot-games.js).
+  const pick = (state, moves) => {
+    if (moves.length <= 1) return { move: moves[0], scored: null };
+    const scored = scoreMoves(state, moves);
+    return { move: bestOf(scored), scored };
+  };
+  return { name, base, policy, searchFor, solves, scoreMoves, usage, pick, choose: (state, moves) => pick(state, moves).move };
 }
 
 /**

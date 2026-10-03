@@ -14,7 +14,11 @@ import { parseCard } from "../core/notation.js";
  * one that checks the first is not luck, is only made when the first finds a
  * move outside the core's top 3 — elsewhere there is no gap to confirm.
  */
+// `version`: 1 as long as the oracle plays every move the same (its fingerprint,
+// `npm run fingerprint`); a change that alters a move — a bug fixed, an idea —
+// raises it, and what it said before stops being the reference.
 export const ORACLE = Object.freeze({
+  version: 1,
   engine: "ismcts+candidates=99+widen=6+depth=5+smart=1",
   budget: 20_000,
   turns: Object.freeze([15, 16, 20, 21, 25, 26]),
