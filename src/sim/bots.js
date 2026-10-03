@@ -136,6 +136,7 @@ function ideasContext(state, player, { ideas, weights }, seen) {
     pile: state.pile.length,
     theirHand: state.hands[1 - player].length,
     owners: state.borders.map((border) => border.owner),
+    turn: state.turn,
     me: player,
     chances: ["runs", "dump", "neighbors", "bait"].some((idea) => ideas.has(idea)) ? ownedOdds(state, player, borderChances(state, player, seen)) : null,
   };

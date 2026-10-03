@@ -1467,6 +1467,45 @@ un cœur sans l'habitude `joker`.
   du 0.9 — le meilleur cœur à ce jour. Deux duels longs dans l'arbre sont au
   backlog de ce soir (`duel-jkxs-0`, `-1`), avant ceux de `jkx`.
 
+## `stay` dans l'arbre, et la variante gagnante : `stfig` (03/10)
+
+**Dans l'arbre, à 400 itérations, en miroir** (chaque donne jouée des deux
+sièges), 10 min :
+- le 0.9 avec `stay` 0,4 contre le 0.9 : **58,3 % (52,1 – 64,6)**, 96 paires ;
+- le 0.9 avec `stfig` 0,6 contre le 0.9, sur d'autres donnes : 54,9 %
+  (47,8 – 61,9), 72 paires.
+- Deux tendances positives, mais à ± 7 points : les tris de 10 min ont déjà
+  trompé (57-60 % retombés à 49 %). Les duels longs de ce soir trancheront.
+
+**Depuis le tour 10** (`npm run core-test -- … --from 10`, 100 parties) :
+`stay` 0,4 fait −0,5 ± 6,0 points. Si son effet est réel, il se joue avant le
+tour 10, quand on choisit entre approfondir et ouvrir : une partie entière est
+la bonne mesure.
+
+**Les variantes de `stay`, cœur contre cœur** (paramètres de
+`src/sim/oracle-ideas.js`) :
+
+| Cœur | Contre le cœur du 0.9 |
+| --- | --- |
+| `stay` 0,3 / 0,4 / 0,5 | 50,8 % / 51,9 % / 52,6 % |
+| seulement la 2e carte / seulement la 3e | 50,9 % / **44,6 %** |
+| jusqu'au tour 20 / à partir du tour 20 | 51,9 % / 49,1 % |
+| seulement si l'adversaire a entamé autant de bornes ou plus | 52,2 % |
+| **seulement si le côté peut encore devenir un brelan ou une suite de couleur (`stfig`)** | 0,4 : 55,1 %, 55,6 %, 56,8 % |
+| **`stfig` 0,6** | **58,0 %, 57,9 %, 58,0 %** |
+| `stfig` 0,8 / 1,0 / 1,2 / 1,5 | 57,0 % / 56,6 % / 55,5 % / 55,5 % |
+| `jkx` + `stfig` 0,6 (`jkxf6`) | 57,9 %, 58,0 %, 57,6 % ; contre `stfig6` : 50,8 %, 49,2 % |
+
+- **`stfig` 0,6 est le plus gros gain du cœur à ce jour : +8 points**, régulier
+  sur trois jeux de donnes. Rester sur ses côtés entamés paie, à condition
+  qu'ils gardent une figure possible.
+- **`jkx` ne s'y ajoute plus** : `stfig` couvre ce que faisait `junk` (ne pas
+  bâtir de côté sans figure), par l'autre bout.
+- **Compléter un côté pour le compléter fait perdre** (seulement la 3e carte :
+  44,6 %).
+- **Au backlog de ce soir** : quatre duels longs de `stfig6` dans l'arbre (environ
+  300 paires), à la place de ceux de `jkx` et `jkxs`.
+
 ## La chance des jokers (03/10)
 
 **La question de Sami** : quel taux de victoire avec deux jokers, un, aucun ?
