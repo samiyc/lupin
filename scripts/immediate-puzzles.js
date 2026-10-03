@@ -18,9 +18,15 @@ import { winsAtOnce } from "../src/sim/immediate.js";
  * `kind: "immediate"`; running it again replaces them. Ids from 201: the
  * 101-120 of 30/09 were won a move later, under the old claim rule, and may
  * already be marked solved. A few seconds.
+ *
+ * `--add [--count 20]` keeps the ones already there and adds new ones,
+ * numbered after the highest id of the file, a position already there never
+ * taken twice: the solved ones and the favourites, kept by id, stay right.
  */
-const GAMES = 2000;
-const COUNT = 20;
+const args = process.argv.slice(2);
+const adding = args.includes("--add");
+const GAMES = 4000;
+const COUNT = Number(args.includes("--count") ? args[args.indexOf("--count") + 1] : 20);
 const SHARE = 0.25;
 const text = (state, move) => `${formatCard(state.spec, move.card)}→${move.border + 1}`;
 
@@ -50,15 +56,18 @@ function gamePuzzle(seed) {
 }
 
 const started = Date.now();
+const file = fileURLToPath(new URL("../web/data/puzzles.json", import.meta.url));
+const data = JSON.parse(await readFile(file, "utf8"));
+const keyOf = (log, turn) => `${log.deck.join(" ")}|${turn}`;
+const taken = new Set(adding ? data.puzzles.map((puzzle) => keyOf(puzzle.log, puzzle.turn)) : []);
 const found = [];
 for (let seed = 1; seed <= GAMES && found.length < COUNT; seed += 1) {
   const puzzle = gamePuzzle(seed);
-  if (puzzle) found.push(puzzle);
+  if (puzzle && !taken.has(keyOf(puzzle.log, puzzle.turn))) found.push(puzzle);
 }
-const file = fileURLToPath(new URL("../web/data/puzzles.json", import.meta.url));
-const data = JSON.parse(await readFile(file, "utf8"));
-const endgames = data.puzzles.filter((puzzle) => puzzle.kind !== "immediate");
+const endgames = data.puzzles.filter((puzzle) => adding || puzzle.kind !== "immediate");
+const firstId = adding ? Math.max(200, ...data.puzzles.map((puzzle) => puzzle.id)) + 1 : 201;
 const strip = (log) => ({ format: log.format, rules: log.rules, deck: log.deck, turns: log.turns.map(({ turn, player, move, pass, drew }) => ({ turn, player, move, pass, drew })) });
-const immediate = found.map((p, i) => ({ id: 201 + i, kind: "immediate", turn: p.turn, cardsLeft: p.cardsLeft, moves: p.moves, solutions: p.solutions, coreMove: p.coreMove, coreFails: true, log: strip(p.log) }));
+const immediate = found.map((p, i) => ({ id: firstId + i, kind: "immediate", turn: p.turn, cardsLeft: p.cardsLeft, moves: p.moves, solutions: p.solutions, coreMove: p.coreMove, coreFails: true, log: strip(p.log) }));
 await writeFile(file, `${JSON.stringify({ ...data, puzzles: [...endgames, ...immediate] })}\n`);
-process.stdout.write(`${immediate.length} puzzles « gain immédiat » gardés, ${endgames.length} fins de partie inchangées — ${((Date.now() - started) / 1000).toFixed(0)} s\n`);
+process.stdout.write(`${immediate.length} puzzles « gain immédiat » ${adding ? "ajoutés" : "gardés"}, ${endgames.length} autres inchangés — ${((Date.now() - started) / 1000).toFixed(0)} s\n`);
