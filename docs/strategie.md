@@ -1677,6 +1677,19 @@ Il approfondit au début au lieu d'ouvrir, garde ses figures possibles, et répo
 plus tard, quand l'adversaire a déjà montré son jeu. Son gain ne dépend ni du
 siège (54,8 % quand il commence, 57,5 % sinon) ni des jokers.
 
+**Ce qu'en dit l'oracle** (`npm run oracle -- --disagree stfig6 --minutes 40`) :
+- dans les 960 parties contre le 0.9, aux tours 5 à 16, 4 311 positions où les deux cœurs
+  préfèrent un coup différent ; 470 lues, 280 où ses deux recherches s'accordent ;
+- il joue le coup du 1.0 dans **13,9 %**, celui du 0.9 dans **3,6 %**, un troisième dans 82,5 % ;
+- l'écart est le plus net au début : aux tours 5-8, 34 % contre 0 % ;
+- reclassées par le cœur du 1.0 (`--summary --core stfig6`), ses 4 331 positions mettent
+  son coup dans le top 8 dans **66 %** des cas, contre 54 % avec le cœur du 0.9 : l'arbre,
+  qui n'examine que ce top 8, regarde plus souvent le coup de l'oracle.
+
+Entre les deux cœurs, l'oracle penche nettement pour le 1.0. Mais il joue le plus
+souvent un troisième coup (son favori n'a que 18 % des visites en médiane) : la
+confirmation par le jeu reste ce qui dira s'il voit juste.
+
 **Écarté le même jour** : `stay` limité aux tours 1-10 (`stay4e10`) : 55,4 % au tri à
 400, puis 50,6 % (47,1 – 54,2) en deux duels longs. Les autres essais du 0.9 sont
 dans `out/changelog-exp-1.0.html` (« Changelog Exp v1.0 »).

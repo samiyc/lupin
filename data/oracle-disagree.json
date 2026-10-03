@@ -1,0 +1,39 @@
+{
+ "note": "npm run oracle -- --disagree <cœur> : là où un cœur et celui du 0.9 préfèrent des coups différents, celui que joue l'oracle.",
+ "cores": {
+  "stfig6": {
+   "core": "stfig6",
+   "built": "2026-10-03",
+   "oracle": "ismcts+candidates=99+widen=6+depth=5+smart=1@20000",
+   "found": 4311,
+   "read": 470,
+   "stable": 280,
+   "alt": 0.1392857142857143,
+   "base": 0.03571428571428571,
+   "other": 0.825,
+   "byTurns": [
+    {
+     "turns": "5-8",
+     "positions": 41,
+     "alt": 0.34146341463414637,
+     "base": 0,
+     "other": 0.6585365853658537
+    },
+    {
+     "turns": "9-12",
+     "positions": 107,
+     "alt": 0.11214953271028037,
+     "base": 0.009345794392523364,
+     "other": 0.8785046728971962
+    },
+    {
+     "turns": "13-16",
+     "positions": 132,
+     "alt": 0.09848484848484848,
+     "base": 0.06818181818181818,
+     "other": 0.8333333333333334
+    }
+   ]
+  }
+ }
+}
