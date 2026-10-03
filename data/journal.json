@@ -1,0 +1,2103 @@
+{
+ "note": "Le carnet du 0.9 : les essais du 02/10 au soir au 03/10 au soir, recopiés de docs/strategie.md et des sorties des duels. Lu par npm run journal (scripts/journal.js), qui y ajoute les mesures de data/*.json. Les positions d'exemple sont figées ici : oracle/ est hors de git.",
+ "period": "du 02/10, 17 h, au 03/10 au soir",
+ "families": {
+  "phases": "Deux phases",
+  "premiere": "La première carte",
+  "formes": "Brelans ou suites",
+  "replays": "Règles des replays",
+  "jokers": "Les jokers",
+  "appats": "Piège et appât",
+  "oracle": "Les idées de l'oracle",
+  "fenetres": "Fenêtres de tour",
+  "vitesse": "Vitesse, temps égal",
+  "outils": "Outils et backlog",
+  "lecteur": "Lecteur et puzzles"
+ },
+ "benches": {
+  "coeur": "cœur contre cœur",
+  "arbre400": "arbre @400, 10 min",
+  "long800": "arbre @800, 20 min",
+  "temps": "arbre, à temps égal",
+  "fin": "fin de partie (Δ points)",
+  "partie": "parties entières (Δ points)"
+ },
+ "attempts": [
+  {
+   "name": "Deux phases : bascule au tour 22",
+   "family": "phases",
+   "bench": "fin",
+   "score": 0,
+   "lo": -3.3,
+   "hi": 3.3,
+   "verdict": "neutre",
+   "when": "02/10 19:44",
+   "note": "Cœur nu et arbre à 7 coups après la bascule : 10 % d'itérations en plus, rien ne change au tour 30."
+  },
+  {
+   "name": "Deux phases : bascule au tour 20",
+   "family": "phases",
+   "bench": "fin",
+   "score": 1.3,
+   "lo": -1.9,
+   "hi": 4.5,
+   "verdict": "neutre",
+   "when": "02/10 19:44",
+   "note": "Réduire l'arbre ne libère pas de temps : tout est dans la simulation."
+  },
+  {
+   "name": "Deux phases : bascule au tour 18",
+   "family": "phases",
+   "bench": "fin",
+   "score": -2,
+   "lo": -5.5,
+   "hi": 1.5,
+   "verdict": "neutre",
+   "when": "02/10 19:44",
+   "note": ""
+  },
+  {
+   "name": "Deux phases au tour 20, parties entières",
+   "family": "phases",
+   "bench": "partie",
+   "score": -1.3,
+   "lo": -5.5,
+   "hi": 2.9,
+   "verdict": "perd",
+   "when": "03/10 08:24",
+   "note": "400 donnes contre le Stratège, où le 0.9 fait 66,8 %."
+  },
+  {
+   "name": "Deux phases à la 1re borne, parties entières",
+   "family": "phases",
+   "bench": "partie",
+   "score": -2,
+   "lo": -6.3,
+   "hi": 2.3,
+   "verdict": "perd",
+   "when": "03/10 08:24",
+   "note": ""
+  },
+  {
+   "name": "outbid 0,1",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 50.6,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 21:48",
+   "note": "Une carte un cran au-dessus d'une carte seule adverse."
+  },
+  {
+   "name": "outbid 0,2",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 51.1,
+   "lo": 50.2,
+   "hi": 52.1,
+   "verdict": "neutre",
+   "when": "02/10 21:48",
+   "note": "50,4 % et 51,2 % sur deux autres jeux de donnes."
+  },
+  {
+   "name": "outbid 0,4",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 21:48",
+   "note": ""
+  },
+  {
+   "name": "outbid seulement en retard de bornes",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 50.4,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 21:48",
+   "note": "50,3 % et 50,5 % : pas mieux que la règle générale."
+  },
+  {
+   "name": "exposure 0,1 / 0,2",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 50.25,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 21:48",
+   "note": "Ouvrir une borne vierge avec un v coûte selon la chance que l'adversaire tienne un v + 1."
+  },
+  {
+   "name": "exposure 0,4",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 48.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "02/10 21:48",
+   "note": ""
+  },
+  {
+   "name": "obex (outbid + exposure 0,2)",
+   "family": "premiere",
+   "bench": "coeur",
+   "score": 51.4,
+   "lo": 50.2,
+   "hi": 53.1,
+   "verdict": "tendance",
+   "when": "02/10 21:48",
+   "note": "51,2 / 51,9 / 51,2 % : petit mais régulier sur trois jeux de donnes."
+  },
+  {
+   "name": "obex dans l'arbre",
+   "family": "premiere",
+   "bench": "long800",
+   "score": 50.5,
+   "lo": 45.8,
+   "hi": 55.2,
+   "verdict": "neutre",
+   "when": "03/10 08:24",
+   "note": "192 paires : le gain du cœur ne passe pas dans l'arbre."
+  },
+  {
+   "name": "plan 0,1",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 49.5,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:04",
+   "note": "Suivre la figure dominante de ses côtés complets."
+  },
+  {
+   "name": "plan 0,2",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 48,
+   "lo": 47,
+   "hi": 49.1,
+   "verdict": "perd",
+   "when": "02/10 22:04",
+   "note": ""
+  },
+  {
+   "name": "plan 0,4",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 47.7,
+   "lo": 46.6,
+   "hi": 48.7,
+   "verdict": "perd",
+   "when": "02/10 22:04",
+   "note": ""
+  },
+  {
+   "name": "ends 0,1 (brelans aux bouts)",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 47.7,
+   "lo": 46.6,
+   "hi": 48.7,
+   "verdict": "perd",
+   "when": "02/10 22:04",
+   "note": "Un brelan de 5 coupe les suites 3-4-5, 4-5-6 et 5-6-7, dans trois couleurs."
+  },
+  {
+   "name": "ends 0,2 / 0,4",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 47.55,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "02/10 22:04",
+   "note": "47,9 % et 47,2 %."
+  },
+  {
+   "name": "ends, le joker seul",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 50.55,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:04",
+   "note": "50,6 % puis 50,5 % sur d'autres donnes."
+  },
+  {
+   "name": "midRuns 0,1 (suites au milieu)",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:04",
+   "note": "50,5 / 50,3 / 50,2 %."
+  },
+  {
+   "name": "weakRuns 0,1 / 0,2 (suites basses)",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 49.35,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:04",
+   "note": "49,5 % et 49,2 %."
+  },
+  {
+   "name": "Les quatre formes ensemble",
+   "family": "formes",
+   "bench": "coeur",
+   "score": 45.9,
+   "lo": 44.8,
+   "hi": 47.1,
+   "verdict": "perd",
+   "when": "02/10 22:04",
+   "note": "Avec obex en plus : 45,5 %. Elles effacent son gain."
+  },
+  {
+   "name": "junk 0,2 (éviter les côtés sans figure)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 53.2,
+   "lo": 52.5,
+   "hi": 54.6,
+   "verdict": "gagne",
+   "when": "02/10 22:17",
+   "note": "53,6 / 52,9 / 53,0 % : le plus gros gain du cœur depuis connector, ce soir-là."
+  },
+  {
+   "name": "facing (jouer face à un côté plein)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 48.15,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "02/10 22:17",
+   "note": "Ce qui arrive au gagnant, pas ce qui le fait gagner : le piège de la corrélation."
+  },
+  {
+   "name": "underbid (ne pas répondre plus bas)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:17",
+   "note": ""
+  },
+  {
+   "name": "nextToWon (à côté d'une borne gagnée)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 50.6,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:17",
+   "note": ""
+  },
+  {
+   "name": "deepen (2e carte en retard de bornes)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 50.15,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:48",
+   "note": "La règle décrivait l'erreur du Basique, pas un secret des gagnants."
+  },
+  {
+   "name": "jkx (junk + obex)",
+   "family": "replays",
+   "bench": "coeur",
+   "score": 54.2,
+   "lo": 53.6,
+   "hi": 54.7,
+   "verdict": "gagne",
+   "when": "02/10 22:17",
+   "note": "53,6 / 54,3 / 54,7 % : les deux s'additionnent."
+  },
+  {
+   "name": "jkx dans l'arbre",
+   "family": "replays",
+   "bench": "long800",
+   "score": 51.7,
+   "lo": 46.6,
+   "hi": 56.9,
+   "verdict": "neutre",
+   "when": "03/10 08:24",
+   "note": "144 paires : environ +2 dans l'arbre, invisible à ± 5."
+  },
+  {
+   "name": "junk seul dans l'arbre",
+   "family": "replays",
+   "bench": "long800",
+   "score": 52.4,
+   "lo": 47,
+   "hi": 57.8,
+   "verdict": "neutre",
+   "when": "03/10 08:24",
+   "note": "144 paires."
+  },
+  {
+   "name": "jokerFull (face à un côté plein)",
+   "family": "jokers",
+   "bench": "coeur",
+   "score": 49.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:48",
+   "note": "50,0 / 49,8 / 49,9 % : le cœur le fait déjà."
+  },
+  {
+   "name": "jokerWait (attendre que l'adversaire ferme)",
+   "family": "jokers",
+   "bench": "coeur",
+   "score": 49.7,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:48",
+   "note": ""
+  },
+  {
+   "name": "jokerMid (brelan du milieu)",
+   "family": "jokers",
+   "bench": "coeur",
+   "score": 50,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:48",
+   "note": ""
+  },
+  {
+   "name": "jokerRuns (le joker finit une suite)",
+   "family": "jokers",
+   "bench": "coeur",
+   "score": 50.8,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 22:48",
+   "note": "+0,8 régulier, mais n'ajoute rien à jkx (jkxr : 54,1 %)."
+  },
+  {
+   "name": "Le piège du joker (paire morte)",
+   "family": "appats",
+   "bench": "coeur",
+   "score": 50.05,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 23:05",
+   "note": "Poids 0,1 à 0,8 : 50,0 / 50,3 / 50,2 / 49,7 %. Un robot compte les cartes, il ne se fait pas piéger."
+  },
+  {
+   "name": "L'appât 0,1 (débuts bas hors des zones)",
+   "family": "appats",
+   "bench": "coeur",
+   "score": 50.6,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 23:34",
+   "note": "L'adversaire mord (+0,2 carte en face) mais ne vide pas ses suites hautes."
+  },
+  {
+   "name": "L'appât 0,4",
+   "family": "appats",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "02/10 23:34",
+   "note": "50,8 / 49,6 / 50,6 %."
+  },
+  {
+   "name": "stay 0,2",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 50.2,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 11:20",
+   "note": "Rester sur ses côtés entamés, comme l'oracle."
+  },
+  {
+   "name": "stay 0,4",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 51.6,
+   "lo": 50.7,
+   "hi": 52.1,
+   "verdict": "tendance",
+   "when": "03/10 11:20",
+   "note": "51,9 / 50,7 / 52,1 %."
+  },
+  {
+   "name": "stay 0,8",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 45.15,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 11:20",
+   "note": "44,5 et 45,8 % : trop, c'est trop."
+  },
+  {
+   "name": "noAnswer (ne pas répondre)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 11:20",
+   "note": ""
+  },
+  {
+   "name": "noBlindOpen (pas d'ouverture à l'aveugle)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 50.15,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 11:20",
+   "note": ""
+  },
+  {
+   "name": "junk négatif −0,1 (des côtés sans figure, comme l'oracle)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 44.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 11:20",
+   "note": "Donne raison à junk, pas à l'oracle."
+  },
+  {
+   "name": "junk négatif −0,2",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 38.8,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 11:20",
+   "note": ""
+  },
+  {
+   "name": "Jokers libres (sans l'habitude joker)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 48.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 11:20",
+   "note": ""
+  },
+  {
+   "name": "Toutes les idées de l'oracle ensemble",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 47.5,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 11:20",
+   "note": "45,5 / 47,8 / 49,1 %."
+  },
+  {
+   "name": "jkxs (jkx + stay 0,4)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 54.9,
+   "lo": 54.5,
+   "hi": 55.5,
+   "verdict": "gagne",
+   "when": "03/10 11:20",
+   "note": "55,5 / 54,7 / 54,5 %."
+  },
+  {
+   "name": "stay 0,5",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 52.6,
+   "lo": null,
+   "hi": null,
+   "verdict": "tendance",
+   "when": "03/10 12:10",
+   "note": ""
+  },
+  {
+   "name": "stay, seulement la 2e carte",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 50.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 12:10",
+   "note": ""
+  },
+  {
+   "name": "stay, seulement la 3e carte",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 44.6,
+   "lo": null,
+   "hi": null,
+   "verdict": "perd",
+   "when": "03/10 12:10",
+   "note": "Compléter un côté pour le compléter fait perdre."
+  },
+  {
+   "name": "stay jusqu'au tour 20",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 51.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "tendance",
+   "when": "03/10 12:10",
+   "note": "À partir du tour 20 seulement : 49,1 %."
+  },
+  {
+   "name": "stay seulement en retard de bornes",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 52.2,
+   "lo": null,
+   "hi": null,
+   "verdict": "tendance",
+   "when": "03/10 12:10",
+   "note": ""
+  },
+  {
+   "name": "stfig 0,4 (stay si une figure reste possible)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 55.8,
+   "lo": 55.1,
+   "hi": 56.8,
+   "verdict": "gagne",
+   "when": "03/10 12:10",
+   "note": "55,1 / 55,6 / 56,8 %."
+  },
+  {
+   "name": "stfig 0,6",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 58,
+   "lo": 57.9,
+   "hi": 58,
+   "verdict": "gagne",
+   "when": "03/10 12:10",
+   "note": "58,0 / 57,9 / 58,0 % : +8 points, le plus gros gain du cœur à ce jour."
+  },
+  {
+   "name": "stfig 0,8 à 1,5",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 56.2,
+   "lo": 55.5,
+   "hi": 57,
+   "verdict": "gagne",
+   "when": "03/10 12:10",
+   "note": "57,0 / 56,6 / 55,5 / 55,5 % : le sommet est à 0,6."
+  },
+  {
+   "name": "jkxf6 (jkx + stfig 0,6)",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 57.8,
+   "lo": 57.6,
+   "hi": 58,
+   "verdict": "gagne",
+   "when": "03/10 12:10",
+   "note": "Contre stfig6 : 50,8 et 49,2 %. stfig couvre déjà junk."
+  },
+  {
+   "name": "stay 0,4 dans l'arbre",
+   "family": "oracle",
+   "bench": "arbre400",
+   "score": 58.3,
+   "lo": 52.1,
+   "hi": 64.6,
+   "verdict": "tendance",
+   "when": "03/10 12:10",
+   "note": "96 paires, en miroir. Les tris de 10 min ont déjà trompé."
+  },
+  {
+   "name": "stfig6 dans l'arbre",
+   "family": "oracle",
+   "bench": "arbre400",
+   "score": 54.9,
+   "lo": 47.8,
+   "hi": 61.9,
+   "verdict": "tendance",
+   "when": "03/10 12:10",
+   "note": "72 paires, en miroir."
+  },
+  {
+   "name": "stay 0,4 depuis le tour 10",
+   "family": "oracle",
+   "bench": "fin",
+   "score": -0.5,
+   "lo": -6.5,
+   "hi": 5.5,
+   "verdict": "neutre",
+   "when": "03/10 12:10",
+   "note": "Si l'effet existe, il se joue avant le tour 10."
+  },
+  {
+   "name": "stfig6, duel long n°0",
+   "family": "oracle",
+   "bench": "long800",
+   "score": 53.8,
+   "lo": 47.6,
+   "hi": 59.9,
+   "verdict": "tendance",
+   "when": "03/10 17:25",
+   "note": "240 parties à 800 itérations."
+  },
+  {
+   "name": "stfig6, duel long n°1",
+   "family": "oracle",
+   "bench": "long800",
+   "score": 58.3,
+   "lo": 52.5,
+   "hi": 64.2,
+   "verdict": "gagne",
+   "when": "03/10 17:43",
+   "note": "240 parties à 800 itérations, d'autres donnes."
+  },
+  {
+   "name": "stfig6, duels longs n°2 et 3",
+   "family": "oracle",
+   "bench": "long800",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "03/10 soir",
+   "note": "En cours dans le backlog."
+  },
+  {
+   "name": "junk aux tours 1-10",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 47.9,
+   "lo": 42,
+   "hi": 53.9,
+   "verdict": "neutre",
+   "when": "03/10 12:44",
+   "note": ""
+  },
+  {
+   "name": "obex aux tours 1-10",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 52.1,
+   "lo": 46.4,
+   "hi": 57.8,
+   "verdict": "neutre",
+   "when": "03/10 12:44",
+   "note": ""
+  },
+  {
+   "name": "jkx aux tours 1-10",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 48.8,
+   "lo": 42.7,
+   "hi": 54.8,
+   "verdict": "neutre",
+   "when": "03/10 12:44",
+   "note": ""
+  },
+  {
+   "name": "whole aux tours 1-10",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 49.2,
+   "lo": 43.3,
+   "hi": 55.1,
+   "verdict": "neutre",
+   "when": "03/10 12:44",
+   "note": ""
+  },
+  {
+   "name": "stay 0,4 aux tours 1-10 (stay4e10)",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 55.4,
+   "lo": 49.5,
+   "hi": 61.3,
+   "verdict": "tendance",
+   "when": "03/10 12:44",
+   "note": "Le seul à passer le seuil du tri (55 %) : deux duels longs au backlog."
+  },
+  {
+   "name": "stfig6 aux tours 1-10",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 51.7,
+   "lo": 45.5,
+   "hi": 57.8,
+   "verdict": "neutre",
+   "when": "03/10 12:44",
+   "note": ""
+  },
+  {
+   "name": "stay4e10, duels longs",
+   "family": "fenetres",
+   "bench": "long800",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "03/10 soir",
+   "note": "En cours dans le backlog."
+  },
+  {
+   "name": "middle du 0.9, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50.7,
+   "lo": 45,
+   "hi": 56.4,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "spread du 0.9, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50,
+   "lo": 44.4,
+   "hi": 55.6,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "connector du 0.9, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 49,
+   "lo": 43.5,
+   "hi": 54.5,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "habitude joker, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 49.7,
+   "lo": 44.4,
+   "hi": 54.9,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "habitude opening, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50.9,
+   "lo": 46.1,
+   "hi": 55.7,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "habitude suited, tours 1-10 seulement",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50.3,
+   "lo": 45.5,
+   "hi": 55.1,
+   "verdict": "neutre",
+   "when": "03/10 15:00",
+   "note": ""
+  },
+  {
+   "name": "middle du 0.9, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 49.3,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 15:18",
+   "note": ""
+  },
+  {
+   "name": "spread du 0.9, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 49,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 15:18",
+   "note": ""
+  },
+  {
+   "name": "connector du 0.9, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 54.5,
+   "lo": 49.5,
+   "hi": 59.5,
+   "verdict": "neutre",
+   "when": "03/10 15:18",
+   "note": "Du bruit : repris à temps égal, il retombe à 48,5 %."
+  },
+  {
+   "name": "habitude joker, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 15:18",
+   "note": ""
+  },
+  {
+   "name": "habitude opening, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 50.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 15:18",
+   "note": ""
+  },
+  {
+   "name": "habitude suited, dès le tour 15",
+   "family": "fenetres",
+   "bench": "arbre400",
+   "score": 41.1,
+   "lo": 35.5,
+   "hi": 46.8,
+   "verdict": "perd",
+   "when": "03/10 15:18",
+   "note": "Le premier bonus du 0.9 dont on voit le travail : il sert au début."
+  },
+  {
+   "name": "connector dès le tour 11, à temps égal",
+   "family": "fenetres",
+   "bench": "temps",
+   "score": 48.7,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 16:25",
+   "note": ""
+  },
+  {
+   "name": "connector dès le tour 15, à temps égal",
+   "family": "fenetres",
+   "bench": "temps",
+   "score": 48.5,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 16:25",
+   "note": ""
+  },
+  {
+   "name": "connector dès le tour 19, à temps égal",
+   "family": "fenetres",
+   "bench": "temps",
+   "score": 48.9,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "03/10 16:25",
+   "note": ""
+  },
+  {
+   "name": "Simulations tronquées, trunc=5",
+   "family": "vitesse",
+   "bench": "temps",
+   "score": 41.1,
+   "lo": 35,
+   "hi": 47.3,
+   "verdict": "perd",
+   "when": "03/10 16:05",
+   "note": "17 à 27 % de temps en moins par itération, mais juger la partie avant sa fin coûte plus."
+  },
+  {
+   "name": "Simulations tronquées, trunc=8",
+   "family": "vitesse",
+   "bench": "temps",
+   "score": 45.6,
+   "lo": 41.7,
+   "hi": 49.6,
+   "verdict": "perd",
+   "when": "03/10 16:05",
+   "note": "Plus on coupe tôt, plus on perd."
+  },
+  {
+   "name": "Le cœur sans aucun bonus (nobonus)",
+   "family": "vitesse",
+   "bench": "long800",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "ce soir, 21 h",
+   "note": "À temps égal (@t800) : environ un tiers d'itérations en plus."
+  },
+  {
+   "name": "Le cœur avec suited seul (lean)",
+   "family": "vitesse",
+   "bench": "long800",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "ce soir, 21 h",
+   "note": "À temps égal : garder la seule habitude qui travaille."
+  }
+ ],
+ "bonusCosts": [
+  {
+   "key": "middle",
+   "label": "middle",
+   "cost": 6.6,
+   "early": 50.7,
+   "late": 49.3
+  },
+  {
+   "key": "spread",
+   "label": "spread",
+   "cost": 8.8,
+   "early": 50,
+   "late": 49
+  },
+  {
+   "key": "connector",
+   "label": "connector",
+   "cost": 13.7,
+   "early": 49,
+   "late": 54.5,
+   "equal": 48.5
+  },
+  {
+   "key": "joker",
+   "label": "joker",
+   "cost": 5.2,
+   "early": 49.7,
+   "late": 50
+  },
+  {
+   "key": "opening",
+   "label": "opening",
+   "cost": 9.9,
+   "early": 50.9,
+   "late": 50.9
+  },
+  {
+   "key": "suited",
+   "label": "suited",
+   "cost": 8.8,
+   "early": 50.3,
+   "late": 41.1
+  }
+ ],
+ "allBonusCost": 24.8,
+ "speed": [
+  {
+   "when": "02/10",
+   "label": "La rétrospective",
+   "perSecond": 556,
+   "note": "Le point de départ, mesuré machine au repos."
+  },
+  {
+   "when": "03/10, 2 h",
+   "label": "1re passe",
+   "perSecond": 588,
+   "note": "Les vues et withoutCard écrites champ par champ ; plus de includes quadratique dans le stratège."
+  },
+  {
+   "when": "03/10, 12 h 42",
+   "label": "2e passe",
+   "perSecond": 909,
+   "note": "potential : tableaux de travail réutilisés et cartes invisibles comptées une fois ; mémo à clé numérique."
+  },
+  {
+   "when": "03/10, 15 h",
+   "label": "Le chemin rapide",
+   "perSecond": 1000,
+   "note": "score3 : côtés complets, un joker n'importe où, deux jokers par table."
+  }
+ ],
+ "oracleSpeed": {
+  "before": 25,
+  "after": 13.7,
+  "perPosition": 3.7
+ },
+ "jokerLuck": [
+  {
+   "jokers": 0,
+   "game": 36,
+   "start": 48,
+   "games": 1991,
+   "startGames": 5870
+  },
+  {
+   "jokers": 1,
+   "game": 50,
+   "start": 56,
+   "games": 4038,
+   "startGames": 2076
+  },
+  {
+   "jokers": 2,
+   "game": 64,
+   "start": 57,
+   "games": 1987,
+   "startGames": 70
+  }
+ ],
+ "samiLuck": [
+  {
+   "jokers": 0,
+   "rate": 28,
+   "games": 18
+  },
+  {
+   "jokers": 1,
+   "rate": 50,
+   "games": 38
+  },
+  {
+   "jokers": 2,
+   "rate": 56,
+   "games": 16
+  }
+ ],
+ "trapStats": [
+  {
+   "label": "paire morte",
+   "count": 2323,
+   "joker": 57,
+   "border": 78,
+   "game": 60
+  },
+  {
+   "label": "paire vivante",
+   "count": 4641,
+   "joker": 49,
+   "border": 74,
+   "game": 58
+  }
+ ],
+ "lowStarts": [
+  {
+   "label": "paire basse (1-3)",
+   "won": 58,
+   "facing": 1.09
+  },
+  {
+   "label": "paire moyenne (4-7)",
+   "won": 71,
+   "facing": 0.89
+  },
+  {
+   "label": "paire haute (8-10)",
+   "won": 75,
+   "facing": 0.8
+  },
+  {
+   "label": "suite basse",
+   "won": 53,
+   "facing": 1.25
+  },
+  {
+   "label": "suite moyenne",
+   "won": 68,
+   "facing": 1.04
+  },
+  {
+   "label": "suite haute",
+   "won": 66,
+   "facing": 0.99
+  }
+ ],
+ "oracleGroups": [
+  {
+   "label": "tours 15-16",
+   "positions": 858,
+   "top3": 60,
+   "top8": 40,
+   "same": 23
+  },
+  {
+   "label": "tours 20-21",
+   "positions": 1105,
+   "top3": 56,
+   "top8": 35,
+   "same": 25
+  },
+  {
+   "label": "tours 25-26",
+   "positions": 1181,
+   "top3": 48,
+   "top8": 31,
+   "same": 27
+  },
+  {
+   "label": "dernière colonne",
+   "positions": 1187,
+   "top3": 50,
+   "top8": 37,
+   "same": 23
+  }
+ ],
+ "impactZones": [
+  {
+   "from": 1,
+   "to": 5,
+   "mean": 0.4,
+   "label": "le brouillard"
+  },
+  {
+   "from": 6,
+   "to": 14,
+   "mean": 11.9,
+   "label": "le milieu"
+  },
+  {
+   "from": 15,
+   "to": 29,
+   "mean": 19.4,
+   "label": "la zone chère"
+  }
+ ],
+ "examples": {
+  "sami2": {
+   "file": "replays/2026-10-03_16-37-20_experimental-vs-sami_4-2.json",
+   "turn": 2,
+   "me": 1,
+   "pile": 29,
+   "hand": [
+    "2♠",
+    "8♥",
+    "6♥",
+    "4♣",
+    "6♣",
+    "3♦"
+   ],
+   "board": [
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [
+      "7♠"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [],
+     "owner": null
+    }
+   ],
+   "played": "8♥→4",
+   "advice": [
+    {
+     "card": "6♥",
+     "border": 6,
+     "gain": 0.7513
+    },
+    {
+     "card": "6♥",
+     "border": 1,
+     "gain": 0.6888
+    },
+    {
+     "card": "6♥",
+     "border": 2,
+     "gain": 0.6888
+    },
+    {
+     "card": "6♥",
+     "border": 7,
+     "gain": 0.6888
+    },
+    {
+     "card": "8♥",
+     "border": 4,
+     "gain": 0.5398
+    }
+   ],
+   "playedRate": 0.5398315778550563,
+   "drew": "5♥"
+  },
+  "sami34": {
+   "file": "replays/2026-10-03_10-18-17_stratege-vs-sami_4-2.json",
+   "turn": 34,
+   "me": 1,
+   "pile": 0,
+   "hand": [
+    "10♠",
+    "10♦",
+    "7♠",
+    "5♣",
+    "2♣"
+   ],
+   "board": [
+    {
+     "mine": [
+      "4♣",
+      "5♥",
+      "4♥"
+     ],
+     "theirs": [
+      "2♦",
+      "2♥",
+      "JK"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "8♥",
+      "6♥"
+     ],
+     "theirs": [
+      "4♦",
+      "3♦",
+      "5♦"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "10♥"
+     ],
+     "theirs": [
+      "3♣",
+      "6♣",
+      "10♣"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "7♣",
+      "8♣",
+      "9♣"
+     ],
+     "theirs": [
+      "7♥"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "7♦",
+      "8♦",
+      "9♦"
+     ],
+     "theirs": [
+      "9♥",
+      "9♠"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "6♦"
+     ],
+     "theirs": [
+      "5♠",
+      "3♠",
+      "6♠"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "1♣",
+      "1♦",
+      "2♠"
+     ],
+     "theirs": [
+      "1♥",
+      "1♠"
+     ],
+     "owner": null
+    }
+   ],
+   "played": "10♠→3",
+   "advice": [
+    {
+     "card": "10♠",
+     "border": 3,
+     "gain": 0.2778
+    },
+    {
+     "card": "10♦",
+     "border": 3,
+     "gain": 0.2778
+    }
+   ],
+   "playedRate": 0.27780000132229093
+  },
+  "samiEnd": {
+   "board": [
+    {
+     "mine": [
+      "4♣",
+      "5♥",
+      "4♥"
+     ],
+     "theirs": [
+      "2♦",
+      "2♥",
+      "JK"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "8♥",
+      "6♥"
+     ],
+     "theirs": [
+      "4♦",
+      "3♦",
+      "5♦"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "10♥",
+      "10♠"
+     ],
+     "theirs": [
+      "3♣",
+      "6♣",
+      "10♣"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "7♣",
+      "8♣",
+      "9♣"
+     ],
+     "theirs": [
+      "7♥"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "7♦",
+      "8♦",
+      "9♦"
+     ],
+     "theirs": [
+      "9♥",
+      "9♠"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "6♦"
+     ],
+     "theirs": [
+      "5♠",
+      "3♠",
+      "6♠"
+     ],
+     "owner": "them"
+    },
+    {
+     "mine": [
+      "1♣",
+      "1♦",
+      "2♠"
+     ],
+     "theirs": [
+      "1♥",
+      "1♠",
+      "JK"
+     ],
+     "owner": "them"
+    }
+   ],
+   "hand": [
+    "10♦",
+    "7♠",
+    "5♣",
+    "2♣"
+   ],
+   "last": {
+    "turn": 35,
+    "player": 0,
+    "hand": [
+     "4♠",
+     "8♠",
+     "3♥",
+     "JK"
+    ],
+    "pile": 0,
+    "move": {
+     "card": "JK",
+     "border": 7
+    },
+    "side": {
+     "mine": [
+      "1♥",
+      "1♠"
+     ],
+     "theirs": [
+      "1♣",
+      "1♦",
+      "2♠"
+     ],
+     "wasEmpty": false,
+     "completes": true,
+     "theirsFull": true
+    },
+    "joker": true,
+    "candidates": [
+     {
+      "card": "JK",
+      "border": 7,
+      "gain": 1.0855
+     },
+     {
+      "card": "8♠",
+      "border": 7,
+      "gain": 0.8857
+     },
+     {
+      "card": "4♠",
+      "border": 7,
+      "gain": 0.8614
+     },
+     {
+      "card": "3♥",
+      "border": 7,
+      "gain": 0.8552
+     }
+    ],
+    "drew": null
+   },
+   "winner": 0
+  },
+  "oracle": {
+   "file": "2026-10-02-10-20-40_experimental@0.9.0_vs_experimental@0.9.0.json",
+   "game": 164,
+   "turn": 16,
+   "me": 1,
+   "pile": 15,
+   "hand": [
+    "8♥",
+    "8♣",
+    "4♠",
+    "6♦",
+    "8♠",
+    "2♥"
+   ],
+   "board": [
+    {
+     "mine": [
+      "2♠"
+     ],
+     "theirs": [
+      "7♠"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "3♥"
+     ],
+     "theirs": [],
+     "owner": null
+    },
+    {
+     "mine": [
+      "8♦"
+     ],
+     "theirs": [
+      "10♠",
+      "10♣"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "10♥"
+     ],
+     "theirs": [
+      "5♠"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [],
+     "theirs": [
+      "1♦"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "1♣",
+      "1♠"
+     ],
+     "theirs": [
+      "6♥",
+      "7♥"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "4♣"
+     ],
+     "theirs": [
+      "3♦"
+     ],
+     "owner": null
+    }
+   ],
+   "oracle": "6♦→3",
+   "share": 0.7705676855895196,
+   "runnerUp": 0.016768558951965065,
+   "rank": 20,
+   "core": [
+    "6♦→5",
+    "8♥→3",
+    "8♣→3"
+   ],
+   "played": "2♥→2",
+   "legal": 42,
+   "traits": {
+    "oracle": [
+     "pose une 2e carte",
+     "bâtit une suite de couleur",
+     "carte moyenne (4-7)",
+     "au centre (bornes 3-5)"
+    ],
+    "core": [
+     "répond à une borne adverse",
+     "ouvre sans suite prévue en main",
+     "carte moyenne (4-7)",
+     "au centre (bornes 3-5)"
+    ]
+   },
+   "rank_exp": 20,
+   "top_exp": [
+    "6♦→5",
+    "8♥→3",
+    "8♣→3",
+    "8♠→3",
+    "2♥→2"
+   ],
+   "rank_stfig6": 9,
+   "top_stfig6": [
+    "8♥→3",
+    "8♣→3",
+    "8♠→3",
+    "2♥→2",
+    "8♥→4"
+   ]
+  },
+  "trap": {
+   "file": "2026-10-02-02-22-40_experimental@0.9.0_vs_experimental@0.9.0.json",
+   "game": 49,
+   "pairTurn": 14,
+   "jokerTurn": 20,
+   "border": 2,
+   "card": "4♦",
+   "value": 4,
+   "me": 1,
+   "before": {
+    "hand": [
+     "3♠",
+     "9♥",
+     "6♠",
+     "JK",
+     "6♦",
+     "4♦"
+    ],
+    "board": [
+     {
+      "mine": [
+       "2♦"
+      ],
+      "theirs": [
+       "10♠"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "4♣"
+      ],
+      "theirs": [
+       "4♠"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "9♣"
+      ],
+      "theirs": [
+       "7♣",
+       "6♣"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "7♦"
+      ],
+      "theirs": [
+       "7♥"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "6♥"
+      ],
+      "theirs": [],
+      "owner": null
+     },
+     {
+      "mine": [],
+      "theirs": [
+       "8♥"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "10♣"
+      ],
+      "theirs": [
+       "4♥"
+      ],
+      "owner": null
+     }
+    ],
+    "pile": 17
+   },
+   "atJoker": {
+    "hand": [
+     "9♥",
+     "6♠",
+     "JK",
+     "6♦",
+     "2♥",
+     "3♥"
+    ],
+    "board": [
+     {
+      "mine": [
+       "2♦",
+       "3♦"
+      ],
+      "theirs": [
+       "10♠"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "4♣",
+       "4♦"
+      ],
+      "theirs": [
+       "4♠",
+       "2♠"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "9♣"
+      ],
+      "theirs": [
+       "7♣",
+       "6♣"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "7♦"
+      ],
+      "theirs": [
+       "7♥"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "6♥"
+      ],
+      "theirs": [
+       "7♠"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "3♠"
+      ],
+      "theirs": [
+       "8♥"
+      ],
+      "owner": null
+     },
+     {
+      "mine": [
+       "10♣"
+      ],
+      "theirs": [
+       "4♥",
+       "10♥"
+      ],
+      "owner": null
+     }
+    ],
+    "pile": 11
+   }
+  },
+  "weak": {
+   "file": "2026-10-02-02-22-40_experimental@0.9.0_vs_experimental@0.9.0.json",
+   "game": 18,
+   "border": 5,
+   "me": 1,
+   "board": [
+    {
+     "mine": [
+      "3♥"
+     ],
+     "theirs": [
+      "4♥",
+      "5♠"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "7♥",
+      "8♥",
+      "9♥"
+     ],
+     "theirs": [
+      "5♦",
+      "6♦"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "2♠",
+      "3♠",
+      "4♠"
+     ],
+     "theirs": [
+      "1♠"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "8♠",
+      "6♠"
+     ],
+     "theirs": [
+      "2♥",
+      "2♦"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "1♦",
+      "1♥",
+      "JK"
+     ],
+     "theirs": [
+      "6♥",
+      "5♥",
+      "10♥"
+     ],
+     "owner": "me"
+    },
+    {
+     "mine": [
+      "4♣"
+     ],
+     "theirs": [
+      "9♣",
+      "7♦",
+      "7♠"
+     ],
+     "owner": null
+    },
+    {
+     "mine": [
+      "8♣",
+      "2♣",
+      "10♣"
+     ],
+     "theirs": [
+      "1♣",
+      "6♣",
+      "5♣"
+     ],
+     "owner": "me"
+    }
+   ],
+   "winner": true
+  }
+ },
+ "since": "2026-10-02 17:00",
+ "commitLabels": {
+  "b9cbecc": [
+   "phases",
+   "Juger une borne avec ses voisines ; nommer les cœurs à tester dans l’arbre"
+  ],
+  "e2a1135": [
+   "phases",
+   "Tester le jugement du cœur dans l’arbre ; ouvrir le cœur dans la rétrospective"
+  ],
+  "d2e07d6": [
+   "phases",
+   "Jouer la partie en deux phases ; l’outil A/B contre le Stratège"
+  ],
+  "d83f19d": [
+   "premiere",
+   "Surenchérir d’un cran sur une carte seule ; faire payer une borne vierge"
+  ],
+  "45d55c4": [
+   "formes",
+   "Choisir son jeu : brelans ou suites de couleur"
+  ],
+  "4b154e3": [
+   "replays",
+   "Tirer des règles des parties gardées ; éviter les côtés sans figure"
+  ],
+  "f9d2d67": [
+   "jokers",
+   "Lire où vont les jokers ; les règles selon qui les joue"
+  ],
+  "54b4734": [
+   "appats",
+   "Chercher le piège du joker de Sami ; l’essayer cœur contre cœur"
+  ],
+  "3e55811": [
+   "appats",
+   "Lire les bornes gagnées avec des cartes faibles"
+  ],
+  "4f331ad": [
+   "appats",
+   "L’appât : des débuts bas sur les bornes qui ne comptent pas"
+  ],
+  "9e3e157": [
+   "outils",
+   "Mesurer le prix d’une erreur aux tours 6 à 14 (nuit)"
+  ],
+  "f1d7e89": [
+   "oracle",
+   "L’oracle : chercher tous les coups sur des positions réelles"
+  ],
+  "92ea3fd": [
+   "outils",
+   "Plafonner chaque job de nuit à 2 h ; épargner le temps de l’oracle"
+  ],
+  "ee6c35a": [
+   "outils",
+   "Documenter un serveur loué ; plafonner les fils (LOPIN_THREADS)"
+  ],
+  "7d10a35": [
+   "outils",
+   "Une file de jobs pour le portable, transportée par git"
+  ],
+  "6def7e6": [
+   "vitesse",
+   "Ne lire la forme d’un côté que si une idée la demande"
+  ],
+  "ccf91ec": [
+   "vitesse",
+   "1re passe sur le chemin chaud : 14 % de CPU en moins, pas un coup changé"
+  ],
+  "495c511": [
+   "outils",
+   "Les résultats de la nuit : duels, la courbe d’erreur complète, l’oracle"
+  ],
+  "9e554e0": [
+   "oracle",
+   "Confirmer les écarts de l’oracle par le jeu ; programmer la nuit"
+  ],
+  "8df56f6": [
+   "jokers",
+   "Compter les jokers de chaque joueur, et leur taux de victoire"
+  ],
+  "f75a97a": [
+   "oracle",
+   "Lire les 4 331 positions de l’oracle : la moitié de ses coups hors du top 3"
+  ],
+  "8210ab5": [
+   "oracle",
+   "Pousser le cœur dans le sens de l’oracle : rester sur ses côtés paie"
+  ],
+  "ad164da": [
+   "oracle",
+   "stfig : stay seulement si une figure reste possible, le plus gros gain"
+  ],
+  "644dabe": [
+   "outils",
+   "Garder un test sous la limite de complexité"
+  ],
+  "04c4223": [
+   "outils",
+   "Écrire la règle 400 / 800"
+  ],
+  "11b92ff": [
+   "vitesse",
+   "2e passe sur le chemin chaud : 35 % de CPU en moins, pas un coup changé"
+  ],
+  "c6845a1": [
+   "vitesse",
+   "Remesurer sur machine libre : 909 itérations par seconde"
+  ],
+  "d78150c": [
+   "fenetres",
+   "Des idées actives aux premiers tours seulement"
+  ],
+  "220a3ea": [
+   "lecteur",
+   "Puzzles : un numéro stable, des favoris, des boutons qui disent où on en est"
+  ],
+  "d7069c3": [
+   "lecteur",
+   "Ajouter des puzzles sans renuméroter les anciens"
+  ],
+  "08b6adb": [
+   "lecteur",
+   "50 puzzles de fin et 20 de gain immédiat ; les bonus du début"
+  ],
+  "08cbc04": [
+   "vitesse",
+   "Côtés complets et paires de jokers par le chemin rapide de l’évaluateur"
+  ],
+  "d511d78": [
+   "fenetres",
+   "Une habitude gardée aux premiers tours seulement"
+  ],
+  "db11b69": [
+   "outils",
+   "Backlog : les 3 derniers jobs finis, le reste archivé"
+  ],
+  "45ef53c": [
+   "outils",
+   "Les duels courts de la nuit avant les passes de 2 h de l’oracle"
+  ],
+  "dd55ecb": [
+   "fenetres",
+   "Les bonus du 0.9 aux tours 1-10 : neutres ; 1 000 itérations par seconde"
+  ],
+  "20e01ca": [
+   "fenetres",
+   "Des bonus en fin de partie seulement ; la règle du temps égal"
+  ],
+  "6d48dd6": [
+   "vitesse",
+   "Les simulations tronquées, jugées par les chances du cœur"
+  ],
+  "5724a9a": [
+   "fenetres",
+   "connector à partir du tour 11 ou 19"
+  ],
+  "b1bd8e3": [
+   "lecteur",
+   "Le lecteur pèse les coups avec le Stratège 2.1"
+  ],
+  "59e6838": [
+   "outils",
+   "Lancer les six duels longs maintenant ; l’oracle reste pour la nuit"
+  ],
+  "08d2b83": [
+   "vitesse",
+   "Au backlog : le cœur sans bonus, et avec suited seul, à temps égal"
+  ],
+  "4d8b8a0": [
+   "lecteur",
+   "Puzzles : « Non résolus seulement », coché par défaut"
+  ]
+ }
+}

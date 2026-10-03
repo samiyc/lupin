@@ -1,0 +1,1236 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le carnet du 0.9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,600;0,6..96,700;1,6..96,500&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* A lab notebook on felt: the reports' identity (felt band, paper, brass, red seal), with an ink blue for the oracle. */
+:root {
+  --felt: #1f5e45; --felt-deep: #164a36; --felt-ink: #eef4ef; --felt-soft: #b9d3c4;
+  --paper: #f6f7f3; --card: #ffffff; --edge: #d4dbd5; --ink: #16181a; --ink-2: #454d48; --ink-3: #66716a;
+  --line: #dce2dc; --wash: #edf1ec; --brass: #9b7614; --brass-wash: #f5ecd2; --seal: #b3262f; --seal-wash: #f8e3e1;
+  --off: #c3cbc5; --off-ink: #8b958e; --mark: #1f7a52; --sky: #2b5f8f; --sky-wash: #e3edf6; --tip: #16181a; --tip-ink: #f6f7f3;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+    --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+    --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20;
+    --off: #34493f; --off-ink: #73857a; --mark: #6fd19b; --sky: #8cbbe8; --sky-wash: #1b2c3b; --tip: #eef2ec; --tip-ink: #12211b;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+  --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+  --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20;
+  --off: #34493f; --off-ink: #73857a; --mark: #6fd19b; --sky: #8cbbe8; --sky-wash: #1b2c3b; --tip: #eef2ec; --tip-ink: #12211b;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.04rem/1.6 var(--body); }
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); }
+h3 { font-size: 1.15rem; }
+p { margin: 0; max-width: 70ch; }
+.eyebrow { font: 600 0.72rem/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+.num { font-variant-numeric: tabular-nums; font-family: var(--mono); }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.88em; }
+.muted { color: var(--ink-3); }
+.small { font-size: 0.9rem; }
+
+/* The band */
+.band { background: var(--felt); color: var(--felt-ink); padding-block: 48px 30px; }
+.band .eyebrow { color: var(--felt-soft); }
+.band h1 { font-size: clamp(2.3rem, 6vw, 3.8rem); font-weight: 700; }
+.band h1 em { font-style: italic; font-weight: 500; color: var(--brass-wash); }
+.band .lead { color: var(--felt-soft); margin-top: 14px; font-size: 1.12rem; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; margin-top: 28px; }
+.tile { border-top: 1px solid color-mix(in srgb, var(--felt-ink) 30%, transparent); padding-top: 10px; display: grid; gap: 2px; align-content: start; }
+.tile b { font: 700 clamp(1.7rem, 4vw, 2.3rem)/1.1 var(--mono); font-variant-numeric: tabular-nums; color: var(--felt-ink); }
+.tile b small { font-size: 0.55em; color: var(--felt-soft); font-weight: 600; }
+.tile span { color: var(--felt-soft); font-size: 0.93rem; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 26px; }
+.toc a { color: var(--felt-ink); text-decoration: none; border: 1px solid color-mix(in srgb, var(--felt-ink) 35%, transparent); border-radius: 999px; padding: 3px 12px; font-size: 0.85rem; }
+.toc a:hover { background: var(--felt-deep); }
+
+/* Sections */
+main { display: grid; gap: 68px; padding-block: 44px 60px; }
+section { display: grid; gap: 18px; min-width: 0; scroll-margin-top: 16px; }
+.panel { background: var(--card); border: 1px solid var(--edge); border-radius: 14px; padding: 16px; display: grid; gap: 12px; min-width: 0; align-content: start; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 18px; align-items: start; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
+.scroll { overflow-x: auto; min-width: 0; }
+.chart { width: 100%; height: auto; display: block; }
+.chart text, .diagram text { fill: var(--ink-3); font: 600 11px var(--mono); }
+.chart .label { fill: var(--ink-2); font: 400 12px var(--body); }
+.chart .strong { fill: var(--ink); font-weight: 700; }
+.wide { min-width: 760px; }
+.seal { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; background: var(--seal-wash); border-radius: 10px; padding: 12px 16px; max-width: 86ch; }
+.seal::before { content: "!"; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; background: var(--seal); color: var(--paper); font: 700 1.1rem/1 var(--display); }
+.seal p { color: var(--ink-2); font-size: 0.97rem; }
+.rule { border-left: 3px solid var(--brass); background: var(--brass-wash); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.96rem; max-width: 86ch; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.85rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.facts { margin: 0; padding-left: 1.1em; color: var(--ink-2); display: grid; gap: 6px; font-size: 0.96rem; }
+#tip { position: fixed; z-index: 10; pointer-events: none; background: var(--tip); color: var(--tip-ink); font-size: 0.84rem; line-height: 1.4; padding: 6px 10px; border-radius: 8px; max-width: 300px; box-shadow: 0 6px 18px rgb(0 0 0 / 0.2); }
+[data-tip] { cursor: help; }
+
+/* Timeline */
+.detail { display: grid; gap: 6px; border-left: 3px solid var(--mark); padding-left: 12px; min-height: 3.2em; }
+.detail .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--edge); background: var(--paper); border-radius: 999px; padding: 4px 14px; cursor: pointer; font-size: 0.88rem; }
+.btn:hover { border-color: var(--brass); }
+.btn.primary { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
+.dot { cursor: pointer; transition: r 0.15s; }
+.dot:hover, .dot.pick { r: 7; }
+
+/* Notebook */
+.filters { display: grid; gap: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.chips .what { font: 600 0.68rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); min-width: 5.5em; }
+.chip { border: 1px solid var(--edge); background: var(--card); border-radius: 999px; padding: 3px 11px; cursor: pointer; font-size: 0.84rem; }
+.chip[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
+.search { border: 1px solid var(--edge); background: var(--card); border-radius: 999px; padding: 5px 14px; min-width: 0; width: min(100%, 320px); }
+.notebook-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
+@media (max-width: 760px) { .notebook-top { grid-template-columns: minmax(0, 1fr); } }
+.donut-box { display: grid; grid-template-columns: 130px auto; gap: 12px; align-items: center; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: middle; }
+thead th { font: 600 0.68rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
+thead th button { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; }
+thead th button::after { content: " ↕"; color: var(--off-ink); }
+td.num, th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .note { display: block; color: var(--ink-3); font-size: 0.82rem; max-width: 46ch; }
+td.when { font: 0.8rem var(--mono); color: var(--ink-3); white-space: nowrap; }
+td.fam { font-size: 0.82rem; color: var(--ink-2); }
+.verdict { display: inline-block; border-radius: 999px; padding: 1px 9px; font: 600 0.72rem var(--mono); white-space: nowrap; }
+.v-gagne { background: color-mix(in srgb, var(--mark) 22%, transparent); color: var(--mark); }
+.v-tendance { background: var(--brass-wash); color: var(--brass); }
+.v-neutre { background: var(--wash); color: var(--ink-3); }
+.v-perd { background: var(--seal-wash); color: var(--seal); }
+.v-attente { border: 1px dashed var(--off-ink); color: var(--off-ink); }
+.forest { width: 170px; height: 20px; display: block; }
+.count { font-size: 0.9rem; color: var(--ink-3); }
+
+/* Heat map */
+.heat td, .heat th { text-align: center; white-space: nowrap; }
+.heat td:first-child, .heat th:first-child { text-align: left; }
+.heat td.cell { font: 600 0.88rem var(--mono); border-radius: 6px; border: 3px solid var(--card); }
+.costbar { display: grid; grid-template-columns: 1fr auto; gap: 6px; align-items: center; min-width: 96px; }
+.costbar i { display: block; height: 10px; background: var(--brass); border-radius: 3px; }
+
+/* Oracle */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 0; counter-reset: step; }
+.step { padding: 12px 14px 12px 0; display: grid; gap: 4px; align-content: start; border-top: 2px solid var(--sky); position: relative; }
+.step::after { content: "→"; position: absolute; right: 4px; top: -14px; color: var(--sky); background: var(--paper); padding: 0 2px; }
+.step:last-child::after { content: none; }
+.step b::before { counter-increment: step; content: counter(step) ". "; color: var(--brass); }
+.step span { font-size: 0.9rem; color: var(--ink-2); }
+.toggle { display: inline-flex; border: 1px solid var(--edge); border-radius: 999px; overflow: hidden; }
+.toggle button { border: 0; background: var(--card); padding: 4px 12px; cursor: pointer; font-size: 0.84rem; }
+.toggle button[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); }
+
+/* Boards */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { border: 1px solid var(--edge); background: var(--card); border-radius: 10px; padding: 6px 12px; cursor: pointer; font-size: 0.9rem; text-align: left; }
+.tab[aria-selected="true"] { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
+.situation { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .situation { grid-template-columns: minmax(0, 1fr); } }
+.board { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 5px; }
+.col { display: grid; grid-template-rows: auto auto auto; gap: 4px; justify-items: center; padding: 6px 2px; border-radius: 8px; border: 1px solid transparent; transition: background 0.2s; }
+.col.me { background: color-mix(in srgb, var(--mark) 16%, transparent); }
+.col.them { background: var(--seal-wash); }
+.col.focus { border-color: var(--brass); background: var(--brass-wash); }
+.col.target { cursor: pointer; }
+.col.target:hover { border-color: var(--brass); }
+.col .n { font: 600 0.7rem var(--mono); color: var(--paper); background: var(--ink-3); border-radius: 999px; padding: 1px 7px; }
+.col.me .n { background: var(--mark); }
+.col.them .n { background: var(--seal); }
+.side { display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 66px; justify-content: flex-end; }
+.side.top { justify-content: flex-end; }
+.side.bottom { justify-content: flex-start; }
+.c { font: 600 0.78rem var(--mono); background: var(--paper); border: 1px solid var(--edge); border-radius: 4px; padding: 1px 3px; white-space: nowrap; }
+.c.r { color: var(--seal); }
+.c.jk { background: var(--brass-wash); color: var(--brass); border-color: var(--brass); }
+.c.new { outline: 2px solid var(--brass); }
+.whose { display: flex; justify-content: space-between; font: 600 0.7rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.hand { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 0.85rem; color: var(--ink-3); }
+.hand button.c { cursor: pointer; font-size: 0.9rem; padding: 3px 7px; }
+.hand button.c[aria-pressed="true"] { background: var(--brass); color: var(--paper); border-color: var(--brass); }
+.story { display: grid; gap: 10px; }
+.story p { color: var(--ink-2); font-size: 0.96rem; }
+.answers { display: grid; gap: 6px; }
+.answer { display: grid; grid-template-columns: 8em minmax(0, 1fr) 3.6em; gap: 8px; align-items: center; font-size: 0.88rem; }
+.answer .bar { height: 12px; border-radius: 3px; background: var(--mark); }
+.answer.mine .bar { background: var(--brass); }
+.answer.oracle .bar { background: var(--sky); }
+.answer b { font-family: var(--mono); font-weight: 600; }
+.answer span:last-child { font-family: var(--mono); text-align: right; }
+.result { border-radius: 10px; padding: 10px 12px; background: var(--wash); font-size: 0.94rem; }
+.stepper { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* Jobs */
+.diagram-box { overflow-x: auto; background: var(--wash); border-radius: 10px; padding: 8px; }
+.diagram { width: 100%; min-width: 760px; height: auto; display: block; }
+.diagram .box rect { stroke-width: 1.5; }
+.diagram .box text { font: 600 12px var(--body); fill: var(--ink); }
+.diagram .box text.sub { font: 400 11.5px var(--body); fill: var(--ink-3); }
+.pulse { fill: var(--brass); }
+footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var(--ink-3); font-size: 0.88rem; }
+@media (prefers-reduced-motion: reduce) { .dot, .col { transition: none; } }
+</style>
+
+</head>
+<body>
+<header class="band">
+  <div class="wrap">
+    <p class="eyebrow">Lopin n°742 · Bornage · carnet de laboratoire</p>
+    <h1>Le carnet <em>du 0.9</em></h1>
+    <p class="lead" id="lead"></p>
+    <div class="tiles" id="tiles"></div>
+    <nav class="toc" aria-label="Sections">
+      <a href="#journee">Les 24 heures</a><a href="#carnet">Le carnet</a><a href="#bonus">Les bonus du 0.9</a><a href="#oracle">L'oracle</a><a href="#erreur">Où la partie se joue</a><a href="#jokers">Les jokers</a><a href="#situations">Situations de jeu</a><a href="#vitesse">La vitesse</a><a href="#jobs">Les jobs</a><a href="#puzzles">Puzzles et lecteur</a><a href="#suite">La suite</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="journee" aria-labelledby="t-journee">
+    <div>
+      <p class="eyebrow">I · La frise</p>
+      <h2 id="t-journee">Les 24 heures</h2>
+    </div>
+    <p>En haut, ce qui a été écrit : un point par commit, coloré par famille. En dessous, ce que la machine a calculé pendant ce temps : chaque job du backlog, à sa vraie place dans la nuit et la journée. Les jobs en pointillés sont encore à venir. Clique sur un point.</p>
+    <div class="panel">
+      <div class="scroll"><svg class="chart wide" id="timeline" viewBox="0 0 1000 300" role="img" aria-label="Commits et jobs des dernières 24 heures"></svg></div>
+      <div class="legend" id="timeline-legend"></div>
+      <div class="detail" id="commit-detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="carnet" aria-labelledby="t-carnet">
+    <div>
+      <p class="eyebrow">II · Chaque essai</p>
+      <h2 id="t-carnet">Le carnet de labo</h2>
+    </div>
+    <p>Tous les essais de la période, avec leur score contre le 0.9 (ou son cœur), leur fourchette à 95 % quand elle est connue, et le verdict. La colonne « forêt » place chaque essai autour de la ligne des 50 % : un trait qui la traverse, c'est du bruit. Les bancs « fin de partie » et « parties entières » donnent un écart en points, centré sur la même ligne.</p>
+    <div class="panel">
+      <div class="notebook-top">
+        <div class="filters">
+          <div class="chips" id="f-family" role="group" aria-label="Famille"></div>
+          <div class="chips" id="f-bench" role="group" aria-label="Banc"></div>
+          <div class="chips" id="f-verdict" role="group" aria-label="Verdict"></div>
+          <div class="chips"><span class="what">Chercher</span><input class="search" id="f-search" type="search" placeholder="stfig, joker, connector…" aria-label="Chercher un essai"></div>
+        </div>
+        <div class="donut-box">
+          <svg id="verdict-donut" viewBox="0 0 130 130" width="130" height="130" role="img" aria-label="Verdicts des essais affichés"></svg>
+          <div class="legend" id="verdict-legend" style="flex-direction: column; gap: 4px"></div>
+        </div>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th><button type="button" data-sort="name">Essai</button></th><th>Famille</th><th>Banc</th><th class="num"><button type="button" data-sort="score">Score</button></th><th>Forêt <span class="muted">35 · 50 · 65</span></th><th>Verdict</th><th><button type="button" data-sort="when">Quand</button></th></tr></thead>
+          <tbody id="attempts"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="bonus" aria-labelledby="t-bonus">
+    <div>
+      <p class="eyebrow">III · Les six bonus du cœur</p>
+      <h2 id="t-bonus">Ce que coûtent les bonus du 0.9, et ce qu'ils rapportent</h2>
+    </div>
+    <p>Chaque bonus a été gardé seulement aux tours 1 à 10, puis seulement à partir du tour 15, dans l'arbre à 400 itérations, en miroir. Le prix est le temps qu'il prend à chaque itération : le retirer, c'est autant d'itérations en plus dans le même temps.</p>
+    <div class="grid2">
+      <div class="panel">
+        <h3>La carte de chaleur</h3>
+        <div class="scroll"><table class="heat" id="heat"></table></div>
+        <div class="legend"><span><i style="background: color-mix(in srgb, var(--mark) 45%, var(--card))"></i>mieux que le 0.9</span><span><i style="background: color-mix(in srgb, var(--seal) 45%, var(--card))"></i>moins bien</span><span>score de la variante contre le 0.9</span></div>
+      </div>
+      <div class="panel">
+        <h3>Le prix contre l'utilité</h3>
+        <svg class="chart" id="scatter" viewBox="0 0 480 330" role="img" aria-label="Coût de chaque bonus contre le score du 0.9 privé de ce bonus au début"></svg>
+        <p class="small muted">En bas, un bonus dont l'absence au début fait perdre : il travaille. À droite, un bonus cher.</p>
+      </div>
+    </div>
+    <div class="rule" id="bonus-rule"></div>
+  </section>
+
+  <section id="oracle" aria-labelledby="t-oracle">
+    <div>
+      <p class="eyebrow">IV · Un arbre 25 fois plus large</p>
+      <h2 id="t-oracle">L'oracle</h2>
+    </div>
+    <p id="oracle-intro"></p>
+    <div class="steps" id="oracle-steps"></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Où tombe le coup de l'oracle dans le classement du cœur</h3>
+        <div class="donut-box" style="grid-template-columns: 170px minmax(0, 1fr)">
+          <svg id="rank-donut" viewBox="0 0 170 170" width="170" height="170" role="img" aria-label="Rang du coup de l'oracle dans le classement du cœur"></svg>
+          <div class="legend" id="rank-legend" style="flex-direction: column; gap: 6px"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Ce que l'oracle fait autrement</h3>
+        <svg class="chart" id="traits" viewBox="0 0 480 280" role="img" aria-label="Traits du coup de l'oracle et du premier coup du cœur"></svg>
+        <div class="legend"><span><i style="background: var(--sky)"></i>le coup de l'oracle</span><span><i style="background: var(--mark)"></i>le premier coup du cœur</span><span>sur les 2 300 écarts, les 8 traits les plus différents</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between">
+        <h3>Par groupe de positions</h3>
+        <div class="toggle" id="group-measure" role="group" aria-label="Mesure"></div>
+      </div>
+      <svg class="chart" id="groups" viewBox="0 0 960 220" role="img" aria-label="Taux d'écart par groupe de positions"></svg>
+    </div>
+    <div class="seal"><p><b>Pas encore une règle.</b> L'oracle joue ses simulations avec le cœur, et son favori ne reçoit que 27 % des visites en médiane : ses écarts peuvent venir de sa dispersion. La confirmation par le jeu (le coup de l'oracle contre celui du cœur et celui du 0.9, suite jouée par le 0.9, jugée au tour 30) tourne cette nuit. Ce qu'on en a déjà tiré, <code>stfig</code>, a gagné à sa manière : en cœur contre cœur, puis dans l'arbre.</p></div>
+  </section>
+
+  <section id="erreur" aria-labelledby="t-erreur">
+    <div>
+      <p class="eyebrow">V · Le prix d'une erreur</p>
+      <h2 id="t-erreur">Où la partie se joue</h2>
+    </div>
+    <p>Une erreur au hasard au tour T, et deux témoins sans erreur : combien de points de chance de gagner perd le fautif ? 120 parties par tour, toutes les mesures faites, du tour 1 au tour 29. Survole une barre.</p>
+    <div class="panel">
+      <div class="scroll"><svg class="chart wide" id="impact" viewBox="0 0 960 330" role="img" aria-label="Prix d'une erreur au hasard selon le tour"></svg></div>
+      <div class="legend" id="impact-legend"></div>
+    </div>
+  </section>
+
+  <section id="jokers" aria-labelledby="t-jokers">
+    <div>
+      <p class="eyebrow">VI · Deux cartes à part</p>
+      <h2 id="t-jokers">Les jokers</h2>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>La chance des jokers</h3>
+        <svg class="chart" id="luck" viewBox="0 0 480 290" role="img" aria-label="Taux de victoire selon le nombre de jokers"></svg>
+        <div class="legend"><span><i style="background: var(--mark)"></i>robots, jokers de la partie</span><span><i style="background: var(--brass)"></i>robots, main de départ</span><span><i style="background: var(--sky)"></i>Sami contre les robots</span></div>
+        <p class="small muted" id="luck-note"></p>
+      </div>
+      <div class="panel">
+        <h3>Où poser un joker</h3>
+        <svg class="chart" id="placements" viewBox="0 0 480 380" role="img" aria-label="Taux de victoire selon le placement du joker"></svg>
+        <p class="small muted">Part des parties gagnées par celui qui pose le joker, robots de même force. La ligne : tous les jokers confondus.</p>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Le piège : une paire posée avec un joker en main</h3>
+        <div class="scroll"><table id="trap-table"></table></div>
+        <p class="small muted">Le piège arrive 0,76 fois par partie et paie un peu mieux qu'une paire vivante : le cœur le joue déjà, sans le savoir. Mais un robot ne se fait pas piéger : il compte les cartes invisibles, jokers compris.</p>
+      </div>
+      <div class="panel">
+        <h3>Un début bas attire, et se perd</h3>
+        <svg class="chart" id="lowstarts" viewBox="0 0 480 250" role="img" aria-label="Bornes gagnées selon la hauteur du début de côté"></svg>
+        <p class="small muted" id="weak-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="situations" aria-labelledby="t-situations">
+    <div>
+      <p class="eyebrow">VII · Sur la table</p>
+      <h2 id="t-situations">Situations de jeu</h2>
+    </div>
+    <p>Cinq positions réelles, tirées des replays de Sami et des duels du 0.9. Dans les deux premières, à toi de jouer : choisis une carte, puis une borne. La page révèle ensuite ce qu'en pensent le Stratège 2.1, le cœur et l'oracle.</p>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="panel" id="situation" role="tabpanel"></div>
+  </section>
+
+  <section id="vitesse" aria-labelledby="t-vitesse">
+    <div>
+      <p class="eyebrow">VIII · Le même robot, plus vite</p>
+      <h2 id="t-vitesse">La vitesse</h2>
+    </div>
+    <p>Trois passes sur le chemin chaud du cœur, chacune vérifiée par l'empreinte du 0.9 : les mêmes coups, à la même graine, avant et après. Seul le temps change.</p>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Itérations de l'arbre par seconde</h3>
+        <svg class="chart" id="speed" viewBox="0 0 480 300" role="img" aria-label="Itérations par seconde après chaque passe"></svg>
+        <div class="answers" id="speed-notes"></div>
+      </div>
+      <div class="panel">
+        <h3>L'oracle, sur une position</h3>
+        <svg class="chart" id="oracle-speed" viewBox="0 0 480 150" role="img" aria-label="Temps de l'oracle par position avant et après"></svg>
+        <p class="small muted" id="oracle-speed-note"></p>
+        <div class="rule"><b>La règle du temps égal.</b> Une variante dont le coût par itération diffère de plus de 3 % se compare à temps égal (<code>@t400</code>), pas à itérations égales. À environ 1 000 itérations par seconde, <code>@400</code> et <code>@t400</code> se valent pour le 0.9.</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Une itération de l'arbre, et où les idées du jour s'y sont branchées</h3>
+      <div class="diagram-box"><svg class="diagram" id="ismcts" viewBox="0 0 960 250" role="img" aria-label="Les étapes d'une itération ISMCTS"></svg></div>
+    </div>
+  </section>
+
+  <section id="jobs" aria-labelledby="t-jobs">
+    <div>
+      <p class="eyebrow">IX · La machine de nuit</p>
+      <h2 id="t-jobs">Les jobs</h2>
+    </div>
+    <p><code>npm run backlog</code> passe les traitements un par un, sans surveillance. Depuis hier soir, il plafonne chacun à 2 h, attend l'heure qu'on lui donne, prend les plus courts d'abord et range ce qui est fini.</p>
+    <div class="diagram-box"><svg class="diagram" id="flow" viewBox="0 0 960 260" role="img" aria-label="Le cycle de vie d'un job du backlog"></svg></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Le temps machine, par famille</h3>
+        <div class="donut-box" style="grid-template-columns: 170px minmax(0, 1fr)">
+          <svg id="machine-donut" viewBox="0 0 170 170" width="170" height="170" role="img" aria-label="Temps de calcul par famille de jobs"></svg>
+          <div class="legend" id="machine-legend" style="flex-direction: column; gap: 6px"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Les règles du backlog</h3>
+        <ul class="facts">
+          <li><b>2 h au plus par job</b> (<code>limit</code>) : au-delà, il est arrêté avec tous ses processus (<code>taskkill /T</code>) et marqué <i>timeout</i>. L'oracle s'arrête de lui-même à 110 min.</li>
+          <li><b>Programmé</b> : un job <i>scheduled</i> attend son <code>notBefore</code> (ce soir, 21 h).</li>
+          <li><b>Les plus courts d'abord</b> : les duels de 20 min passent avant les passes de 2 h de l'oracle. La file est relue entre deux jobs.</li>
+          <li><b>Le tri</b> : <code>--list</code> ne montre que les 3 derniers finis, <code>--archive</code> range le reste dans <code>data/backlog-done.json</code>.</li>
+          <li><b>Le portable</b> : <code>--queue laptop</code> lit sa propre file, transportée par git ; <code>LOPIN_THREADS</code> plafonne les fils (4 cœurs, 8 fils : un tiers du PC fixe).</li>
+          <li><b>Le cloud, si besoin</b> : 16 à 48 vCPU dédiés chez Hetzner, environ 0,15 à 0,60 €/h, soit 1,5 à 5 € la nuit (<code>docs/cloud.md</code>).</li>
+          <li><b>La règle 400 / 800</b> : le jour, les tris dans l'arbre à 400 itérations ; la nuit, la validation à 800.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="puzzles" aria-labelledby="t-puzzles">
+    <div>
+      <p class="eyebrow">X · Pour Sami</p>
+      <h2 id="t-puzzles">Puzzles et lecteur</h2>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Les puzzles</h3>
+        <div class="donut-box" style="grid-template-columns: 170px minmax(0, 1fr)">
+          <svg id="puzzle-donut" viewBox="0 0 170 170" width="170" height="170" role="img" aria-label="Puzzles par sorte"></svg>
+          <div class="legend" id="puzzle-legend" style="flex-direction: column; gap: 6px"></div>
+        </div>
+        <ul class="facts">
+          <li>Un numéro stable par puzzle (<code>--add</code> ajoute sans renuméroter), à copier pour en parler.</li>
+          <li>Une étoile pour les favoris, « Favoris seulement », et depuis ce soir « Non résolus seulement », coché par défaut.</li>
+          <li>Le bouton suivant passe au vert une fois gagné ; perdu, « Révéler » et « Recommencer » s'allument.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Le lecteur de replays</h3>
+        <ul class="facts">
+          <li>Chaque coup de Sami est pesé par le <b>Stratège 2.1</b> : 16 fins de partie simulées pour chacun de ses 4 meilleurs coups, et pour le coup joué, sur les mêmes donnes.</li>
+          <li>Le calcul se fait dans un worker, coup par coup : le replay s'ouvre tout de suite, les avis arrivent ensuite.</li>
+          <li>Un seul coup légal : pas d'avis, plutôt qu'une erreur.</li>
+          <li>Chaque partie note maintenant les jokers de chaque joueur, en main de départ et piochés.</li>
+        </ul>
+        <p class="small muted">L'onglet « Le tour 2 de Sami » des situations de jeu montre un de ces avis.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="suite" aria-labelledby="t-suite">
+    <div>
+      <p class="eyebrow">XI · Ce soir, demain</p>
+      <h2 id="t-suite">La suite</h2>
+    </div>
+    <div class="grid3" id="next"></div>
+  </section>
+</main>
+
+<footer><div class="wrap" id="foot"></div></footer>
+<div id="tip" role="tooltip" hidden></div>
+
+<script>
+const DATA = {"built":"03/10/2026","builtAt":"2026-10-03T17:58","journal":{"note":"Le carnet du 0.9 : les essais du 02/10 au soir au 03/10 au soir, recopiés de docs/strategie.md et des sorties des duels. Lu par npm run journal (scripts/journal.js), qui y ajoute les mesures de data/*.json. Les positions d'exemple sont figées ici : oracle/ est hors de git.","period":"du 02/10, 17 h, au 03/10 au soir","families":{"phases":"Deux phases","premiere":"La première carte","formes":"Brelans ou suites","replays":"Règles des replays","jokers":"Les jokers","appats":"Piège et appât","oracle":"Les idées de l'oracle","fenetres":"Fenêtres de tour","vitesse":"Vitesse, temps égal","outils":"Outils et backlog","lecteur":"Lecteur et puzzles"},"benches":{"coeur":"cœur contre cœur","arbre400":"arbre @400, 10 min","long800":"arbre @800, 20 min","temps":"arbre, à temps égal","fin":"fin de partie (Δ points)","partie":"parties entières (Δ points)"},"attempts":[{"name":"Deux phases : bascule au tour 22","family":"phases","bench":"fin","score":0,"lo":-3.3,"hi":3.3,"verdict":"neutre","when":"02/10 19:44","note":"Cœur nu et arbre à 7 coups après la bascule : 10 % d'itérations en plus, rien ne change au tour 30."},{"name":"Deux phases : bascule au tour 20","family":"phases","bench":"fin","score":1.3,"lo":-1.9,"hi":4.5,"verdict":"neutre","when":"02/10 19:44","note":"Réduire l'arbre ne libère pas de temps : tout est dans la simulation."},{"name":"Deux phases : bascule au tour 18","family":"phases","bench":"fin","score":-2,"lo":-5.5,"hi":1.5,"verdict":"neutre","when":"02/10 19:44","note":""},{"name":"Deux phases au tour 20, parties entières","family":"phases","bench":"partie","score":-1.3,"lo":-5.5,"hi":2.9,"verdict":"perd","when":"03/10 08:24","note":"400 donnes contre le Stratège, où le 0.9 fait 66,8 %."},{"name":"Deux phases à la 1re borne, parties entières","family":"phases","bench":"partie","score":-2,"lo":-6.3,"hi":2.3,"verdict":"perd","when":"03/10 08:24","note":""},{"name":"outbid 0,1","family":"premiere","bench":"coeur","score":50.6,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 21:48","note":"Une carte un cran au-dessus d'une carte seule adverse."},{"name":"outbid 0,2","family":"premiere","bench":"coeur","score":51.1,"lo":50.2,"hi":52.1,"verdict":"neutre","when":"02/10 21:48","note":"50,4 % et 51,2 % sur deux autres jeux de donnes."},{"name":"outbid 0,4","family":"premiere","bench":"coeur","score":50.3,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 21:48","note":""},{"name":"outbid seulement en retard de bornes","family":"premiere","bench":"coeur","score":50.4,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 21:48","note":"50,3 % et 50,5 % : pas mieux que la règle générale."},{"name":"exposure 0,1 / 0,2","family":"premiere","bench":"coeur","score":50.25,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 21:48","note":"Ouvrir une borne vierge avec un v coûte selon la chance que l'adversaire tienne un v + 1."},{"name":"exposure 0,4","family":"premiere","bench":"coeur","score":48.9,"lo":null,"hi":null,"verdict":"perd","when":"02/10 21:48","note":""},{"name":"obex (outbid + exposure 0,2)","family":"premiere","bench":"coeur","score":51.4,"lo":50.2,"hi":53.1,"verdict":"tendance","when":"02/10 21:48","note":"51,2 / 51,9 / 51,2 % : petit mais régulier sur trois jeux de donnes."},{"name":"obex dans l'arbre","family":"premiere","bench":"long800","score":50.5,"lo":45.8,"hi":55.2,"verdict":"neutre","when":"03/10 08:24","note":"192 paires : le gain du cœur ne passe pas dans l'arbre."},{"name":"plan 0,1","family":"formes","bench":"coeur","score":49.5,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:04","note":"Suivre la figure dominante de ses côtés complets."},{"name":"plan 0,2","family":"formes","bench":"coeur","score":48,"lo":47,"hi":49.1,"verdict":"perd","when":"02/10 22:04","note":""},{"name":"plan 0,4","family":"formes","bench":"coeur","score":47.7,"lo":46.6,"hi":48.7,"verdict":"perd","when":"02/10 22:04","note":""},{"name":"ends 0,1 (brelans aux bouts)","family":"formes","bench":"coeur","score":47.7,"lo":46.6,"hi":48.7,"verdict":"perd","when":"02/10 22:04","note":"Un brelan de 5 coupe les suites 3-4-5, 4-5-6 et 5-6-7, dans trois couleurs."},{"name":"ends 0,2 / 0,4","family":"formes","bench":"coeur","score":47.55,"lo":null,"hi":null,"verdict":"perd","when":"02/10 22:04","note":"47,9 % et 47,2 %."},{"name":"ends, le joker seul","family":"formes","bench":"coeur","score":50.55,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:04","note":"50,6 % puis 50,5 % sur d'autres donnes."},{"name":"midRuns 0,1 (suites au milieu)","family":"formes","bench":"coeur","score":50.3,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:04","note":"50,5 / 50,3 / 50,2 %."},{"name":"weakRuns 0,1 / 0,2 (suites basses)","family":"formes","bench":"coeur","score":49.35,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:04","note":"49,5 % et 49,2 %."},{"name":"Les quatre formes ensemble","family":"formes","bench":"coeur","score":45.9,"lo":44.8,"hi":47.1,"verdict":"perd","when":"02/10 22:04","note":"Avec obex en plus : 45,5 %. Elles effacent son gain."},{"name":"junk 0,2 (éviter les côtés sans figure)","family":"replays","bench":"coeur","score":53.2,"lo":52.5,"hi":54.6,"verdict":"gagne","when":"02/10 22:17","note":"53,6 / 52,9 / 53,0 % : le plus gros gain du cœur depuis connector, ce soir-là."},{"name":"facing (jouer face à un côté plein)","family":"replays","bench":"coeur","score":48.15,"lo":null,"hi":null,"verdict":"perd","when":"02/10 22:17","note":"Ce qui arrive au gagnant, pas ce qui le fait gagner : le piège de la corrélation."},{"name":"underbid (ne pas répondre plus bas)","family":"replays","bench":"coeur","score":50.3,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:17","note":""},{"name":"nextToWon (à côté d'une borne gagnée)","family":"replays","bench":"coeur","score":50.6,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:17","note":""},{"name":"deepen (2e carte en retard de bornes)","family":"replays","bench":"coeur","score":50.15,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:48","note":"La règle décrivait l'erreur du Basique, pas un secret des gagnants."},{"name":"jkx (junk + obex)","family":"replays","bench":"coeur","score":54.2,"lo":53.6,"hi":54.7,"verdict":"gagne","when":"02/10 22:17","note":"53,6 / 54,3 / 54,7 % : les deux s'additionnent."},{"name":"jkx dans l'arbre","family":"replays","bench":"long800","score":51.7,"lo":46.6,"hi":56.9,"verdict":"neutre","when":"03/10 08:24","note":"144 paires : environ +2 dans l'arbre, invisible à ± 5."},{"name":"junk seul dans l'arbre","family":"replays","bench":"long800","score":52.4,"lo":47,"hi":57.8,"verdict":"neutre","when":"03/10 08:24","note":"144 paires."},{"name":"jokerFull (face à un côté plein)","family":"jokers","bench":"coeur","score":49.9,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:48","note":"50,0 / 49,8 / 49,9 % : le cœur le fait déjà."},{"name":"jokerWait (attendre que l'adversaire ferme)","family":"jokers","bench":"coeur","score":49.7,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:48","note":""},{"name":"jokerMid (brelan du milieu)","family":"jokers","bench":"coeur","score":50,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:48","note":""},{"name":"jokerRuns (le joker finit une suite)","family":"jokers","bench":"coeur","score":50.8,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 22:48","note":"+0,8 régulier, mais n'ajoute rien à jkx (jkxr : 54,1 %)."},{"name":"Le piège du joker (paire morte)","family":"appats","bench":"coeur","score":50.05,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 23:05","note":"Poids 0,1 à 0,8 : 50,0 / 50,3 / 50,2 / 49,7 %. Un robot compte les cartes, il ne se fait pas piéger."},{"name":"L'appât 0,1 (débuts bas hors des zones)","family":"appats","bench":"coeur","score":50.6,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 23:34","note":"L'adversaire mord (+0,2 carte en face) mais ne vide pas ses suites hautes."},{"name":"L'appât 0,4","family":"appats","bench":"coeur","score":50.3,"lo":null,"hi":null,"verdict":"neutre","when":"02/10 23:34","note":"50,8 / 49,6 / 50,6 %."},{"name":"stay 0,2","family":"oracle","bench":"coeur","score":50.2,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 11:20","note":"Rester sur ses côtés entamés, comme l'oracle."},{"name":"stay 0,4","family":"oracle","bench":"coeur","score":51.6,"lo":50.7,"hi":52.1,"verdict":"tendance","when":"03/10 11:20","note":"51,9 / 50,7 / 52,1 %."},{"name":"stay 0,8","family":"oracle","bench":"coeur","score":45.15,"lo":null,"hi":null,"verdict":"perd","when":"03/10 11:20","note":"44,5 et 45,8 % : trop, c'est trop."},{"name":"noAnswer (ne pas répondre)","family":"oracle","bench":"coeur","score":50.3,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 11:20","note":""},{"name":"noBlindOpen (pas d'ouverture à l'aveugle)","family":"oracle","bench":"coeur","score":50.15,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 11:20","note":""},{"name":"junk négatif −0,1 (des côtés sans figure, comme l'oracle)","family":"oracle","bench":"coeur","score":44.3,"lo":null,"hi":null,"verdict":"perd","when":"03/10 11:20","note":"Donne raison à junk, pas à l'oracle."},{"name":"junk négatif −0,2","family":"oracle","bench":"coeur","score":38.8,"lo":null,"hi":null,"verdict":"perd","when":"03/10 11:20","note":""},{"name":"Jokers libres (sans l'habitude joker)","family":"oracle","bench":"coeur","score":48.9,"lo":null,"hi":null,"verdict":"perd","when":"03/10 11:20","note":""},{"name":"Toutes les idées de l'oracle ensemble","family":"oracle","bench":"coeur","score":47.5,"lo":null,"hi":null,"verdict":"perd","when":"03/10 11:20","note":"45,5 / 47,8 / 49,1 %."},{"name":"jkxs (jkx + stay 0,4)","family":"oracle","bench":"coeur","score":54.9,"lo":54.5,"hi":55.5,"verdict":"gagne","when":"03/10 11:20","note":"55,5 / 54,7 / 54,5 %."},{"name":"stay 0,5","family":"oracle","bench":"coeur","score":52.6,"lo":null,"hi":null,"verdict":"tendance","when":"03/10 12:10","note":""},{"name":"stay, seulement la 2e carte","family":"oracle","bench":"coeur","score":50.9,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 12:10","note":""},{"name":"stay, seulement la 3e carte","family":"oracle","bench":"coeur","score":44.6,"lo":null,"hi":null,"verdict":"perd","when":"03/10 12:10","note":"Compléter un côté pour le compléter fait perdre."},{"name":"stay jusqu'au tour 20","family":"oracle","bench":"coeur","score":51.9,"lo":null,"hi":null,"verdict":"tendance","when":"03/10 12:10","note":"À partir du tour 20 seulement : 49,1 %."},{"name":"stay seulement en retard de bornes","family":"oracle","bench":"coeur","score":52.2,"lo":null,"hi":null,"verdict":"tendance","when":"03/10 12:10","note":""},{"name":"stfig 0,4 (stay si une figure reste possible)","family":"oracle","bench":"coeur","score":55.8,"lo":55.1,"hi":56.8,"verdict":"gagne","when":"03/10 12:10","note":"55,1 / 55,6 / 56,8 %."},{"name":"stfig 0,6","family":"oracle","bench":"coeur","score":58,"lo":57.9,"hi":58,"verdict":"gagne","when":"03/10 12:10","note":"58,0 / 57,9 / 58,0 % : +8 points, le plus gros gain du cœur à ce jour."},{"name":"stfig 0,8 à 1,5","family":"oracle","bench":"coeur","score":56.2,"lo":55.5,"hi":57,"verdict":"gagne","when":"03/10 12:10","note":"57,0 / 56,6 / 55,5 / 55,5 % : le sommet est à 0,6."},{"name":"jkxf6 (jkx + stfig 0,6)","family":"oracle","bench":"coeur","score":57.8,"lo":57.6,"hi":58,"verdict":"gagne","when":"03/10 12:10","note":"Contre stfig6 : 50,8 et 49,2 %. stfig couvre déjà junk."},{"name":"stay 0,4 dans l'arbre","family":"oracle","bench":"arbre400","score":58.3,"lo":52.1,"hi":64.6,"verdict":"tendance","when":"03/10 12:10","note":"96 paires, en miroir. Les tris de 10 min ont déjà trompé."},{"name":"stfig6 dans l'arbre","family":"oracle","bench":"arbre400","score":54.9,"lo":47.8,"hi":61.9,"verdict":"tendance","when":"03/10 12:10","note":"72 paires, en miroir."},{"name":"stay 0,4 depuis le tour 10","family":"oracle","bench":"fin","score":-0.5,"lo":-6.5,"hi":5.5,"verdict":"neutre","when":"03/10 12:10","note":"Si l'effet existe, il se joue avant le tour 10."},{"name":"stfig6, duel long n°0","family":"oracle","bench":"long800","score":53.8,"lo":47.6,"hi":59.9,"verdict":"tendance","when":"03/10 17:25","note":"240 parties à 800 itérations."},{"name":"stfig6, duel long n°1","family":"oracle","bench":"long800","score":58.3,"lo":52.5,"hi":64.2,"verdict":"gagne","when":"03/10 17:43","note":"240 parties à 800 itérations, d'autres donnes."},{"name":"stfig6, duels longs n°2 et 3","family":"oracle","bench":"long800","score":null,"lo":null,"hi":null,"verdict":"attente","when":"03/10 soir","note":"En cours dans le backlog."},{"name":"junk aux tours 1-10","family":"fenetres","bench":"arbre400","score":47.9,"lo":42,"hi":53.9,"verdict":"neutre","when":"03/10 12:44","note":""},{"name":"obex aux tours 1-10","family":"fenetres","bench":"arbre400","score":52.1,"lo":46.4,"hi":57.8,"verdict":"neutre","when":"03/10 12:44","note":""},{"name":"jkx aux tours 1-10","family":"fenetres","bench":"arbre400","score":48.8,"lo":42.7,"hi":54.8,"verdict":"neutre","when":"03/10 12:44","note":""},{"name":"whole aux tours 1-10","family":"fenetres","bench":"arbre400","score":49.2,"lo":43.3,"hi":55.1,"verdict":"neutre","when":"03/10 12:44","note":""},{"name":"stay 0,4 aux tours 1-10 (stay4e10)","family":"fenetres","bench":"arbre400","score":55.4,"lo":49.5,"hi":61.3,"verdict":"tendance","when":"03/10 12:44","note":"Le seul à passer le seuil du tri (55 %) : deux duels longs au backlog."},{"name":"stfig6 aux tours 1-10","family":"fenetres","bench":"arbre400","score":51.7,"lo":45.5,"hi":57.8,"verdict":"neutre","when":"03/10 12:44","note":""},{"name":"stay4e10, duels longs","family":"fenetres","bench":"long800","score":null,"lo":null,"hi":null,"verdict":"attente","when":"03/10 soir","note":"En cours dans le backlog."},{"name":"middle du 0.9, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":50.7,"lo":45,"hi":56.4,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"spread du 0.9, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":50,"lo":44.4,"hi":55.6,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"connector du 0.9, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":49,"lo":43.5,"hi":54.5,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"habitude joker, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":49.7,"lo":44.4,"hi":54.9,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"habitude opening, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":50.9,"lo":46.1,"hi":55.7,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"habitude suited, tours 1-10 seulement","family":"fenetres","bench":"arbre400","score":50.3,"lo":45.5,"hi":55.1,"verdict":"neutre","when":"03/10 15:00","note":""},{"name":"middle du 0.9, dès le tour 15","family":"fenetres","bench":"arbre400","score":49.3,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 15:18","note":""},{"name":"spread du 0.9, dès le tour 15","family":"fenetres","bench":"arbre400","score":49,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 15:18","note":""},{"name":"connector du 0.9, dès le tour 15","family":"fenetres","bench":"arbre400","score":54.5,"lo":49.5,"hi":59.5,"verdict":"neutre","when":"03/10 15:18","note":"Du bruit : repris à temps égal, il retombe à 48,5 %."},{"name":"habitude joker, dès le tour 15","family":"fenetres","bench":"arbre400","score":50,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 15:18","note":""},{"name":"habitude opening, dès le tour 15","family":"fenetres","bench":"arbre400","score":50.9,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 15:18","note":""},{"name":"habitude suited, dès le tour 15","family":"fenetres","bench":"arbre400","score":41.1,"lo":35.5,"hi":46.8,"verdict":"perd","when":"03/10 15:18","note":"Le premier bonus du 0.9 dont on voit le travail : il sert au début."},{"name":"connector dès le tour 11, à temps égal","family":"fenetres","bench":"temps","score":48.7,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 16:25","note":""},{"name":"connector dès le tour 15, à temps égal","family":"fenetres","bench":"temps","score":48.5,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 16:25","note":""},{"name":"connector dès le tour 19, à temps égal","family":"fenetres","bench":"temps","score":48.9,"lo":null,"hi":null,"verdict":"neutre","when":"03/10 16:25","note":""},{"name":"Simulations tronquées, trunc=5","family":"vitesse","bench":"temps","score":41.1,"lo":35,"hi":47.3,"verdict":"perd","when":"03/10 16:05","note":"17 à 27 % de temps en moins par itération, mais juger la partie avant sa fin coûte plus."},{"name":"Simulations tronquées, trunc=8","family":"vitesse","bench":"temps","score":45.6,"lo":41.7,"hi":49.6,"verdict":"perd","when":"03/10 16:05","note":"Plus on coupe tôt, plus on perd."},{"name":"Le cœur sans aucun bonus (nobonus)","family":"vitesse","bench":"long800","score":null,"lo":null,"hi":null,"verdict":"attente","when":"ce soir, 21 h","note":"À temps égal (@t800) : environ un tiers d'itérations en plus."},{"name":"Le cœur avec suited seul (lean)","family":"vitesse","bench":"long800","score":null,"lo":null,"hi":null,"verdict":"attente","when":"ce soir, 21 h","note":"À temps égal : garder la seule habitude qui travaille."}],"bonusCosts":[{"key":"middle","label":"middle","cost":6.6,"early":50.7,"late":49.3},{"key":"spread","label":"spread","cost":8.8,"early":50,"late":49},{"key":"connector","label":"connector","cost":13.7,"early":49,"late":54.5,"equal":48.5},{"key":"joker","label":"joker","cost":5.2,"early":49.7,"late":50},{"key":"opening","label":"opening","cost":9.9,"early":50.9,"late":50.9},{"key":"suited","label":"suited","cost":8.8,"early":50.3,"late":41.1}],"allBonusCost":24.8,"speed":[{"when":"02/10","label":"La rétrospective","perSecond":556,"note":"Le point de départ, mesuré machine au repos."},{"when":"03/10, 2 h","label":"1re passe","perSecond":588,"note":"Les vues et withoutCard écrites champ par champ ; plus de includes quadratique dans le stratège."},{"when":"03/10, 12 h 42","label":"2e passe","perSecond":909,"note":"potential : tableaux de travail réutilisés et cartes invisibles comptées une fois ; mémo à clé numérique."},{"when":"03/10, 15 h","label":"Le chemin rapide","perSecond":1000,"note":"score3 : côtés complets, un joker n'importe où, deux jokers par table."}],"oracleSpeed":{"before":25,"after":13.7,"perPosition":3.7},"jokerLuck":[{"jokers":0,"game":36,"start":48,"games":1991,"startGames":5870},{"jokers":1,"game":50,"start":56,"games":4038,"startGames":2076},{"jokers":2,"game":64,"start":57,"games":1987,"startGames":70}],"samiLuck":[{"jokers":0,"rate":28,"games":18},{"jokers":1,"rate":50,"games":38},{"jokers":2,"rate":56,"games":16}],"trapStats":[{"label":"paire morte","count":2323,"joker":57,"border":78,"game":60},{"label":"paire vivante","count":4641,"joker":49,"border":74,"game":58}],"lowStarts":[{"label":"paire basse (1-3)","won":58,"facing":1.09},{"label":"paire moyenne (4-7)","won":71,"facing":0.89},{"label":"paire haute (8-10)","won":75,"facing":0.8},{"label":"suite basse","won":53,"facing":1.25},{"label":"suite moyenne","won":68,"facing":1.04},{"label":"suite haute","won":66,"facing":0.99}],"oracleGroups":[{"label":"tours 15-16","positions":858,"top3":60,"top8":40,"same":23},{"label":"tours 20-21","positions":1105,"top3":56,"top8":35,"same":25},{"label":"tours 25-26","positions":1181,"top3":48,"top8":31,"same":27},{"label":"dernière colonne","positions":1187,"top3":50,"top8":37,"same":23}],"impactZones":[{"from":1,"to":5,"mean":0.4,"label":"le brouillard"},{"from":6,"to":14,"mean":11.9,"label":"le milieu"},{"from":15,"to":29,"mean":19.4,"label":"la zone chère"}],"examples":{"sami2":{"file":"replays/2026-10-03_16-37-20_experimental-vs-sami_4-2.json","turn":2,"me":1,"pile":29,"hand":["2♠","8♥","6♥","4♣","6♣","3♦"],"board":[{"mine":[],"theirs":[],"owner":null},{"mine":[],"theirs":[],"owner":null},{"mine":[],"theirs":[],"owner":null},{"mine":[],"theirs":["7♠"],"owner":null},{"mine":[],"theirs":[],"owner":null},{"mine":[],"theirs":[],"owner":null},{"mine":[],"theirs":[],"owner":null}],"played":"8♥→4","advice":[{"card":"6♥","border":6,"gain":0.7513},{"card":"6♥","border":1,"gain":0.6888},{"card":"6♥","border":2,"gain":0.6888},{"card":"6♥","border":7,"gain":0.6888},{"card":"8♥","border":4,"gain":0.5398}],"playedRate":0.5398315778550563,"drew":"5♥"},"sami34":{"file":"replays/2026-10-03_10-18-17_stratege-vs-sami_4-2.json","turn":34,"me":1,"pile":0,"hand":["10♠","10♦","7♠","5♣","2♣"],"board":[{"mine":["4♣","5♥","4♥"],"theirs":["2♦","2♥","JK"],"owner":"them"},{"mine":["8♥","6♥"],"theirs":["4♦","3♦","5♦"],"owner":"them"},{"mine":["10♥"],"theirs":["3♣","6♣","10♣"],"owner":null},{"mine":["7♣","8♣","9♣"],"theirs":["7♥"],"owner":"me"},{"mine":["7♦","8♦","9♦"],"theirs":["9♥","9♠"],"owner":"me"},{"mine":["6♦"],"theirs":["5♠","3♠","6♠"],"owner":"them"},{"mine":["1♣","1♦","2♠"],"theirs":["1♥","1♠"],"owner":null}],"played":"10♠→3","advice":[{"card":"10♠","border":3,"gain":0.2778},{"card":"10♦","border":3,"gain":0.2778}],"playedRate":0.27780000132229093},"samiEnd":{"board":[{"mine":["4♣","5♥","4♥"],"theirs":["2♦","2♥","JK"],"owner":"them"},{"mine":["8♥","6♥"],"theirs":["4♦","3♦","5♦"],"owner":"them"},{"mine":["10♥","10♠"],"theirs":["3♣","6♣","10♣"],"owner":null},{"mine":["7♣","8♣","9♣"],"theirs":["7♥"],"owner":"me"},{"mine":["7♦","8♦","9♦"],"theirs":["9♥","9♠"],"owner":"me"},{"mine":["6♦"],"theirs":["5♠","3♠","6♠"],"owner":"them"},{"mine":["1♣","1♦","2♠"],"theirs":["1♥","1♠","JK"],"owner":"them"}],"hand":["10♦","7♠","5♣","2♣"],"last":{"turn":35,"player":0,"hand":["4♠","8♠","3♥","JK"],"pile":0,"move":{"card":"JK","border":7},"side":{"mine":["1♥","1♠"],"theirs":["1♣","1♦","2♠"],"wasEmpty":false,"completes":true,"theirsFull":true},"joker":true,"candidates":[{"card":"JK","border":7,"gain":1.0855},{"card":"8♠","border":7,"gain":0.8857},{"card":"4♠","border":7,"gain":0.8614},{"card":"3♥","border":7,"gain":0.8552}],"drew":null},"winner":0},"oracle":{"file":"2026-10-02-10-20-40_experimental@0.9.0_vs_experimental@0.9.0.json","game":164,"turn":16,"me":1,"pile":15,"hand":["8♥","8♣","4♠","6♦","8♠","2♥"],"board":[{"mine":["2♠"],"theirs":["7♠"],"owner":null},{"mine":["3♥"],"theirs":[],"owner":null},{"mine":["8♦"],"theirs":["10♠","10♣"],"owner":null},{"mine":["10♥"],"theirs":["5♠"],"owner":null},{"mine":[],"theirs":["1♦"],"owner":null},{"mine":["1♣","1♠"],"theirs":["6♥","7♥"],"owner":null},{"mine":["4♣"],"theirs":["3♦"],"owner":null}],"oracle":"6♦→3","share":0.7705676855895196,"runnerUp":0.016768558951965065,"rank":20,"core":["6♦→5","8♥→3","8♣→3"],"played":"2♥→2","legal":42,"traits":{"oracle":["pose une 2e carte","bâtit une suite de couleur","carte moyenne (4-7)","au centre (bornes 3-5)"],"core":["répond à une borne adverse","ouvre sans suite prévue en main","carte moyenne (4-7)","au centre (bornes 3-5)"]},"rank_exp":20,"top_exp":["6♦→5","8♥→3","8♣→3","8♠→3","2♥→2"],"rank_stfig6":9,"top_stfig6":["8♥→3","8♣→3","8♠→3","2♥→2","8♥→4"]},"trap":{"file":"2026-10-02-02-22-40_experimental@0.9.0_vs_experimental@0.9.0.json","game":49,"pairTurn":14,"jokerTurn":20,"border":2,"card":"4♦","value":4,"me":1,"before":{"hand":["3♠","9♥","6♠","JK","6♦","4♦"],"board":[{"mine":["2♦"],"theirs":["10♠"],"owner":null},{"mine":["4♣"],"theirs":["4♠"],"owner":null},{"mine":["9♣"],"theirs":["7♣","6♣"],"owner":null},{"mine":["7♦"],"theirs":["7♥"],"owner":null},{"mine":["6♥"],"theirs":[],"owner":null},{"mine":[],"theirs":["8♥"],"owner":null},{"mine":["10♣"],"theirs":["4♥"],"owner":null}],"pile":17},"atJoker":{"hand":["9♥","6♠","JK","6♦","2♥","3♥"],"board":[{"mine":["2♦","3♦"],"theirs":["10♠"],"owner":null},{"mine":["4♣","4♦"],"theirs":["4♠","2♠"],"owner":null},{"mine":["9♣"],"theirs":["7♣","6♣"],"owner":null},{"mine":["7♦"],"theirs":["7♥"],"owner":null},{"mine":["6♥"],"theirs":["7♠"],"owner":null},{"mine":["3♠"],"theirs":["8♥"],"owner":null},{"mine":["10♣"],"theirs":["4♥","10♥"],"owner":null}],"pile":11}},"weak":{"file":"2026-10-02-02-22-40_experimental@0.9.0_vs_experimental@0.9.0.json","game":18,"border":5,"me":1,"board":[{"mine":["3♥"],"theirs":["4♥","5♠"],"owner":null},{"mine":["7♥","8♥","9♥"],"theirs":["5♦","6♦"],"owner":"me"},{"mine":["2♠","3♠","4♠"],"theirs":["1♠"],"owner":"me"},{"mine":["8♠","6♠"],"theirs":["2♥","2♦"],"owner":null},{"mine":["1♦","1♥","JK"],"theirs":["6♥","5♥","10♥"],"owner":"me"},{"mine":["4♣"],"theirs":["9♣","7♦","7♠"],"owner":null},{"mine":["8♣","2♣","10♣"],"theirs":["1♣","6♣","5♣"],"owner":"me"}],"winner":true}},"since":"2026-10-02 17:00","commitLabels":{"b9cbecc":["phases","Juger une borne avec ses voisines ; nommer les cœurs à tester dans l’arbre"],"e2a1135":["phases","Tester le jugement du cœur dans l’arbre ; ouvrir le cœur dans la rétrospective"],"d2e07d6":["phases","Jouer la partie en deux phases ; l’outil A/B contre le Stratège"],"d83f19d":["premiere","Surenchérir d’un cran sur une carte seule ; faire payer une borne vierge"],"45d55c4":["formes","Choisir son jeu : brelans ou suites de couleur"],"4b154e3":["replays","Tirer des règles des parties gardées ; éviter les côtés sans figure"],"f9d2d67":["jokers","Lire où vont les jokers ; les règles selon qui les joue"],"54b4734":["appats","Chercher le piège du joker de Sami ; l’essayer cœur contre cœur"],"3e55811":["appats","Lire les bornes gagnées avec des cartes faibles"],"4f331ad":["appats","L’appât : des débuts bas sur les bornes qui ne comptent pas"],"9e3e157":["outils","Mesurer le prix d’une erreur aux tours 6 à 14 (nuit)"],"f1d7e89":["oracle","L’oracle : chercher tous les coups sur des positions réelles"],"92ea3fd":["outils","Plafonner chaque job de nuit à 2 h ; épargner le temps de l’oracle"],"ee6c35a":["outils","Documenter un serveur loué ; plafonner les fils (LOPIN_THREADS)"],"7d10a35":["outils","Une file de jobs pour le portable, transportée par git"],"6def7e6":["vitesse","Ne lire la forme d’un côté que si une idée la demande"],"ccf91ec":["vitesse","1re passe sur le chemin chaud : 14 % de CPU en moins, pas un coup changé"],"495c511":["outils","Les résultats de la nuit : duels, la courbe d’erreur complète, l’oracle"],"9e554e0":["oracle","Confirmer les écarts de l’oracle par le jeu ; programmer la nuit"],"8df56f6":["jokers","Compter les jokers de chaque joueur, et leur taux de victoire"],"f75a97a":["oracle","Lire les 4 331 positions de l’oracle : la moitié de ses coups hors du top 3"],"8210ab5":["oracle","Pousser le cœur dans le sens de l’oracle : rester sur ses côtés paie"],"ad164da":["oracle","stfig : stay seulement si une figure reste possible, le plus gros gain"],"644dabe":["outils","Garder un test sous la limite de complexité"],"04c4223":["outils","Écrire la règle 400 / 800"],"11b92ff":["vitesse","2e passe sur le chemin chaud : 35 % de CPU en moins, pas un coup changé"],"c6845a1":["vitesse","Remesurer sur machine libre : 909 itérations par seconde"],"d78150c":["fenetres","Des idées actives aux premiers tours seulement"],"220a3ea":["lecteur","Puzzles : un numéro stable, des favoris, des boutons qui disent où on en est"],"d7069c3":["lecteur","Ajouter des puzzles sans renuméroter les anciens"],"08b6adb":["lecteur","50 puzzles de fin et 20 de gain immédiat ; les bonus du début"],"08cbc04":["vitesse","Côtés complets et paires de jokers par le chemin rapide de l’évaluateur"],"d511d78":["fenetres","Une habitude gardée aux premiers tours seulement"],"db11b69":["outils","Backlog : les 3 derniers jobs finis, le reste archivé"],"45ef53c":["outils","Les duels courts de la nuit avant les passes de 2 h de l’oracle"],"dd55ecb":["fenetres","Les bonus du 0.9 aux tours 1-10 : neutres ; 1 000 itérations par seconde"],"20e01ca":["fenetres","Des bonus en fin de partie seulement ; la règle du temps égal"],"6d48dd6":["vitesse","Les simulations tronquées, jugées par les chances du cœur"],"5724a9a":["fenetres","connector à partir du tour 11 ou 19"],"b1bd8e3":["lecteur","Le lecteur pèse les coups avec le Stratège 2.1"],"59e6838":["outils","Lancer les six duels longs maintenant ; l’oracle reste pour la nuit"],"08d2b83":["vitesse","Au backlog : le cœur sans bonus, et avec suited seul, à temps égal"],"4d8b8a0":["lecteur","Puzzles : « Non résolus seulement », coché par défaut"]}},"commits":[{"at":"2026-10-02T17:27","hash":"b9cbecc","subject":"Judge a border with its neighbours, and name the cores to test in the tree"},{"at":"2026-10-02T18:41","hash":"e2a1135","subject":"Test the core's judgement in the tree, and open up the core in the retrospective"},{"at":"2026-10-02T19:44","hash":"d2e07d6","subject":"Play the game in two phases, and A/B variants against the Stratège"},{"at":"2026-10-02T21:48","hash":"d83f19d","subject":"Outbid a lone card by one notch, and price an untouched border"},{"at":"2026-10-02T22:04","hash":"45d55c4","subject":"Try choosing a game between trips and suited runs"},{"at":"2026-10-02T22:17","hash":"4b154e3","subject":"Mine rules from the kept games, and avoid sides with no figure"},{"at":"2026-10-02T22:48","hash":"f9d2d67","subject":"Read where the jokers go, and mine rules by who plays them"},{"at":"2026-10-02T23:05","hash":"54b4734","subject":"Look for Sami's joker trap in the kept games, and try it core vs core"},{"at":"2026-10-02T23:17","hash":"3e55811","subject":"Read the borders won with low cards"},{"at":"2026-10-02T23:34","hash":"4f331ad","subject":"Try Sami's bait: low starts on borders that matter to neither side"},{"at":"2026-10-02T23:49","hash":"9e3e157","subject":"Measure the price of an error on turns 6 to 14"},{"at":"2026-10-03T00:39","hash":"f1d7e89","subject":"Search every move on kept positions, to find what the core leaves out"},{"at":"2026-10-03T01:01","hash":"92ea3fd","subject":"Cap every night job at two hours, and spare the oracle's time"},{"at":"2026-10-03T01:15","hash":"ee6c35a","subject":"Document running the night jobs on a rented server, and cap the threads"},{"at":"2026-10-03T01:25","hash":"7d10a35","subject":"Give the laptop its own backlog queue, carried by git"},{"at":"2026-10-03T01:45","hash":"6def7e6","subject":"Read a side's shape only when a shape idea asks for it"},{"at":"2026-10-03T02:09","hash":"ccf91ec","subject":"Trim the core's hot path: about 14 % less CPU, not one move changed"},{"at":"2026-10-03T08:24","hash":"495c511","subject":"Bring in the night of 03/10: tree duels, the full error curve, the oracle"},{"at":"2026-10-03T08:40","hash":"9e554e0","subject":"Confirm the oracle's gaps by play, and schedule jobs for the night"},{"at":"2026-10-03T10:45","hash":"8df56f6","subject":"Count the jokers each player got, and their win rate"},{"at":"2026-10-03T10:54","hash":"f75a97a","subject":"Read the oracle's 4,331 positions: half its moves lie outside the core's top 3"},{"at":"2026-10-03T11:20","hash":"8210ab5","subject":"Push the core the way the oracle played: staying on started sides pays"},{"at":"2026-10-03T12:10","hash":"ad164da","subject":"Narrow stay to sides that keep a figure: the core's biggest gain yet"},{"at":"2026-10-03T12:11","hash":"644dabe","subject":"Keep the oracle-ideas test helper under the complexity limit"},{"at":"2026-10-03T12:34","hash":"04c4223","subject":"Write down the 400 / 800 rule for tree budgets"},{"at":"2026-10-03T12:42","hash":"11b92ff","subject":"Second pass on the core's hot path: about 35 % less CPU, not one move changed"},{"at":"2026-10-03T12:42","hash":"c6845a1","subject":"Re-measure the core's cost on an idle machine: 909 iterations a second"},{"at":"2026-10-03T12:44","hash":"d78150c","subject":"Let a core turn ideas on for the first turns only"},{"at":"2026-10-03T12:50","hash":"220a3ea","subject":"Puzzles: a stable id, favourites, and buttons that say where you stand"},{"at":"2026-10-03T12:52","hash":"d7069c3","subject":"Let the puzzle generators add puzzles without renumbering the old ones"},{"at":"2026-10-03T13:52","hash":"08b6adb","subject":"Add 50 endgame and 20 immediate puzzles, and the early-bonus results"},{"at":"2026-10-03T14:02","hash":"08cbc04","subject":"Send full sides and joker pairs down the evaluator's fast path"},{"at":"2026-10-03T14:03","hash":"d511d78","subject":"Let a core keep a habit for the first turns only"},{"at":"2026-10-03T14:11","hash":"db11b69","subject":"Keep the night queue short: list the last three finished jobs, archive the rest"},{"at":"2026-10-03T14:28","hash":"45ef53c","subject":"Put tonight's short duels before the two-hour oracle passes"},{"at":"2026-10-03T15:00","hash":"dd55ecb","subject":"Keep the 0.9's own bonuses to turns 1-10: neutral; the core reaches 1,000 iterations a second"},{"at":"2026-10-03T15:18","hash":"20e01ca","subject":"Let a core keep a bonus for the end of the game only, and duel at equal time when costs differ"},{"at":"2026-10-03T16:05","hash":"6d48dd6","subject":"Cut rollouts short once a border is decided, and judge the rest by the core's odds"},{"at":"2026-10-03T16:25","hash":"5724a9a","subject":"Add cores that keep connector from turn 11 or 19 on"},{"at":"2026-10-03T17:00","hash":"b1bd8e3","subject":"Weigh replay moves against the Stratège 2.1, and record the day's last measures"},{"at":"2026-10-03T17:07","hash":"59e6838","subject":"Run tonight's six long duels now; the oracle stays for the night"},{"at":"2026-10-03T17:17","hash":"08d2b83","subject":"Queue the core without its bonuses, and with suited alone, at equal time"},{"at":"2026-10-03T17:42","hash":"4d8b8a0","subject":"Add an unsolved-only puzzle filter, ticked by default"}],"impact":{"note":"Le prix d'une erreur au hasard, tour par tour : l'Expérimental 0.9.0 contre lui-même, parties à mains moyennes gardées dans duels/. Pour chaque partie, une erreur au hasard au tour T et deux témoins sans erreur (graine changée) ; qui tient la partie au tour 30, par le solveur exact. impact = points de pourcentage perdus par le fautif, ci = demi-fourchette à 95 %. Mesures du 02/10 (npm run error-impact), relues par npm run retrospective.","source":"npm run error-impact -- --games 120 --explain : --turns 18-29 ; --turns 6-14, --turns 1,3,4,5, --turns 15,16,17 (backlog de nuit) ; --turns 2 ; --turns 22 --points --games 100","turns":[{"turn":1,"games":120,"control":50,"error":50,"impact":0,"ci":9.8},{"turn":2,"games":120,"control":47.1,"error":55,"impact":-7.9,"ci":9.3},{"turn":3,"games":120,"control":50.8,"error":45.8,"impact":5,"ci":10.3},{"turn":4,"games":120,"control":52.5,"error":50.8,"impact":1.7,"ci":9.8},{"turn":5,"games":120,"control":50.8,"error":47.5,"impact":3.3,"ci":10},{"turn":6,"games":120,"control":51.7,"error":39.2,"impact":12.5,"ci":9.4},{"turn":7,"games":120,"control":46.3,"error":40,"impact":6.3,"ci":9.7},{"turn":8,"games":120,"control":50.8,"error":41.7,"impact":9.2,"ci":9.5},{"turn":9,"games":120,"control":45.8,"error":39.2,"impact":6.7,"ci":10.2},{"turn":10,"games":120,"control":51.7,"error":33.3,"impact":18.3,"ci":9.6},{"turn":11,"games":120,"control":50.8,"error":33.3,"impact":17.5,"ci":8.6},{"turn":12,"games":120,"control":48.8,"error":43.3,"impact":5.4,"ci":9.8},{"turn":13,"games":120,"control":54.2,"error":36.7,"impact":17.5,"ci":10.1},{"turn":14,"games":120,"control":45.8,"error":32.5,"impact":13.3,"ci":9.7},{"turn":15,"games":120,"control":57.1,"error":29.2,"impact":27.9,"ci":9.3},{"turn":16,"games":120,"control":38.3,"error":25.8,"impact":12.5,"ci":8.1},{"turn":17,"games":120,"control":62.5,"error":35.8,"impact":26.7,"ci":8.9},{"turn":18,"games":120,"control":37.9,"error":35,"impact":2.9,"ci":8.1},{"turn":19,"games":120,"control":64.6,"error":35.8,"impact":28.7,"ci":8.7},{"turn":20,"games":120,"control":37.5,"error":24.2,"impact":13.3,"ci":8.2},{"turn":21,"games":120,"control":57.9,"error":38.3,"impact":19.6,"ci":7.6},{"turn":22,"games":120,"control":44.2,"error":29.2,"impact":15,"ci":8.1},{"turn":23,"games":120,"control":57.9,"error":33.3,"impact":24.6,"ci":8.6},{"turn":24,"games":120,"control":42.1,"error":24.2,"impact":17.9,"ci":8.1},{"turn":25,"games":120,"control":61.7,"error":30.8,"impact":30.8,"ci":8.1},{"turn":26,"games":120,"control":36.7,"error":27.5,"impact":9.2,"ci":7.1},{"turn":27,"games":120,"control":64.2,"error":31.7,"impact":32.5,"ci":8.7},{"turn":28,"games":120,"control":36.3,"error":28.3,"impact":7.9,"ci":5.7},{"turn":29,"games":120,"control":64.2,"error":42.5,"impact":21.7,"ci":7.4}],"points":[{"label":"au coup qui entame la 7e borne","games":100,"impact":10,"ci":10.3},{"label":"au coup qui gagne la 1re borne","games":100,"impact":19,"ci":8.2}],"turningPoints":[{"label":"un joueur a une carte sur les 7 bornes","median":13,"low":13,"high":15},{"label":"la 1re borne prouvée","median":22,"low":18,"high":27},{"label":"la pioche vide : tout est connu, le solveur tranche","median":30,"low":30,"high":30}],"conversion":{"low":92,"high":99,"note":"le camp qui tient la partie au tour 30, en jeu parfait, la gagne dans 92 à 99 % des duels gardés"}},"oracle":{"built":"2026-10-03","engine":"ismcts+candidates=99+widen=6+depth=5+smart=1","budget":20000,"positions":4331,"gaps":2300,"byTurn":{"tour 13":{"positions":183,"checked":125,"stable":78,"gaps":78,"unseen":56},"tour 14":{"positions":178,"checked":136,"stable":96,"gaps":96,"unseen":68},"tour 15":{"positions":600,"checked":474,"stable":350,"gaps":350,"unseen":236},"tour 16":{"positions":600,"checked":470,"stable":334,"gaps":334,"unseen":234},"tour 17":{"positions":109,"checked":88,"stable":57,"gaps":57,"unseen":43},"tour 18":{"positions":111,"checked":88,"stable":61,"gaps":61,"unseen":49},"tour 19":{"positions":56,"checked":42,"stable":31,"gaps":31,"unseen":24},"tour 20":{"positions":600,"checked":476,"stable":343,"gaps":343,"unseen":218},"tour 21":{"positions":600,"checked":477,"stable":333,"gaps":333,"unseen":212},"tour 22":{"positions":33,"checked":22,"stable":16,"gaps":16,"unseen":14},"tour 23":{"positions":21,"checked":18,"stable":11,"gaps":11,"unseen":10},"tour 24":{"positions":17,"checked":10,"stable":6,"gaps":6,"unseen":4},"tour 25":{"positions":600,"checked":448,"stable":310,"gaps":310,"unseen":197},"tour 26":{"positions":599,"checked":404,"stable":267,"gaps":267,"unseen":172},"tour 27":{"positions":4,"checked":1,"stable":1,"gaps":1,"unseen":1},"tour 28":{"positions":7,"checked":5,"stable":2,"gaps":2,"unseen":1},"tour 29":{"positions":3,"checked":2,"stable":1,"gaps":1,"unseen":0},"tour 30":{"positions":6,"checked":3,"stable":1,"gaps":1,"unseen":0},"tour 31":{"positions":2,"checked":2,"stable":2,"gaps":2,"unseen":0},"tour 32":{"positions":1,"checked":0,"stable":0,"gaps":0,"unseen":0},"tour 34":{"positions":1,"checked":0,"stable":0,"gaps":0,"unseen":0}},"byPlayer":{"a commencé":{"positions":2178,"checked":1677,"stable":1174,"gaps":1174,"unseen":779},"second":{"positions":2153,"checked":1614,"stable":1126,"gaps":1126,"unseen":760}},"traits":[{"trait":"bâtit un côté ni brelan ni suite de couleur","oracle":0.3334782608695652,"core":0.09},{"trait":"répond à une borne adverse","oracle":0.06826086956521739,"core":0.29869565217391303},{"trait":"pose une 2e carte","oracle":0.6530434782608696,"core":0.5078260869565218},{"trait":"ouvre sans suite prévue en main","oracle":0.035217391304347825,"core":0.17652173913043478},{"trait":"complète un côté (3e carte)","oracle":0.27391304347826084,"core":0.1673913043478261},{"trait":"joker","oracle":0.13521739130434782,"core":0.03782608695652174},{"trait":"ouvre avec de quoi faire un brelan","oracle":0.009565217391304347,"core":0.1},{"trait":"répond plus bas","oracle":0.01,"core":0.09826086956521739},{"trait":"carte faible (3-)","oracle":0.1891304347826087,"core":0.26260869565217393},{"trait":"carte moyenne (4-7)","oracle":0.33652173913043476,"core":0.40391304347826085},{"trait":"bâtit une suite de couleur","oracle":0.24391304347826087,"core":0.30695652173913046},{"trait":"ouvre avec de quoi faire une suite de couleur","oracle":0.01652173913043478,"core":0.06304347826086956},{"trait":"carte forte (8+)","oracle":0.3391304347826087,"core":0.2956521739130435},{"trait":"face à un côté adverse plein","oracle":0.023478260869565216,"core":0.05608695652173913},{"trait":"ouvre une borne vierge","oracle":0.004782608695652174,"core":0.02608695652173913},{"trait":"au centre (bornes 3-5)","oracle":0.47130434782608693,"core":0.49130434782608695},{"trait":"surenchérit d'un cran","oracle":0.00608695652173913,"core":0.023043478260869565},{"trait":"bâtit un brelan","oracle":0.27,"core":0.2782608695652174},{"trait":"sur un bord (borne 1 ou 7)","oracle":0.2678260869565217,"core":0.26217391304347826},{"trait":"à côté d'une borne perdue","oracle":0.05521739130434783,"core":0.056956521739130433},{"trait":"à côté d'une borne gagnée","oracle":0.049565217391304345,"core":0.050869565217391305}]},"jokers":[{"key":"complète un brelan, bouts (1-3, 8-10)","count":3340,"game":0.6209580838323353,"border":0.913125},{"key":"face à deux cartes adverses sans figure","count":755,"game":0.6119205298013245,"border":0.9879194630872483},{"key":"borne du centre (3-5)","count":2396,"game":0.6239565943238731,"border":0.8996054362121877},{"key":"fin (25+)","count":4659,"game":0.6323245331616226,"border":0.9221570397111913},{"key":"borne du bord (1 ou 7)","count":1543,"game":0.6137394685677252,"border":0.9095238095238095},{"key":"complète un brelan, milieu (4-7)","count":1843,"game":0.6413456321215409,"border":0.9291689905186837},{"key":"face à un côté adverse plein","count":1828,"game":0.7292122538293216,"border":0.987736900780379},{"key":"borne intermédiaire (2 ou 6)","count":1641,"game":0.6130408287629494,"border":0.9310344827586207},{"key":"face à un début de suite de couleur adverse","count":981,"game":0.5351681957186545,"border":0.7766666666666666},{"key":"face à un début de brelan adverse","count":659,"game":0.5887708649468892,"border":0.833063209076175},{"key":"face à une carte adverse seule","count":1338,"game":0.5478325859491778,"border":0.8966346153846154},{"key":"milieu (13-24)","count":906,"game":0.5463576158940397,"border":0.8625429553264605},{"key":"rejoint une carte seule, milieu (4-7)","count":78,"game":0.44871794871794873,"border":0.8333333333333334},{"key":"rejoint une carte seule, bouts (1-3, 8-10)","count":109,"game":0.41284403669724773,"border":0.7625},{"key":"rejoint un autre joker","count":86,"game":0.6976744186046512,"border":0.9878048780487805}],"weakWins":{"built":"2026-10-02","borders":18789,"low":2928,"questions":[{"label":"gagnée par une figure plus haute que celle d'en face","low":0.32991803278688525,"all":0.27776890733940074},{"label":"gagnée sur preuve, l'autre côté inachevé (claim)","low":0.6506147540983607,"all":0.6075895470754165},{"label":"côté d'en face : suite simple ou somme (pas de vraie figure)","low":0.14685792349726776,"all":0.18297940284208847},{"label":"côté d'en face : cartes hautes (moyenne 6 ou plus)","low":0.41632513661202186,"all":0.3984246101442333},{"label":"borne ouverte par le gagnant","low":0.5471311475409836,"all":0.5202512108148385},{"label":"le gagnant a fini son côté le premier","low":0.7274590163934426,"all":0.6876363829900474},{"label":"l'adversaire a encore joué dessus après","low":0.17759562841530055,"all":0.16424503698972803},{"label":"la partie aussi est gagnée","low":0.6653005464480874,"all":0.6724679333652669}]},"timings":{"note":"Ce que coûte le cœur, mesuré sur une machine au repos par npm run retrospective -- --measure (scripts/lib/core-timing.js). Mesuré sous charge, il serait faux : la page lit donc ce fichier, et seul --measure le réécrit.","measured":"03/10/2026","positions":70,"scoring":[{"label":"noter tous les coups, cœur du 0.9 (vrai coup, avec les certitudes)","median":0.079,"p90":0.125},{"label":"noter tous les coups, cœur des simulations (sans certitudes)","median":0.066,"p90":0.085},{"label":"noter tous les coups, avec le voisinage (nb1)","median":0.1,"p90":0.288}],"game":{"exp":2.3,"nb1":2.4},"tree":{"ms":1,"perSecond":1000,"move800":800,"page10s":10000},"treeNb":{"ms":1.1,"perSecond":909,"move800":880}},"jobs":[{"id":"error-impact-6-14","status":"done","doneAt":"2026-10-02T23:13","minutes":167,"estimate":"3 à 4 h"},{"id":"ab-phase","status":"done","doneAt":"2026-10-03T02:04","minutes":171,"estimate":"2 h 30"},{"id":"duel-jkx-0","status":"done","doneAt":"2026-10-03T02:20","minutes":17,"estimate":"20 min"},{"id":"duel-jkx-1","status":"done","doneAt":"2026-10-03T02:37","minutes":16,"estimate":"20 min"},{"id":"duel-jk2-0","status":"done","doneAt":"2026-10-03T02:53","minutes":16,"estimate":"20 min"},{"id":"duel-jk2-1","status":"done","doneAt":"2026-10-03T03:10","minutes":17,"estimate":"20 min"},{"id":"duel-obex-0","status":"done","doneAt":"2026-10-03T03:29","minutes":19,"estimate":"20 min"},{"id":"duel-obex-1","status":"done","doneAt":"2026-10-03T03:48","minutes":19,"estimate":"20 min"},{"id":"error-impact-1-5","status":"done","doneAt":"2026-10-03T05:18","minutes":90,"estimate":"1 h 40"},{"id":"error-impact-15-17","status":"done","doneAt":"2026-10-03T05:40","minutes":23,"estimate":"45 min"},{"id":"oracle-last-column-1","status":"done","doneAt":"2026-10-03T07:20","minutes":99,"estimate":"≤ 2 h"},{"id":"oracle-last-column-2","status":"done","doneAt":"2026-10-03T07:20","minutes":0,"estimate":"≤ 2 h"},{"id":"oracle-1","status":"done","doneAt":"2026-10-03T09:11","minutes":111,"estimate":"≤ 2 h"},{"id":"oracle-2","status":"done","doneAt":"2026-10-03T10:47","minutes":96,"estimate":"≤ 2 h"},{"id":"duel-stfig6-0","status":"done","doneAt":"2026-10-03T17:25","minutes":18,"estimate":"20 min"},{"id":"duel-stfig6-1","status":"done","doneAt":"2026-10-03T17:43","minutes":18,"estimate":"20 min"},{"id":"duel-stfig6-2","status":"todo","estimate":"20 min"},{"id":"duel-stfig6-3","status":"todo","estimate":"20 min"},{"id":"duel-stay4e10-0","status":"todo","estimate":"20 min"},{"id":"duel-stay4e10-1","status":"todo","estimate":"20 min"},{"id":"duel-nobonus-0","status":"scheduled","estimate":"20 min","notBefore":"2026-10-03T21:00"},{"id":"duel-nobonus-1","status":"scheduled","estimate":"20 min","notBefore":"2026-10-03T21:00"},{"id":"duel-lean-0","status":"scheduled","estimate":"20 min","notBefore":"2026-10-03T21:00"},{"id":"duel-lean-1","status":"scheduled","estimate":"20 min","notBefore":"2026-10-03T21:00"},{"id":"oracle-confirm-1","status":"scheduled","estimate":"≤ 2 h","notBefore":"2026-10-03T21:00"},{"id":"oracle-confirm-2","status":"scheduled","estimate":"≤ 2 h","notBefore":"2026-10-03T21:00"}],"puzzles":{"endgame":100,"immediate":40}};
+const J = DATA.journal;
+const NS = "http://www.w3.org/2000/svg";
+const $ = (id) => document.getElementById(id);
+const make = (tag, attrs = {}, text) => {
+  const node = document.createElementNS(NS, tag);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+const html = (tag, attrs = {}, ...children) => {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+  for (const child of children) node.append(child);
+  return node;
+};
+const fr = (x, digits = 1) => Number(x).toFixed(digits).replace(".", ",");
+const thousands = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = (name) => `var(--${name})`;
+
+/* One tooltip for the whole page: any node with a data-tip. */
+const tip = $("tip");
+function moveTip(event) {
+  const pad = 14;
+  let x = event.clientX + pad;
+  let y = event.clientY + pad;
+  if (x + tip.offsetWidth > innerWidth - 8) x = event.clientX - tip.offsetWidth - pad;
+  if (y + tip.offsetHeight > innerHeight - 8) y = event.clientY - tip.offsetHeight - pad;
+  tip.style.left = `${Math.max(8, x)}px`;
+  tip.style.top = `${Math.max(8, y)}px`;
+}
+document.addEventListener("pointerover", (event) => {
+  const node = event.target.closest?.("[data-tip]");
+  if (!node) return;
+  tip.textContent = node.getAttribute("data-tip");
+  tip.hidden = false;
+  moveTip(event);
+});
+document.addEventListener("pointermove", (event) => { if (!tip.hidden) moveTip(event); });
+document.addEventListener("pointerout", (event) => { if (event.target.closest?.("[data-tip]")) tip.hidden = true; });
+
+const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b" };
+const VERDICTS = { gagne: ["gagne", "mark"], tendance: ["tendance", "brass"], neutre: ["neutre", "off-ink"], perd: ["perd", "seal"], attente: ["en attente", "off"] };
+const attempt = (name) => J.attempts.find((a) => a.name === name);
+const measured = J.attempts.filter((a) => a.score !== null);
+
+/* ── The band ──────────────────────────────────────────────── */
+$("lead").textContent = `Toutes les tentatives sur l'Expérimental 0.9, ${J.period} : les idées de Sami tirées de ses parties, les règles fouillées dans les replays, un oracle lâché sur 4 331 positions, un cœur trois fois repassé au chronomètre, et une machine qui calcule la nuit pendant que tout le monde dort.`;
+{
+  const first = J.speed[0].perSecond;
+  const last = J.speed.at(-1).perSecond;
+  const stfig = attempt("stfig 0,6");
+  const longs = J.attempts.filter((a) => a.name.startsWith("stfig6, duel long") && a.score !== null);
+  const same = J.oracleGroups.map((g) => g.same);
+  const tiles = [
+    [measured.length, (v) => `${Math.round(v)}`, "essais mesurés, du cœur seul aux duels longs dans l'arbre"],
+    [last, (v) => `${thousands(Math.round(v))}<small> it/s</small>`, `itérations par seconde, contre ${first} hier : le même 0.9, pas un coup changé`],
+    [stfig.score - 50, (v) => `+${fr(v, 0)}<small> pts</small>`, `stfig 0,6 contre le cœur du 0.9 ; en duel long : ${longs.map((a) => `${fr(a.score)} %`).join(" et ")}`],
+    [Math.max(...same), (v) => `${Math.min(...same)}–${Math.round(v)}<small> %</small>`, "des positions où l'oracle joue le coup du 0.9"],
+  ];
+  for (const [to, format, text] of tiles) {
+    const b = html("b");
+    $("tiles").append(html("div", { class: "tile" }, b, html("span", {}, text)));
+    if (still) b.innerHTML = format(to);
+    else {
+      const start = performance.now();
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / 1200);
+        b.innerHTML = format(to * (1 - (1 - t) ** 3));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+  }
+}
+
+/* ── I · The timeline ─────────────────────────────────────── */
+const toTime = (text) => new Date(text).getTime();
+const minutesOf = (estimate) => (/h/.test(estimate ?? "") ? 60 * Number((estimate.match(/(\d+)\s*h/) ?? [0, 2])[1]) : Number((String(estimate).match(/\d+/) ?? [20])[0]));
+const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["duel", "duels", "mark"], ["error-impact", "prix d'une erreur", "brass"], ["ab", "A/B Stratège", "seal"]];
+const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefix]) => id.startsWith(prefix));
+function placeJobs() {
+  const placed = [];
+  let cursor = 0;
+  for (const job of DATA.jobs) {
+    if (job.status === "done" || job.status === "failed" || job.status === "timeout") {
+      if (!job.doneAt || !job.minutes) continue;
+      const end = toTime(job.doneAt);
+      placed.push({ ...job, start: end - job.minutes * 60000, end, planned: false });
+      cursor = Math.max(cursor, end);
+    }
+  }
+  const built = toTime(DATA.builtAt);
+  let queue = Math.max(cursor, built - 18 * 60000);
+  let night = 0;
+  for (const job of DATA.jobs.filter((j) => j.status === "todo")) {
+    const length = minutesOf(job.estimate) * 60000;
+    placed.push({ ...job, start: queue, end: queue + length, planned: true });
+    queue += length;
+  }
+  for (const job of DATA.jobs.filter((j) => j.status === "scheduled")) {
+    const start = Math.max(toTime(job.notBefore), queue, night);
+    const length = minutesOf(job.estimate) * 60000;
+    placed.push({ ...job, start, end: start + length, planned: true });
+    night = start + length;
+  }
+  return placed;
+}
+function drawTimeline() {
+  const svg = $("timeline");
+  const jobs = placeJobs();
+  const t0 = toTime(`${J.since.replace(" ", "T")}`);
+  const t1 = Math.max(toTime(DATA.builtAt), ...jobs.map((j) => j.end)) + 30 * 60000;
+  const [left, right] = [140, 985];
+  const x = (t) => left + ((t - t0) / (t1 - t0)) * (right - left);
+  const hour = 3600000;
+  const firstHour = Math.ceil(t0 / hour) * hour;
+  // Nights: midnight to 8 h.
+  for (let t = firstHour; t < t1; t += hour) {
+    const d = new Date(t);
+    if (d.getHours() === 0) svg.append(make("rect", { x: x(t), y: 24, width: Math.min(x(t + 8 * hour), right) - x(t), height: 250, fill: css("wash") }));
+  }
+  for (let t = firstHour; t < t1; t += hour) {
+    const d = new Date(t);
+    if (d.getHours() % 3) continue;
+    svg.append(make("line", { x1: x(t), x2: x(t), y1: 24, y2: 274, stroke: css("line") }));
+    const label = d.getHours() === 0 ? `${d.getDate()}/${String(d.getMonth() + 1).padStart(2, "0")}` : `${d.getHours()} h`;
+    svg.append(make("text", { x: x(t), y: 290, "text-anchor": "middle", class: d.getHours() === 0 ? "strong" : "" }, label));
+  }
+  const lanes = [["le code", 52], ...JOB_FAMILIES.map(([, label], i) => [label, 110 + i * 42])];
+  for (const [label, y] of lanes) svg.append(make("text", { x: 8, y: y + 4, class: "label" }, label));
+  svg.append(make("text", { x: 8, y: 16, class: "label strong" }, "ce qui a été écrit, puis calculé"));
+  for (const job of jobs) {
+    const family = jobFamily(job.id);
+    if (family < 0) continue;
+    const color = css(JOB_FAMILIES[family][2]);
+    const y = 110 + family * 42 - 11;
+    const rect = make("rect", { x: x(job.start), y, width: Math.max(3, x(job.end) - x(job.start)), height: 22, rx: 4, fill: job.planned ? "none" : color, stroke: color, "stroke-width": 1.5, "stroke-dasharray": job.planned ? "4 3" : "0", opacity: job.planned ? 0.9 : 0.85 });
+    const when = new Date(job.start);
+    const timeText = `${when.getDate()}/${when.getMonth() + 1} ${when.getHours()} h ${String(when.getMinutes()).padStart(2, "0")}`;
+    rect.setAttribute("data-tip", job.planned ? `${job.id} · prévu vers ${timeText} · environ ${minutesOf(job.estimate)} min (${job.status === "scheduled" ? "programmé" : "en file"})` : `${job.id} · ${job.minutes} min · fini le ${job.doneAt.replace("T", " à ")}`);
+    svg.append(rect);
+  }
+  const now = x(toTime(DATA.builtAt));
+  svg.append(make("line", { x1: now, x2: now, y1: 24, y2: 274, stroke: css("brass"), "stroke-width": 2 }));
+  svg.append(make("text", { x: now + 4, y: 34, fill: css("brass") }, "page construite"));
+  const legendFamilies = new Set();
+  DATA.commits.forEach((commit, i) => {
+    const [family, label] = J.commitLabels[commit.hash] ?? ["outils", commit.subject];
+    legendFamilies.add(family);
+    const dot = make("circle", { cx: x(toTime(commit.at)), cy: 52 + ((i % 3) - 1) * 9, r: 5, fill: FAMILY_COLORS[family] ?? css("ink-3"), stroke: css("card"), "stroke-width": 1.5, class: "dot", tabindex: 0, role: "button", "data-tip": `${commit.at.slice(11)} · ${label}` });
+    const pick = () => {
+      svg.querySelectorAll(".dot.pick").forEach((node) => node.classList.remove("pick"));
+      dot.classList.add("pick");
+      showCommit(commit, family, label);
+    };
+    dot.addEventListener("click", pick);
+    dot.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); pick(); } });
+    svg.append(dot);
+  });
+  for (const family of legendFamilies) $("timeline-legend").append(html("span", {}, html("i", { style: `background: ${FAMILY_COLORS[family]}; border-radius: 999px` }), J.families[family]));
+  $("timeline-legend").append(html("span", {}, html("i", { style: "background: var(--wash); border: 1px solid var(--line)" }), "la nuit"));
+  const last = DATA.commits.filter((c) => J.commitLabels[c.hash]?.[0] === "oracle").at(-1) ?? DATA.commits.at(-1);
+  showCommit(last, J.commitLabels[last.hash]?.[0] ?? "outils", J.commitLabels[last.hash]?.[1] ?? last.subject);
+}
+function showCommit(commit, family, label) {
+  const box = $("commit-detail");
+  box.style.borderColor = FAMILY_COLORS[family] ?? css("mark");
+  const count = J.attempts.filter((a) => a.family === family).length;
+  const actions = html("div", { class: "actions" });
+  if (count) {
+    const go = html("button", { type: "button", class: "btn primary" }, `Voir les ${count} essais « ${J.families[family]} » dans le carnet →`);
+    go.addEventListener("click", () => { setOnly("family", family); $("carnet").scrollIntoView({ behavior: still ? "auto" : "smooth" }); });
+    actions.append(go);
+  }
+  box.replaceChildren(html("p", { class: "eyebrow" }, `${commit.at.slice(8, 10)}/${commit.at.slice(5, 7)} à ${commit.at.slice(11)} · ${J.families[family]} · ${commit.hash}`), html("b", {}, label), actions);
+}
+
+/* ── II · The notebook ───────────────────────────────────── */
+const filters = { family: new Set(), bench: new Set(), verdict: new Set(), search: "" };
+let sort = { key: "order", dir: 1 };
+const isDelta = (a) => a.bench === "fin" || a.bench === "partie";
+const whenKey = (a) => (/^\d\d\/\d\d \d\d:\d\d$/.test(a.when) ? a.when.slice(3, 5) + a.when.slice(0, 2) + a.when.slice(6) : `z${a.when}`);
+function chipRow(id, key, label, entries) {
+  const row = $(id);
+  row.append(html("span", { class: "what" }, label));
+  for (const [value, text] of entries) {
+    const chip = html("button", { type: "button", class: "chip", "aria-pressed": "false", "data-key": key, "data-value": value }, text);
+    chip.addEventListener("click", () => {
+      if (filters[key].has(value)) filters[key].delete(value);
+      else filters[key].add(value);
+      chip.setAttribute("aria-pressed", String(filters[key].has(value)));
+      renderNotebook();
+    });
+    row.append(chip);
+  }
+}
+function setOnly(key, value) {
+  filters[key] = new Set([value]);
+  document.querySelectorAll(`.chip[data-key="${key}"]`).forEach((chip) => chip.setAttribute("aria-pressed", String(chip.dataset.value === value)));
+  renderNotebook();
+}
+function forestOf(a) {
+  const svg = make("svg", { class: "forest", viewBox: "0 0 170 20", "aria-hidden": "true" });
+  const scale = (v) => 5 + ((v - 35) / 30) * 160;
+  const at = (v) => scale(Math.max(35, Math.min(65, isDelta(a) ? 50 + v : v)));
+  svg.append(make("line", { x1: 5, x2: 165, y1: 10, y2: 10, stroke: css("line") }));
+  svg.append(make("line", { x1: scale(50), x2: scale(50), y1: 2, y2: 18, stroke: css("ink-3"), "stroke-dasharray": "2 2" }));
+  if (a.score === null) return svg;
+  const color = css(VERDICTS[a.verdict][1]);
+  if (a.lo !== null) svg.append(make("line", { x1: at(a.lo), x2: at(a.hi), y1: 10, y2: 10, stroke: color, "stroke-width": 3, "stroke-linecap": "round", opacity: 0.55 }));
+  svg.append(make("circle", { cx: at(a.score), cy: 10, r: 4.5, fill: color, stroke: css("card"), "stroke-width": 1 }));
+  return svg;
+}
+function scoreText(a) {
+  if (a.score === null) return "—";
+  if (isDelta(a)) return `Δ ${a.score > 0 ? "+" : ""}${fr(a.score)} pt`;
+  return `${fr(a.score)} %`;
+}
+function visibleAttempts() {
+  const words = filters.search.toLowerCase().trim();
+  const list = J.attempts.map((a, order) => ({ ...a, order })).filter((a) =>
+    (!filters.family.size || filters.family.has(a.family)) &&
+    (!filters.bench.size || filters.bench.has(a.bench)) &&
+    (!filters.verdict.size || filters.verdict.has(a.verdict)) &&
+    (!words || `${a.name} ${a.note} ${J.families[a.family]}`.toLowerCase().includes(words)));
+  const value = (a) => {
+    if (sort.key === "score") return a.score === null ? -999 : isDelta(a) ? 50 + a.score : a.score;
+    if (sort.key === "when") return whenKey(a);
+    if (sort.key === "name") return a.name.toLowerCase();
+    return a.order;
+  };
+  return list.sort((a, b) => (value(a) < value(b) ? -1 : value(a) > value(b) ? 1 : a.order - b.order) * sort.dir);
+}
+function renderNotebook() {
+  const list = visibleAttempts();
+  $("attempts").replaceChildren(...list.map((a) => html("tr", {},
+    html("td", {}, html("b", {}, a.name), a.note ? html("span", { class: "note" }, a.note) : ""),
+    html("td", { class: "fam" }, J.families[a.family]),
+    html("td", { class: "fam" }, J.benches[a.bench]),
+    html("td", { class: "num" }, a.lo !== null && a.score !== null ? html("span", { "data-tip": `fourchette à 95 % : ${fr(a.lo)} – ${fr(a.hi)}${isDelta(a) ? " points" : " %"}` }, scoreText(a)) : scoreText(a)),
+    html("td", {}, forestOf(a)),
+    html("td", {}, html("span", { class: `verdict v-${a.verdict}` }, VERDICTS[a.verdict][0])),
+    html("td", { class: "when" }, a.when))));
+  const scored = list.filter((a) => a.score !== null);
+  $("count").textContent = `${list.length} essai${list.length > 1 ? "s" : ""} affiché${list.length > 1 ? "s" : ""} sur ${J.attempts.length}, dont ${scored.length} mesuré${scored.length > 1 ? "s" : ""}.`;
+  const counts = Object.keys(VERDICTS).map((key) => [key, list.filter((a) => a.verdict === key).length]).filter(([, n]) => n > 0);
+  donut($("verdict-donut"), counts.map(([key, n]) => ({ value: n, color: css(VERDICTS[key][1]), tip: `${VERDICTS[key][0]} : ${n}` })), 65, String(list.length), "essais");
+  $("verdict-legend").replaceChildren(...counts.map(([key, n]) => html("span", {}, html("i", { style: `background: ${css(VERDICTS[key][1])}` }), `${VERDICTS[key][0]} · ${n}`)));
+}
+function donut(svg, parts, size, center, sub) {
+  svg.replaceChildren();
+  const total = parts.reduce((sum, part) => sum + part.value, 0) || 1;
+  const [r, inner] = [size - 4, size * 0.58];
+  let angle = -Math.PI / 2;
+  const point = (radius, a) => `${size + radius * Math.cos(a)} ${size + radius * Math.sin(a)}`;
+  for (const part of parts) {
+    const sweep = (part.value / total) * Math.PI * 2;
+    const end = angle + Math.min(sweep, Math.PI * 2 - 1e-4);
+    const large = sweep > Math.PI ? 1 : 0;
+    const path = `M ${point(r, angle)} A ${r} ${r} 0 ${large} 1 ${point(r, end)} L ${point(inner, end)} A ${inner} ${inner} 0 ${large} 0 ${point(inner, angle)} Z`;
+    svg.append(make("path", { d: path, fill: part.color, stroke: css("card"), "stroke-width": 1.5, "data-tip": part.tip }));
+    angle += sweep;
+  }
+  svg.append(make("text", { x: size, y: size + 2, "text-anchor": "middle", style: `font: 700 ${size * 0.34}px var(--mono); fill: var(--ink)` }, center));
+  svg.append(make("text", { x: size, y: size + size * 0.28, "text-anchor": "middle", style: "font: 600 10px var(--mono); fill: var(--ink-3)" }, sub));
+}
+chipRow("f-family", "family", "Famille", Object.entries(J.families).filter(([key]) => J.attempts.some((a) => a.family === key)));
+chipRow("f-bench", "bench", "Banc", Object.entries(J.benches));
+chipRow("f-verdict", "verdict", "Verdict", Object.entries(VERDICTS).map(([key, [label]]) => [key, label]));
+$("f-search").addEventListener("input", (event) => { filters.search = event.target.value; renderNotebook(); });
+document.querySelectorAll("[data-sort]").forEach((button) => button.addEventListener("click", () => {
+  const key = button.dataset.sort;
+  sort = sort.key === key ? { key, dir: -sort.dir } : { key, dir: key === "score" ? -1 : 1 };
+  renderNotebook();
+}));
+
+/* ── III · The 0.9's bonuses ─────────────────────────────── */
+const heatColor = (score) => {
+  if (score === null || score === undefined) return "transparent";
+  const strength = Math.min(70, Math.abs(score - 50) * 9);
+  return `color-mix(in srgb, ${score >= 50 ? css("mark") : css("seal")} ${strength}%, var(--card))`;
+};
+function drawHeat() {
+  const max = Math.max(...J.bonusCosts.map((b) => b.cost));
+  const head = html("tr", {}, html("th", {}, "Bonus"), html("th", {}, "Coût"), html("th", { "data-tip": "le bonus gardé aux tours 1 à 10 seulement" }, "Tours 1-10"), html("th", { "data-tip": "le bonus gardé à partir du tour 15 seulement" }, "Dès 15"), html("th", { "data-tip": "à partir du tour 15, duel à temps égal" }, "Temps égal"));
+  const cell = (score, text) => html("td", { class: "cell", style: `background: ${heatColor(score)}`, "data-tip": text }, score === null || score === undefined ? "—" : `${fr(score)} %`);
+  const rows = J.bonusCosts.map((b) => html("tr", {},
+    html("td", {}, html("code", {}, b.label)),
+    html("td", {}, html("div", { class: "costbar" }, html("i", { style: `width: ${(b.cost / max) * 100}%` }), html("span", { class: "num small" }, `${fr(b.cost)} %`))),
+    cell(b.early, `${b.label} seulement aux tours 1 à 10 : ${fr(b.early)} % contre le 0.9`),
+    cell(b.late, `${b.label} seulement à partir du tour 15 : ${fr(b.late)} % contre le 0.9`),
+    cell(b.equal, b.equal ? `${b.label} à partir du tour 15, à temps égal : ${fr(b.equal)} %` : "pas mesuré à temps égal")));
+  $("heat").replaceChildren(html("thead", {}, head), html("tbody", {}, ...rows));
+  $("bonus-rule").innerHTML = `<b>Les six ensemble coûtent ${fr(J.allBonusCost)} % du temps.</b> Sans eux, le robot ferait environ un tiers d'itérations en plus. Ce soir, deux duels longs à temps égal (<code>@t800</code>) trancheront : le cœur sans aucun bonus (<code>nobonus</code>), et le cœur avec la seule habitude qui travaille (<code>lean</code>, <code>suited</code> seule).`;
+}
+function drawScatter() {
+  const svg = $("scatter");
+  const [left, right, top, bottom] = [56, 460, 20, 280];
+  const x = (cost) => left + (cost / 16) * (right - left);
+  const y = (score) => top + ((57.5 - score) / 20) * (bottom - top);
+  for (let s = 40; s <= 55; s += 5) {
+    svg.append(make("line", { x1: left, x2: right, y1: y(s), y2: y(s), stroke: css("line"), "stroke-dasharray": s === 50 ? "0" : "2 3" }));
+    svg.append(make("text", { x: left - 8, y: y(s) + 4, "text-anchor": "end" }, `${s} %`));
+  }
+  for (let c = 0; c <= 16; c += 4) svg.append(make("text", { x: x(c), y: bottom + 18, "text-anchor": "middle" }, `${c} %`));
+  svg.append(make("line", { x1: left, x2: right, y1: y(50), y2: y(50), stroke: css("ink-3"), "stroke-width": 1.5 }));
+  svg.append(make("text", { x: right, y: bottom + 36, "text-anchor": "end", class: "label" }, "coût par itération →"));
+  svg.append(make("text", { x: left, y: 12, class: "label" }, "le 0.9 privé du bonus avant le tour 15"));
+  for (const b of J.bonusCosts) {
+    if (b.equal) {
+      svg.append(make("line", { x1: x(b.cost), x2: x(b.cost), y1: y(b.late) + 7, y2: y(b.equal) - 7, stroke: css("ink-3"), "stroke-dasharray": "3 3" }));
+      svg.append(make("circle", { cx: x(b.cost), cy: y(b.equal), r: 6, fill: "none", stroke: css("ink-3"), "stroke-width": 2, "data-tip": `${b.label} à temps égal : ${fr(b.equal)} %` }));
+      svg.append(make("text", { x: x(b.cost), y: y(b.equal) + 22, "text-anchor": "middle" }, "à temps égal"));
+    }
+    const color = b.late < 47 ? css("seal") : b.late > 53 ? css("brass") : css("mark");
+    svg.append(make("circle", { cx: x(b.cost), cy: y(b.late), r: 7, fill: color, stroke: css("card"), "stroke-width": 2, "data-tip": `${b.label} : coûte ${fr(b.cost)} % ; sans lui avant le tour 15, le 0.9 fait ${fr(b.late)} %` }));
+    const [dx, dy, anchor] = { joker: [-11, 4, "end"], middle: [0, 22, "middle"], spread: [11, 4, "start"] }[b.key] ?? [11, 4, "start"];
+    svg.append(make("text", { x: x(b.cost) + dx, y: y(b.late) + dy, "text-anchor": anchor, class: "label strong" }, b.label));
+  }
+}
+
+/* ── IV · The oracle ─────────────────────────────────────── */
+function drawOracle() {
+  const O = DATA.oracle;
+  $("oracle-intro").textContent = `Le 0.9 n'examine que les 8 meilleurs coups de son cœur. L'oracle (${O.engine.replace("ismcts+", "")}, ${thousands(O.budget)} itérations) les examine tous, 25 fois plus longtemps, sur ${thousands(O.positions)} positions réelles. Un écart, c'est un coup qu'il choisit et que le cœur ne met pas dans son top 3.`;
+  const steps = [["Les positions", "tours 15-16, 20-21, 25-26 des parties du 0.9, et le coup qui remplit la dernière colonne vide ; les deux joueurs"], ["Le classement du cœur", "tous les coups légaux notés : 42 au tour 15"], ["L'oracle", "tous les coups à la racine, 6 réponses par nœud, arrêt dès que le favori est hors d'atteinte"], ["La 2e recherche", "seulement si la 1re sort du top 3 du cœur, pour écarter la chance"], ["La confirmation par le jeu", "cette nuit : chaque écart joué jusqu'au tour 30 sur 4 graines"]];
+  $("oracle-steps").replaceChildren(...steps.map(([title, text]) => html("div", { class: "step" }, html("b", {}, title), html("span", {}, text))));
+  const sum = (key) => Object.values(O.byTurn).reduce((total, turn) => total + turn[key], 0);
+  const [positions, checked, stable, unseen] = ["positions", "checked", "stable", "unseen"].map(sum);
+  const parts = [
+    { value: positions - checked, color: css("mark"), label: "dans le top 3 du cœur" },
+    { value: checked - stable, color: css("off"), label: "hors du top 3, mais la 2e recherche n'est pas d'accord" },
+    { value: stable - unseen, color: css("brass"), label: "écart stable, rang 4 à 8 : l'arbre du 0.9 le voit" },
+    { value: unseen, color: css("sky"), label: "écart stable, hors du top 8 : le 0.9 ne le regarde jamais" },
+  ];
+  donut($("rank-donut"), parts.map((p) => ({ ...p, tip: `${p.label} : ${thousands(p.value)} (${fr((100 * p.value) / positions, 0)} %)` })), 85, thousands(positions), "positions");
+  $("rank-legend").replaceChildren(...parts.map((p) => html("span", {}, html("i", { style: `background: ${p.color}` }), `${p.label} · ${fr((100 * p.value) / positions, 0)} %`)));
+  const byGap = [...O.traits].sort((a, b) => Math.abs(b.oracle - b.core) - Math.abs(a.oracle - a.core));
+  let all = false;
+  const drawTraits = () => {
+  const svg = $("traits");
+  svg.replaceChildren();
+  const shown = all ? byGap : byGap.slice(0, 8);
+  const [left, right] = [285, 440];
+  shown.forEach((t, i) => {
+    const y = 14 + i * 44;
+    svg.append(make("text", { x: 0, y: y + 14, class: "label" }, t.trait.length > 48 ? `${t.trait.slice(0, 47)}…` : t.trait));
+    for (const [k, [value, color]] of [[t.oracle, css("sky")], [t.core, css("mark")]].entries()) {
+      const w = value * (right - left);
+      svg.append(make("rect", { x: left, y: y + k * 15, width: Math.max(2, w), height: 12, rx: 2, fill: color, "data-tip": `${t.trait} — ${k ? "le cœur" : "l'oracle"} : ${fr(value * 100, 0)} %` }));
+      svg.append(make("text", { x: left + w + 5, y: y + k * 15 + 10 }, `${fr(value * 100, 0)} %`));
+    }
+  });
+  svg.setAttribute("viewBox", `0 0 480 ${14 + shown.length * 44}`);
+  };
+  drawTraits();
+  const more = html("button", { type: "button", class: "btn", style: "justify-self: start" }, `Voir les ${O.traits.length} traits`);
+  more.addEventListener("click", () => { all = !all; more.textContent = all ? "Les 8 plus grands écarts" : `Voir les ${O.traits.length} traits`; drawTraits(); });
+  $("traits").after(more);
+  const measures = [["top3", "hors du top 3"], ["top8", "hors du top 8"], ["same", "le coup du 0.9"]];
+  let current = "top3";
+  const draw = () => {
+    const g = $("groups");
+    g.replaceChildren();
+    const [left2, width, base] = [60, 880, 180];
+    const y = (v) => base - (v / 70) * 160;
+    for (let v = 0; v <= 70; v += 10) {
+      g.append(make("line", { x1: left2, x2: left2 + width, y1: y(v), y2: y(v), stroke: css("line") }));
+      g.append(make("text", { x: left2 - 8, y: y(v) + 4, "text-anchor": "end" }, `${v} %`));
+    }
+    const slot = width / J.oracleGroups.length;
+    J.oracleGroups.forEach((group, i) => {
+      const value = group[current];
+      const cx = left2 + slot * i + slot / 2;
+      g.append(make("rect", { x: cx - 60, y: y(value), width: 120, height: base - y(value), rx: 4, fill: current === "same" ? css("mark") : css("sky"), "data-tip": `${group.label} : ${value} % ${measures.find(([k]) => k === current)[1]} (${thousands(group.positions)} positions)` }));
+      g.append(make("text", { x: cx, y: y(value) - 6, "text-anchor": "middle", class: "strong" }, `${value} %`));
+      g.append(make("text", { x: cx, y: base + 18, "text-anchor": "middle", class: "label" }, group.label));
+      g.append(make("text", { x: cx, y: base + 34, "text-anchor": "middle" }, `${thousands(group.positions)} positions`));
+    });
+  };
+  for (const [key, label] of measures) {
+    const button = html("button", { type: "button", "aria-pressed": String(key === current) }, label);
+    button.addEventListener("click", () => {
+      current = key;
+      $("group-measure").querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      draw();
+    });
+    $("group-measure").append(button);
+  }
+  draw();
+}
+
+/* ── V · The price of an error ───────────────────────────── */
+function drawImpact() {
+  const svg = $("impact");
+  const turns = DATA.impact.turns;
+  const [left, right, top, bottom] = [52, 950, 30, 280];
+  const slot = (right - left) / turns.length;
+  const y = (v) => top + ((50 - v) / 65) * (bottom - top);
+  const xOf = (turn) => left + (turn - 1) * slot;
+  for (const zone of J.impactZones) {
+    const color = zone.from === 1 ? css("wash") : zone.from === 6 ? css("brass-wash") : css("seal-wash");
+    svg.append(make("rect", { x: xOf(zone.from), y: top, width: (zone.to - zone.from + 1) * slot, height: bottom - top, fill: color }));
+    svg.append(make("text", { x: xOf(zone.from) + 6, y: top + 14, class: "label strong" }, `${zone.label} : ${fr(zone.mean)} pt`));
+    svg.append(make("line", { x1: xOf(zone.from), x2: xOf(zone.to + 1), y1: y(zone.mean), y2: y(zone.mean), stroke: css("ink-2"), "stroke-dasharray": "5 4" }));
+  }
+  for (let v = -15; v <= 45; v += 15) {
+    svg.append(make("line", { x1: left, x2: right, y1: y(v), y2: y(v), stroke: v === 0 ? css("ink-3") : css("line") }));
+    svg.append(make("text", { x: left - 8, y: y(v) + 4, "text-anchor": "end" }, `${v}`));
+  }
+  svg.append(make("text", { x: 4, y: 16, class: "label" }, "points perdus"));
+  for (const t of turns) {
+    const cx = xOf(t.turn) + slot / 2;
+    const color = t.turn >= 15 ? css("seal") : t.turn >= 6 ? css("brass") : css("off-ink");
+    const [y0, y1] = [y(0), y(t.impact)];
+    svg.append(make("rect", { x: cx - slot * 0.32, y: Math.min(y0, y1), width: slot * 0.64, height: Math.max(1, Math.abs(y1 - y0)), rx: 2, fill: color, opacity: 0.85, "data-tip": `Tour ${t.turn} : ${fr(t.impact)} ± ${fr(t.ci)} points (${t.games} parties)` }));
+    svg.append(make("line", { x1: cx, x2: cx, y1: y(t.impact - t.ci), y2: y(t.impact + t.ci), stroke: css("ink-3"), "stroke-width": 1, opacity: 0.6 }));
+    svg.append(make("text", { x: cx, y: bottom + 16, "text-anchor": "middle" }, String(t.turn)));
+  }
+  for (const turn of [15, 17]) {
+    const t = turns.find((entry) => entry.turn === turn);
+    svg.append(make("text", { x: xOf(turn) + slot / 2, y: y(t.impact + t.ci) - 6, "text-anchor": "middle", class: "strong" }, fr(t.impact)));
+  }
+  svg.append(make("text", { x: right, y: bottom + 36, "text-anchor": "end", class: "label" }, "tour →"));
+  $("impact-legend").replaceChildren(
+    html("span", {}, "Le trait fin : la fourchette à 95 % (± 6 à 10 points par tour : seule la pente compte)."),
+    ...DATA.impact.turningPoints.map((p) => html("span", {}, html("b", {}, `tour ${p.median}`), ` : ${p.label}`)),
+    html("span", {}, DATA.impact.conversion.note));
+}
+
+/* ── VI · Jokers ─────────────────────────────────────────── */
+function drawJokers() {
+  const svg = $("luck");
+  const [left, base] = [50, 240];
+  const y = (v) => base - (v / 70) * 210;
+  for (let v = 0; v <= 70; v += 10) {
+    svg.append(make("line", { x1: left, x2: 470, y1: y(v), y2: y(v), stroke: v === 50 ? css("ink-3") : css("line"), "stroke-dasharray": v === 50 ? "4 3" : "0" }));
+    svg.append(make("text", { x: left - 8, y: y(v) + 4, "text-anchor": "end" }, `${v} %`));
+  }
+  J.jokerLuck.forEach((row, i) => {
+    const cx = left + 70 + i * 140;
+    const sami = J.samiLuck[i];
+    const bars = [[row.game, css("mark"), `${row.jokers} joker${row.jokers > 1 ? "s" : ""} dans la partie : ${row.game} % (${thousands(row.games)} cas)`], [row.start, css("brass"), `${row.jokers} en main de départ : ${row.start} % (${thousands(row.startGames)} cas)`], [sami.rate, css("sky"), `Sami avec ${row.jokers} : ${sami.rate} % (${sami.games} parties)`]];
+    bars.forEach(([value, color, text], k) => {
+      svg.append(make("rect", { x: cx - 48 + k * 33, y: y(value), width: 30, height: base - y(value), rx: 3, fill: color, "data-tip": text }));
+      svg.append(make("text", { x: cx - 33 + k * 33, y: y(value) - 5, "text-anchor": "middle" }, String(value)));
+    });
+    svg.append(make("text", { x: cx, y: base + 20, "text-anchor": "middle", class: "label strong" }, `${row.jokers} joker${row.jokers > 1 ? "s" : ""}`));
+  });
+  $("luck-note").textContent = "Un joker vaut environ 14 points de chances de gagner. Presque toutes les parties vont jusqu'à la pioche vide : « 1 joker », c'est presque toujours « un chacun ». Deux jokers en main de départ : 70 cas seulement.";
+  const rows = DATA.jokers.filter((row) => !/^(début|milieu|fin) /.test(row.key)).sort((a, b) => b.game - a.game);
+  const phases = DATA.jokers.filter((row) => /^(début|milieu|fin) /.test(row.key));
+  const overall = phases.reduce((s, r) => s + r.game * r.count, 0) / (phases.reduce((s, r) => s + r.count, 0) || 1);
+  const p = $("placements");
+  const [l2, r2] = [230, 440];
+  const x = (v) => l2 + ((v - 0.3) / 0.5) * (r2 - l2);
+  p.setAttribute("viewBox", `0 0 480 ${rows.length * 26 + 30}`);
+  rows.forEach((row, i) => {
+    const yy = 8 + i * 26;
+    p.append(make("text", { x: 0, y: yy + 13, class: "label" }, row.key.length > 34 ? `${row.key.slice(0, 33)}…` : row.key));
+    p.append(make("rect", { x: x(0.3), y: yy + 2, width: x(row.game) - x(0.3), height: 15, rx: 2, fill: row.game >= overall + 0.02 ? css("mark") : row.game <= overall - 0.04 ? css("seal") : css("off-ink"), opacity: 0.85, "data-tip": `${row.key} : partie gagnée ${fr(row.game * 100, 0)} %, borne ${fr(row.border * 100, 0)} % (${thousands(row.count)} jokers)` }));
+    p.append(make("text", { x: x(row.game) + 5, y: yy + 14 }, `${fr(row.game * 100, 0)} %`));
+  });
+  p.append(make("line", { x1: x(overall), x2: x(overall), y1: 2, y2: rows.length * 26 + 10, stroke: css("ink-2"), "stroke-dasharray": "4 3" }));
+  p.append(make("text", { x: x(overall), y: rows.length * 26 + 24, "text-anchor": "middle" }, `${fr(overall * 100, 0)} % : tous`));
+  $("trap-table").replaceChildren(
+    html("thead", {}, html("tr", {}, html("th", {}, "Paire"), html("th", { class: "num" }, "Nombre"), html("th", { class: "num" }, "Finie au joker"), html("th", { class: "num" }, "Borne gagnée"), html("th", { class: "num" }, "Partie gagnée"))),
+    html("tbody", {}, ...J.trapStats.map((row) => html("tr", {}, html("td", {}, row.label), html("td", { class: "num" }, thousands(row.count)), html("td", { class: "num" }, `${row.joker} %`), html("td", { class: "num" }, `${row.border} %`), html("td", { class: "num" }, `${row.game} %`)))));
+  const ls = $("lowstarts");
+  const yl = (v) => 200 - (v / 80) * 180;
+  J.lowStarts.forEach((row, i) => {
+    const cx = 40 + i * 74 + (i >= 3 ? 14 : 0);
+    const color = i % 3 === 0 ? css("seal") : css("mark");
+    ls.append(make("rect", { x: cx, y: yl(row.won), width: 50, height: 200 - yl(row.won), rx: 3, fill: color, opacity: 0.85, "data-tip": `${row.label} : borne gagnée ${row.won} %, ${fr(row.facing, 2)} carte adverse posée en face ensuite` }));
+    ls.append(make("text", { x: cx + 25, y: yl(row.won) - 5, "text-anchor": "middle", class: "strong" }, `${row.won} %`));
+    ls.append(make("text", { x: cx + 25, y: 216, "text-anchor": "middle" }, row.label.split(" ")[1] ?? ""));
+  });
+  ls.append(make("text", { x: 115, y: 240, "text-anchor": "middle", class: "label strong" }, "paires"));
+  ls.append(make("text", { x: 351, y: 240, "text-anchor": "middle", class: "label strong" }, "suites de couleur"));
+  const weak = DATA.weakWins;
+  $("weak-note").textContent = `Sur ${thousands(weak.borders)} bornes gagnées, ${thousands(weak.low)} l'ont été avec des cartes de 1 à 3 : un brelan (77 %) ou une suite de couleur (21 %). Leur histoire ressemble à celle des autres, à 2 à 5 points près. Ce n'est pas un piège : c'est la figure qui bat la hauteur.`;
+}
+
+/* ── VII · Situations ────────────────────────────────────── */
+const RED = /[♥♦]/;
+const cardNode = (text, extra = "", tag = "span") => html(tag, { class: `c${RED.test(text) ? " r" : ""}${text === "JK" ? " jk" : ""}${extra}` }, text);
+const moveText = (m) => `${m.card} → ${m.border}`;
+const E = J.examples;
+/** A frame after a move: the card added to the mover's side of `border`, and taken out of the hand. */
+const withMove = (frame, card, border, label) => ({ ...frame, label, focus: border, play: card, hand: (frame.hand ?? []).filter((c, i, all) => c !== card || all.indexOf(c) !== i), board: frame.board.map((b, i) => (i === border - 1 ? { ...b, mine: [...b.mine, card] } : b)) });
+const SITUATIONS = [
+  {
+    id: "sami2", tab: "Le tour 2 de Sami", guess: true,
+    whose: ["l'Expérimental 0.9", "Sami"],
+    frames: () => [{ label: "Tour 2", ...E.sami2 }],
+    intro: "Sami, deuxième à jouer, contre l'Expérimental. Une seule carte sur la table : le 7♠ adverse, borne 4. Qu'aurais-tu joué ?",
+    reveal(mine) {
+      const top = E.sami2.advice[0].gain;
+      const played = E.sami2.played.replace("→", " → ");
+      return [
+        answers(E.sami2.advice.map((a) => ({ label: moveText(a) === played ? `${moveText(a)} · Sami` : moveText(a), value: a.gain, mine: mine && a.card === mine.card && a.border === mine.border, note: moveText(a) === played ? "joué par Sami" : "" })), top),
+        html("p", {}, `Sami a joué ${played} : un cran au-dessus du 7♠, exactement l'idée de surenchère (outbid). Le Stratège 2.1 la juge à ${fr(E.sami2.playedRate * 100, 0)} % des fins de partie simulées, contre ${fr(top * 100, 0)} % pour le 6♥ sur la borne 6, loin de tout. Au tour 2, la surenchère engage une bonne carte pour peu : c'est aussi ce que disent les duels (outbid neutre, 50 à 51 %).`),
+      ];
+    },
+  },
+  {
+    id: "oracle", tab: "L'oracle reste sur sa borne", guess: true,
+    whose: ["l'adversaire", "le 0.9"],
+    frames: () => [{ label: `Tour ${E.oracle.turn}`, ...E.oracle }],
+    intro: `Tour ${E.oracle.turn}, une partie du 0.9 contre lui-même, ${E.oracle.legal} coups légaux. Le cœur, l'arbre du 0.9 et l'oracle ne jouent pas la même chose. Et toi ?`,
+    reveal(mine) {
+      const o = E.oracle;
+      const list = [
+        { label: o.oracle.replace("→", " → "), value: o.share, oracle: true, note: `l'oracle (${fr(o.share * 100, 0)} % des visites)` },
+        { label: o.top_exp[0].replace("→", " → "), value: null, note: "le 1er du cœur du 0.9" },
+        { label: o.played.replace("→", " → "), value: null, note: "joué par l'arbre du 0.9" },
+        { label: o.top_stfig6[0].replace("→", " → "), value: null, note: "le 1er du cœur stfig6" },
+      ];
+      return [
+        html("div", { class: "answers" }, ...list.map((a) => html("div", { class: `answer${a.oracle ? " oracle" : ""}${mine && a.label === moveText(mine) ? " mine" : ""}` }, html("b", {}, a.label), a.value === null ? html("span", { class: "small" }, a.note) : html("div", { class: "bar", style: `width: ${a.value * 100}%`, "data-tip": a.note }), html("span", { class: "small" }, a.value === null ? "" : `${fr(a.value * 100, 0)} %`)))),
+        html("p", {}, `L'oracle pose le 6♦ à côté du 8♦, borne 3 : un côté entamé qui garde une suite de couleur possible (le 7♦ est encore invisible). Il y met ${fr(o.share * 100, 0)} % de ses visites, contre ${fr(o.runnerUp * 100, 1)} % pour son second choix. Le cœur du 0.9 range ce coup ${o.rank_exp}e sur ${o.legal} ; le cœur stfig6, qui récompense justement ce genre de coup, ${o.rank_stfig6}e. Le cœur du 0.9 préfère répondre au 1♦ sur la borne 5, et l'arbre du 0.9 a ouvert la borne 2 avec le 2♥.`),
+        html("p", { class: "small muted" }, "Un écart parmi 2 300, non confirmé par le jeu : c'est ce que la nuit va trancher."),
+      ];
+    },
+  },
+  {
+    id: "trap", tab: "Le piège du joker",
+    whose: ["l'adversaire", "le poseur du piège"],
+    frames: () => [withMove(E.trap.before, E.trap.card, E.trap.border, `Tour ${E.trap.pairTurn} : la paire`), withMove(E.trap.atJoker, "JK", E.trap.border, `Tour ${E.trap.jokerTurn} : le joker`)],
+    intro: `Un duel du 0.9 contre lui-même. Au tour ${E.trap.pairTurn}, le joueur pose le ${E.trap.card} sur son 4♣, borne ${E.trap.border}, avec un joker en main. En face, le 4♠ ; et le 4♥ est déjà posé borne 7 : les deux autres 4 sont en jeu, la paire est « morte ».`,
+    story: [`Pour l'adversaire, ce brelan n'aboutira jamais sans joker. Six tours plus tard (tour ${E.trap.jokerTurn}), le joker tombe sur la paire : brelan de 4. La borne et la partie sont gagnées.`, "Le cœur joue ce piège sans le chercher : il compte le joker de sa main pour finir la paire. Le récompenser en plus ne change rien en cœur contre cœur (50,0 à 50,3 %) : l'adversaire robot, lui, compte aussi les jokers invisibles."],
+  },
+  {
+    id: "weak", tab: "1-1-JK bat 5-6-10♥",
+    whose: ["le perdant", "le gagnant"],
+    frames: () => [{ label: "Fin de partie", ...E.weak, focus: E.weak.border, hand: [] }],
+    intro: `Une borne gagnée avec ce qu'il y a de plus bas : 1♦ 1♥ et un joker, borne ${E.weak.border}, contre 6♥ 5♥ 10♥ — trois cœurs, 21 points.`,
+    story: ["Un brelan bat une couleur, quelle que soit sa hauteur. Ce n'est pas un piège : sur 2 928 bornes gagnées avec des 1 à 3, 77 % le sont par un brelan, et leur histoire ressemble à celle des autres bornes.", "À l'inverse, un début bas se perd plus souvent (58 % pour une paire basse, contre 71 à 75 % plus haut) et attire l'adversaire. Quand il gagne, c'est que la figure a tenu."],
+  },
+  {
+    id: "sami34", tab: "Sami : un tour trop court",
+    whose: ["le Stratège", "Sami"],
+    frames: () => [{ label: "Avant le tour 34", ...E.sami34, focus: 3 }, withMove(E.sami34, "10♠", 3, "Tour 34 : le 10♠"), { label: "Tour 35 : la fin", ...E.samiEnd, focus: 7, play: "JK", pile: 0 }],
+    intro: "La partie que Sami a gardée. Au tour 34, Sami tient les trois 10 : le 10♥ posé borne 3, le 10♠ et le 10♦ en main. Face à lui, une couleur de trèfles (3♣ 6♣ 10♣). Le brelan de 10 la bat.",
+    story: [`Sami pose le 10♠ : le 10♦ attendra un tour de plus. Le Stratège 2.1 donne d'ailleurs le même avis aux deux 10, ${fr(E.sami34.advice[0].gain * 100, 0)} % de fins de partie gagnées : la position était déjà difficile.`, "Au tour 35, le Stratège pose son joker sur 1♥ 1♠, borne 7 : brelan contre 1♣ 1♦ 2♠. C'est sa quatrième borne (1, 2, 6 et 7) : la partie s'arrête, la borne 3 de Sami ne sera jamais finie. Avec elle, les bornes 3-4-5 côte à côte donnaient la victoire à Sami."],
+  },
+];
+function answers(list, top) {
+  return html("div", { class: "answers" }, ...list.map((a) => html("div", { class: `answer${a.mine ? " mine" : ""}` }, html("b", {}, a.label), html("div", { class: "bar", style: `width: ${(a.value / top) * 100}%`, "data-tip": a.note || `${fr(a.value * 100, 0)} % des fins de partie simulées gagnées` }), html("span", {}, `${fr(a.value * 100, 0)} %`))));
+}
+function boardNode(frame, whose, { target = null } = {}) {
+  const cols = frame.board.map((border, i) => {
+    const n = i + 1;
+    const cls = ["col", border.owner ?? "", n === frame.focus ? "focus" : "", target && border.mine.length < 3 && !border.owner ? "target" : ""].filter(Boolean).join(" ");
+    const col = html("div", { class: cls, "data-tip": border.owner ? `Borne ${n} : gagnée par ${border.owner === "me" ? whose[1] : whose[0]}` : `Borne ${n}` },
+      html("div", { class: "side top" }, ...[...border.theirs].reverse().map((c) => cardNode(c))),
+      html("span", { class: "n" }, String(n)),
+      html("div", { class: "side bottom" }, ...border.mine.map((c, k) => cardNode(c, n === frame.focus && c === frame.play && k === border.mine.length - 1 ? " new" : ""))));
+    if (target && cls.includes("target")) col.addEventListener("click", () => target(n));
+    return col;
+  });
+  return html("div", { class: "story" }, html("div", { class: "whose" }, html("span", {}, `en haut : ${whose[0]}`), html("span", {}, `pioche : ${frame.pile ?? "—"}`)), html("div", { class: "board" }, ...cols), html("div", { class: "whose" }, html("span", {}, `en bas : ${whose[1]}`), html("span", {}, "")));
+}
+function showSituation(index) {
+  const s = SITUATIONS[index];
+  document.querySelectorAll("#tabs .tab").forEach((tab, i) => tab.setAttribute("aria-selected", String(i === index)));
+  const frames = s.frames();
+  const panel = $("situation");
+  let frameIndex = 0;
+  let chosen = null;
+  const right = html("div", { class: "story" });
+  const left = html("div", { class: "story" });
+  const render = () => {
+    const frame = frames[frameIndex];
+    const hand = frame.hand ?? [];
+    const handRow = html("div", { class: "hand" }, html("span", {}, hand.length ? (s.guess ? "Ta main, choisis une carte :" : "Main :") : ""));
+    for (const card of hand) {
+      const node = cardNode(card, "", s.guess ? "button" : "span");
+      if (s.guess) {
+        node.setAttribute("type", "button");
+        node.setAttribute("aria-pressed", String(chosen?.card === card && !chosen.border));
+        node.addEventListener("click", () => { chosen = { card }; render(); });
+      }
+      handRow.append(node);
+    }
+    const target = s.guess && chosen && !chosen.border ? (n) => { chosen = { card: chosen.card, border: n }; reveal(); } : null;
+    const shownFrame = chosen?.border ? withMove(frame, chosen.card, chosen.border, frame.label) : frame;
+    const children = [boardNode(shownFrame, s.whose, { target }), handRow];
+    if (frames.length > 1) {
+      const stepper = html("div", { class: "stepper" });
+      frames.forEach((f, i) => {
+        const b = html("button", { type: "button", class: `btn${i === frameIndex ? " primary" : ""}` }, f.label);
+        b.addEventListener("click", () => { frameIndex = i; render(); });
+        stepper.append(b);
+      });
+      children.unshift(stepper);
+    }
+    if (s.guess && chosen && !chosen.border) children.push(html("p", { class: "small muted" }, `${chosen.card} choisi : clique une borne.`));
+    left.replaceChildren(...children);
+  };
+  const reveal = () => {
+    render();
+    const mine = chosen?.border ? chosen : null;
+    const result = mine ? html("p", { class: "result" }, html("b", {}, `Ton coup : ${moveText(mine)}. `), verdictFor(s, mine)) : "";
+    right.replaceChildren(html("p", {}, s.intro), result, ...s.reveal(mine));
+  };
+  if (s.guess) {
+    const button = html("button", { type: "button", class: "btn" }, "Révéler sans jouer");
+    button.addEventListener("click", () => { chosen = null; reveal(); });
+    right.replaceChildren(html("p", {}, s.intro), html("p", { class: "small muted" }, "Choisis une carte de ta main, puis une borne libre."), html("div", {}, button));
+  } else right.replaceChildren(html("p", {}, s.intro), ...s.story.map((text) => html("p", {}, text)));
+  render();
+  panel.replaceChildren(html("div", { class: "situation" }, left, right));
+}
+function verdictFor(s, mine) {
+  if (s.id === "sami2") {
+    const found = E.sami2.advice.find((a) => a.card === mine.card && a.border === mine.border);
+    return found ? `Le Stratège 2.1 le joue à ${fr(found.gain * 100, 0)} %.` : "Ce coup n'est pas dans les 5 que le Stratège 2.1 a joués jusqu'au bout.";
+  }
+  const label = `${mine.card}→${mine.border}`;
+  if (label === E.oracle.oracle) return "C'est le coup de l'oracle.";
+  if (label === E.oracle.played) return "C'est le coup qu'a joué l'arbre du 0.9.";
+  const exp = E.oracle.top_exp.indexOf(label);
+  if (exp >= 0) return `Le cœur du 0.9 le range ${exp + 1}${exp ? "e" : "er"}.`;
+  const st = E.oracle.top_stfig6.indexOf(label);
+  return st >= 0 ? `Le cœur stfig6 le range ${st + 1}${st ? "e" : "er"}.` : "Ni l'oracle, ni le 0.9, ni les cœurs ne le mettent en tête.";
+}
+SITUATIONS.forEach((s, i) => {
+  const tab = html("button", { type: "button", class: "tab", role: "tab", "aria-selected": "false" }, s.tab);
+  tab.addEventListener("click", () => showSituation(i));
+  $("tabs").append(tab);
+});
+
+/* ── VIII · Speed ────────────────────────────────────────── */
+function drawSpeed() {
+  const svg = $("speed");
+  const [left, base] = [50, 250];
+  const y = (v) => base - (v / 1100) * 220;
+  for (let v = 0; v <= 1000; v += 250) {
+    svg.append(make("line", { x1: left, x2: 470, y1: y(v), y2: y(v), stroke: css("line") }));
+    svg.append(make("text", { x: left - 8, y: y(v) + 4, "text-anchor": "end" }, thousands(v)));
+  }
+  const slot = 420 / J.speed.length;
+  J.speed.forEach((step, i) => {
+    const cx = left + slot * i + slot / 2;
+    const bar = make("rect", { x: cx - 32, y: y(step.perSecond), width: 64, height: base - y(step.perSecond), rx: 4, fill: i === J.speed.length - 1 ? css("mark") : css("brass"), opacity: 0.4 + 0.6 * ((i + 1) / J.speed.length), "data-tip": `${step.label} (${step.when}) : ${thousands(step.perSecond)} itérations par seconde` });
+    svg.append(bar);
+    svg.append(make("text", { x: cx, y: y(step.perSecond) - 6, "text-anchor": "middle", class: "strong" }, thousands(step.perSecond)));
+    svg.append(make("text", { x: cx, y: base + 18, "text-anchor": "middle", class: "label" }, step.label));
+    svg.append(make("text", { x: cx, y: base + 33, "text-anchor": "middle" }, step.when));
+  });
+  const gain = J.speed.at(-1).perSecond / J.speed[0].perSecond;
+  svg.append(make("text", { x: 470, y: 22, "text-anchor": "end", class: "strong", style: "font-size: 16px" }, `× ${fr(gain, 2)}`));
+  $("speed-notes").replaceChildren(...J.speed.slice(1).map((step) => html("p", { class: "small" }, html("b", {}, `${step.label} : `), step.note)));
+  const o = $("oracle-speed");
+  const os = J.oracleSpeed;
+  [["avant", os.before, css("off-ink")], ["après", os.after, css("sky")]].forEach(([label, value, color], i) => {
+    const w = (value / os.before) * 340;
+    o.append(make("text", { x: 0, y: 40 + i * 50, class: "label" }, label));
+    o.append(make("rect", { x: 60, y: 24 + i * 50, width: w, height: 24, rx: 4, fill: color }));
+    o.append(make("text", { x: 66 + w, y: 41 + i * 50, class: "strong" }, `${fr(value)} s`));
+  });
+  $("oracle-speed-note").textContent = `Sur tous les fils et avec ses deux économies (arrêt dès que le favori est hors d'atteinte, 2e recherche seulement en cas d'écart), l'oracle a lu ses positions en ${fr(os.perPosition)} s chacune, au lieu des 10 à 14 s estimées.`;
+}
+function drawIsmcts() {
+  const svg = $("ismcts");
+  const boxes = [["Déterminiser", "distribuer les cartes", "invisibles au hasard"], ["Choisir", "top 8 du cœur, puis", "3 réponses (widen 3)"], ["Dérouler", "le cœur joue chaque coup", "jusqu'à la fin"], ["Juger", "qui tient la partie", "au bout"], ["Remonter", "le résultat jusqu'à", "la racine"]];
+  const w = 160;
+  const gap = (960 - 40 - boxes.length * w) / (boxes.length - 1);
+  const xs = boxes.map((_, i) => 20 + i * (w + gap));
+  const yBox = 70;
+  const path = make("path", { d: `M ${xs[0] + w / 2} ${yBox + 35} L ${xs.at(-1) + w / 2} ${yBox + 35}`, fill: "none", stroke: "none", id: "flowpath" });
+  svg.append(path);
+  boxes.forEach(([title, a, b], i) => {
+    const g = make("g", { class: "box" });
+    const hot = i === 2;
+    g.append(make("rect", { x: xs[i], y: yBox, width: w, height: 70, rx: 10, fill: hot ? css("brass-wash") : css("card"), stroke: hot ? css("brass") : css("mark") }));
+    g.append(make("text", { x: xs[i] + w / 2, y: yBox + 24, "text-anchor": "middle" }, `${i + 1}. ${title}`));
+    g.append(make("text", { x: xs[i] + w / 2, y: yBox + 42, "text-anchor": "middle", class: "sub" }, a));
+    g.append(make("text", { x: xs[i] + w / 2, y: yBox + 57, "text-anchor": "middle", class: "sub" }, b));
+    svg.append(g);
+    if (i < boxes.length - 1) svg.append(make("path", { d: `M ${xs[i] + w + 4} ${yBox + 35} L ${xs[i + 1] - 6} ${yBox + 35} M ${xs[i + 1] - 12} ${yBox + 29} L ${xs[i + 1] - 6} ${yBox + 35} L ${xs[i + 1] - 12} ${yBox + 41}`, stroke: css("mark"), fill: "none", "stroke-width": 2 }));
+  });
+  const note = (x, y, lines, color) => lines.forEach((line, k) => svg.append(make("text", { x, y: y + k * 15, "text-anchor": "middle", style: `font: ${k ? 400 : 700} 12px var(--body); fill: ${color}` }, line)));
+  note(xs[2] + w / 2, 30, ["presque tout le temps est ici", `dont ${fr(J.allBonusCost)} % pour les six bonus`], css("brass"));
+  svg.append(make("path", { d: `M ${xs[2] + w - 18} ${yBox + 70} C ${xs[2] + w + 10} ${yBox + 120}, ${xs[3] + 10} ${yBox + 120}, ${xs[3] + 18} ${yBox + 72}`, stroke: css("seal"), fill: "none", "stroke-width": 2, "stroke-dasharray": "5 4" }));
+  note((xs[2] + xs[3] + w) / 2, yBox + 128, ["couper plus tôt (trunc) : écarté", "41 et 46 % à temps égal"], css("seal"));
+  note(xs[1] + w / 2, yBox + 100, ["deux phases (bascule) : écarté", "réduire l'arbre ne libère rien"], css("ink-3"));
+  note(xs[4] + w / 2, yBox + 100, [`${thousands(DATA.timings.tree.perSecond)} fois par seconde`, `soit ${fr(DATA.timings.tree.ms, 1)} ms par itération`], css("mark"));
+  if (!still) {
+    const pulse = make("circle", { r: 7, class: "pulse" });
+    const motion = make("animateMotion", { dur: "2.4s", repeatCount: "indefinite" });
+    motion.append(make("mpath", { href: "#flowpath" }));
+    pulse.append(motion);
+    svg.append(pulse);
+  }
+}
+
+/* ── IX · Jobs ───────────────────────────────────────────── */
+function drawFlow() {
+  const svg = $("flow");
+  const box = (x, y, w, title, sub, color) => {
+    const g = make("g", { class: "box" });
+    g.append(make("rect", { x, y, width: w, height: 54, rx: 10, fill: css("card"), stroke: color }));
+    g.append(make("text", { x: x + w / 2, y: y + 23, "text-anchor": "middle" }, title));
+    g.append(make("text", { x: x + w / 2, y: y + 40, "text-anchor": "middle", class: "sub" }, sub));
+    svg.append(g);
+  };
+  const arrow = (x1, y1, x2, y2, color = css("ink-3"), label = "") => {
+    svg.append(make("line", { x1, y1, x2, y2, stroke: color, "stroke-width": 1.8 }));
+    const a = Math.atan2(y2 - y1, x2 - x1);
+    svg.append(make("path", { d: `M ${x2} ${y2} L ${x2 - 9 * Math.cos(a - 0.4)} ${y2 - 9 * Math.sin(a - 0.4)} L ${x2 - 9 * Math.cos(a + 0.4)} ${y2 - 9 * Math.sin(a + 0.4)} Z`, fill: color }));
+    if (label) svg.append(make("text", { x: (x1 + x2) / 2, y: (y1 + y2) / 2 - 6, "text-anchor": "middle" }, label));
+  };
+  box(20, 40, 150, "todo", "dans la file", css("ink-3"));
+  box(20, 160, 150, "scheduled", "attend son notBefore", css("brass"));
+  box(260, 100, 170, "en cours", "≤ 2 h, puis taskkill /T", css("mark"));
+  box(510, 20, 160, "done", "sortie dans backlog-runs/", css("mark"));
+  box(510, 100, 160, "failed", "code de sortie ≠ 0", css("seal"));
+  box(510, 180, 160, "timeout", "arrêté à 2 h", css("seal"));
+  box(760, 100, 180, "--archive", "backlog-done.json", css("ink-3"));
+  arrow(170, 67, 258, 118, css("ink-3"));
+  arrow(170, 187, 258, 140, css("brass"));
+  svg.append(make("text", { x: 345, y: 90, "text-anchor": "middle" }, "le plus court d'abord"));
+  svg.append(make("text", { x: 345, y: 172, "text-anchor": "middle", fill: css("brass") }, "ou l'heure venue"));
+  arrow(430, 115, 508, 50, css("mark"));
+  arrow(430, 127, 508, 127, css("seal"));
+  arrow(430, 140, 508, 202, css("seal"));
+  arrow(670, 47, 758, 118, css("ink-3"));
+  arrow(670, 127, 758, 127, css("ink-3"));
+  arrow(670, 207, 758, 138, css("ink-3"));
+  svg.append(make("text", { x: 345, y: 220, "text-anchor": "middle" }, "la file est relue"));
+  svg.append(make("text", { x: 345, y: 235, "text-anchor": "middle" }, "entre deux jobs"));
+  svg.append(make("text", { x: 850, y: 190, "text-anchor": "middle" }, "--list : les 3 derniers"));
+  svg.append(make("text", { x: 850, y: 205, "text-anchor": "middle" }, "--queue laptop : sa file"));
+  const families = JOB_FAMILIES.map(([prefix, label, color]) => ({ label, color: css(color), value: DATA.jobs.filter((j) => j.id.startsWith(prefix) && j.status === "done").reduce((s, j) => s + (j.minutes ?? 0), 0) })).filter((f) => f.value > 0);
+  const total = families.reduce((s, f) => s + f.value, 0);
+  donut($("machine-donut"), families.map((f) => ({ ...f, tip: `${f.label} : ${Math.floor(f.value / 60)} h ${String(f.value % 60).padStart(2, "0")}` })), 85, `${Math.round(total / 60)} h`, "de calcul");
+  $("machine-legend").replaceChildren(...families.map((f) => html("span", {}, html("i", { style: `background: ${f.color}` }), `${f.label} · ${Math.floor(f.value / 60)} h ${String(f.value % 60).padStart(2, "0")}`)), html("span", { class: "muted small" }, "jobs finis du backlog depuis hier soir, sur tous les fils"));
+}
+
+/* ── X · Puzzles ─────────────────────────────────────────── */
+function drawPuzzles() {
+  const labels = { endgame: ["fins de partie, résolues exactement", css("mark")], immediate: ["gain immédiat, en un coup", css("brass")] };
+  const parts = Object.entries(DATA.puzzles).map(([kind, value]) => ({ value, color: labels[kind]?.[1] ?? css("sky"), label: labels[kind]?.[0] ?? kind }));
+  const total = parts.reduce((s, p) => s + p.value, 0);
+  donut($("puzzle-donut"), parts.map((p) => ({ ...p, tip: `${p.label} : ${p.value}` })), 85, String(total), "puzzles");
+  $("puzzle-legend").replaceChildren(...parts.map((p) => html("span", {}, html("i", { style: `background: ${p.color}` }), `${p.value} ${p.label}`)));
+}
+
+/* ── XI · Next ───────────────────────────────────────────── */
+function drawNext() {
+  const longs = J.attempts.filter((a) => a.name.startsWith("stfig6, duel long") && a.score !== null);
+  const pooled = longs.reduce((s, a) => s + a.score, 0) / (longs.length || 1);
+  const cards = [
+    ["Ce soir, 21 h", "Le cœur sans bonus, à temps égal", "nobonus et lean, deux jeux de donnes chacun, @t800 contre le 0.9 @t800. Si lean ne perd pas, cinq bonus sur six peuvent partir : un 0.9 plus simple et plus rapide."],
+    ["Ce soir, ensuite", "L'oracle confirmé ou non", "Deux passes de 110 min : chaque écart joué jusqu'au tour 30. On saura si l'oracle voit juste, ou s'il se disperse."],
+    ["En cours", "stfig6 et stay4e10 en duel long", `stfig6 : ${longs.map((a) => `${fr(a.score)} %`).join(", ")} sur ${longs.length} jeux de donnes, ${fr(pooled)} % en moyenne. Deux de plus, puis stay4e10. Si la moyenne tient au-dessus de 53 %, stfig6 devient le candidat au 0.10.`],
+  ];
+  $("next").replaceChildren(...cards.map(([when, title, text]) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
+  $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run journal</code> (scripts/journal.js) : les essais de <code>data/journal.json</code>, les mesures de <code>data/error-impact.json</code>, <code>oracle-diffs.json</code>, <code>jokers-mining.json</code>, <code>weak-wins.json</code>, <code>core-timings.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
+}
+
+drawTimeline();
+renderNotebook();
+drawHeat();
+drawScatter();
+drawOracle();
+drawImpact();
+drawJokers();
+showSituation(0);
+drawSpeed();
+drawIsmcts();
+drawFlow();
+drawPuzzles();
+drawNext();
+</script>
+</body>
+</html>
