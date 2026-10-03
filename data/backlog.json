@@ -32,22 +32,6 @@
       "output": "backlog-runs/2026-10-03-09-11_oracle-2.txt"
     },
     {
-      "id": "oracle-confirm-1",
-      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
-      "estimate": "≤ 2 h",
-      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 1 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
-    },
-    {
-      "id": "oracle-confirm-2",
-      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
-      "estimate": "≤ 2 h",
-      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 2 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
-    },
-    {
       "id": "duel-stfig6-0",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
       "estimate": "20 min",
@@ -92,6 +76,22 @@
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stay4e10@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
       "estimate": "20 min",
       "why": "stay 0,4 aux tours 1-10 seulement (earlyIdeas) : 55,4 % (49,5 – 61,3) en duel de 10 min à 400 itérations, le seul des six bonus « tours 1-10 » au-dessus de 55 %. Validation à 800, sur deux jeux de donnes.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "oracle-confirm-1",
+      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 1 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "oracle-confirm-2",
+      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 2 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
       "status": "scheduled",
       "notBefore": "2026-10-03T21:00"
     }
