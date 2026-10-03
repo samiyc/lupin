@@ -1,0 +1,110 @@
+{
+ "note": "Le carnet du 1.1 : les essais depuis la sortie du 1.0 (03/10 au soir). Lu par npm run changelog -- 1.1 (scripts/changelog.js, page src/report/changelog/1.1.html).",
+ "period": "depuis le 03/10 au soir",
+ "since": "2026-10-03 23:00",
+ "lead": "Ce qui se cherche après le 1.0 : une base de référence où l'oracle sert d'étalon — ses parties entières contre le V1 et contre lui-même, les parties du V1 relues par l'oracle et inversement — pour juger une idée en minutes avant de lui donner des duels longs.",
+ "families": {
+  "reference": "La base de référence",
+  "oracle": "L'oracle",
+  "vitesse": "La vitesse",
+  "outils": "Les outils",
+  "sortie": "La sortie"
+ },
+ "benches": {
+  "cout": "temps d'un coup",
+  "positions": "positions de l'oracle",
+  "jeu": "écarts rejoués au tour 30",
+  "duel": "parties entières",
+  "long800": "arbre @800, 20 min",
+  "temps": "arbre, à temps égal"
+ },
+ "attempts": [
+  {
+   "name": "L'oracle confirmé par le jeu (oracle-confirm-1)",
+   "family": "oracle",
+   "bench": "jeu",
+   "score": 3.1,
+   "lo": 1.3,
+   "hi": 4.9,
+   "verdict": "gagne",
+   "when": "04/10 00:07",
+   "note": "1 144 écarts rejoués jusqu'au tour 30 : le coup de l'oracle tient +3,1 points de plus que celui du 0.9, +6,3 que le favori du cœur. Sûr de lui (marge ≥ 0,15) : +3,7 ; hésitant : +1,0 ± 3,3."
+  },
+  {
+   "name": "Le coût d'un coup de l'oracle (oracle-cost)",
+   "family": "vitesse",
+   "bench": "cout",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "04/10 00:10",
+   "note": "Médiane sur 23 fils : 97 s au tour 2, 90 s au 6, 65 s au 10, 55 s au 14, 41 s au 18, 25 s au 22, 18 s au 26. Une partie contre le V1 : environ 15 min par fil."
+  },
+  {
+   "name": "L'oracle au début de partie : deux recherches d'accord ? (tours 2-12)",
+   "family": "oracle",
+   "bench": "positions",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "cette nuit",
+   "note": "Aux tours 14-26, ses deux recherches s'accordent dans 68-70 % des positions."
+  },
+  {
+   "name": "L'oracle au début de partie, à 80 000 itérations",
+   "family": "oracle",
+   "bench": "positions",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "cette nuit",
+   "note": "Son favori à 20 000 tient-il quand on quadruple le budget ?"
+  },
+  {
+   "name": "Oracle contre 1.0, parties entières (pilote)",
+   "family": "reference",
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "cette nuit",
+   "note": "22 parties, une vague ; ses avis coup par coup gardés dans le replay."
+  },
+  {
+   "name": "L'oracle jusqu'au tour 12, puis le 1.0, contre le 1.0 (pilote)",
+   "family": "reference",
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "attente",
+   "when": "cette nuit",
+   "note": "Son début de partie jugé en parties entières."
+  }
+ ],
+ "commitLabels": {
+  "e3c5fcc": ["reference", "Les outils de la base de référence : l'oracle sur n'importe quel corpus, le banc des cœurs, le V1 dans l'ombre de l'oracle"],
+  "b6d60a4": ["oracle", "L'empreinte de l'oracle version 1"]
+ },
+ "next": [
+  {
+   "when": "Cette nuit",
+   "title": "Les pilotes",
+   "text": "Le coût d'un coup de l'oracle, sa stabilité au début de partie, son favori à 80 000 itérations, puis 22 parties contre le 1.0 et 22 où il ne joue que le début."
+  },
+  {
+   "when": "Demain matin",
+   "title": "La base de référence",
+   "text": "Selon les pilotes : V1 contre V1, V1 contre Oracle, peut-être Oracle contre Oracle, et les parties du V1 relues par l'oracle à tous les tours. Fini avant 13 h, le reste la nuit suivante."
+  },
+  {
+   "when": "Ensuite",
+   "title": "Le 1.1",
+   "text": "Une idée se trie au banc oracle, se vérifie là où elle change un coup (--disagree), puis se décide sur quatre jeux de donnes en duels longs."
+  }
+ ]
+}

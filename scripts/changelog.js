@@ -20,18 +20,21 @@ import { BOT_LINEUP } from "../src/config/bots.js";
  * - the night and day jobs: data/backlog.json and data/backlog-done.json;
  * - the puzzles: web/data/puzzles.json;
  * - the oracle where two cores disagree: data/oracle-disagree.json, if read;
+ * - the oracle bench across cores: data/oracle-bench.json, if built;
  * - the commits since `since`: git log.
  * Rebuilt after the night's jobs, the page picks up their times by itself;
  * their scores go into the version's data file.
  */
+// A new version: copy the previous page to src/report/changelog/<version>.html, keep the
+// sections that still apply, and start data/changelog-exp-<version>.json.
 const ROOT = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, ROOT), "utf8"));
 const MIN_JOKERS = 60;
 
-function commits(since) {
+function commits(since, until) {
   // git is a developer tool found on PATH, like npm that runs this script.
   // eslint-disable-next-line sonarjs/no-os-command-from-path
-  const log = execFileSync("git", ["log", `--since=${since}`, "--reverse", "--format=%ad|%h|%s", "--date=format:%Y-%m-%dT%H:%M"], { cwd: new URL(".", ROOT), encoding: "utf8" });
+  const log = execFileSync("git", ["log", `--since=${since}`, ...(until ? [`--until=${until}`] : []), "--reverse", "--format=%ad|%h|%s", "--date=format:%Y-%m-%dT%H:%M"], { cwd: new URL(".", ROOT), encoding: "utf8" });
   return log.trim().split("\n").filter(Boolean).map((line) => {
     const [at, hash, ...subject] = line.split("|");
     return { at, hash, subject: subject.join("|") };
@@ -59,7 +62,8 @@ const data = {
   built: `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`,
   builtAt: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`,
   journal,
-  commits: commits(journal.since),
+  // A released version stops at `until`: the next one's commits go to its own page.
+  commits: commits(journal.since, journal.until),
   impact: await read("data/error-impact.json"),
   oracle: await read("data/oracle-diffs.json"),
   jokers: placements(await read("data/jokers-mining.json")),
@@ -68,9 +72,11 @@ const data = {
   jobs: [...jobsOf(await read("data/backlog-done.json")), ...jobsOf(await read("data/backlog.json"))],
   puzzles: puzzleKinds((await read("web/data/puzzles.json")).puzzles),
   disagree: await read("data/oracle-disagree.json").catch(() => null),
+  bench: await read("data/oracle-bench.json").catch(() => null),
 };
 
-const template = await readFile(new URL("src/report/changelog/template.html", ROOT), "utf8");
+// Each version has its own page (src/report/changelog/<version>.html), started from the previous one.
+const template = await readFile(new URL(`src/report/changelog/${version}.html`, ROOT), "utf8");
 // The data lands inside a <script>: "</" is escaped so no text in it can close the tag.
 const page = template.replaceAll("__VERSION__", version).replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
 await writeFile(new URL(`out/artifact/${name}.html`, ROOT), page);
