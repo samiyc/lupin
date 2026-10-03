@@ -108,9 +108,13 @@ function drawPotential(side, context, jokerOk) {
   return value;
 }
 
+/** Scratch for `drawPotentialOf`, reset on each call: it runs too often to allocate two arrays each time. */
+const OUTS = new Float64Array(5);
+const BEST_OF = new Float64Array(5);
+
 function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
-  const outs = new Array(5).fill(0);
-  const bestOf = new Array(5).fill(0);
+  const outs = OUTS.fill(0);
+  const bestOf = BEST_OF.fill(0);
   let mean = 0;
   let total = 0;
   for (const [card, count] of unseen.entries) {

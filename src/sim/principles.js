@@ -78,9 +78,12 @@ const BONUSES = Object.entries({ trips: tripsBonus, ends: endsPenalty, reserve: 
 
 /** The principles' bonus for placing `card` on `border`, in value units. */
 export function principlesBonus(context, border, card) {
-  let bonus = 0;
-  for (const [name, bonusOf] of BONUSES) {
-    if (context.ideas.has(name)) bonus += bonusOf(context, border, card);
+  let active = context.memo?.get("principles");
+  if (!active) {
+    active = BONUSES.filter(([name]) => context.ideas.has(name)).map(([, bonusOf]) => bonusOf);
+    context.memo?.set("principles", active);
   }
+  let bonus = 0;
+  for (const bonusOf of active) bonus += bonusOf(context, border, card);
   return bonus;
 }

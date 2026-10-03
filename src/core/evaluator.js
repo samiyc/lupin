@@ -1,4 +1,4 @@
-import { isJoker } from "./cards.js";
+import { JOKER, isJoker } from "./cards.js";
 import {
   classify,
   formationOfScore,
@@ -60,6 +60,13 @@ function memo(key, build) {
   return cache.get(key);
 }
 
+/** Two real cards and a joker before the last of them: their index in the one-joker table, or -1. */
+function jokerFirst(a, b, c, m) {
+  if (c < 0) return -1;
+  if (b === JOKER && a >= 0) return a * m + c;
+  return a === JOKER && b >= 0 ? b * m + c : -1;
+}
+
 const jokerSlots = (cards) => cards.filter(isJoker).map(() => "joker");
 const realOnly = (cards) => cards.filter((card) => !isJoker(card));
 
@@ -80,11 +87,15 @@ export function getEvaluator(spec, order, jokerRule) {
     return {
       order,
       score,
-      /** Allocation-free path for the simulation's hot loop. */
+      /**
+       * Allocation-free path for the simulation's hot loop: three real cards,
+       * or two and a joker in any place (the two real ones keep their order,
+       * as `score` does). Anything else takes the general path.
+       */
       score3(a, b, c) {
-        if (a >= 0 && b >= 0 && c >= 0) return three[(a * m + b) * m + c];
-        if (a >= 0 && b >= 0) return two[a * m + b];
-        return score([a, b, c]);
+        if (a >= 0 && b >= 0) return c >= 0 ? three[(a * m + b) * m + c] : two[a * m + b];
+        const index = jokerFirst(a, b, c, m);
+        return index >= 0 ? two[index] : score([a, b, c]);
       },
       formation: (cards) => formationOfScore(order, score(cards)),
       sum: (cards) => sumOfScore(score(cards)),

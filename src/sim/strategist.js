@@ -50,7 +50,8 @@ function suitedConnector(spec, a, b) {
 
 /** Is a card that turns `a`, `b` into a straight flush still among the unseen? */
 function suitedOutLeft({ unseen, evaluator, memo }, a, b) {
-  const key = `sf:${a},${b}`;
+  // A number, not a string: built on every suited start of every rollout. Negative, apart from the other keys.
+  const key = -((a + 2) * 64 + b + 2);
   const cached = memo?.get(key);
   if (cached !== undefined) return cached;
   const left = unseen.entries.some(([card]) => !isJoker(card) && evaluator.formation([a, b, card]) === "straightFlush");
@@ -102,8 +103,10 @@ export function strategistMoves(moves, sideOf, context, { gainOf, scale, keepAll
   const allowed = judged.filter((entry) => entry.allowed);
   const pool = allowed.length > 0 ? allowed : judged;
   const kept = keepAll ? judged : pool;
+  // Every kept move is in the pool unless `keepAll` brought refused ones back: only then is a lookup needed.
+  const inPool = kept === pool ? null : new Set(pool);
   return kept.map((entry) => {
     const scored = { move: entry.move, gain: gainOf(entry.move) + scale * entry.bonus };
-    return pool.includes(entry) ? scored : { ...scored, refused: true };
+    return !inPool || inPool.has(entry) ? scored : { ...scored, refused: true };
   });
 }

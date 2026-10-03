@@ -44,8 +44,11 @@ function boardBonus(context, border, mine) {
   return bonus;
 }
 
+const anyMined = (ideas) => ideas.has("junk") || ideas.has("facing") || ideas.has("underbid") || ideas.has("nextToWon") || ideas.has("deepen");
+
 export function minedBonus(context, border, card) {
   const { ideas, weights } = context;
+  if (!anyMined(ideas)) return 0;
   const [mine, theirs] = [context.mySides[border], context.theirSides[border]];
   let bonus = 0;
   if (ideas.has("junk")) bonus += junkPenalty(context, mine, card);

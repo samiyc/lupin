@@ -68,7 +68,13 @@ export const strategistBot = (rng, options = {}) => {
 function jokerGate(state, player) {
   const { maxPerSide, maxPerPlayer } = state.jokerRule;
   const underPlayerCap = state.jokersPlayed[player] < maxPerPlayer;
-  return (side) => underPlayerCap && side.filter(isJoker).length < maxPerSide;
+  // Counted by hand: asked for every side judged, an array per call added up.
+  return (side) => {
+    if (!underPlayerCap) return false;
+    let jokers = 0;
+    for (const card of side) jokers += isJoker(card) ? 1 : 0;
+    return jokers < maxPerSide;
+  };
 }
 
 function views(state) {
