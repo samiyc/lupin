@@ -2,6 +2,7 @@ import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { ORACLE } from "../src/replay/oracle.js";
 import { readIndex } from "./lib/game-index.js";
 import { confirmGaps, summarizeConfirm } from "./lib/oracle-confirm.js";
+import { disagree, rerank, summarizeDisagree } from "./lib/oracle-cores.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -26,6 +27,12 @@ import { runPool } from "./lib/pool.js";
  *
  * `--confirm [--seeds 6]`: the gaps played out instead (scripts/lib/oracle-confirm.js),
  * verdict in data/oracle-confirm.json.
+ *
+ * `--core <name>` (with `--summary`): the positions ranked again by another
+ * core, to see whether it moved towards the oracle. `--disagree <name>`: the
+ * oracle where that core and the 0.9's disagree, in the duels they played
+ * (scripts/lib/oracle-cores.js); `--disagree <name> --summary` rebuilds its
+ * summary alone.
  */
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
@@ -114,6 +121,9 @@ async function summarize() {
   for (const row of traits.slice(0, 10)) console.log(`  ${pct(row.oracle)} / ${pct(row.core)}  ${row.trait}`);
   // The gaps themselves stay in oracle/positions.jsonl: here only what they add up to.
   const summary = { built: new Date().toISOString().slice(0, 10), engine: ORACLE.engine, budget, positions: positions.length, gaps: gaps.length, byTurn, byPlayer, traits };
+  const kept = await readFile(new URL("data/oracle-diffs.json", ROOT), "utf8").then((text) => JSON.parse(text).cores, () => undefined);
+  const core = option("--core", null);
+  summary.cores = core ? { ...kept, [core]: await rerank(core) } : kept;
   await writeFile(new URL("data/oracle-diffs.json", ROOT), `${JSON.stringify(summary, null, 1)}\n`);
 }
 
@@ -145,9 +155,12 @@ async function hunt() {
   console.log(`${tally.done} positions lues en ${((Date.now() - started) / 60_000).toFixed(1)} min.\n`);
 }
 
+const against = option("--disagree", null);
 if (args.includes("--confirm")) {
   await confirmGaps({ minutes, seeds: Number(option("--seeds", 6)) });
   await summarizeConfirm();
+} else if (against) {
+  await (args.includes("--summary") ? summarizeDisagree(against, { budget }) : disagree(against, { minutes, budget }));
 } else {
   if (!args.includes("--summary")) await hunt();
   await summarize();
