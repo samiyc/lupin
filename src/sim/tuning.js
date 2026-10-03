@@ -5,10 +5,12 @@ import { gatesOf } from "./ideas.js";
  * weights, with the idea families gated once (`gatesOf`). With `earlyIdeas`,
  * there are two: `early`, those ideas added, while `state.turn < earlyUntil`,
  * and `late` after — a bonus that helps the tree where it is weakest, the
- * first turns, without weighing on the rest (Sami, 03/10).
+ * first turns, without weighing on the rest (Sami, 03/10). `earlyHabits` does
+ * the same for habits.
  */
-export function tuningsOf({ habits, strategy, ideas, earlyIdeas, weights, params }) {
-  const tuningFor = (set) => ({ habits: new Set(habits), strategy, ideas: set, gates: gatesOf(set), weights, params });
-  const late = tuningFor(new Set(ideas));
-  return { late, early: earlyIdeas.length > 0 ? tuningFor(new Set([...ideas, ...earlyIdeas])) : late };
+export function tuningsOf({ habits, strategy, ideas, earlyIdeas, earlyHabits = [], weights, params }) {
+  const tuningFor = (habitSet, set) => ({ habits: habitSet, strategy, ideas: set, gates: gatesOf(set), weights, params });
+  const late = tuningFor(new Set(habits), new Set(ideas));
+  if (earlyIdeas.length === 0 && earlyHabits.length === 0) return { late, early: late };
+  return { late, early: tuningFor(new Set([...habits, ...earlyHabits]), new Set([...ideas, ...earlyIdeas])) };
 }

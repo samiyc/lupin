@@ -168,6 +168,13 @@ export const CORES = Object.freeze({
   wholee10: { ...EXPERIMENT, earlyIdeas: ["whole"], earlyUntil: 10, weights: { ...EXPERIMENT.weights } },
   stay4e10: { ...EXPERIMENT, earlyIdeas: ["stay"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, stay: 0.4 } },
   stfig6e10: { ...EXPERIMENT, earlyIdeas: ["stay"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
+  // The 0.9's own bonuses kept to turns 1-10 (Sami, 03/10): one at a time, moved to earlyIdeas or earlyHabits.
+  nomid10: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "middle"), earlyIdeas: ["middle"], earlyUntil: 10 },
+  nospread10: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "spread"), earlyIdeas: ["spread"], earlyUntil: 10 },
+  noconn10: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "connector"), earlyIdeas: ["connector"], earlyUntil: 10 },
+  nojoker10: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), earlyHabits: ["joker"], earlyUntil: 10 },
+  noopen10: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "opening"), earlyHabits: ["opening"], earlyUntil: 10 },
+  nosuited10: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "suited"), earlyHabits: ["suited"], earlyUntil: 10 },
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
   blind1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noBlindOpen"], weights: { ...EXPERIMENT.weights, noBlindOpen: 0.1 } },

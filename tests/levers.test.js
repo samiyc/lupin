@@ -7,6 +7,7 @@ import { BOTS, engineFor, pickSampled } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { createIsmcts, isPivot } from "../src/sim/ismcts.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
+import { HABITS } from "../src/sim/strategist.js";
 import { rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
 
 const spec = DECKS.classique;
@@ -96,5 +97,18 @@ describe("ideas for the first turns only", () => {
     assert.deepEqual(gains(early, before), gains(always, before));
     assert.deepEqual(gains(early, after), gains(plain, after));
     assert.notDeepEqual(gains(always, after), gains(plain, after), "the idea does weigh at turn 14 when it is on");
+  });
+});
+
+describe("habits for the first turns only", () => {
+  it("play a habit before earlyUntil, and leave it from then on", () => {
+    const withoutJoker = HABITS.filter((habit) => habit !== "joker");
+    const early = strategistBot(createRng(1), { ...EXPERIMENT, habits: withoutJoker, earlyHabits: ["joker"], earlyUntil: 10 });
+    const always = strategistBot(createRng(1), EXPERIMENT);
+    const never = strategistBot(createRng(1), { ...EXPERIMENT, habits: withoutJoker });
+    const scores = (bot, state) => bot.scoreMoves(state, legalMoves(state)).map(({ move, gain }) => `${move.card}:${move.border}:${gain}`);
+    const [before, after] = [position(5, 6), position(5, 16)];
+    assert.deepEqual(scores(early, before), scores(always, before));
+    assert.deepEqual(scores(early, after), scores(never, after));
   });
 });
