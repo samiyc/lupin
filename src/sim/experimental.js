@@ -161,6 +161,13 @@ export const CORES = Object.freeze({
   stfig12: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 1.2, stayFigure: 1 } },
   stfig15: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 1.5, stayFigure: 1 } },
   jkxf6: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "junk", "outbid", "exposure", "stay"], weights: { ...EXPERIMENT.weights, junk: 0.2, outbid: 0.2, exposure: 0.2, stay: 0.6, stayFigure: 1 } },
+  // Ideas on for turns 1-10 only (Sami, 03/10: the tree is weakest early, a bonus may hurt later): earlyIdeas, earlyUntil.
+  jk2e10: { ...EXPERIMENT, earlyIdeas: ["junk"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, junk: 0.2 } },
+  obexe10: { ...EXPERIMENT, earlyIdeas: ["outbid", "exposure"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, outbid: 0.2, exposure: 0.2 } },
+  jkxe10: { ...EXPERIMENT, earlyIdeas: ["junk", "outbid", "exposure"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, junk: 0.2, outbid: 0.2, exposure: 0.2 } },
+  wholee10: { ...EXPERIMENT, earlyIdeas: ["whole"], earlyUntil: 10, weights: { ...EXPERIMENT.weights } },
+  stay4e10: { ...EXPERIMENT, earlyIdeas: ["stay"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, stay: 0.4 } },
+  stfig6e10: { ...EXPERIMENT, earlyIdeas: ["stay"], earlyUntil: 10, weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
   blind1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noBlindOpen"], weights: { ...EXPERIMENT.weights, noBlindOpen: 0.1 } },

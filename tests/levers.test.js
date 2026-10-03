@@ -84,3 +84,17 @@ describe("ISMCTS", () => {
     assert.equal(engineFor("ismcts+exact=12@40")(createRng(1)).solves(state, moves), moves.length > 1);
   });
 });
+
+describe("ideas for the first turns only", () => {
+  it("play their ideas before earlyUntil, and the plain core from then on", () => {
+    const weights = { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 };
+    const early = strategistBot(createRng(1), { ...EXPERIMENT, earlyIdeas: ["stay"], earlyUntil: 10, weights });
+    const always = strategistBot(createRng(1), { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights });
+    const plain = strategistBot(createRng(1), EXPERIMENT);
+    const gains = (bot, state) => bot.scoreMoves(state, legalMoves(state)).map(({ gain }) => gain);
+    const [before, after] = [position(3, 8), position(3, 14)];
+    assert.deepEqual(gains(early, before), gains(always, before));
+    assert.deepEqual(gains(early, after), gains(plain, after));
+    assert.notDeepEqual(gains(always, after), gains(plain, after), "the idea does weigh at turn 14 when it is on");
+  });
+});

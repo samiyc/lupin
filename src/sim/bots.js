@@ -3,12 +3,13 @@ import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
-import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors, gatesOf } from "./ideas.js";
+import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
 import { phaseBot, phaseSettings } from "./phase.js";
 import { pickBest, pickSampled } from "./pick.js";
 import { searchBot } from "./search.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
+import { tuningsOf } from "./tuning.js";
 
 /**
  * Players for the simulation and the web game.
@@ -50,13 +51,13 @@ export const greedyBot = (rng) => ({
  * `greedy` plus some of Sami's habits (all three by default), and optionally
  * some of his later ideas (`ideas.js`, none by default).
  */
-const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], weights: IDEA_WEIGHTS, params: BOT_PARAMS });
+const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, ideas: [], earlyIdeas: [], earlyUntil: 0, weights: IDEA_WEIGHTS, params: BOT_PARAMS });
 
 export const strategistBot = (rng, options = {}) => {
-  const { habits, strategy, ideas, weights, params, name, sample } = { ...STRATEGIST_DEFAULTS, ...options };
-  const ideaSet = new Set(ideas);
-  const tuning = { habits: new Set(habits), strategy, ideas: ideaSet, gates: gatesOf(ideaSet), weights, params };
-  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, tuning, keepAll);
+  const settings = { ...STRATEGIST_DEFAULTS, ...options };
+  const { habits, name, sample, earlyUntil } = settings;
+  const { early, late } = tuningsOf(settings);
+  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, state.turn < earlyUntil ? early : late, keepAll);
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
