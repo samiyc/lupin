@@ -493,6 +493,12 @@ const VERDICTS = { gagne: ["gagne", "mark"], tendance: ["tendance", "brass"], ne
 const attempt = (name) => J.attempts.find((a) => a.name === name);
 const measured = J.attempts.filter((a) => a.score !== null);
 
+/** The long stfig6 duels, pooled when the pooled row is there, else one by one. */
+function pooledText(longs) {
+  const pooled = attempt("stfig6, les quatre duels longs réunis");
+  return pooled ? `${fr(pooled.score)} % (${fr(pooled.lo)} – ${fr(pooled.hi)}) sur ${longs.length} jeux de donnes` : longs.map((a) => `${fr(a.score)} %`).join(" et ");
+}
+
 /* ── The band ──────────────────────────────────────────────── */
 $("lead").textContent = `Toutes les tentatives sur l'Expérimental 0.9, ${J.period} : les idées de Sami tirées de ses parties, les règles fouillées dans les replays, un oracle lâché sur 4 331 positions, un cœur trois fois repassé au chronomètre, et une machine qui calcule la nuit pendant que tout le monde dort.`;
 {
@@ -504,7 +510,7 @@ $("lead").textContent = `Toutes les tentatives sur l'Expérimental 0.9, ${J.peri
   const tiles = [
     [measured.length, (v) => `${Math.round(v)}`, "essais mesurés, du cœur seul aux duels longs dans l'arbre"],
     [last, (v) => `${thousands(Math.round(v))}<small> it/s</small>`, `itérations par seconde, contre ${first} hier : le même 0.9, pas un coup changé`],
-    [stfig.score - 50, (v) => `+${fr(v, 0)}<small> pts</small>`, `stfig 0,6 contre le cœur du 0.9 ; en duel long : ${longs.map((a) => `${fr(a.score)} %`).join(" et ")}`],
+    [stfig.score - 50, (v) => `+${fr(v, 0)}<small> pts</small>`, `stfig 0,6 contre le cœur du 0.9 ; dans l'arbre, en duel long : ${pooledText(longs)}`],
     [Math.max(...same), (v) => `${Math.min(...same)}–${Math.round(v)}<small> %</small>`, "des positions où l'oracle joue le coup du 0.9"],
   ];
   for (const [to, format, text] of tiles) {
@@ -1201,11 +1207,10 @@ function drawPuzzles() {
 /* ── XI · Next ───────────────────────────────────────────── */
 function drawNext() {
   const longs = J.attempts.filter((a) => a.name.startsWith("stfig6, duel long") && a.score !== null);
-  const pooled = longs.reduce((s, a) => s + a.score, 0) / (longs.length || 1);
   const cards = [
     ["Ce soir, 21 h", "Le cœur sans bonus, à temps égal", "nobonus et lean, deux jeux de donnes chacun, @t800 contre le 0.9 @t800. Si lean ne perd pas, cinq bonus sur six peuvent partir : un 0.9 plus simple et plus rapide."],
     ["Ce soir, ensuite", "L'oracle confirmé ou non", "Deux passes de 110 min : chaque écart joué jusqu'au tour 30. On saura si l'oracle voit juste, ou s'il se disperse."],
-    ["En cours", "stfig6 et stay4e10 en duel long", `stfig6 : ${longs.map((a) => `${fr(a.score)} %`).join(", ")} sur ${longs.length} jeux de donnes, ${fr(pooled)} % en moyenne. Deux de plus, puis stay4e10. Si la moyenne tient au-dessus de 53 %, stfig6 devient le candidat au 0.10.`],
+    ["Le candidat au 0.10", "stfig6 gagne dans l'arbre", `Quatre duels longs : ${longs.map((a) => `${fr(a.score)} %`).join(", ")}, soit ${pooledText(longs)}. La fourchette reste au-dessus de 50 %. stay4e10 passe ensuite ; puis le 0.10 = le 0.9 avec stfig 0,6, à confirmer contre le Stratège.`],
   ];
   $("next").replaceChildren(...cards.map(([when, title, text]) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
   $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run journal</code> (scripts/journal.js) : les essais de <code>data/journal.json</code>, les mesures de <code>data/error-impact.json</code>, <code>oracle-diffs.json</code>, <code>jokers-mining.json</code>, <code>weak-wins.json</code>, <code>core-timings.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;

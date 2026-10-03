@@ -709,12 +709,23 @@
    "name": "stfig6, duel long n°3",
    "family": "oracle",
    "bench": "long800",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "03/10 soir",
-   "note": "En cours dans le backlog."
+   "score": 60.8,
+   "lo": 54.8,
+   "hi": 66.9,
+   "verdict": "gagne",
+   "when": "03/10 18:20",
+   "note": "240 parties à 800 itérations, d’autres donnes."
+  },
+  {
+   "name": "stfig6, les quatre duels longs réunis",
+   "family": "oracle",
+   "bench": "long800",
+   "score": 56.2,
+   "lo": 53.2,
+   "hi": 59.1,
+   "verdict": "gagne",
+   "when": "03/10 18:38",
+   "note": "960 parties sur quatre jeux de donnes ; fourchette approchée en combinant celles des quatre duels. Le candidat au 0.10."
   },
   {
    "name": "junk aux tours 1-10",
