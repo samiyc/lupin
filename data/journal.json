@@ -12,7 +12,8 @@
   "fenetres": "Fenêtres de tour",
   "vitesse": "Vitesse, temps égal",
   "outils": "Outils et backlog",
-  "lecteur": "Lecteur et puzzles"
+  "lecteur": "Lecteur et puzzles",
+  "sortie": "La sortie du 1.0"
  },
  "benches": {
   "coeur": "cœur contre cœur",
@@ -20,7 +21,8 @@
   "long800": "arbre @800, 20 min",
   "temps": "arbre, à temps égal",
   "fin": "fin de partie (Δ points)",
-  "partie": "parties entières (Δ points)"
+  "partie": "parties entières (Δ points)",
+  "lineup": "contre le line-up, 300 parties"
  },
  "attempts": [
   {
@@ -720,12 +722,12 @@
    "name": "stfig6, les quatre duels longs réunis",
    "family": "oracle",
    "bench": "long800",
-   "score": 56.2,
+   "score": 56.1,
    "lo": 53.2,
    "hi": 59.1,
    "verdict": "gagne",
    "when": "03/10 18:38",
-   "note": "960 parties sur quatre jeux de donnes ; fourchette approchée en combinant celles des quatre duels. Le candidat au 0.10."
+   "note": "480 donnes jouées des deux côtés, fourchette exacte par paires (npm run versus). Devenu l'Expérimental 1.0."
   },
   {
    "name": "junk aux tours 1-10",
@@ -819,12 +821,12 @@
    "name": "stay4e10, les deux duels longs réunis",
    "family": "fenetres",
    "bench": "long800",
-   "score": 50.9,
-   "lo": 47.4,
-   "hi": 54.4,
+   "score": 50.6,
+   "lo": 47.1,
+   "hi": 54.2,
    "verdict": "neutre",
    "when": "03/10 19:17",
-   "note": "624 parties ; fourchette approchée. Le 55,4 % du tri à 400 ne tient pas : stay limité au début ne gagne rien."
+   "note": "312 donnes jouées des deux côtés, fourchette exacte par paires. Le 55,4 % du tri à 400 ne tient pas."
   },
   {
    "name": "middle du 0.9, tours 1-10 seulement",
@@ -1034,6 +1036,28 @@
    "verdict": "attente",
    "when": "ce soir, 21 h",
    "note": "À temps égal : garder la seule habitude qui travaille."
+  },
+  {
+   "name": "Expérimental 1.0 contre le Stratège 2.1",
+   "family": "sortie",
+   "bench": "lineup",
+   "score": 70,
+   "lo": 64.8,
+   "hi": 75.2,
+   "verdict": "gagne",
+   "when": "03/10 20:09",
+   "note": "Le 0.9 en gagnait 68 sur 100. Elo du 1.0 : 956 ± 19."
+  },
+  {
+   "name": "Expérimental 1.0 contre le Basique",
+   "family": "sortie",
+   "bench": "lineup",
+   "score": 90.3,
+   "lo": 87.2,
+   "hi": 93.5,
+   "verdict": "gagne",
+   "when": "03/10 20:17",
+   "note": "Le 0.9 en gagnait 95 sur 100."
   }
  ],
  "bonusCosts": [
@@ -2142,6 +2166,37 @@
   "4d8b8a0": [
    "lecteur",
    "Puzzles : « Non résolus seulement », coché par défaut"
+  ],
+  "fe41ced": [
+   "vitesse",
+   "stfig lit la forme d'un côté paire par paire : 2 % de coût au lieu de 24 %"
+  ],
+  "72e020b": [
+   "outils",
+   "npm run versus : deux moteurs comparés sur toutes leurs parties gardées"
+  ],
+  "9b16f1e": [
+   "sortie",
+   "Expérimental 1.0 : rester sur ses côtés tant qu'une figure y est possible"
+  ],
+  "c609ce7": [
+   "oracle",
+   "L'oracle interrogé sur un autre cœur : --core et --disagree"
+  ],
+  "7abb8d8": [
+   "sortie",
+   "Le 1.0 classé contre le Stratège et le Basique, et dans la rétrospective"
   ]
+ },
+ "release": {
+  "version": "1.0",
+  "elo": 956,
+  "margin": 19,
+  "top8": {
+   "base": 53.9,
+   "alt": 66
+  },
+  "vsStratege": 70,
+  "vsBasique": 90.3
  }
 }

@@ -488,7 +488,7 @@ document.addEventListener("pointerover", (event) => {
 document.addEventListener("pointermove", (event) => { if (!tip.hidden) moveTip(event); });
 document.addEventListener("pointerout", (event) => { if (event.target.closest?.("[data-tip]")) tip.hidden = true; });
 
-const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b" };
+const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b", sortie: "#c9a227" };
 const VERDICTS = { gagne: ["gagne", "mark"], tendance: ["tendance", "brass"], neutre: ["neutre", "off-ink"], perd: ["perd", "seal"], attente: ["en attente", "off"] };
 const attempt = (name) => J.attempts.find((a) => a.name === name);
 const measured = J.attempts.filter((a) => a.score !== null);
@@ -1207,10 +1207,15 @@ function drawPuzzles() {
 /* ── XI · Next ───────────────────────────────────────────── */
 function drawNext() {
   const longs = J.attempts.filter((a) => a.name.startsWith("stfig6, duel long") && a.score !== null);
+  const R = J.release;
+  const D = DATA.disagree?.cores?.stfig6;
+  const oracleCard = D
+    ? ["Ce soir, 20 h 20", "L'oracle a tranché", `Là où le cœur du 1.0 et celui du 0.9 préfèrent des coups différents (tours 5 à 16, ${thousands(D.read)} positions lues, ${thousands(D.stable)} où ses deux recherches s'accordent), l'oracle joue le coup du 1.0 dans ${fr(D.alt * 100, 0)} % des cas, celui du 0.9 dans ${fr(D.base * 100, 0)} %, un troisième dans ${fr(D.other * 100, 0)} %.`]
+    : ["Ce soir, 20 h 20", "L'oracle tranche", "Là où le cœur du 1.0 et celui du 0.9 préfèrent des coups différents, l'oracle cherche deux fois et dit lequel il joue."];
   const cards = [
-    ["Ce soir, 21 h", "Le cœur sans bonus, à temps égal", "nobonus et lean, deux jeux de donnes chacun, @t800 contre le 0.9 @t800. Si lean ne perd pas, cinq bonus sur six peuvent partir : un 0.9 plus simple et plus rapide."],
-    ["Ce soir, ensuite", "L'oracle confirmé ou non", "Deux passes de 110 min : chaque écart joué jusqu'au tour 30. On saura si l'oracle voit juste, ou s'il se disperse."],
-    ["Le candidat au 0.10", "stfig6 gagne dans l'arbre", `Quatre duels longs : ${longs.map((a) => `${fr(a.score)} %`).join(", ")}, soit ${pooledText(longs)}. La fourchette reste au-dessus de 50 %. stay4e10, lui, retombe à 50,9 % sur deux duels. Le 0.10 = le 0.9 avec stfig 0,6, à confirmer contre le Stratège.`],
+    ["Sorti ce soir", `Expérimental ${R.version} : Elo ${R.elo} ± ${R.margin}`, `Le 0.9 avec stfig 0,6. Quatre duels longs : ${longs.map((a) => `${fr(a.score)} %`).join(", ")}, soit ${pooledText(longs)} par paires. Contre le Stratège 2.1 : ${fr(R.vsStratege)} % ; contre le Basique : ${fr(R.vsBasique)} %. Le coup de l'oracle entre dans son top 8 dans ${fr(R.top8.alt, 0)} % des positions, contre ${fr(R.top8.base, 0)} % pour le 0.9.`],
+    oracleCard,
+    ["Cette nuit", "Les bonus, et l'oracle confirmé par le jeu", "nobonus et lean, à temps égal, puis la confirmation des écarts de l'oracle, chaque écart joué jusqu'au tour 30. Un tri à 400 n'en promeut plus aucune idée : quatre jeux de donnes à 800, et l'oracle d'abord."],
   ];
   $("next").replaceChildren(...cards.map(([when, title, text]) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
   $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run journal</code> (scripts/journal.js) : les essais de <code>data/journal.json</code>, les mesures de <code>data/error-impact.json</code>, <code>oracle-diffs.json</code>, <code>jokers-mining.json</code>, <code>weak-wins.json</code>, <code>core-timings.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;

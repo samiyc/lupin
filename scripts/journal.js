@@ -17,6 +17,7 @@ import { readFile, writeFile } from "node:fs/promises";
  * - the core's speed: data/core-timings.json;
  * - the night and day jobs: data/backlog.json and data/backlog-done.json;
  * - the puzzles: web/data/puzzles.json;
+ * - the oracle where two cores disagree: data/oracle-disagree.json, if read;
  * - the commits since `since`: git log.
  * Rebuilt after tonight's jobs, the page picks up their times by itself;
  * their scores go into data/journal.json.
@@ -61,6 +62,7 @@ const data = {
   timings: await read("data/core-timings.json"),
   jobs: [...jobsOf(await read("data/backlog-done.json")), ...jobsOf(await read("data/backlog.json"))],
   puzzles: puzzleKinds((await read("web/data/puzzles.json")).puzzles),
+  disagree: await read("data/oracle-disagree.json").catch(() => null),
 };
 
 const template = await readFile(new URL("src/report/journal/template.html", ROOT), "utf8");
