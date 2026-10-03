@@ -1384,3 +1384,14 @@ seulement quand il faut, l'arrêt anticipé.
 --measure`, sur une machine au repos : la page construite pendant le backlog
 affichait 120 itérations par seconde au lieu de 556.
 
+**La confirmation par le jeu** (`npm run oracle -- --confirm`,
+`scripts/lib/oracle-confirm.js`) : pour chaque écart, le coup de l'oracle, le
+premier du cœur et celui du 0.9 sont forcés, puis la partie est jouée par le
+0.9 des deux côtés sur 4 graines et jugée au tour 30 par le solveur exact. Le
+verdict d'ensemble est l'avance moyenne du coup de l'oracle sur celui du cœur
+et sur celui du 0.9, par groupe (dernière colonne, tours fixes, marge de
+l'oracle, hors du top 8). Un essai sur 3 écarts : 3,5 à 10 min de calcul par
+écart, machine chargée. Les 1 176 écarts trouvés à 9 h passent la nuit du
+03/10 (deux traitements de 110 min, programmés à partir de 21 h). Dans 196 de
+ces écarts, le coup de l'oracle est celui que le 0.9 avait joué : son arbre
+l'avait trouvé, hors du top 3 du cœur.

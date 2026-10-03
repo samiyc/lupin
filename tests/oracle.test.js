@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { DECKS, JOKER_RULES } from "../src/config/decks.js";
 import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
-import { ORACLE, coreRanking, favouriteOf, needsSecondRun, rankOf, verdictOf } from "../src/replay/oracle.js";
+import { ORACLE, confirmVerdict, coreRanking, favouriteOf, meanAndHalf, moveOfLabel, movesToConfirm, needsSecondRun, pointsFor, rankOf, verdictOf } from "../src/replay/oracle.js";
 import { BOTS, engineFor } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 
@@ -44,5 +44,24 @@ describe("the oracle", () => {
     const scored = engineFor(`${ORACLE.engine}@${moves.length * 3}`)(createRng(1)).scoreMoves(state, moves, { keepAll: true });
     assert.ok(moves.length > ORACLE.shortlist);
     assert.equal(scored.length, moves.length);
+  });
+
+  it("reads its move labels back, and plays each move of a gap once", () => {
+    assert.deepEqual(moveOfLabel(DECKS.classique, "7♥→1"), { card: 16, border: 0 });
+    assert.equal(moveOfLabel(DECKS.classique, "JK→3").border, 2);
+    assert.deepEqual(movesToConfirm({ move: "a", core: ["b", "c"], played: "b" }), ["a", "b"]);
+    assert.deepEqual(movesToConfirm({ move: "a", core: ["b"], played: "c" }), ["a", "b", "c"]);
+  });
+
+  it("weighs a gap by what each move holds at turn 30", () => {
+    assert.equal(pointsFor(1, 1), 1);
+    assert.equal(pointsFor(0, 1), 0);
+    assert.equal(pointsFor(null, 1), 0.5);
+    assert.equal(pointsFor(undefined, 1), null);
+    const entry = { move: "a", core: ["b"], played: "a" };
+    assert.deepEqual(confirmVerdict(entry, { a: 0.75, b: 0.25 }), { vsCore: 0.5, vsPlayed: null });
+    const { mean, count } = meanAndHalf([0.5, -0.5, 0.25]);
+    assert.equal(count, 3);
+    assert.ok(Math.abs(mean - 1 / 12) < 1e-12);
   });
 });

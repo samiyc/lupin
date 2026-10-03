@@ -1,6 +1,7 @@
 import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { ORACLE } from "../src/replay/oracle.js";
 import { readIndex } from "./lib/game-index.js";
+import { confirmGaps, summarizeConfirm } from "./lib/oracle-confirm.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -22,6 +23,9 @@ import { runPool } from "./lib/pool.js";
  * positions already there: a run cut short loses nothing. `--minutes` stops
  * taking new positions after that long. The gaps and the rates by turn and
  * by player go to data/oracle-diffs.json; `--summary` rebuilds it alone.
+ *
+ * `--confirm [--seeds 6]`: the gaps played out instead (scripts/lib/oracle-confirm.js),
+ * verdict in data/oracle-confirm.json.
  */
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
@@ -120,5 +124,10 @@ async function hunt() {
   console.log(`${tally.done} positions lues en ${((Date.now() - started) / 60_000).toFixed(1)} min.\n`);
 }
 
-if (!args.includes("--summary")) await hunt();
-await summarize();
+if (args.includes("--confirm")) {
+  await confirmGaps({ minutes, seeds: Number(option("--seeds", 6)) });
+  await summarizeConfirm();
+} else {
+  if (!args.includes("--summary")) await hunt();
+  await summarize();
+}

@@ -134,6 +134,54 @@
       "estimate": "≤ 2 h",
       "why": "L'oracle (Sami, 03/10) : un arbre sur tous les coups légaux, 20 000 itérations, aux tours 15-16, 20-21 et 25-26 des parties du 0.9 contre lui-même. Un écart = son coup, le même sur deux graines, hors du top 3 du cœur. Environ 10 s par position sur 23 fils : ~1 400 positions sur 3 600 en 4 h ; la chasse reprend où elle s'est arrêtée (oracle/positions.jsonl). Passe 2 : chaque passe reprend où la précédente s'est arrêtée.",
       "status": "todo"
+    },
+    {
+      "id": "oracle-confirm-1",
+      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 1 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "oracle-confirm-2",
+      "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
+      "estimate": "≤ 2 h",
+      "why": "La confirmation par le jeu des écarts de l'oracle (plan du 03/10) : pour chaque écart, le coup de l'oracle, le premier du cœur et celui du 0.9, joués jusqu'au tour 30 par le 0.9 sur 4 graines, jugés par le solveur exact. Les écarts de la dernière colonne d'abord, puis les plus nets. Passe 2 : reprend où la précédente s'est arrêtée (oracle/confirm.jsonl). Verdict dans data/oracle-confirm.json.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-jkx-2",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 2",
+      "estimate": "20 min",
+      "why": "jkx dans l'arbre : 51,7 % (46,6 – 56,9) sur 144 paires. Quatre jeux de donnes de plus portent le total à environ 430 paires, ± 3 points.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-jkx-3",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 3",
+      "estimate": "20 min",
+      "why": "jkx dans l'arbre : 51,7 % (46,6 – 56,9) sur 144 paires. Quatre jeux de donnes de plus portent le total à environ 430 paires, ± 3 points.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-jkx-4",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 4",
+      "estimate": "20 min",
+      "why": "jkx dans l'arbre : 51,7 % (46,6 – 56,9) sur 144 paires. Quatre jeux de donnes de plus portent le total à environ 430 paires, ± 3 points.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-jkx-5",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 5",
+      "estimate": "20 min",
+      "why": "jkx dans l'arbre : 51,7 % (46,6 – 56,9) sur 144 paires. Quatre jeux de donnes de plus portent le total à environ 430 paires, ± 3 points.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
     }
   ]
 }

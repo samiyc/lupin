@@ -1,3 +1,5 @@
+import { parseCard } from "../core/notation.js";
+
 /**
  * The oracle (Sami, 03/10): a tree search over every legal move with a large
  * budget, run on positions of the kept games, to find what the core leaves
@@ -59,3 +61,44 @@ export function verdictOf(ranking, runs) {
 
 /** Is a second run worth making? Only when the first run's favourite is outside the core's top 3. */
 export const needsSecondRun = (ranking, firstRun) => rankOf(ranking, favouriteOf(firstRun).move) > ORACLE.top;
+
+/**
+ * The confirmation by play (`npm run oracle -- --confirm`): from a gap's
+ * position, the oracle's move, the core's favourite and the 0.9's move are
+ * each played out by the 0.9 on both sides, from several seeds, and judged at
+ * turn 30 by the exact solver. A gap is confirmed when the oracle's move holds
+ * the game more often.
+ */
+
+/** "7♥→1" back to the move it names. */
+export function moveOfLabel(spec, label) {
+  const [card, border] = label.split("→");
+  return { card: parseCard(spec, card), border: Number(border) - 1 };
+}
+
+/** The moves a gap plays out, each once: the oracle's, the core's favourite, and the 0.9's when it is another. */
+export const movesToConfirm = (entry) => [...new Set([entry.move, entry.core[0], entry.played].filter(Boolean))];
+
+/** Who holds the game at turn 30, as the mover's points: 1, ½ for a draw, 0; null when the solver ran out of positions. */
+export function pointsFor(holder, mover) {
+  if (holder === undefined) return null;
+  if (holder === null) return 0.5;
+  return holder === mover ? 1 : 0;
+}
+
+const meanOf = (values) => (values.length ? values.reduce((sum, x) => sum + x, 0) / values.length : null);
+
+/** What a gap's play-outs say: the oracle's move against the core's favourite, and against the 0.9's move. */
+export function confirmVerdict(entry, means) {
+  const lead = (label) => (label && label !== entry.move && means[label] !== null && means[entry.move] !== null ? means[entry.move] - means[label] : null);
+  return { vsCore: lead(entry.core[0]), vsPlayed: lead(entry.played) };
+}
+
+/** The mean of a list of differences and the half-width of its 95 % interval. */
+export function meanAndHalf(values) {
+  const mean = meanOf(values) ?? 0;
+  const variance = values.reduce((sum, x) => sum + (x - mean) ** 2, 0) / Math.max(1, values.length - 1);
+  return { mean, half: 1.96 * Math.sqrt(variance / Math.max(1, values.length)), count: values.length };
+}
+
+export { meanOf };

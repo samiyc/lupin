@@ -231,6 +231,8 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | l'oracle sur les replays : un arbre sur tous les coups, aux tours 15-16, 20-21, 25-26 (≈ 10 s par position ; reprend où il s'est arrêté) | `npm run oracle -- --minutes 240` |
 | l'oracle au coup qui remplit la dernière colonne vide de chaque joueur | `npm run oracle -- --at last-column --minutes 240` |
 | relire le résumé de l'oracle (data/oracle-diffs.json) | `npm run oracle -- --summary` |
+| confirmer les écarts de l'oracle par le jeu (suite jouée par le 0.9, jugée au tour 30) | `npm run oracle -- --confirm --seeds 4 --minutes 110` → `data/oracle-confirm.json` |
+| programmer un traitement pour la nuit | dans `data/backlog.json` : `"status": "scheduled", "notBefore": "2026-10-03T21:00"` |
 | lancer les traitements longs de la nuit (2 h au plus chacun, arrêtés au-delà) | `npm run backlog` (`--list` pour voir la file, `data/backlog.json`) |
 | limiter le nombre de fils de calcul (portable, ou garder la main pendant un calcul) | `LOPIN_THREADS=4 npm run …` (docs/cloud.md) |
 | envoyer les calculs sur un serveur loué | voir docs/cloud.md |

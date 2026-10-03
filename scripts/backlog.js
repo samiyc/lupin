@@ -16,6 +16,9 @@ import { localTimestamp } from "../src/replay/log.js";
  * Sami, 03/10), so that a job gone wrong does not eat the night. One that
  * reaches it is stopped, with every process under it, and marked `timeout`.
  *
+ * A job `scheduled` with `notBefore` (an ISO date) waits until then: kept for
+ * the night, it is not started by a run that goes on into the day.
+ *
  * `--queue laptop`: another machine's own queue, data/backlog-laptop.json,
  * so that two machines never write the same file. Its outputs go to
  * data/runs-laptop/, which git carries back: `git pull`, run, then commit and
@@ -70,12 +73,16 @@ const statusOf = (code) => {
   return code === 0 ? "done" : "failed";
 };
 
+/** May `job` start now? A "todo" job always; a "scheduled" one once its `notBefore` has come. */
+const ready = (job) => job.status === "todo" || (job.status === "scheduled" && Date.now() >= Date.parse(job.notBefore));
+
 const backlog = await readBacklog();
-const pending = backlog.jobs.filter((job) => job.status === "todo");
+const pending = backlog.jobs.filter(ready);
 if (args.includes("--list")) {
   for (const job of backlog.jobs) {
     const done = job.doneAt ? " (fait le " + job.doneAt + ", " + job.minutes + " min)" : "";
-    console.log(`[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}`);
+    const wait = job.status === "scheduled" ? ` (pas avant ${job.notBefore})` : "";
+    console.log(`[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}${wait}`);
   }
   process.exit(0);
 }
@@ -83,7 +90,7 @@ await mkdir(RUNS, { recursive: true });
 console.log(`${pending.length} traitement(s) à faire.`);
 // The next job is read from the file each time: one added while another ran is played too.
 const tried = new Set();
-const nextJob = async () => (await readBacklog()).jobs.find((job) => job.status === "todo" && !tried.has(job.id));
+const nextJob = async () => (await readBacklog()).jobs.find((job) => ready(job) && !tried.has(job.id));
 for (let job = await nextJob(); job; job = await nextJob()) {
   tried.add(job.id);
   const started = Date.now();
