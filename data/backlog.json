@@ -74,6 +74,38 @@
       "status": "todo"
     },
     {
+      "id": "duel-nobonus-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=nobonus@t800\" \"ismcts+widen=3+depth=5@t800\" --long --page",
+      "estimate": "20 min",
+      "why": "Le cœur sans aucun bonus (ni habitude ni idée, certain gardé), à temps égal : les six bonus coûtent 24,8 % par itération, donc environ un tiers d'itérations en plus. À itérations égales, le cœur nu perdait (42,4 %, le 02/10) ; à temps égal, jamais mesuré.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-nobonus-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=nobonus@t800\" \"ismcts+widen=3+depth=5@t800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "Le cœur sans aucun bonus (ni habitude ni idée, certain gardé), à temps égal : les six bonus coûtent 24,8 % par itération, donc environ un tiers d'itérations en plus. À itérations égales, le cœur nu perdait (42,4 %, le 02/10) ; à temps égal, jamais mesuré.",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-lean-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=lean@t800\" \"ismcts+widen=3+depth=5@t800\" --long --page",
+      "estimate": "20 min",
+      "why": "Le cœur avec la seule habitude suited (et certain) : les cinq autres bonus sont neutres au début comme à la fin (48,5 – 50,9 %), suited seule a montré qu'elle travaille (41,1 % sans elle avant le tour 15). À temps égal, ce cœur plus léger tient-il ?",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-lean-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=lean@t800\" \"ismcts+widen=3+depth=5@t800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "Le cœur avec la seule habitude suited (et certain) : les cinq autres bonus sont neutres au début comme à la fin (48,5 – 50,9 %), suited seule a montré qu'elle travaille (41,1 % sans elle avant le tour 15). À temps égal, ce cœur plus léger tient-il ?",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
       "id": "oracle-confirm-1",
       "command": "npm run oracle -- --confirm --seeds 4 --minutes 110",
       "estimate": "≤ 2 h",

@@ -190,6 +190,8 @@ export const CORES = Object.freeze({
   noopen: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "opening") },
   suited15: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "suited"), lateHabits: ["suited"], lateFrom: 15 },
   nosuited: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "suited") },
+  // Only the suited habit kept (03/10): the one bonus whose loss shows (41.1 % without it before turn 15).
+  lean: { ...EXPERIMENT, habits: ["suited"], ideas: ["certain"] },
   nobonus: { ...EXPERIMENT, habits: [], ideas: ["certain"] },
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
