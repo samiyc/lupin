@@ -7,7 +7,11 @@ import { oracleBonus } from "../src/sim/oracle-ideas.js";
 const spec = DECKS.classique;
 const c = (color, value) => cardOf(spec, color, value);
 const weights = { stay: 0.4, noAnswer: 0.1, noBlindOpen: 0.2 };
-const context = (ideas, { mine = [], theirs = [], hand = [], extra = {}, turn = 10, mySides, theirSides } = {}) => ({ spec, weights: { ...weights, ...extra }, ideas: new Set(ideas), mySides: mySides ?? [mine], theirSides: theirSides ?? [theirs], hand, turn });
+const DEFAULTS = { mine: [], theirs: [], hand: [], extra: {}, turn: 10 };
+function context(ideas, options = {}) {
+  const o = { ...DEFAULTS, ...options };
+  return { spec, weights: { ...weights, ...o.extra }, ideas: new Set(ideas), mySides: o.mySides ?? [o.mine], theirSides: o.theirSides ?? [o.theirs], hand: o.hand, turn: o.turn };
+}
 
 describe("bonuses that follow the oracle", () => {
   it("reward a card on a side already started, and only there", () => {
