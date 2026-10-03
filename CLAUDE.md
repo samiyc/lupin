@@ -7,7 +7,7 @@ Guidance for Claude Code working in this repository.
 Schotten Totten adapted to a classic 52-card deck or a French tarot deck, plus
 the statistics that justify the adaptation, and a web game to play it
 against bots (`npm run play`). Outputs: an exact /
-simulated statistics report (`out/statistiques.{md,html}`), a printable rules
+simulated statistics report (`out/deck-options.{md,html}`, « Deck options »), a printable rules
 sheet (`regles/regles.{html,pdf}`, read by the owner's grandmother, so large
 type and plain French), and name proposals (`docs/noms.md`). The game is
 called **Bornage** (rules sheet `<title>`, masthead, footers, README); the
@@ -96,7 +96,7 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   task index, so `out/data.json` does not depend on thread scheduling.
 - **The HTML report works over `file://`.** Its script is inlined as a classic
   `<script>` with the data inlined as JSON; `src/report/page/*.js` is linted as
-  a browser script. `out/artifact/statistiques.html` is the same page without
+  a browser script. `out/artifact/deck-options.html` is the same page without
   the doctype/html/head/body skeleton, for publishing as an Artifact.
 - **The reference bot is `strategist`** (`REFERENCE_BOT` in
   `src/config/simulations.js`), version 1.2: the three habits plus the

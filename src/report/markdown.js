@@ -3,7 +3,7 @@ import { formations, outs, startingHand, triples, verdict } from "./ascii/sectio
 import { method, recommendation, simulation, variants } from "./ascii/sections-play.js";
 import { realGames, strategies } from "./ascii/sections-irl.js";
 
-/** `out/statistiques.md`: the whole report as Markdown with ASCII art. */
+/** `out/deck-options.md`: the whole report as Markdown with ASCII art. */
 export function renderMarkdown(findings, data) {
   const header = [
     "# Schotten Totten en cartes classiques — les chiffres",

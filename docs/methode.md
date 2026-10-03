@@ -1,7 +1,7 @@
 # Méthode, hypothèses et limites
 
-Ce document explique d'où sortent les chiffres de `out/statistiques.md` et de
-`out/statistiques.html`, et ce qu'ils ne disent pas. Tout se recalcule avec
+Ce document explique d'où sortent les chiffres de `out/deck-options.md` et de
+`out/deck-options.html`, et ce qu'ils ne disent pas. Tout se recalcule avec
 `npm run build` (environ 1 min 30, graine fixe : même résultat à chaque fois).
 
 ## Les paquets comparés

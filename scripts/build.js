@@ -61,13 +61,13 @@ const data = reportsOnly ? JSON.parse(readFileSync(join(outDir, "data.json"), "u
 if (!reportsOnly) write("data.json", JSON.stringify(data, null, 1));
 
 const findings = assertNarrative(analyze(data));
-write("statistiques.md", renderMarkdown(findings, data));
-write("statistiques.html", renderDocument(findings, data));
-write(join("artifact", "statistiques.html"), renderFragment(findings, data));
+write("deck-options.md", renderMarkdown(findings, data));
+write("deck-options.html", renderDocument(findings, data));
+write(join("artifact", "deck-options.html"), renderFragment(findings, data));
 
 // The rules sheet carries a statistics box; only the block between its markers is rewritten.
 const rulesPath = fileURLToPath(new URL("../regles/regles.html", import.meta.url));
 const rules = readFileSync(rulesPath, "utf8");
 const updated = injectRulesStats(rules, renderRulesStats(findings));
 if (updated !== rules) writeFileSync(rulesPath, updated);
-log(`Terminé en ${elapsed()} → out/statistiques.md, out/statistiques.html, regles/regles.html`);
+log(`Terminé en ${elapsed()} → out/deck-options.md, out/deck-options.html, regles/regles.html`);

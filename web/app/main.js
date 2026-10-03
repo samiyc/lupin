@@ -69,6 +69,11 @@ function show(tab) {
 }
 
 document.querySelectorAll(".tabs [role=tab]").forEach((tab) => tab.addEventListener("click", () => show(tab.dataset.mode)));
+// The Versions menu closes once a page is opened, or on a click anywhere else.
+document.addEventListener("click", (event) => {
+  const menu = $("versions");
+  if (menu.open && (!menu.contains(event.target) || event.target.closest("a"))) menu.open = false;
+});
 show("play");
 openDialog($("dialog-new"));
 

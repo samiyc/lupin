@@ -8,7 +8,7 @@ import { enumerateTriples, inversions, rarityOrder } from "../src/core/combinato
  * Menhirs" deals 4 colours × (1-9 + one royal figure) + 2 colourless jokers,
  * 42 cards like the Classique, and gives the figure combinations of its own.
  * Every 3-card hand is enumerated once per variant, and the counts go to
- * out/bretagne.json for out/bretagne.html.
+ * out/lore-exploration.json for out/lore-exploration.html.
  *
  * Unless a variant says otherwise the figure is the 10 of its colour, so the
  * deck plays exactly like the Classique; each rule only adds readings:
@@ -145,7 +145,7 @@ const result = {
     }),
   ),
 };
-await writeFile(new URL("../out/bretagne.json", import.meta.url), `${JSON.stringify(result, null, 2)}\n`);
+await writeFile(new URL("../out/lore-exploration.json", import.meta.url), `${JSON.stringify(result, null, 2)}\n`);
 const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
 console.log("| Paquet | SC | Br | Co | Su | So | Inversions | Avec une figure : SC / Br / Co |");
 console.log("| --- | --- | --- | --- | --- | --- | --- | --- |");

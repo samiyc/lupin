@@ -350,7 +350,7 @@ meilleur maintenant, et que le coup fort restera possible.
 - Ce sont des corrélations : il garde sa carte dans d'autres positions que
   celles où il la joue.
 - Le vrai jeu caché demande de modéliser ce que l'autre croit : c'est un levier de
-  la feuille de route (`out/roadmap-experimental.html`), pas un acquis du 0.6.
+  la feuille de route (`out/OLD/roadmap-experimental.html`), pas un acquis du 0.6.
 - À refaire sur un auto-jeu du 0.7 : avec la revendication, finir tôt ferme la
   borne et peut arrêter la partie.
 
@@ -1679,7 +1679,7 @@ siège (54,8 % quand il commence, 57,5 % sinon) ni des jokers.
 
 **Écarté le même jour** : `stay` limité aux tours 1-10 (`stay4e10`) : 55,4 % au tri à
 400, puis 50,6 % (47,1 – 54,2) en deux duels longs. Les autres essais du 0.9 sont
-dans `out/journal-0.9.html`.
+dans `out/changelog-exp-1.0.html` (« Changelog Exp v1.0 »).
 
 **La leçon** : les tris de 10 minutes à 400 itérations ont promu trois idées qui
 n'ont pas tenu (stay 0,4 à 58,3 %, connector dès 15 à 54,5 %, stay4e10 à 55,4 %). Un

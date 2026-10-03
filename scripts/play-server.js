@@ -14,7 +14,8 @@ import { REPLAY_DIRS, isReplayDir, isSafeName, replayFileName, replayHeader } fr
  */
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const PORT = Number(process.env.PORT ?? 4742);
-const STATIC_PREFIXES = ["web/", "src/", "regles/fonts/", "regles/regles.pdf"];
+// out/: the changelogs and documents of the Versions menu (web/index.html).
+const STATIC_PREFIXES = ["web/", "src/", "regles/fonts/", "regles/regles.pdf", "out/"];
 const TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",

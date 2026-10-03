@@ -1,14 +1,16 @@
 import { execFileSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
+import { BOT_LINEUP } from "../src/config/bots.js";
 
 /**
- * `npm run journal`: the 0.9's lab notebook, out/journal-0.9.html (and
- * out/artifact/journal-0.9.html, the page without its skeleton) — every
- * attempt since the evening of 02/10, the night jobs, the speed passes, the
- * oracle, with real positions to play through.
+ * `npm run changelog -- [1.0]`: the changelog of a version of the
+ * Experimental, out/changelog-exp-<version>.html (and its copy without the
+ * skeleton in out/artifact/) — every attempt that led to it, the night jobs,
+ * the speed passes, the oracle, with real positions to play through. One per
+ * version (Sami, 03/10); the version defaults to the line-up's.
  *
  * What was measured once and written down (the duels' scores, the example
- * positions, the commits' French labels) is data/journal.json; what a script
+ * positions, the commits' French labels) is data/changelog-exp-<version>.json; what a script
  * keeps up to date is read where it lives:
  * - the price of an error, turn by turn: data/error-impact.json;
  * - the oracle's gaps and traits: data/oracle-diffs.json;
@@ -19,8 +21,8 @@ import { readFile, writeFile } from "node:fs/promises";
  * - the puzzles: web/data/puzzles.json;
  * - the oracle where two cores disagree: data/oracle-disagree.json, if read;
  * - the commits since `since`: git log.
- * Rebuilt after tonight's jobs, the page picks up their times by itself;
- * their scores go into data/journal.json.
+ * Rebuilt after the night's jobs, the page picks up their times by itself;
+ * their scores go into the version's data file.
  */
 const ROOT = new URL("../", import.meta.url);
 const read = async (path) => JSON.parse(await readFile(new URL(path, ROOT), "utf8"));
@@ -49,8 +51,11 @@ function puzzleKinds(puzzles) {
 
 const now = new Date();
 const pad = (n) => String(n).padStart(2, "0");
-const journal = await read("data/journal.json");
+const version = process.argv[2] ?? BOT_LINEUP.experimental.version;
+const name = `changelog-exp-${version}`;
+const journal = await read(`data/${name}.json`);
 const data = {
+  version,
   built: `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`,
   builtAt: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`,
   journal,
@@ -65,12 +70,12 @@ const data = {
   disagree: await read("data/oracle-disagree.json").catch(() => null),
 };
 
-const template = await readFile(new URL("src/report/journal/template.html", ROOT), "utf8");
+const template = await readFile(new URL("src/report/changelog/template.html", ROOT), "utf8");
 // The data lands inside a <script>: "</" is escaped so no text in it can close the tag.
-const page = template.replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
-await writeFile(new URL("out/artifact/journal-0.9.html", ROOT), page);
+const page = template.replaceAll("__VERSION__", version).replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
+await writeFile(new URL(`out/artifact/${name}.html`, ROOT), page);
 const cut = page.indexOf('<header class="band">');
 const head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
-await writeFile(new URL("out/journal-0.9.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
+await writeFile(new URL(`out/${name}.html`, ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
 const measured = journal.attempts.filter((attempt) => attempt.score !== null).length;
-console.log(`Carnet du 0.9 : ${measured} essais mesurés, ${data.commits.length} commits, ${data.jobs.length} jobs → out/journal-0.9.html`);
+console.log(`Changelog Exp v${version} : ${measured} essais mesurés, ${data.commits.length} commits, ${data.jobs.length} jobs → out/${name}.html`);

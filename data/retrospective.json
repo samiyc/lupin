@@ -1,5 +1,5 @@
 {
-  "note": "Le contenu de la rétrospective du robot (npm run retrospective → out/retrospective.html) : les versions, leurs mécanismes, les tentatives écartées. Sources : docs/strategie.md, docs/analyse-replays.md, docs/validation.md. Les Elo ne sont pas ici : le script les recalcule.",
+  "note": "Le contenu de la rétrospective du robot (npm run retrospective → out/OLD/retrospective.html) : les versions, leurs mécanismes, les tentatives écartées. Sources : docs/strategie.md, docs/analyse-replays.md, docs/validation.md. Les Elo ne sont pas ici : le script les recalcule.",
   "blocks": [
     {
       "id": "hand",

@@ -44,7 +44,7 @@
     "jokers": "node scripts/jokers.js",
     "weak-wins": "node scripts/weak-wins.js",
     "oracle": "node scripts/oracle.js",
-    "journal": "node scripts/journal.js",
+    "changelog": "node scripts/changelog.js",
     "versus": "node scripts/versus.js"
   },
   "devDependencies": {

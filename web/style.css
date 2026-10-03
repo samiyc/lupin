@@ -65,7 +65,16 @@ button, select, input { font: inherit; }
 .tabs { display: flex; gap: 4px; }
 .tabs button { background: transparent; color: inherit; border: 1px solid transparent; border-radius: 999px; padding: 5px 14px; cursor: pointer; }
 .tabs button[aria-selected="true"] { background: var(--felt-ink); color: var(--felt); }
-.rules-link { margin-left: auto; color: inherit; }
+.rules-link { color: inherit; }
+/* The Versions menu (Sami, 03/10): the changelogs and documents of out/, each in a new tab. */
+.versions { margin-left: auto; position: relative; }
+.versions summary { cursor: pointer; list-style: none; text-decoration: underline; text-underline-offset: 3px; }
+.versions summary::-webkit-details-marker { display: none; }
+.versions summary::after { content: " ▾"; font-size: 0.8em; }
+.versions[open] summary::after { content: " ▴"; }
+.versions-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; display: grid; min-width: 210px; padding: 6px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / 0.18); }
+.versions-menu a { color: var(--ink); text-decoration: none; padding: 7px 10px; border-radius: 6px; white-space: nowrap; }
+.versions-menu a:hover, .versions-menu a:focus-visible { background: var(--paper); color: var(--felt); }
 
 /* ── Layout ──────────────────────────────── */
 .layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 16px 20px; align-items: start; }

@@ -14,8 +14,9 @@ import { coreTimings } from "./lib/core-timing.js";
 import { ANCHOR, readAllLogs, readDuels } from "./lib/elo-data.js";
 
 /**
- * `npm run retrospective`: the robot's retrospective, out/retrospective.html
- * (and out/artifact/retrospective.html, the page without its skeleton). No
+ * `npm run retrospective`: the robot's retrospective, archived (Sami, 03/10)
+ * in out/OLD/retrospective.html (and out/artifact/OLD/retrospective.html, the
+ * page without its skeleton). No
  * figure is typed by hand:
  * - the Elo of all ten versions, fitted on data/elo-duels.json, the human
  *   games, and the three duels of the versions retired on 01/10 (kept here
@@ -101,9 +102,9 @@ if (missing.length) throw new Error(`Pas d'Elo pour : ${missing.join(", ")}`);
 const template = await readFile(new URL("src/report/retro/template.html", ROOT), "utf8");
 // The data lands inside a <script>: "</" is escaped so no text in it can close the tag.
 const page = template.replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
-await writeFile(new URL("out/artifact/retrospective.html", ROOT), page);
+await writeFile(new URL("out/artifact/OLD/retrospective.html", ROOT), page);
 const cut = page.indexOf('<header class="band">');
 const head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
-await writeFile(new URL("out/retrospective.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
+await writeFile(new URL("out/OLD/retrospective.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
 const line = (tag) => `${tag} ${elo[tag].elo}`;
-console.log(`Rétrospective : ${data.retro.versions.length} versions (${line("basique@1.0")} … ${line("experimental@1.0")}), exemple au tour ${data.example.turn} → out/retrospective.html`);
+console.log(`Rétrospective : ${data.retro.versions.length} versions (${line("basique@1.0")} … ${line("experimental@1.0")}), exemple au tour ${data.example.turn} → out/OLD/retrospective.html`);

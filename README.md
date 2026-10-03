@@ -45,9 +45,11 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 |---|---|
 | `regles/regles.pdf` | **la fiche de règles à imprimer** (A4 recto-verso) |
 | `web/` | le jeu dans le navigateur (`npm run play`) |
-| `out/statistiques.html` | le rapport complet, interactif (s'ouvre d'un double-clic) |
-| `out/statistiques.md` | le même rapport en ASCII art |
-| `out/retrospective.html` | la rétrospective du robot : ses dix versions sur une timeline, son cœur, les tours où la partie se joue (`npm run retrospective`) |
+| `out/deck-options.html` | « Deck options » : le rapport complet, interactif (s'ouvre d'un double-clic) |
+| `out/deck-options.md` | le même rapport en ASCII art |
+| `out/changelog-exp-1.0.html` | « Changelog Exp v1.0 » : tout ce qui a été tenté du 0.9 au 1.0 (`npm run changelog -- 1.0`) ; aussi `changelog-exp-0.8.html` et `changelog-exp-0.6.html` |
+| `out/lore-exploration.html` | « Lore Exploration » : les 7 Menhirs, une proposition d'univers |
+| `out/OLD/retrospective.html` | archivée : la rétrospective du robot, ses onze versions sur une timeline, son cœur, les tours où la partie se joue (`npm run retrospective`) |
 | `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
 | `data/replays/` | les replays gardés pour l'analyse (les autres vont dans `replays/`, hors git) |
 | `docs/jouer.md` | jouer, observer, replays, versions des robots |

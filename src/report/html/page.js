@@ -114,7 +114,7 @@ export function renderFragment(f, data) {
   const body = fill(asset("template.html"), { ...values, ...fragments(f, data) });
   const payload = JSON.stringify(explorerData(f, data)).replace(/</g, "\\u003c");
   return [
-    "<title>Schotten Totten à 42 cartes</title>",
+    "<title>Deck options</title>",
     '<link rel="preconnect" href="https://fonts.googleapis.com">',
     '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
     `<link rel="stylesheet" href="${FONTS}">`,
@@ -125,7 +125,7 @@ export function renderFragment(f, data) {
   ].join("\n");
 }
 
-/** A complete document, for opening `out/statistiques.html` from the disk. */
+/** A complete document, for opening `out/deck-options.html` from the disk. */
 export function renderDocument(f, data) {
   const fragment = renderFragment(f, data);
   const cut = fragment.indexOf("<header");
