@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { gateOn } from "./gates.js";
 
 /**
  * Sami's ideas on choosing a game (02/10): trips or suited runs, which the
@@ -64,12 +65,12 @@ function runBonus({ spec, weights, ideas }, shape) {
   return bonus;
 }
 
-const anyShapeIdea = (ideas) => ideas.has("plan") || ideas.has("ends") || ideas.has("midRuns") || ideas.has("weakRuns");
+export const anyShapeIdea = (ideas) => ideas.has("plan") || ideas.has("ends") || ideas.has("midRuns") || ideas.has("weakRuns");
 
 /** The shape ideas' bonus for adding `card` to my side `mine`. */
 export function shapesBonus(context, mine, card) {
   // Read the shape only when an idea asks: this runs on every move of every rollout.
-  if (!anyShapeIdea(context.ideas)) return 0;
+  if (!gateOn(context, "shapes", anyShapeIdea)) return 0;
   const shape = shapeOf(context.spec, [...mine, card]);
   if (!shape) return 0;
   let bonus = shape.kind === "trips" ? tripsBonus(context, shape, card) : runBonus(context, shape);

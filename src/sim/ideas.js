@@ -2,10 +2,10 @@ import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { exposurePenalty, outbidBonus } from "./outbid.js";
 import { baitBonus } from "./bait.js";
 import { JOKER_IDEAS, jokerTrapBonus } from "./joker-ideas.js";
-import { MINED_IDEAS, minedBonus } from "./mined.js";
-import { ORACLE_IDEAS, oracleBonus } from "./oracle-ideas.js";
-import { SHAPE_IDEAS, shapesBonus } from "./shapes.js";
-import { PRINCIPLES, PRINCIPLE_WEIGHTS, principlesBonus } from "./principles.js";
+import { MINED_IDEAS, anyMined, minedBonus } from "./mined.js";
+import { ORACLE_IDEAS, anyOracleIdea, oracleBonus } from "./oracle-ideas.js";
+import { SHAPE_IDEAS, anyShapeIdea, shapesBonus } from "./shapes.js";
+import { PRINCIPLES, PRINCIPLE_WEIGHTS, activePrinciples, principlesBonus } from "./principles.js";
 
 /**
  * Sami's strategy ideas from his games against the web bots
@@ -31,6 +31,13 @@ export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "wei
  * `counter` and `edges` changed nothing measurable. 1.2 adds `connector`
  * (principles.js): 53.9 % against 1.1 (docs/strategie.md).
  */
+/**
+ * Which families of ideas a set turns on, worked out once per bot rather than
+ * on every move of every rollout (`context.gates`; a context without it falls
+ * back to asking the set).
+ */
+export const gatesOf = (ideas) => ({ mined: anyMined(ideas), shapes: anyShapeIdea(ideas), oracle: anyOracleIdea(ideas), principles: activePrinciples(ideas) });
+
 export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"]);
 
 /**

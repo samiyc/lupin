@@ -3,7 +3,7 @@ import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
 import { createValuer, sidePotential, unseenCards } from "./potential.js";
-import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
+import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors, gatesOf } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
 import { phaseBot, phaseSettings } from "./phase.js";
 import { pickBest, pickSampled } from "./pick.js";
@@ -54,8 +54,9 @@ const STRATEGIST_DEFAULTS = Object.freeze({ habits: HABITS, strategy: STRATEGY, 
 
 export const strategistBot = (rng, options = {}) => {
   const { habits, strategy, ideas, weights, params, name, sample } = { ...STRATEGIST_DEFAULTS, ...options };
-  const tuning = { habits: new Set(habits), strategy, ideas: new Set(ideas), weights, params };
-  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, { ...tuning, keepAll });
+  const ideaSet = new Set(ideas);
+  const tuning = { habits: new Set(habits), strategy, ideas: ideaSet, gates: gatesOf(ideaSet), weights, params };
+  const scoreMoves = (state, moves, { keepAll = false } = {}) => scoreStrategist(state, moves, tuning, keepAll);
   return {
     name: name ?? (habits.length === HABITS.length ? "strategist" : `strategist:${habits.join("+")}`),
     scoreMoves,
@@ -79,12 +80,14 @@ function jokerGate(state, player) {
 
 function views(state) {
   const player = state.current;
-  const shared = { valuer: createValuer(state), unseen: unseenCards(state, player) };
-  // Each view gets its own memo: the same pair is judged many times in one scoring.
-  const mine = { ...shared, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map() };
+  const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
+  // Each view gets its own memo: the same pair is judged many times in one scoring. Written out field by field:
+  // built on every scoring of every rollout, a spread costs more than it reads.
+  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map(), params: undefined };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
-    ...shared,
+    valuer,
+    unseen,
     hand: [],
     draws: state.spec.handSize + Math.floor(state.pile.length / 2),
     jokerAllowed: jokerGate(state, 1 - player),
@@ -125,10 +128,11 @@ function boardCards(state) {
 const ownedOdds = (state, player, chances) => state.borders.map((border, i) => (border.owner === null ? chances[i] : Number(border.owner === player)));
 
 /** What the ideas read on top of the strategist's context; nothing when none is on. */
-function ideasContext(state, player, { ideas, weights }, seen) {
+function ideasContext(state, player, { ideas, gates, weights }, seen) {
   if (ideas.size === 0) return {};
   return {
     ideas,
+    gates,
     weights,
     hand: state.hands[player],
     theirSides: state.borders.map((border) => border.sides[1 - player]),
@@ -147,9 +151,9 @@ function certaintyOf(ideas) {
   return ideas?.has("certain") ? {} : null;
 }
 
-function scoreStrategist(state, moves, { habits, strategy, keepAll, params, ...tuning }) {
-  const { threat, ...rest } = views(state);
-  const mine = { ...rest.mine, params };
+function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, keepAll = false) {
+  const { threat, mine } = views(state);
+  mine.params = params;
   const seen = { mine, threat };
   const player = state.current;
   const context = {
@@ -209,7 +213,9 @@ function withoutCard(state, context, card) {
   if (cached) return cached;
   const hand = [...state.hands[state.current]];
   hand.splice(hand.indexOf(card), 1);
-  const view = { ...context, hand };
+  // The same fields as the view it comes from (`views`), the hand aside: written out, not spread.
+  const { valuer, unseen, draws, jokerAllowed, memo, params } = context;
+  const view = { valuer, unseen, hand, draws, jokerAllowed, memo, withoutCard: context.withoutCard, params };
   context.withoutCard?.set(card, view);
   return view;
 }

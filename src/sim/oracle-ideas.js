@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { gateOn } from "./gates.js";
 import { shapeOf } from "./shapes.js";
 
 /**
@@ -26,7 +27,7 @@ import { shapeOf } from "./shapes.js";
  */
 export const ORACLE_IDEAS = Object.freeze(["stay", "noAnswer", "noBlindOpen"]);
 
-const anyOracleIdea = (ideas) => ideas.has("stay") || ideas.has("noAnswer") || ideas.has("noBlindOpen");
+export const anyOracleIdea = (ideas) => ideas.has("stay") || ideas.has("noAnswer") || ideas.has("noBlindOpen");
 
 /** Another card of the hand that makes `card` the start of trips or of a suited run (as `startsOf`, move-features.js). */
 function plannedStart(spec, hand, card) {
@@ -57,7 +58,7 @@ const stayBonus = (context, mine, card) => (stayMoment(context) && stayCard(cont
 
 export function oracleBonus(context, border, card) {
   const { ideas, weights } = context;
-  if (!anyOracleIdea(ideas)) return 0;
+  if (!gateOn(context, "oracle", anyOracleIdea)) return 0;
   const [mine, theirs] = [context.mySides[border], context.theirSides[border]];
   if (mine.length > 0) return ideas.has("stay") ? stayBonus(context, mine, card) : 0;
   if (theirs.length > 0) return ideas.has("noAnswer") ? -weights.noAnswer : 0;

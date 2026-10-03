@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
+import { gateOn } from "./gates.js";
 
 /**
  * Round three: Sami's principles from his reading of three games against
@@ -77,12 +78,11 @@ function connectorPenalty(context, border, card) {
 const BONUSES = Object.entries({ trips: tripsBonus, ends: endsPenalty, reserve: reservePenalty, connector: connectorPenalty });
 
 /** The principles' bonus for placing `card` on `border`, in value units. */
+/** The principles `ideas` turns on, as bonus functions. */
+export const activePrinciples = (ideas) => BONUSES.filter(([name]) => ideas.has(name)).map(([, bonusOf]) => bonusOf);
+
 export function principlesBonus(context, border, card) {
-  let active = context.memo?.get("principles");
-  if (!active) {
-    active = BONUSES.filter(([name]) => context.ideas.has(name)).map(([, bonusOf]) => bonusOf);
-    context.memo?.set("principles", active);
-  }
+  const active = gateOn(context, "principles", activePrinciples);
   let bonus = 0;
   for (const bonusOf of active) bonus += bonusOf(context, border, card);
   return bonus;

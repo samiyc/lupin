@@ -50,19 +50,32 @@ export function unseenCards(state, player) {
   const real = realCardCount(state.spec);
   const counts = new Array(real + 1).fill(1);
   counts[real] = state.spec.jokers;
-  const see = (card) => {
-    counts[isJoker(card) ? real : card] -= 1;
-  };
+  const see = (card) => (counts[isJoker(card) ? real : card] -= 1);
   state.hands[player].forEach(see);
-  for (const border of state.borders) border.sides.forEach((side) => side.forEach(see));
-  const entries = [];
+  for (const border of state.borders) for (const side of border.sides) side.forEach(see);
+  return listUnseen(counts, real);
+}
+
+/** The counts left, as `entries` (pairs, for the readers that like them) and `cards` and `counts` side by side (the hot loop). */
+function listUnseen(counts, real) {
+  const [entries, cards, kept] = [[], [], []];
   let total = 0;
-  counts.forEach((count, index) => {
-    if (count <= 0) return;
-    entries.push([index === real ? JOKER : index, count]);
+  for (let index = 0; index <= real; index += 1) {
+    const count = counts[index];
+    if (count <= 0) continue;
+    const card = index === real ? JOKER : index;
+    entries.push([card, count]);
+    cards.push(card);
+    kept.push(count);
     total += count;
-  });
-  return { entries, total };
+  }
+  return { entries, cards, counts: kept, total };
+}
+
+/** The unseen cards as two arrays side by side; built from `entries` once when a context was made by hand. */
+function columns(unseen) {
+  if (!unseen.cards) Object.assign(unseen, { cards: unseen.entries.map(([card]) => card), counts: unseen.entries.map(([, count]) => count) });
+  return unseen;
 }
 
 /** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? }. */
@@ -117,8 +130,11 @@ function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
   const bestOf = BEST_OF.fill(0);
   let mean = 0;
   let total = 0;
-  for (const [card, count] of unseen.entries) {
+  const { cards, counts } = columns(unseen);
+  for (let i = 0; i < cards.length; i += 1) {
+    const card = cards[i];
     if (!usable(card, jokerOk)) continue;
+    const count = counts[i];
     const value = valuer.value3(side, card);
     const rank = Math.floor(value);
     outs[rank] += count;
@@ -128,13 +144,17 @@ function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
   }
   // Nothing left that could finish it: the side is as good as dead.
   if (total === 0) return 0;
-  mean /= total;
+  return mean / total + upsideOf(mean / total, unseen.total, draws);
+}
+
+/** The best upside of any formation over the mean, weighted by the chance of drawing one of its outs (read from the scratch). */
+function upsideOf(mean, unseenTotal, draws) {
   let upside = 0;
-  for (let rank = 1; rank < outs.length; rank += 1) {
-    const chance = 1 - (1 - outs[rank] / unseen.total) ** draws;
-    upside = Math.max(upside, chance * (bestOf[rank] - mean));
+  for (let rank = 1; rank < OUTS.length; rank += 1) {
+    const chance = 1 - (1 - OUTS[rank] / unseenTotal) ** draws;
+    upside = Math.max(upside, chance * (BEST_OF[rank] - mean));
   }
-  return mean + upside;
+  return upside;
 }
 
 function singlePotential(side, context) {
