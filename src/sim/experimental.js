@@ -181,6 +181,8 @@ export const CORES = Object.freeze({
   spread15: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "spread"), lateIdeas: ["spread"], lateFrom: 15 },
   nospread: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "spread") },
   conn15: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "connector"), lateIdeas: ["connector"], lateFrom: 15 },
+  conn11: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "connector"), lateIdeas: ["connector"], lateFrom: 11 },
+  conn19: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "connector"), lateIdeas: ["connector"], lateFrom: 19 },
   noconn: { ...EXPERIMENT, ideas: EXPERIMENT.ideas.filter((idea) => idea !== "connector") },
   joker15: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), lateHabits: ["joker"], lateFrom: 15 },
   nojoker: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker") },
