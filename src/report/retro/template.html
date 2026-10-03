@@ -68,7 +68,7 @@ section { display: grid; gap: 18px; min-width: 0; }
 .btn:hover { border-color: var(--brass); }
 .track { display: grid; gap: 4px; min-width: 0; }
 .track input { width: 100%; accent-color: var(--felt); }
-.ticks { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); font: 600 0.66rem var(--mono); color: var(--ink-3); text-align: center; }
+.ticks { display: grid; font: 600 0.66rem var(--mono); color: var(--ink-3); text-align: center; }
 .ticks span { cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ticks span.current { color: var(--brass); }
 .chart { width: 100%; height: auto; display: block; }
@@ -157,7 +157,7 @@ td.wrap { white-space: normal; text-align: left; min-width: 16rem; color: var(--
   <div class="wrap">
     <p class="eyebrow">Lopin n°742 · Bornage · rétrospective du robot</p>
     <h1>La campagne <em>du robot</em></h1>
-    <p class="lead">Dix versions, une seule question : quelle carte poser, et sur quelle borne ? Du Basique, qui ne voit que le coup présent, à l'Expérimental 0.9, qui imagine cinq coups d'avance sans voir ta main. Chaque étape a été gagnée en duel, et chaque idée écartée y a perdu.</p>
+    <p class="lead" id="lead">Onze versions, une seule question : quelle carte poser, et sur quelle borne ? Du Basique, qui ne voit que le coup présent, à l'Expérimental 1.0, qui imagine cinq coups d'avance sans voir ta main, et reste sur ses bornes tant qu'une figure y est possible. Chaque étape a été gagnée en duel, et chaque idée écartée y a perdu.</p>
     <div class="maxims" id="maxims"></div>
   </div>
 </header>
@@ -175,7 +175,7 @@ td.wrap { white-space: normal; text-align: left; min-width: 16rem; color: var(--
         <button type="button" class="btn play" id="play" aria-label="Lancer la lecture">▶</button>
         <button type="button" class="btn" id="next" aria-label="Version suivante">→</button>
         <div class="track">
-          <input type="range" id="slider" min="0" max="9" step="1" value="9" aria-label="Version du robot">
+          <input type="range" id="slider" min="0" max="10" step="1" value="10" aria-label="Version du robot">
           <div class="ticks" id="ticks"></div>
         </div>
       </div>
@@ -284,7 +284,9 @@ const versions = R.versions.map((v) => ({ ...v, rating: DATA.elo[v.tag] }));
 /* Opening maxims */
 [R.versions[3].maxim, R.versions[8].maxim, R.core.maxim].forEach((m) => $("maxims").append(html("div", { class: "maxim" }, html("b", {}, m.title), html("span", {}, m.text))));
 
-/* Ticks */
+/* Ticks: one column per version, the slider over all of them. */
+$("ticks").style.gridTemplateColumns = `repeat(${versions.length}, minmax(0, 1fr))`;
+$("slider").max = String(versions.length - 1);
 versions.forEach((v, i) => {
   const span = html("span", { "data-i": String(i), title: `${v.family} ${v.version}` }, `${v.family.slice(0, 4)}. ${v.version}`);
   span.addEventListener("click", () => show(i));
@@ -293,7 +295,7 @@ versions.forEach((v, i) => {
 
 /* The Elo chart */
 const eloSvg = $("elo");
-const X = (i) => 70 + i * 92;
+const X = (i) => 70 + (i * 830) / (versions.length - 1);
 const Y = (elo) => 220 - ((elo - 450) / 600) * 200;
 function drawElo() {
   eloSvg.replaceChildren();
@@ -678,5 +680,5 @@ $("foot").textContent = `Construit le ${DATA.built} par npm run retrospective : 
 
 drawElo();
 buildDiagram();
-show(9);
+show(versions.length - 1);
 </script>

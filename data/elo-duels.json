@@ -84,6 +84,20 @@
       "wins": 539,
       "games": 960,
       "source": "quatre duels longs du 03/10, 800 simulations, règle de la page, donnes 0 à 3 : le cœur stfig (npm run versus, 56,1 %, 53,2 – 59,1 par paires)"
+    },
+    {
+      "a": "experimental@1.0",
+      "b": "stratege@2.1",
+      "wins": 210,
+      "games": 300,
+      "source": "duel de 300 parties du 03/10, règle de la page, gardé dans duels/ : 70,0 % (64,8 – 75,2 par paires)"
+    },
+    {
+      "a": "experimental@1.0",
+      "b": "basique@1.0",
+      "wins": 271,
+      "games": 300,
+      "source": "duel de 300 parties du 03/10, règle de la page, gardé dans duels/ : 90,3 % (87,2 – 93,5 par paires)"
     }
   ]
 }

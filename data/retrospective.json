@@ -394,33 +394,119 @@
           "target": "tree"
         }
       ]
+    },
+    {
+      "tag": "experimental@1.0",
+      "family": "Expérimental",
+      "version": "1.0",
+      "date": "03/10",
+      "blocks": {
+        "hand": "on",
+        "core": "on",
+        "habits": "on",
+        "ideas": "new",
+        "certain": "on",
+        "tree": "on",
+        "exact": "on",
+        "move": "on"
+      },
+      "title": "Rester là où une figure est possible",
+      "story": "L'oracle, un arbre 25 fois plus large lancé sur 4 331 positions réelles, pose bien plus souvent une 2e carte que le 0.9. Le cœur reçoit désormais un bonus pour une carte posée sur un de ses côtés déjà commencés, tant que ce côté peut encore devenir un brelan ou une suite de couleur. Il ouvre moins de bornes au début, et finit avec moins de côtés sans figure.",
+      "measure": "56,1 % contre le 0.9 (960 parties sur quatre jeux de donnes, 53,2 – 59,1 par paires), au même coût.",
+      "maxim": {
+        "title": "Tenir ce qui peut l'être",
+        "text": "Le général ne disperse pas ses troupes sur dix fronts : il renforce ceux où la victoire reste possible, et laisse tomber les autres."
+      },
+      "attempts": [
+        {
+          "name": "Élargissement progressif",
+          "measure": "60 % au tri, 49 % au duel long",
+          "target": "tree"
+        },
+        {
+          "name": "Exploration 0,5",
+          "measure": "57 % au tri, 49 % au duel long",
+          "target": "tree"
+        },
+        {
+          "name": "Deux fois plus d'itérations",
+          "measure": "52,1 %",
+          "target": "tree"
+        },
+        {
+          "name": "Plus de budget après le tour 22",
+          "measure": "45,8 % ; 48,6 %",
+          "target": "tree"
+        },
+        {
+          "name": "Temps qui suit l'incertitude",
+          "measure": "≈ 51,7 %",
+          "target": "tree"
+        },
+        {
+          "name": "Deux phases : cœur riche, puis arbre profond",
+          "measure": "−1,3 point",
+          "target": "tree"
+        },
+        {
+          "name": "Surenchère et ouverture payée (obex)",
+          "measure": "50,5 % dans l'arbre",
+          "target": "ideas"
+        },
+        {
+          "name": "Éviter les côtés sans figure (jkx)",
+          "measure": "51,7 % dans l'arbre",
+          "target": "ideas"
+        },
+        {
+          "name": "Brelans aux bouts, suites au milieu",
+          "measure": "45,9 %",
+          "target": "ideas"
+        },
+        {
+          "name": "Le piège du joker, l'appât",
+          "measure": "≈ 50 %",
+          "target": "habits"
+        },
+        {
+          "name": "Bonus du 0.9 au début ou à la fin seulement",
+          "measure": "41 – 51 %",
+          "target": "ideas"
+        },
+        {
+          "name": "stay aux tours 1-10 seulement",
+          "measure": "55,4 % au tri, 50,6 % en duel long",
+          "target": "ideas"
+        },
+        {
+          "name": "Simulations tronquées",
+          "measure": "41,1 % ; 45,6 %",
+          "target": "tree"
+        }
+      ]
     }
   ],
   "after": {
-    "title": "Depuis le 0.9 : le calcul ne paie plus",
+    "title": "Depuis le 1.0 : demander d'abord à l'oracle",
     "items": [
       {
-        "name": "Élargissement progressif",
-        "measure": "60 % au tri, 49 % au duel long"
+        "name": "Le coup de l'oracle dans le top 8 du cœur",
+        "measure": "54 % avec le 0.9, 66 % avec le 1.0"
       },
       {
-        "name": "Exploration 0,5",
-        "measure": "57 % au tri, 49 % au duel long"
+        "name": "Le cœur sans aucun bonus, à temps égal",
+        "measure": "cette nuit"
       },
       {
-        "name": "Deux fois plus d'itérations",
-        "measure": "52,1 %"
+        "name": "Le cœur avec la seule habitude suited",
+        "measure": "cette nuit"
       },
       {
-        "name": "Plus de budget après le tour 22",
-        "measure": "45,8 % ; 48,6 %"
-      },
-      {
-        "name": "Temps qui suit l'incertitude",
-        "measure": "≈ 51,7 %"
+        "name": "Les écarts de l'oracle confirmés par le jeu",
+        "measure": "cette nuit"
       }
     ],
-    "text": "Ni plus de calcul, ni un calcul mieux réparti ne battent le 0.9. Sa limite n'est plus dans la quantité qu'il cherche, mais dans ce qu'il évalue : le cœur."
+    "text": "Le 1.0 est la première idée venue de l'oracle qui tienne dans l'arbre. Trois tris de 10 minutes ont promu des idées qui n'ont pas tenu : un tri n'en promeut plus aucune. Une version se décide sur quatre jeux de donnes, après avoir demandé à l'oracle ce qu'il joue là où les cœurs divergent."
   },
   "core": {
     "steps": [
