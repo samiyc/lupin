@@ -1019,23 +1019,23 @@
    "name": "Le cœur sans aucun bonus (nobonus)",
    "family": "vitesse",
    "bench": "long800",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "ce soir, 21 h",
-   "note": "À temps égal (@t800) : environ un tiers d'itérations en plus."
+   "score": 39.7,
+   "lo": 36.3,
+   "hi": 43.2,
+   "verdict": "perd",
+   "when": "03/10 21:45",
+   "note": "À temps égal (@t800), un tiers d'itérations en plus : 36,9 puis 42,6 %, 672 parties. Les bonus valent bien leur 24,8 % de temps."
   },
   {
    "name": "Le cœur avec suited seul (lean)",
    "family": "vitesse",
    "bench": "long800",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "ce soir, 21 h",
-   "note": "À temps égal : garder la seule habitude qui travaille."
+   "score": 41.9,
+   "lo": 38.7,
+   "hi": 45.1,
+   "verdict": "perd",
+   "when": "03/10 22:15",
+   "note": "39,9 puis 43,3 %, 816 parties : à peine mieux que sans aucun bonus. Les cinq autres travaillent ensemble."
   },
   {
    "name": "Expérimental 1.0 contre le Stratège 2.1",

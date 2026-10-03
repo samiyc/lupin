@@ -1607,6 +1607,25 @@ façons dont les bornes peuvent tomber) tient lieu de résultat.
   partie avant sa fin coûte plus que les ~20 % d'itérations gagnées — la même
   leçon que la valeur de position apprise (40,3 %, le 01/10).
 
+**Le cœur dépouillé, à temps égal** (backlog du soir, `@t800` contre le 0.9
+`@t800`, deux jeux de donnes chacun, réunis par paires avec `npm run versus`) :
+
+| Cœur | Ce qu'il garde | Duels | Réunis |
+| --- | --- | --- | --- |
+| `nobonus` | `certain` seul | 36,9 % puis 42,6 % | **39,7 % (36,3 – 43,2)**, 672 parties |
+| `lean` | `suited` et `certain` | 39,9 % puis 43,3 % | **41,9 % (38,7 – 45,1)**, 816 parties |
+
+- **Les bonus valent bien plus que leur temps.** Sans eux, l'arbre fait un tiers
+  d'itérations en plus et perd quand même nettement.
+- **`suited` seul ne rachète presque rien** : deux points, dans le bruit. Coupée
+  avant le tour 15, elle coûtait neuf points ; gardée seule, elle n'en rend que deux. Les
+  six bonus travaillent ensemble, et aucun ne se retire sans perte.
+- On le voit dans les coups : sans les autres bonus, le cœur ne pose presque plus
+  de 2e carte au début (0,2-0,4 % contre 5,5 %), ne bâtit plus de suite de
+  couleur avant le tour 12, et finit avec plus de côtés sans figure (2,44 contre
+  2,08 pour `lean`).
+- Piste close : on ne simplifie pas le cœur pour gagner du temps.
+
 ## La chance des jokers (03/10)
 
 **La question de Sami** : quel taux de victoire avec deux jokers, un, aucun ?
