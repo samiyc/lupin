@@ -1,7 +1,15 @@
 {
   "note": "Le prix d'une erreur au hasard, tour par tour : l'Expérimental 0.9.0 contre lui-même, parties à mains moyennes gardées dans duels/. Pour chaque partie, une erreur au hasard au tour T et deux témoins sans erreur (graine changée) ; qui tient la partie au tour 30, par le solveur exact. impact = points de pourcentage perdus par le fautif, ci = demi-fourchette à 95 %. Mesures du 02/10 (npm run error-impact), relues par npm run retrospective.",
-  "source": "npm run error-impact -- --turns 18-29 --games 120 --explain ; --turns 6-14 --games 120 --explain (backlog de nuit) ; --turns 2 ; --turns 22 --points --games 100",
+  "source": "npm run error-impact -- --games 120 --explain : --turns 18-29 ; --turns 6-14, --turns 1,3,4,5, --turns 15,16,17 (backlog de nuit) ; --turns 2 ; --turns 22 --points --games 100",
   "turns": [
+    {
+      "turn": 1,
+      "games": 120,
+      "control": 50,
+      "error": 50,
+      "impact": 0,
+      "ci": 9.8
+    },
     {
       "turn": 2,
       "games": 120,
@@ -9,6 +17,30 @@
       "error": 55,
       "impact": -7.9,
       "ci": 9.3
+    },
+    {
+      "turn": 3,
+      "games": 120,
+      "control": 50.8,
+      "error": 45.8,
+      "impact": 5,
+      "ci": 10.3
+    },
+    {
+      "turn": 4,
+      "games": 120,
+      "control": 52.5,
+      "error": 50.8,
+      "impact": 1.7,
+      "ci": 9.8
+    },
+    {
+      "turn": 5,
+      "games": 120,
+      "control": 50.8,
+      "error": 47.5,
+      "impact": 3.3,
+      "ci": 10
     },
     {
       "turn": 6,
@@ -81,6 +113,30 @@
       "error": 32.5,
       "impact": 13.3,
       "ci": 9.7
+    },
+    {
+      "turn": 15,
+      "games": 120,
+      "control": 57.1,
+      "error": 29.2,
+      "impact": 27.9,
+      "ci": 9.3
+    },
+    {
+      "turn": 16,
+      "games": 120,
+      "control": 38.3,
+      "error": 25.8,
+      "impact": 12.5,
+      "ci": 8.1
+    },
+    {
+      "turn": 17,
+      "games": 120,
+      "control": 62.5,
+      "error": 35.8,
+      "impact": 26.7,
+      "ci": 8.9
     },
     {
       "turn": 18,

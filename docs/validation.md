@@ -236,6 +236,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | envoyer les calculs sur un serveur loué | voir docs/cloud.md |
 | la file du portable (git pull, lancer, git push) | `LOPIN_THREADS=4 npm run backlog -- --queue laptop` (docs/cloud.md) |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs) | `npm run retrospective` → `out/retrospective.html` |
+| remesurer ce que coûte le cœur, pour la rétrospective (machine au repos seulement) | `npm run retrospective -- --measure` → `data/core-timings.json` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |
 
 - **Les filtres** : `--lost-by` ou `--won-by` (un joueur), `--hands` (sa main de

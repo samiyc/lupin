@@ -704,6 +704,54 @@
       "when": "après 0.9",
       "measure": "≈ 51,7 %",
       "theme": "Budget"
+    },
+    {
+      "name": "Deux phases : cœur riche au début, arbre profond à la fin",
+      "when": "après 0.9",
+      "measure": "−1,3 et −2,0 pts contre le Stratège",
+      "theme": "Arbre"
+    },
+    {
+      "name": "Surenchère d'un cran, ouverture exposée (obex)",
+      "when": "après 0.9",
+      "measure": "cœur 51,4 % ; arbre 50,5 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "Pas de côté ni brelan ni suite (junk, tiré des replays)",
+      "when": "après 0.9",
+      "measure": "cœur 53,2 % ; arbre 52,4 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "junk et obex ensemble (jkx)",
+      "when": "après 0.9",
+      "measure": "cœur 54,2 % ; arbre 51,7 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "Choisir son jeu : brelans ou suites",
+      "when": "après 0.9",
+      "measure": "cœur 45,9 – 50,6 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "Placer le joker, le piège du joker",
+      "when": "après 0.9",
+      "measure": "cœur 49,5 – 50,8 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "L'appât : débuts bas hors des zones qui comptent",
+      "when": "après 0.9",
+      "measure": "cœur 49,5 – 51,0 %",
+      "theme": "Jugement"
+    },
+    {
+      "name": "Autres règles des replays (côté plein, répondre plus bas…)",
+      "when": "après 0.9",
+      "measure": "cœur 48,0 – 50,6 %",
+      "theme": "Jugement"
     }
   ],
   "bonuses": [

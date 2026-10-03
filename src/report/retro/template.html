@@ -559,7 +559,7 @@ const table = (heads, rows) => {
 };
 const ms = (x) => `${fr(x, x < 1 ? 3 : 1)} ms`;
 const T = DATA.timings;
-detailsBlock("Ce que coûte le cœur", `mesuré sur ${T.positions} positions, un seul fil, à la construction de la page`, true,
+detailsBlock("Ce que coûte le cœur", `mesuré le ${T.measured} sur ${T.positions} positions, un seul fil, machine au repos`, true,
   table(["Opération", "Médiane", "9 fois sur 10 sous"], [
     ...T.scoring.map((r) => [html("td", {}, r.label), html("td", { class: "num" }, ms(r.median)), html("td", { class: "num" }, ms(r.p90))]),
     [html("td", {}, "une partie entière jouée par le cœur seul (comme une simulation)"), html("td", { class: "num" }, ms(T.game.exp)), html("td", { class: "num" }, `${ms(T.game.nb1)} avec le voisinage`)],
@@ -603,7 +603,7 @@ const im = $("impact");
 const IX = (t) => 60 + t * 29;
 const IY = (v) => 260 - ((v + 15) / 60) * 230;
 function drawImpact() {
-  const phases = [[0, 5.5, "ouverture : tout se vaut", "transparent"], [5.5, 18.5, "le milieu", "var(--wash)"], [18.5, 29.5, "la zone chère", "var(--seal-wash)"], [29.5, 30.6, "", "var(--brass-wash)"]];
+  const phases = [[0, 5.5, "ouverture : tout se vaut", "transparent"], [5.5, 14.5, "le milieu", "var(--wash)"], [14.5, 29.5, "la zone chère", "var(--seal-wash)"], [29.5, 30.6, "", "var(--brass-wash)"]];
   for (const [a, b, label, fill] of phases) {
     im.append(make("rect", { x: IX(a), y: 20, width: IX(b) - IX(a), height: 240, fill }));
     if (label) im.append(make("text", { x: (IX(a) + IX(b)) / 2, y: 36, "text-anchor": "middle", fill: "var(--ink-2)" }, label));
@@ -627,8 +627,8 @@ function drawImpact() {
     im.append(make("rect", { x: IX(r.turn) - 8, y: IY(top), width: 16, height: Math.abs(IY(r.impact) - IY(0)), rx: 3, fill: odd ? "var(--seal)" : "var(--mark)", opacity: 0.85 }));
     im.append(make("line", { x1: IX(r.turn), x2: IX(r.turn), y1: IY(r.impact - r.ci), y2: IY(r.impact + r.ci), stroke: "var(--ink-2)", "stroke-width": 1.5, fill: "none" }));
   }
-  // The mean of each pair of turns, drawn as one line per stretch of measured turns (6-13, 18-29).
-  for (const [from, to] of [[6, 12], [18, 28]]) {
+  // The mean of each pair of turns (1-2, 3-4 … 27-28), every turn from 1 to 29 being measured.
+  for (const [from, to] of [[1, 27]]) {
     const pairs = [];
     for (let t = from; t <= to; t += 2) {
       const a = E.turns.find((r) => r.turn === t);
@@ -652,9 +652,9 @@ const meanImpact = (a, b) => {
   return Math.round((10 * rows.reduce((s, r) => s + r.impact, 0)) / rows.length) / 10;
 };
 const facts = [
-  ["Le début est un brouillard", "Au tour 2, une erreur ne coûte rien de mesurable : la partie redevient presque pile ou face, quoi qu'on joue. C'est pour cela qu'aucun répertoire d'ouvertures n'a aidé."],
-  ["Le milieu coûte déjà", `Des tours 6 à 14, une erreur coûte ${fr(meanImpact(6, 14))} points en moyenne, contre ${fr(meanImpact(19, 29))} de 19 à 29 : un peu moins au début du milieu, plus vers le tour 10. Le « pic du tour 10 » n'en était pas un : ses voisins 11 et 13 coûtent autant.`],
-  ["L'écart se creuse entre les tours 19 et 29", `Une erreur y coûte au fautif un tiers à la moitié de ses chances, jusqu'à ${fr(Math.max(...E.turns.map((r) => r.impact)))} points. Au coup qui gagne la première borne : ${fr(E.points[1].impact)} ± ${fr(E.points[1].ci)}.`],
+  ["Le début est un brouillard", `Des tours 1 à 5, une erreur ne coûte rien de mesurable (${fr(meanImpact(1, 5))} point en moyenne) : la partie redevient presque pile ou face, quoi qu'on joue. C'est pour cela qu'aucun répertoire d'ouvertures n'a aidé.`],
+  ["Le milieu coûte déjà", `Des tours 6 à 14, une erreur coûte ${fr(meanImpact(6, 14))} points en moyenne, contre ${fr(meanImpact(15, 29))} de 15 à 29 : un peu moins au début du milieu, plus vers le tour 10. Le « pic du tour 10 » n'en était pas un : ses voisins 11 et 13 coûtent autant.`],
+  ["La zone chère commence au tour 15", `Dès le tour 15, une erreur y coûte au fautif un tiers à la moitié de ses chances, jusqu'à ${fr(Math.max(...E.turns.map((r) => r.impact)))} points. Au coup qui gagne la première borne : ${fr(E.points[1].impact)} ± ${fr(E.points[1].ci)}.`],
   ["La pioche vide tranche", `Au tour 30, tout est visible : le solveur sait qui gagne. ${E.conversion.note.charAt(0).toUpperCase()}${E.conversion.note.slice(1)}.`],
 ];
 facts.forEach(([t, p]) => $("moment-facts").append(html("div", {}, html("h3", {}, t), html("p", { style: "color: var(--ink-2); margin-top: 6px" }, p))));

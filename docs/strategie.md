@@ -51,6 +51,8 @@ mesures détaillées sont plus bas, section par section.
 | Placer le joker (face à un côté plein, attendre, brelan du milieu) ; `deepen` | 02/10 | cœur seul 49,5 – 50,3 % | écartés : le cœur le fait déjà ; `jokerRuns` +0,8, rien de plus avec `jkx` | — |
 | Le piège du joker : une paire morte, joker en main (`jokerTrap`) | 02/10 | cœur seul 49,7 – 50,3 % | neutre entre robots : ils ne lisent pas le signal ; le cœur le joue déjà (2 323 fois dans les replays) | — |
 | L'appât : débuts bas hors des zones qui comptent (`bait`) | 02/10 | cœur seul 49,5 – 51,0 % | neutre : l'adversaire mord à peine, la borne appât se perd plus | — |
+| `junk`, `obex` et les deux (`jkx`) dans l'arbre du 0.9 | 03/10 | 52,4 % ; 50,5 % ; 51,7 % (deux jeux de donnes réunis) | pas net ; `jkx` prolongé au backlog | — |
+| Deux phases (voisinage au début, cœur nu et 7 coups à la fin), partie entière contre le Stratège | 03/10 | −1,3 ± 4,2 pts (bascule au tour 20) ; −2,0 ± 4,3 (1re borne) | écarté | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -800,7 +802,11 @@ hasard et **deux** témoins sans erreur (`npm run error-impact -- --turns 18-29
 
 | Erreur au tour | Le fautif tient la partie : témoins | avec l'erreur | Impact (± 95 %) | Part de son avantage perdue |
 | --- | --- | --- | --- | --- |
+| 1 | 50,0 % | 50,0 % | 0,0 ± 9,8 | 0 % |
 | 2 | 47,1 % | 55,0 % | −7,9 ± 9,3 | — |
+| 3 | 50,8 % | 45,8 % | 5,0 ± 10,3 | 10 % |
+| 4 | 52,5 % | 50,8 % | 1,7 ± 9,8 | 3 % |
+| 5 | 50,8 % | 47,5 % | 3,3 ± 10,0 | 6 % |
 | 6 | 51,7 % | 39,2 % | 12,5 ± 9,4 | 24 % |
 | 7 | 46,3 % | 40,0 % | 6,3 ± 9,7 | 14 % |
 | 8 | 50,8 % | 41,7 % | 9,2 ± 9,5 | 18 % |
@@ -810,6 +816,9 @@ hasard et **deux** témoins sans erreur (`npm run error-impact -- --turns 18-29
 | 12 | 48,8 % | 43,3 % | 5,4 ± 9,8 | 11 % |
 | 13 | 54,2 % | 36,7 % | **17,5 ± 10,1** | 32 % |
 | 14 | 45,8 % | 32,5 % | 13,3 ± 9,7 | 29 % |
+| 15 | 57,1 % | 29,2 % | **27,9 ± 9,3** | 49 % |
+| 16 | 38,3 % | 25,8 % | 12,5 ± 8,1 | 33 % |
+| 17 | 62,5 % | 35,8 % | **26,7 ± 8,9** | 43 % |
 | 18 | 37,9 % | 35,0 % | 2,9 ± 8,1 | 8 % |
 | 19 | 64,6 % | 35,8 % | **28,7 ± 8,7** | 44 % |
 | 20 | 37,5 % | 24,2 % | 13,3 ± 8,2 | 35 % |
@@ -1322,3 +1331,56 @@ coup commun hors du top 3 du cœur (et noté s'il est hors du top 8).
 - **Ensuite** : confirmer chaque écart par le jeu (le coup de l'oracle contre le
   premier du cœur, suite jouée par le 0.9, jugée au tour 30 ; `branchFrom` accepte
   désormais un coup à forcer), puis chercher les motifs.
+
+## Les résultats de la nuit du 03/10
+
+**Dans l'arbre, contre le 0.9** (duels longs, règle de la page, deux jeux de
+donnes réunis) :
+
+| Cœur | Donnes 0 | Donnes 1 | Réunis |
+| --- | --- | --- | --- |
+| `jkx` (junk + obex) | 48,6 % | 54,9 % | 51,7 % (46,6 – 56,9), 144 paires |
+| `jk2` (junk seul) | 54,9 % | 50,0 % | 52,4 % (47,0 – 57,8), 144 paires |
+| `obex` | 49,5 % | 51,6 % | 50,5 % (45,8 – 55,2), 192 paires |
+
+- **Rien de net.** Le gain du cœur seul (+4 pour `jkx`) passe en partie dans
+  l'arbre (environ +2), mais un duel de 20 min (144 à 192 parties) ne voit pas
+  2 points. Quatre duels de plus pour `jkx` (`--offset 2` à `5`) porteront le
+  total à environ 430 paires, soit ± 3 points.
+- **Les deux phases, sur des parties entières** (`npm run ab`, 400 donnes contre
+  le Stratège) : le 0.9 fait 66,8 % ; bascule au tour 20 : −1,3 ± 4,2 points ;
+  bascule à la première borne : −2,0 ± 4,3. **Écarté.**
+
+**Le prix d'une erreur, complet de 1 à 29** (les tours 1, 3-5 et 15-17 dans le
+tableau du « tour critique ») :
+- **Tours 1 à 5 : 0,4 point en moyenne.** Le brouillard du début se confirme.
+- **Tours 15 et 17 : 27,9 et 26,7 points**, autant que le cœur de la zone chère.
+  **Elle commence donc au tour 15**, pas au tour 19 : de 15 à 29, une erreur
+  coûte 19,4 ± 2,1 points en moyenne, contre 11,9 ± 3,2 de 6 à 14. Le tour 18
+  (2,9 ± 8,1) paraît isolé, sans doute du bruit.
+
+**L'oracle au coup qui remplit la dernière colonne vide** (1 187 positions,
+99 min) — **non confirmé** :
+- l'oracle ouvre aussi une colonne vide dans 36,6 % des cas, et **joue ailleurs
+  dans 63,4 %** ;
+- il joue le coup du 0.9 dans 22,6 % des cas ;
+- un écart stable hors du top 3 du cœur dans **50,1 %** des positions, hors du
+  top 8 dans environ 37 % ;
+- son favori reçoit en médiane 27 % des visites, avec 0,115 d'avance sur le second.
+
+Ce taux d'écart est trop haut pour être pris tel quel : soit le cœur rate
+beaucoup, soit l'oracle (simulations jouées par le cœur, 6 réponses par nœud)
+se disperse. **Rien ne dit encore que l'oracle joue mieux que le 0.9.** La
+confirmation par le jeu (le coup de l'oracle contre celui du cœur et celui du
+0.9, suite jouée par le 0.9, jugée au tour 30) passe avant toute recherche de
+motifs.
+
+**La vitesse de l'oracle** : 3,7 s par position sur tous les fils, au lieu des
+10 à 14 s estimées — les correctifs de vitesse du cœur, la seconde recherche
+seulement quand il faut, l'arrêt anticipé.
+
+**Les temps du cœur de la rétrospective** sont désormais une donnée
+(`data/core-timings.json`), remesurée seulement par `npm run retrospective --
+--measure`, sur une machine au repos : la page construite pendant le backlog
+affichait 120 itérations par seconde au lieu de 556.
+

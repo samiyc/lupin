@@ -23,8 +23,9 @@ import { ANCHOR, readAllLogs, readDuels } from "./lib/elo-data.js";
  * - the story of each version: data/retrospective.json;
  * - the price of an error, turn by turn: data/error-impact.json;
  * - a move scored by the experimental core, computed now on a seeded game;
- * - what the core costs in ms (scripts/lib/core-timing.js), measured now:
- *   build it on an idle machine;
+ * - what the core costs in ms: data/core-timings.json, which only
+ *   `--measure` rewrites (scripts/lib/core-timing.js) — on an idle machine,
+ *   since a build during the night jobs measured four times too slow;
  * - every bonus with its weights read from the code, and the core tests of
  *   data/core-tests.json when there are some.
  */
@@ -72,6 +73,16 @@ function bonusRows(bonuses) {
 }
 
 const optional = (path) => read(path).catch(() => null);
+
+/** The core's timings: measured now with `--measure` (and kept), else the ones kept. */
+async function timings() {
+  if (!process.argv.includes("--measure")) return read("data/core-timings.json");
+  const kept = await read("data/core-timings.json");
+  const measured = { note: kept.note, measured: new Date().toLocaleDateString("fr-FR"), ...coreTimings() };
+  await writeFile(new URL("data/core-timings.json", ROOT), `${JSON.stringify(measured, null, 2)}
+`);
+  return measured;
+}
 const elo = await ratings();
 const retro = await read("data/retrospective.json");
 const data = {
@@ -79,7 +90,7 @@ const data = {
   elo,
   retro: { ...retro, bonuses: bonusRows(retro.bonuses) },
   params: { ...BOT_PARAMS, valueToChance: VALUE_TO_CHANCE },
-  timings: coreTimings(),
+  timings: await timings(),
   coreTests: await optional("data/core-tests.json"),
   impact: await read("data/error-impact.json"),
   example: coreExample(),
