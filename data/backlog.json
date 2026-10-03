@@ -36,48 +36,42 @@
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
       "estimate": "20 min",
       "why": "stay au poids 0,6, seulement si le côté peut encore devenir un brelan ou une suite de couleur (stfig6, oracle-ideas.js) : en cœur seul 58,0 %, 57,9 %, 58,0 % contre le cœur du 0.9 sur trois jeux de donnes — le plus gros gain du cœur à ce jour ; jkx ne s'y ajoute pas. Quatre duels longs dans l'arbre, environ 300 paires.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "duel-stfig6-1",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
       "estimate": "20 min",
       "why": "stay au poids 0,6, seulement si le côté peut encore devenir un brelan ou une suite de couleur (stfig6, oracle-ideas.js) : en cœur seul 58,0 %, 57,9 %, 58,0 % contre le cœur du 0.9 sur trois jeux de donnes — le plus gros gain du cœur à ce jour ; jkx ne s'y ajoute pas. Quatre duels longs dans l'arbre, environ 300 paires.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "duel-stfig6-2",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 2",
       "estimate": "20 min",
       "why": "stay au poids 0,6, seulement si le côté peut encore devenir un brelan ou une suite de couleur (stfig6, oracle-ideas.js) : en cœur seul 58,0 %, 57,9 %, 58,0 % contre le cœur du 0.9 sur trois jeux de donnes — le plus gros gain du cœur à ce jour ; jkx ne s'y ajoute pas. Quatre duels longs dans l'arbre, environ 300 paires.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "duel-stfig6-3",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 3",
       "estimate": "20 min",
       "why": "stay au poids 0,6, seulement si le côté peut encore devenir un brelan ou une suite de couleur (stfig6, oracle-ideas.js) : en cœur seul 58,0 %, 57,9 %, 58,0 % contre le cœur du 0.9 sur trois jeux de donnes — le plus gros gain du cœur à ce jour ; jkx ne s'y ajoute pas. Quatre duels longs dans l'arbre, environ 300 paires.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "duel-stay4e10-0",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stay4e10@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
       "estimate": "20 min",
       "why": "stay 0,4 aux tours 1-10 seulement (earlyIdeas) : 55,4 % (49,5 – 61,3) en duel de 10 min à 400 itérations, le seul des six bonus « tours 1-10 » au-dessus de 55 %. Validation à 800, sur deux jeux de donnes.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "duel-stay4e10-1",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stay4e10@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
       "estimate": "20 min",
       "why": "stay 0,4 aux tours 1-10 seulement (earlyIdeas) : 55,4 % (49,5 – 61,3) en duel de 10 min à 400 itérations, le seul des six bonus « tours 1-10 » au-dessus de 55 %. Validation à 800, sur deux jeux de donnes.",
-      "status": "scheduled",
-      "notBefore": "2026-10-03T21:00"
+      "status": "todo"
     },
     {
       "id": "oracle-confirm-1",
