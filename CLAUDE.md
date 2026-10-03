@@ -176,7 +176,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   blind to an idea that acts earlier (stay4e10).
 - **The oracle is frozen as version 1** (`ORACLE.version`, written into every
   line it produces): its games and opinions are the reference for the V1 and
-  later. A speed-up keeps the version only if its fingerprint is unchanged;
+  later. A speed-up keeps the version only if its fingerprint is unchanged
+  (`npm run fingerprint -- "ismcts+candidates=99+widen=6+depth=5+smart=1@300,greedy" 6`
+  → `c87b8b524dede38b`, 03/10);
   anything that changes a move (a bug fixed, an idea) raises it, and the
   reference is relabelled.
 - **Equal iterations or equal time** (Sami, 03/10): measure first what a
