@@ -156,6 +156,11 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   ideas with the quick duel profile (on the core when possible), run `--long`
   once for a version, rebuild the report only when `strategist` changes its
   moves. Speed work must keep `npm run fingerprint` unchanged.
+- **Tree budgets by time of day** (Sami, 03/10): daytime tests of a tree
+  engine run at **400 iterations at most** unless Sami asks otherwise; **800 is
+  for validation**, and those duels and simulations go to the night backlog
+  (`data/backlog.json`, `"status": "scheduled"`). Core-against-core duels take
+  seconds and are not concerned. Night jobs stay under 2 h each.
 - **The experimental bot searches deeper** (`src/sim/search.js`): 8 candidates,
   successive halving on common deals, early stop on a clear leader; a rollout
   budget in Node (`experimental:N`), a clock in the page. There it runs in a
