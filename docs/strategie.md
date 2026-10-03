@@ -55,6 +55,7 @@ mesures détaillées sont plus bas, section par section.
 | Deux phases (voisinage au début, cœur nu et 7 coups à la fin), partie entière contre le Stratège | 03/10 | −1,3 ± 4,2 pts (bascule au tour 20) ; −2,0 ± 4,3 (1re borne) | écarté | — |
 | Imiter l'oracle : répondre moins, ouvrir sans figure, côtés sans figure, jokers libres | 03/10 | cœur seul 38,8 – 50,4 % | écartés ; seul `stay` 0,4 reste (jkxs, au duel long) | — |
 | Bonus seulement aux tours 1-10 : junk, obex, jkx, whole, stfig | 03/10 | 47,9 – 52,1 % (arbre, 400 itérations, 10 min) | écartés ; seul stay (55,4 %) va en validation de nuit | — |
+| Les bonus du 0.9 (middle, spread, connector, joker, opening, suited) coupés après le tour 10 | 03/10 | 49,0 – 50,9 % (arbre, 400 itérations, 10 min) | neutres : après le tour 10 l'arbre décide | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1534,6 +1535,34 @@ vrais coups comme dans les simulations de l'arbre).
   n'était pas de nuire en fin de partie.
 - `stfig6` sur toute la partie (au backlog ce soir) dira si limiter `stfig` au
   début lui fait perdre ou non : ici 51,7 %.
+
+## Les bonus du 0.9 limités aux tours 1 à 10 (03/10)
+
+**L'idée de Sami** : les bonus du cœur du 0.9 jouent toute la partie. Les couper
+après le tour 10, quand l'arbre voit assez loin, l'améliore-t-il ? Chacun est
+gardé pour les tours 1 à 10 seulement (`earlyIdeas`, et pour les habitudes
+`earlyHabits`, `src/sim/tuning.js`), un à la fois. `certain` n'est pas testé :
+ce n'est pas un bonus, mais la connaissance exacte des bornes déjà perdues.
+
+**Dans l'arbre, 400 itérations, en miroir, 10 min par duel** :
+
+| Bonus gardé aux tours 1-10 seulement | Contre le 0.9 |
+| --- | --- |
+| `middle` (le centre seulement avec un départ solide) | 50,7 % (45,0 – 56,4) |
+| `spread` (pas deux valeurs seules pareilles) | 50,0 % (44,4 – 55,6) |
+| `connector` (ne pas casser un départ de suite) | 49,0 % (43,5 – 54,5) |
+| habitude `joker` (le joker pour un brelan seulement) | 49,7 % (44,4 – 54,9) |
+| habitude `opening` (ouvrir au milieu, une couleur nouvelle) | 50,9 % (46,1 – 55,7) |
+| habitude `suited` (deux cartes qui se suivent en couleur) | 50,3 % (45,5 – 55,1) |
+
+- **Rien ne bouge.** Couper ces bonus après le tour 10 ne gagne ni ne perd : à
+  partir de là, l'arbre décide, et le cœur ne pèse presque plus (comme le
+  banc depuis le tour 23 l'avait montré pour les variantes du cœur).
+- Rien ne part en validation de nuit.
+- Ces duels jouent 288 à 336 parties en 10 min, contre 240 pour la série
+  précédente : le chemin rapide de l'évaluateur (côtés complets, paires de
+  jokers) fait encore gagner environ 7 %. Remesuré sur machine libre, le 0.9
+  tourne à 1 000 itérations par seconde (556 la veille).
 
 ## La chance des jokers (03/10)
 
