@@ -5,7 +5,7 @@ import { createRng } from "../../src/core/random.js";
 import { $, freshSeed, recall, remember } from "./dom.js";
 import { sortBySuit, syncOrder } from "./hand.js";
 import { copyId, favoriteIds, flipFavorite, renderStatus } from "./puzzle-controls.js";
-import { favoritesOnly, hintOf, immediateMessage, isImmediate, namesOf, openingMessage, puzzleStatus, randomOrder, solutionOf } from "./puzzle-kinds.js";
+import { favoritesOnly, unsolvedOnly, hintOf, immediateMessage, isImmediate, namesOf, openingMessage, puzzleStatus, randomOrder, solutionOf } from "./puzzle-kinds.js";
 import { SPEC } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
 import { tableView } from "./view.js";
@@ -20,10 +20,17 @@ import { tableView } from "./view.js";
 const SOLVED_KEY = "lopin.puzzles.solved";
 const puzzle = { list: [], index: 0, order: [], cursor: 0, game: null, visible: false, worker: null, requests: 0 };
 
-/** A random order, the puzzles not yet solved first: the next one is never predictable. */
+/**
+ * A random order, the puzzles not yet solved first: the next one is never
+ * predictable. Kept to the favourites, then to the unsolved ones, when those
+ * boxes are ticked; the unsolved filter comes last so that favourites all
+ * solved still show rather than unrelated puzzles.
+ */
 function shuffleOrder() {
-  const order = randomOrder(puzzle.list, solvedIds(), createRng(freshSeed()));
-  puzzle.order = $("puzzle-favorites-only").checked ? favoritesOnly(order, puzzle.list, favoriteIds()) : order;
+  const solved = solvedIds();
+  const order = randomOrder(puzzle.list, solved, createRng(freshSeed()));
+  const favorites = $("puzzle-favorites-only").checked ? favoritesOnly(order, puzzle.list, favoriteIds()) : order;
+  puzzle.order = $("puzzle-unsolved-only").checked ? unsolvedOnly(favorites, puzzle.list, solved) : favorites;
   puzzle.cursor = 0;
 }
 
@@ -239,10 +246,12 @@ export function wirePuzzles() {
     render();
   });
   $("btn-puzzle-copy").addEventListener("click", () => copyId(puzzle.list[puzzle.index].id, $("puzzle-copied")));
-  // Favourites only: a new draw, and a move to the first favourite unless the current puzzle is one.
-  $("puzzle-favorites-only").addEventListener("change", () => {
-    shuffleOrder();
-    if (puzzle.game && !puzzle.order.includes(puzzle.index)) start(puzzle.order[0]);
-    else render();
-  });
+  // Either filter: a new draw, and a move to the first puzzle kept unless the current one is.
+  for (const id of ["puzzle-unsolved-only", "puzzle-favorites-only"]) {
+    $(id).addEventListener("change", () => {
+      shuffleOrder();
+      if (puzzle.game && !puzzle.order.includes(puzzle.index)) start(puzzle.order[0]);
+      else render();
+    });
+  }
 }

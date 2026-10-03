@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { buttonsFor, favoritesOnly, puzzleStatus, statusLine, toggleFavorite } from "../web/app/puzzle-kinds.js";
+import { buttonsFor, favoritesOnly, puzzleStatus, statusLine, toggleFavorite, unsolvedOnly } from "../web/app/puzzle-kinds.js";
 
 describe("where a puzzle stands", () => {
   it("is playing until it is over, then solved, helped or lost", () => {
@@ -25,5 +25,11 @@ describe("where a puzzle stands", () => {
     const list = [{ id: 1 }, { id: 2 }, { id: 3 }];
     assert.deepEqual(favoritesOnly([2, 0, 1], list, new Set([3, 1])), [2, 0]);
     assert.deepEqual(favoritesOnly([2, 0, 1], list, new Set()), [2, 0, 1], "no favourite: the whole order");
+  });
+
+  it("keeps the unsolved puzzles, or the whole order once all are solved", () => {
+    const list = [{ id: 1 }, { id: 2 }, { id: 3 }];
+    assert.deepEqual(unsolvedOnly([2, 0, 1], list, new Set([3])), [0, 1]);
+    assert.deepEqual(unsolvedOnly([2, 0, 1], list, new Set([1, 2, 3])), [2, 0, 1], "all solved: the whole order");
   });
 });

@@ -70,8 +70,14 @@ export function toggleFavorite(favorites, id) {
   return [...next];
 }
 
-/** The order kept to the favourites — or left whole when none of them is in it. */
-export function favoritesOnly(order, list, favorites) {
-  const kept = order.filter((index) => favorites.has(list[index].id));
+/** The order kept to the puzzles that pass `test` — or left whole when none does. */
+function keptOr(order, test) {
+  const kept = order.filter(test);
   return kept.length > 0 ? kept : order;
 }
+
+/** The order kept to the favourites — or left whole when none of them is in it. */
+export const favoritesOnly = (order, list, favorites) => keptOr(order, (index) => favorites.has(list[index].id));
+
+/** The order kept to the puzzles not yet solved — or left whole once every one is. */
+export const unsolvedOnly = (order, list, solved) => keptOr(order, (index) => !solved.has(list[index].id));
