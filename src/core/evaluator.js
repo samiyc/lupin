@@ -67,6 +67,13 @@ function jokerFirst(a, b, c, m) {
   return a === JOKER && b >= 0 ? b * m + c : -1;
 }
 
+/** The one real card among a joker pair: its id, or -1 when the three are not two jokers and a real card. */
+function soleReal(a, b, c) {
+  if (a === JOKER && b === JOKER) return c;
+  if (a === JOKER && c === JOKER) return b;
+  return b === JOKER && c === JOKER ? a : -1;
+}
+
 const jokerSlots = (cards) => cards.filter(isJoker).map(() => "joker");
 const realOnly = (cards) => cards.filter((card) => !isJoker(card));
 
@@ -82,21 +89,27 @@ export function getEvaluator(spec, order, jokerRule) {
       strengthScore(order, classify(spec, [a, b, c]), sumOf(spec, [a, b, c]));
     const table = tableSet(space, leaf, Math.max);
     const { m } = space;
-    const [three, two] = [table([]), table(["joker"])];
-    const score = (cards) => table(jokerSlots(cards))[indexOf(realOnly(cards), m)];
+    const [three, two, twoJokers] = [table([]), table(["joker"]), table(["joker", "joker"])];
+    const general = (cards) => table(jokerSlots(cards))[indexOf(realOnly(cards), m)];
+    /**
+     * Allocation-free path for the simulation's hot loop: three real cards, two
+     * and a joker in any place (the two real ones keep their order, as the
+     * general path does), or one and two jokers. Anything else takes the
+     * general path.
+     */
+    const score3 = (a, b, c) => {
+      if (a >= 0 && b >= 0) return c >= 0 ? three[(a * m + b) * m + c] : two[a * m + b];
+      const index = jokerFirst(a, b, c, m);
+      if (index >= 0) return two[index];
+      const single = soleReal(a, b, c);
+      return single >= 0 ? twoJokers[single] : general([a, b, c]);
+    };
+    // A full side goes the fast way too: `value` and `formation` ask for them on every scoring.
+    const score = (cards) => (cards.length === 3 ? score3(cards[0], cards[1], cards[2]) : general(cards));
     return {
       order,
       score,
-      /**
-       * Allocation-free path for the simulation's hot loop: three real cards,
-       * or two and a joker in any place (the two real ones keep their order,
-       * as `score` does). Anything else takes the general path.
-       */
-      score3(a, b, c) {
-        if (a >= 0 && b >= 0) return c >= 0 ? three[(a * m + b) * m + c] : two[a * m + b];
-        const index = jokerFirst(a, b, c, m);
-        return index >= 0 ? two[index] : score([a, b, c]);
-      },
+      score3,
       formation: (cards) => formationOfScore(order, score(cards)),
       sum: (cards) => sumOfScore(score(cards)),
     };
