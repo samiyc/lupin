@@ -1,6 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { gateOn } from "./gates.js";
-import { shapeOf } from "./shapes.js";
 
 /**
  * Bonuses that push the core the way the oracle played (03/10,
@@ -45,13 +44,36 @@ function stayMoment({ weights, turn, mySides, theirSides }) {
   return !weights.stayBehind || started(theirSides) >= started(mySides);
 }
 
+/** 1 when two real cards can sit in the same trips, 2 in the same suited run (same colour, one or two values apart), else 0. */
+function pairFits(spec, x, y) {
+  const gap = Math.abs(valueOf(spec, x) - valueOf(spec, y));
+  if (gap === 0) return 1;
+  return gap <= 2 && colorOf(spec, x) === colorOf(spec, y) ? 2 : 0;
+}
+
+/**
+ * Can `mine` plus `card` still become trips or a suited run? The same answer
+ * as `shapeOf(spec, [...mine, card]) !== null`, with fewer than two real cards
+ * counting as yes (such a side can still become anything) — but read pair by
+ * pair, without building the side: `stfig` asks it on every move of every
+ * rollout, and through `shapeOf` it cost the tree a fifth of its time. A side
+ * holds three cards at most, so every pair fitting the same figure is enough.
+ */
+export function keepsFigure(spec, mine, card) {
+  let [fits, real] = [3, 0];
+  for (let i = 0; i <= mine.length; i += 1) {
+    const other = mine[i] ?? card;
+    if (isJoker(other)) continue;
+    for (let j = 0; j < i; j += 1) fits &= isJoker(mine[j]) ? 3 : pairFits(spec, mine[j], other);
+    real += 1;
+  }
+  return real < 2 || fits !== 0;
+}
+
 /** Is it a card `stay` counts: the right one of the side, on a side that keeps a figure if asked? */
 function stayCard({ spec, weights }, mine, card) {
   if (weights.stayCard && mine.length + 1 !== weights.stayCard) return false;
-  if (!weights.stayFigure) return true;
-  const side = [...mine, card];
-  // With fewer than two real cards a side can still become anything.
-  return side.filter((other) => !isJoker(other)).length < 2 || shapeOf(spec, side) !== null;
+  return !weights.stayFigure || keepsFigure(spec, mine, card);
 }
 
 const stayBonus = (context, mine, card) => (stayMoment(context) && stayCard(context, mine, card) ? context.weights.stay : 0);

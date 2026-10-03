@@ -2,7 +2,8 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { DECKS } from "../src/config/decks.js";
 import { JOKER, cardOf } from "../src/core/cards.js";
-import { oracleBonus } from "../src/sim/oracle-ideas.js";
+import { keepsFigure, oracleBonus } from "../src/sim/oracle-ideas.js";
+import { shapeOf } from "../src/sim/shapes.js";
 
 const spec = DECKS.classique;
 const c = (color, value) => cardOf(spec, color, value);
@@ -48,5 +49,20 @@ describe("bonuses that follow the oracle", () => {
     assert.equal(oracleBonus(context(["stay"], { ...ahead, extra: { stayBehind: 1 } }), 0, c(1, 5)), 0, "I have started more borders");
     const behind = { mySides: [[c(0, 5)], []], theirSides: [[c(2, 2)], [c(2, 9)]] };
     assert.equal(oracleBonus(context(["stay"], { ...behind, extra: { stayBehind: 1 } }), 0, c(1, 5)), 0.4);
+  });
+});
+
+describe("a side that keeps a figure (stfig)", () => {
+  it("answers as shapeOf on every side of up to three cards, jokers included", () => {
+    const spec = DECKS.classique;
+    const cards = [...Array.from({ length: spec.colors * spec.values }, (_, card) => card), JOKER];
+    const expected = (side) => side.filter((card) => card !== JOKER).length < 2 || shapeOf(spec, side) !== null;
+    const sides = cards.flatMap((a) => cards.filter((b) => b !== a || a === JOKER).map((b) => [a, b]));
+    for (const [a, b] of sides) {
+      assert.equal(keepsFigure(spec, [a], b), expected([a, b]));
+      for (const c of [cardOf(spec, 0, 5), cardOf(spec, 1, 5), cardOf(spec, 0, 6), cardOf(spec, 0, 8), JOKER]) {
+        if (c !== a && c !== b) assert.equal(keepsFigure(spec, [a, b], c), expected([a, b, c]), `${a} ${b} ${c}`);
+      }
+    }
   });
 });
