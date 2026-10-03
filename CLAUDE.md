@@ -161,6 +161,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   for validation**, and those duels and simulations go to the night backlog
   (`data/backlog.json`, `"status": "scheduled"`). Core-against-core duels take
   seconds and are not concerned. Night jobs stay under 2 h each.
+  Between two heavy jobs, a 15-minute pause job (`npm run cooldown -- 15`,
+  Sami, 04/10) lets the CPU breathe and logs its load; no temperature sensor
+  is readable on this machine without LibreHardwareMonitor running.
 - **A 400 screen rejects, it never promotes** (Sami, 03/10): three 10-minute
   screens promoted ideas that did not hold (stay 0.4 at 58.3 %, connector from
   turn 15 at 54.5 %, stay4e10 at 55.4 % — 48.5 % and 50.6 % once measured

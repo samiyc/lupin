@@ -46,7 +46,8 @@
     "oracle": "node scripts/oracle.js",
     "changelog": "node scripts/changelog.js",
     "versus": "node scripts/versus.js",
-    "shadow": "node scripts/shadow.js"
+    "shadow": "node scripts/shadow.js",
+    "cooldown": "node scripts/cooldown.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
