@@ -1,0 +1,98 @@
+{
+ "built": "2026-10-03",
+ "engine": "ismcts+candidates=99+widen=6+depth=5+smart=1",
+ "budget": 20000,
+ "positions": 42,
+ "gaps": 0,
+ "byTurn": {
+  "tour 2": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 6": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 10": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 14": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 18": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 22": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  },
+  "tour 26": {
+   "positions": 6,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  }
+ },
+ "byPlayer": {
+  "second": {
+   "positions": 42,
+   "checked": 0,
+   "stable": 0,
+   "gaps": 0,
+   "unseen": 0
+  }
+ },
+ "traits": [],
+ "ms": {
+  "2": {
+   "positions": 6,
+   "ms": 97480
+  },
+  "6": {
+   "positions": 6,
+   "ms": 90288
+  },
+  "10": {
+   "positions": 6,
+   "ms": 65048
+  },
+  "14": {
+   "positions": 6,
+   "ms": 54988
+  },
+  "18": {
+   "positions": 6,
+   "ms": 40614
+  },
+  "22": {
+   "positions": 6,
+   "ms": 25164
+  },
+  "26": {
+   "positions": 6,
+   "ms": 17922
+  }
+ }
+}

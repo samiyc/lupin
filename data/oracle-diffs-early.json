@@ -1,0 +1,178 @@
+{
+ "built": "2026-10-03",
+ "engine": "ismcts+candidates=99+widen=6+depth=5+smart=1",
+ "budget": 20000,
+ "positions": 180,
+ "gaps": 58,
+ "byTurn": {
+  "tour 2": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 3,
+   "gaps": 3,
+   "unseen": 0
+  },
+  "tour 4": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 5,
+   "gaps": 5,
+   "unseen": 4
+  },
+  "tour 6": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 9,
+   "gaps": 8,
+   "unseen": 6
+  },
+  "tour 8": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 13,
+   "gaps": 12,
+   "unseen": 10
+  },
+  "tour 10": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 18,
+   "gaps": 14,
+   "unseen": 11
+  },
+  "tour 12": {
+   "positions": 30,
+   "checked": 30,
+   "stable": 16,
+   "gaps": 16,
+   "unseen": 6
+  }
+ },
+ "byPlayer": {
+  "second": {
+   "positions": 180,
+   "checked": 180,
+   "stable": 64,
+   "gaps": 58,
+   "unseen": 37
+  }
+ },
+ "traits": [
+  {
+   "trait": "pose une 2e carte",
+   "oracle": 0.6206896551724138,
+   "core": 0.3103448275862069
+  },
+  {
+   "trait": "carte forte (8+)",
+   "oracle": 0.43103448275862066,
+   "core": 0.15517241379310345
+  },
+  {
+   "trait": "au centre (bornes 3-5)",
+   "oracle": 0.6379310344827587,
+   "core": 0.3793103448275862
+  },
+  {
+   "trait": "sur un bord (borne 1 ou 7)",
+   "oracle": 0.1206896551724138,
+   "core": 0.3793103448275862
+  },
+  {
+   "trait": "répond plus bas",
+   "oracle": 0.034482758620689655,
+   "core": 0.2413793103448276
+  },
+  {
+   "trait": "carte faible (3-)",
+   "oracle": 0.15517241379310345,
+   "core": 0.3620689655172414
+  },
+  {
+   "trait": "bâtit une suite de couleur",
+   "oracle": 0.3275862068965517,
+   "core": 0.13793103448275862
+  },
+  {
+   "trait": "ouvre une borne vierge",
+   "oracle": 0.034482758620689655,
+   "core": 0.20689655172413793
+  },
+  {
+   "trait": "ouvre sans suite prévue en main",
+   "oracle": 0.13793103448275862,
+   "core": 0.29310344827586204
+  },
+  {
+   "trait": "répond à une borne adverse",
+   "oracle": 0.3448275862068966,
+   "core": 0.46551724137931033
+  },
+  {
+   "trait": "ouvre avec de quoi faire un brelan",
+   "oracle": 0.13793103448275862,
+   "core": 0.2413793103448276
+  },
+  {
+   "trait": "carte moyenne (4-7)",
+   "oracle": 0.39655172413793105,
+   "core": 0.4827586206896552
+  },
+  {
+   "trait": "ouvre avec de quoi faire une suite de couleur",
+   "oracle": 0.10344827586206896,
+   "core": 0.1896551724137931
+  },
+  {
+   "trait": "bâtit un brelan",
+   "oracle": 0.25862068965517243,
+   "core": 0.1896551724137931
+  },
+  {
+   "trait": "bâtit un côté ni brelan ni suite de couleur",
+   "oracle": 0.034482758620689655,
+   "core": 0
+  },
+  {
+   "trait": "complète un côté (3e carte)",
+   "oracle": 0,
+   "core": 0.017241379310344827
+  },
+  {
+   "trait": "joker",
+   "oracle": 0.017241379310344827,
+   "core": 0
+  },
+  {
+   "trait": "surenchérit d'un cran",
+   "oracle": 0.034482758620689655,
+   "core": 0.034482758620689655
+  }
+ ],
+ "ms": {
+  "2": {
+   "positions": 30,
+   "ms": 197660
+  },
+  "4": {
+   "positions": 30,
+   "ms": 181800
+  },
+  "6": {
+   "positions": 30,
+   "ms": 162118
+  },
+  "8": {
+   "positions": 30,
+   "ms": 147503
+  },
+  "10": {
+   "positions": 30,
+   "ms": 125178
+  },
+  "12": {
+   "positions": 30,
+   "ms": 112170
+  }
+ }
+}

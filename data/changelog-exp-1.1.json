@@ -48,9 +48,9 @@
    "score": null,
    "lo": null,
    "hi": null,
-   "verdict": "attente",
-   "when": "cette nuit",
-   "note": "Aux tours 14-26, ses deux recherches s'accordent dans 68-70 % des positions."
+   "verdict": "perd",
+   "when": "04/10 00:30",
+   "note": "36 % de positions stables aux tours 2-12 (10 % au tour 2, 60 % au 10), contre 68-70 % aux tours 14-26. Son favori n'a que 10 % des visites : avant le tour 10, l'oracle n'est pas une référence."
   },
   {
    "name": "L'oracle au début de partie, à 80 000 itérations",
@@ -59,52 +59,77 @@
    "score": null,
    "lo": null,
    "hi": null,
-   "verdict": "attente",
-   "when": "cette nuit",
-   "note": "Son favori à 20 000 tient-il quand on quadruple le budget ?"
+   "verdict": "perd",
+   "when": "04/10 00:35",
+   "note": "Le favori à 80 000 rejoint l'un des deux de 20 000 dans 2 cas sur 6 aux tours 2 et 6, 6 sur 6 au tour 10."
   },
   {
    "name": "Oracle contre 1.0, parties entières (pilote)",
    "family": "reference",
    "bench": "duel",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "cette nuit",
-   "note": "22 parties, une vague ; ses avis coup par coup gardés dans le replay."
+   "score": 45.5,
+   "lo": 24.8,
+   "hi": 66.2,
+   "verdict": "neutre",
+   "when": "04/10 00:47",
+   "note": "22 parties en 12,6 min. Rien ne dit encore que l'oracle bat le V1 : 110 parties de plus ce matin."
   },
   {
    "name": "L'oracle jusqu'au tour 12, puis le 1.0, contre le 1.0 (pilote)",
    "family": "reference",
    "bench": "duel",
+   "score": 63.6,
+   "lo": 44.5,
+   "hi": 82.7,
+   "verdict": "tendance",
+   "when": "04/10 01:27",
+   "note": "22 parties en 8,9 min. À vérifier ce matin sur 110 parties."
+  },
+  {
+   "name": "Le V1 relit les parties de l'oracle (shadow)",
+   "family": "reference",
+   "bench": "positions",
    "score": null,
    "lo": null,
    "hi": null,
-   "verdict": "attente",
-   "when": "cette nuit",
-   "note": "Son début de partie jugé en parties entières."
+   "verdict": "neutre",
+   "when": "04/10 01:35",
+   "note": "Même coup : 4,5 % aux tours 1-4, 27 % aux 17-20, 38 % après 25. Le coup de l'oracle dans le top 8 du cœur du 1.0 : 23 % au début, 83 % à la fin."
   }
  ],
  "commitLabels": {
-  "e3c5fcc": ["reference", "Les outils de la base de référence : l'oracle sur n'importe quel corpus, le banc des cœurs, le V1 dans l'ombre de l'oracle"],
-  "b6d60a4": ["oracle", "L'empreinte de l'oracle version 1"]
+  "e3c5fcc": [
+   "reference",
+   "Les outils de la base de référence : l'oracle sur n'importe quel corpus, le banc des cœurs, le V1 dans l'ombre de l'oracle"
+  ],
+  "b6d60a4": [
+   "oracle",
+   "L'empreinte de l'oracle version 1"
+  ],
+  "b2b110b": [
+   "outils",
+   "Ouvrir le Changelog Exp v1.1 : une page par version"
+  ],
+  "6a41d60": [
+   "outils",
+   "Une pause entre deux jobs du backlog"
+  ]
  },
  "next": [
   {
-   "when": "Cette nuit",
-   "title": "Les pilotes",
-   "text": "Le coût d'un coup de l'oracle, sa stabilité au début de partie, son favori à 80 000 itérations, puis 22 parties contre le 1.0 et 22 où il ne joue que le début."
+   "when": "Ce matin",
+   "title": "L'oracle bat-il le V1 ?",
+   "text": "Deux passes Oracle contre 1.0 (110 parties chacune) et 110 parties où l'oracle ne joue que jusqu'au tour 12. Puis l'oracle relit les parties du 1.0 aux tours 12-28, là où il est fiable."
   },
   {
-   "when": "Demain matin",
-   "title": "La base de référence",
-   "text": "Selon les pilotes : V1 contre V1, V1 contre Oracle, peut-être Oracle contre Oracle, et les parties du V1 relues par l'oracle à tous les tours. Fini avant 13 h, le reste la nuit suivante."
+   "when": "Ce soir, 23 h",
+   "title": "Le corpus V1 contre V1",
+   "text": "Deux duels longs du 1.0 contre lui-même, gardés en replays pour la base de référence."
   },
   {
    "when": "Ensuite",
    "title": "Le 1.1",
-   "text": "Une idée se trie au banc oracle, se vérifie là où elle change un coup (--disagree), puis se décide sur quatre jeux de donnes en duels longs."
+   "text": "Une idée se trie au banc oracle (tours 12 et plus), se vérifie là où elle change un coup (--disagree), puis se décide sur quatre jeux de donnes en duels longs."
   }
  ]
 }

@@ -1720,3 +1720,57 @@ tri écarte, il ne promeut plus : voir la règle dans `CLAUDE.md` et `docs/valid
 **Les versions passent à deux chiffres** (Sami) : `experimental@1.0`,
 `stratege@2.1`, `basique@1.0`. Les parties enregistrées avant, en `x.y.0`, comptent
 pour la même version (`shortTag`, `src/config/bots.js`).
+
+## La base de référence V1 + Oracle : les pilotes de la nuit (04/10)
+
+L'idée de Sami : faire de l'oracle un étalon — ses parties entières, les parties
+du V1 relues par lui et inversement — pour juger une idée en minutes avant de lui
+donner des duels longs. Avant d'y mettre des nuits, des pilotes. L'oracle est figé
+en **version 1** (`ORACLE.version`, empreinte `c87b8b524dede38b`) ; les replays des
+duels gardent désormais les 5 meilleurs candidats d'une recherche et leurs visites.
+
+**L'oracle confirmé par le jeu** (`oracle-confirm-1`, 1 144 écarts des tours 14-26
+rejoués jusqu'au tour 30 par le 0.9, 4 graines) : son coup tient **+6,3 ± 1,8 points**
+de plus que le favori du cœur, **+3,1 ± 1,8** de plus que le coup du 0.9. Sûr de lui
+(marge ≥ 0,15) : +3,7 ; hésitant : +1,0 ± 3,3, rien de prouvé. Au milieu de partie,
+ses écarts sont de vraies leçons.
+
+**Le banc oracle** (`npm run oracle -- --bench …`) : la part des positions où le coup
+de l'oracle entre dans le top 8 d'un cœur classe les 8 cœurs mesurés en duels longs
+comme les duels (corrélation de rang 0,93 ; top 1 et top 3 : 0,60). Ses positions
+vont des tours 14 à 26 : il ne voit pas une idée qui agit plus tôt (stay4e10).
+
+**Ce que coûte un coup de l'oracle** (`oracle-cost`, médiane sur 23 fils) : 97 s au
+tour 2, 65 s au 10, 41 s au 18, 18 s au 26. Une partie Oracle contre 1.0 : une vague
+de 22 parties en 12,6 min, soit environ 105 parties par heure.
+
+**L'oracle au début de partie : le doute de Sami était fondé.**
+- Ses deux recherches s'accordent dans **36 %** des positions des tours 2 à 12
+  (10 % au tour 2, 17 % au 4, 30 % au 6, 43 % au 8, 60 % au 10, 53 % au 12), contre
+  68-70 % aux tours 14-26. Son favori n'a que 10 % des visites en médiane.
+- À 80 000 itérations (18 positions), le favori rejoint l'un des deux de 20 000 dans
+  2 cas sur 6 aux tours 2 et 6, 6 sur 6 au tour 10.
+- Avant le tour 10, l'oracle n'est pas une référence ; ses positions de début ne
+  servent pas d'étalon. (Les pilotes ne lisaient que des tours pairs, donc le joueur
+  qui commence second ; rien n'indique que l'autre siège diffère.)
+
+**En parties entières** (22 parties chacun, une vague) :
+
+| Pilote | Score contre le 1.0 | Fourchette par paires |
+| --- | --- | --- |
+| l'oracle | 45,5 % | 24,8 – 66,2 % |
+| l'oracle jusqu'au tour 12, puis le 1.0 | 63,6 % | 44,5 – 82,7 % |
+
+Trop peu de parties pour conclure, mais une surprise : rien ne dit encore que
+l'oracle bat le V1 en partie entière. Il cherche avec le cœur du 0.9 (réponses et
+simulations), le V1 avec celui du 1.0. Les deux questions partent ce matin en
+110 parties de plus chacune (`ref-oracle-v1-0/1`, `ref-phase12-0`).
+
+**Le V1 relit les 22 parties de l'oracle** (`npm run shadow`) : il joue le même coup
+dans 4,5 % des cas aux tours 1-4, 16 % aux 9-12, 27 % aux 17-20, 38 % après le 25 ;
+le coup de l'oracle est dans le top 8 de son cœur 23 % du temps au début, 75-83 %
+à la fin.
+
+**Pour la suite** : la base de référence part des tours 12 et plus (`ref-annotate-0` :
+l'oracle relit les parties du 1.0 aux tours 12-28, deux recherches, classées par le
+cœur du 1.0). Oracle contre Oracle attend : son début de partie n'est pas fiable.
