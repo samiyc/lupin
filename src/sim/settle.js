@@ -11,7 +11,7 @@ export const isFull = (border) => border.sides.every((side) => side.length === 3
 /** The turn a border's second side filled up: the order borders are settled in. */
 const filledAt = (border) => Math.max(...border.completedAt);
 
-function pickWinner(scores, completedAt) {
+export function pickWinner(scores, completedAt) {
   if (scores[0] !== scores[1]) return scores[0] > scores[1] ? 0 : 1;
   return completedAt[0] < completedAt[1] ? 0 : 1;
 }

@@ -9,6 +9,8 @@ import { phaseBot, phaseSettings } from "./phase.js";
 import { pickBest, pickSampled } from "./pick.js";
 import { searchBot } from "./search.js";
 import { HABITS, STRATEGY, strategistMoves } from "./strategist.js";
+import { jokerGate } from "./joker-gate.js";
+import { gameOdds, settledOdds } from "./truncate.js";
 import { tuningsOf } from "./tuning.js";
 
 /**
@@ -66,19 +68,6 @@ export const strategistBot = (rng, options = {}) => {
   };
 };
 
-/** May one more joker join `side`? Asked once per side, not once per card. */
-function jokerGate(state, player) {
-  const { maxPerSide, maxPerPlayer } = state.jokerRule;
-  const underPlayerCap = state.jokersPlayed[player] < maxPerPlayer;
-  // Counted by hand: asked for every side judged, an array per call added up.
-  return (side) => {
-    if (!underPlayerCap) return false;
-    let jokers = 0;
-    for (const card of side) jokers += isJoker(card) ? 1 : 0;
-    return jokers < maxPerSide;
-  };
-}
-
 function views(state) {
   const player = state.current;
   const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
@@ -127,6 +116,13 @@ function boardCards(state) {
 
 /** A border already won counts 1, lost 0, whatever its sides would say. */
 const ownedOdds = (state, player, chances) => state.borders.map((border, i) => (border.owner === null ? chances[i] : Number(border.owner === player)));
+
+/** The player to move's odds of winning the game, from the core's odds on each border: what a cut rollout stops on (truncate.js). */
+export function winOdds(state) {
+  const { mine, threat } = views(state);
+  const chances = borderChances(state, state.current, { mine, threat });
+  return gameOdds(state.borders.map((border, i) => settledOdds(state, state.current, border, chances[i])));
+}
 
 /** What the ideas read on top of the strategist's context; nothing when none is on. */
 function ideasContext(state, player, { ideas, gates, weights }, seen) {
@@ -287,7 +283,7 @@ export const BOTS = Object.freeze({
 
 /** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
 const ismctsOf = ({ sample, core = "exp", shortlist = core, rollout = core, ...tree }, budget) => (rng) =>
-  ismctsBot(rng, { base: strategistBot(rng, coreOf(shortlist)), policy: rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample }), ...tree, ...budget });
+  ismctsBot(rng, { base: strategistBot(rng, coreOf(shortlist)), policy: rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample }), oddsOf: winOdds, ...tree, ...budget });
 
 /**
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot

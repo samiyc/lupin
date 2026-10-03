@@ -3,6 +3,7 @@ import { createBudget } from "./budget.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
 import { determinize, playOut } from "./lookahead.js";
+import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
 
 /**
@@ -33,8 +34,10 @@ export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, dept
 
 const newNode = () => ({ visits: 0, wins: 0, avail: 0, children: new Map() });
 
+/** A player's points: from a winner (1, ½ for a draw, 0), or from `{ share }`, seat 0's odds when a rollout was cut short (truncate.js). */
 const pointsFor = (winner, player) => {
   if (winner === null) return 0.5;
+  if (typeof winner === "object") return player === 0 ? winner.share : 1 - winner.share;
   return winner === player ? 1 : 0;
 };
 
@@ -86,6 +89,36 @@ function playOutNoted(game, policy, played) {
   return game.winner;
 }
 
+/**
+ * A rollout cut short (`trunc`, truncate.js): once a border is won after at
+ * least `trunc` moves, the core's odds of winning the game (`oddsOf`, for the
+ * player to move) stand for the result — never once the pile is empty.
+ */
+/** Is it the place to stop: a border more decided than at the start, after `trunc` moves, with cards still in the pile? */
+const cutHere = (game, plies, trunc, decided) => !game.over && game.pile.length > 0 && plies >= trunc && decidedCount(game) > decided;
+
+function playOutCut(game, policy, { trunc, oddsOf }) {
+  const guard = game.spec.borders * 6 * 3;
+  const decided = decidedCount(game);
+  let plies = 0;
+  while (!game.over && game.turn < guard) {
+    const moves = legalMoves(game);
+    applyMove(game, moves.length > 0 ? policy.choose(game, moves) : null);
+    plies += 1;
+    if (cutHere(game, plies, trunc, decided)) {
+      const odds = oddsOf(game);
+      return { share: game.current === 0 ? odds : 1 - odds };
+    }
+  }
+  return game.winner;
+}
+
+/** The rollout an iteration plays: cut short, noted for `rave`, or plain. */
+function rolloutOf(game, ctx, played) {
+  if (ctx.trunc > 0) return playOutCut(game, ctx.rollout, ctx);
+  return ctx.amaf ? playOutNoted(game, ctx.rollout, played) : playOut(game, ctx.rollout);
+}
+
 /** Credits every distinct (player, move) of an iteration with its result for that player. */
 function creditShared(amaf, played, winner) {
   for (const key of new Set(played)) {
@@ -118,8 +151,7 @@ function descend(root, game, ctx) {
 function iterate(root, ctx) {
   const game = determinize(ctx.state, ctx.player, ctx.deals);
   const { path, played } = descend(root, game, ctx);
-  const rollout = () => (ctx.amaf ? playOutNoted(game, ctx.rollout, played) : playOut(game, ctx.rollout));
-  const winner = game.over ? game.winner : rollout();
+  const winner = game.over ? game.winner : rolloutOf(game, ctx, played);
   for (const { child, mover } of path) {
     child.visits += 1;
     child.wins += pointsFor(winner, mover);
@@ -134,13 +166,13 @@ function iterate(root, ctx) {
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
 export function createIsmcts(state, scored, { policy, seed, ...settings }) {
-  const { candidates, widen, depth, exploration, pw = 0, rave = 0 } = { ...ISMCTS, ...settings };
+  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
   const rootMoves = [...scored]
     .sort((a, b) => b.gain - a.gain)
     .slice(0, candidates)
     .map(({ move }) => move);
-  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, amaf: rave > 0 ? new Map() : null };
+  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null };
   const root = newNode();
   let iterations = 0;
   const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
@@ -213,7 +245,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );
