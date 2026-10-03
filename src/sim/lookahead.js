@@ -65,6 +65,12 @@ function shortlist(scored, count) {
   return [...scored].sort((a, b) => Number(Boolean(a.refused)) - Number(Boolean(b.refused)) || b.gain - a.gain).slice(0, count);
 }
 
+/** The shortlist, with `move` added when it is neither in it nor refused: a human's move judged on the same endgames (the replay advice). */
+function withMove(picked, scored, move) {
+  const entry = move ? scored.find((candidate) => candidate.move.card === move.card && candidate.move.border === move.border) : null;
+  return !entry || entry.refused || picked.includes(entry) ? picked : [...picked, entry];
+}
+
 /**
  * `base`: the bot whose scores pick the candidates; `policy(rng)`: builds the
  * bot that plays the rollouts (both usually the strategist) — rebuilt on the
@@ -80,7 +86,8 @@ export function lookaheadBot(rng, { base, policy, name = "lookahead", ...setting
     const scored = base.scoreMoves(state, moves, options);
     if (moves.length <= 1) return scored;
     const player = state.current;
-    const picked = shortlist(scored, candidates);
+    // `options.include`: a move to judge as well, whatever its score (src/replay/advice.js).
+    const picked = withMove(shortlist(scored, candidates), scored, options.include);
     const points = picked.map(() => 0);
     const deals = createRng(seed ^ Math.imul(state.turn + 1, 2654435761));
     const rollout = policy(createRng(deals.int(2 ** 31)));

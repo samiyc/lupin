@@ -1,6 +1,4 @@
-import { createRng } from "../../src/core/random.js";
 import { replayStates } from "../../src/replay/log.js";
-import { BOTS } from "../../src/sim/bots.js";
 import { $ } from "./dom.js";
 import { renderExplain } from "./explain.js";
 import { START, endOf, isAtEnd, stepBack, stepForward } from "./steps.js";
@@ -13,9 +11,26 @@ import { settledAtEnd, tableView } from "./view.js";
  * The player of logged games, shared by "Observer" (a bot game generated on
  * the spot) and "Replays" (a saved log). Both hands are shown. Stepping past
  * the last move settles the borders one by one, as in a real game. Human
- * moves are weighed against what the strategist would have played.
+ * moves are weighed against what the Stratège 2.1 would have played: too slow
+ * to compute as a replay opens, that opinion comes from a worker, move by
+ * move, and the panel says "réfléchit…" until it lands.
  */
-const viewer = { log: null, frames: [], index: 0, shown: 0, timer: null, sorts: new Map(), orders: [[], []] };
+const viewer = { log: null, frames: [], index: 0, shown: 0, timer: null, sorts: new Map(), orders: [[], []], advisor: null };
+
+/** Asks a fresh worker for the Stratège 2.1's opinion on each human move of `log`; a replay opened since stops the last one. */
+function askAdvice(log) {
+  viewer.advisor?.terminate();
+  viewer.advisor = new Worker(new URL("./advice-worker.js", import.meta.url), { type: "module" });
+  viewer.frames.forEach((frame) => {
+    if (frame.entry?.move && !frame.entry.candidates) frame.advicePending = true;
+  });
+  viewer.advisor.onmessage = ({ data }) => {
+    if (viewer.log !== log || data.done) return;
+    Object.assign(viewer.frames[data.index], data.opinion, { advicePending: false });
+    if (data.index === viewer.index) render();
+  };
+  viewer.advisor.postMessage({ id: 1, log });
+}
 
 /** Both hands' order at every position, from the deal and the sorts asked for. */
 function arrangeHands() {
@@ -96,7 +111,8 @@ function play() {
 export function load(log, { autoplay = false } = {}) {
   pause();
   viewer.log = log;
-  viewer.frames = replayStates(log, { advisor: BOTS.strategist(createRng(1)) });
+  viewer.frames = replayStates(log);
+  askAdvice(log);
   viewer.sorts = new Map();
   arrangeHands();
   moveTo(START);

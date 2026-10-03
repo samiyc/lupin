@@ -101,11 +101,17 @@ qu'il examine, son rythme, et son Elo lu dans tes replays (`/api/elo`).
   - en dessous, le score (ou « 3 bornes connectées »), la durée et la date.
 - Même lecteur que l'Observer.
 - Pour chacun de tes coups, le panneau donne le temps que tu as mis (« Joue 5♥
-  sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 1.2**
-  aurait joué, et l'écart avec son meilleur coup. C'est le Stratège sans son
-  anticipation, assez rapide pour juger chaque coup. Un joker posé hors d'une
-  paire est signalé à part : il ne le jouerait jamais, il n'y a donc pas
-  d'écart à mesurer.
+  sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 2.1**
+  aurait joué : ses 4 meilleurs coups et le tien, chacun rejoué sur les mêmes
+  16 fins de partie, avec la part gagnée (« le Stratège 2.1 préférait 6♥ →
+  borne 6 : 75 % des fins de partie simulées gagnées, contre 54 % pour ton
+  coup »).
+  - Le replay s'ouvre tout de suite : l'avis est calculé en arrière-plan, coup
+    par coup (« Le Stratège 2.1 réfléchit… » en attendant), environ 0,2 s par
+    coup.
+  - Un joker posé hors d'une paire est signalé à part : il ne le jouerait
+    jamais, il n'y a donc pas d'écart à mesurer. Un coup forcé (un seul coup
+    possible) n'a rien à comparer.
 - « Garder pour l'analyse » copie la partie dans `data/replays/`, qui est versionné.
 
 **Puzzles.** Des fins de partie, pioche vide, où toutes les cartes sont connues :

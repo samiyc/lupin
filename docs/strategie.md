@@ -56,6 +56,8 @@ mesures détaillées sont plus bas, section par section.
 | Imiter l'oracle : répondre moins, ouvrir sans figure, côtés sans figure, jokers libres | 03/10 | cœur seul 38,8 – 50,4 % | écartés ; seul `stay` 0,4 reste (jkxs, au duel long) | — |
 | Bonus seulement aux tours 1-10 : junk, obex, jkx, whole, stfig | 03/10 | 47,9 – 52,1 % (arbre, 400 itérations, 10 min) | écartés ; seul stay (55,4 %) va en validation de nuit | — |
 | Les bonus du 0.9 (middle, spread, connector, joker, opening, suited) coupés après le tour 10 | 03/10 | 49,0 – 50,9 % (arbre, 400 itérations, 10 min) | neutres : après le tour 10 l'arbre décide | — |
+| Les bonus du 0.9 à partir du tour 15 ; connector à partir du tour 11, 15 ou 19 (à temps égal) | 03/10 | 49,0 – 50,9 % ; connector 48,5 – 48,9 % ; suited seulement après 15 : 41,1 % | neutres, sauf suited, qui sert au début | — |
+| Simulations tronquées à la première borne décidée (`trunc=5`, `trunc=8`, à temps égal) | 03/10 | 41,1 % ; 45,6 % | écartées : l'estimation au point d'arrêt coûte plus que le temps gagné ; l'option reste (`+trunc`) | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1563,6 +1565,47 @@ ce n'est pas un bonus, mais la connaissance exacte des bornes déjà perdues.
   précédente : le chemin rapide de l'évaluateur (côtés complets, paires de
   jokers) fait encore gagner environ 7 %. Remesuré sur machine libre, le 0.9
   tourne à 1 000 itérations par seconde (556 la veille).
+
+## Les bonus du 0.9 à partir du tour 15, connector, et les simulations tronquées (03/10)
+
+**Le coût de chaque bonus** (temps par itération de l'arbre, le bonus retiré) :
+`middle` 6,6 %, `spread` 8,8 %, `connector` 13,7 %, habitude `joker` 5,2 %,
+`opening` 9,9 %, `suited` 8,8 % ; les six ensemble 24,8 %. Au-delà de 3 %, une
+variante se compare à temps égal (règle écrite dans `CLAUDE.md`).
+
+**Chaque bonus actif seulement à partir du tour 15** (`lateIdeas`, `lateHabits`,
+`lateFrom`, `src/sim/tuning.js` ; arbre, 400 itérations, en miroir, 10 min) :
+
+| Bonus | Seulement aux tours 1-10 | Seulement à partir du tour 15 |
+| --- | --- | --- |
+| `middle` | 50,7 % | 49,3 % |
+| `spread` | 50,0 % | 49,0 % |
+| `connector` | 49,0 % | 54,5 % (49,5 – 59,5) |
+| habitude `joker` | 49,7 % | 50,0 % |
+| habitude `opening` | 50,9 % | 50,9 % |
+| habitude `suited` | 50,3 % | **41,1 % (35,5 – 46,8)** |
+
+- **`suited` sert au début** : coupée avant le tour 15, le cœur perd nettement.
+  C'est le premier bonus du 0.9 dont on voit le travail.
+- **`connector` à partir du tour 15** semblait gagner (54,5 %). Repris **à temps
+  égal** (`@t400`), à partir des tours 11, 15 et 19 : **48,7 %, 48,5 %, 48,9 %**.
+  Le 54,5 % était du bruit ; le moment où on l'active ne change rien.
+- Les autres sont neutres dans les deux sens.
+
+**Les simulations tronquées** (`ismcts+trunc=N`, `src/sim/truncate.js`, l'idée de
+Sami) : une simulation s'arrête dès qu'une borne de plus est décidée (côtés
+pleins, gagnant exact), après au moins N coups et tant que la pioche dure ; la
+chance de gagner la partie selon le cœur (4 bornes, ou 3 côte à côte, sur les 128
+façons dont les bornes peuvent tomber) tient lieu de résultat.
+- Les simulations ne revendiquent jamais de borne (elles règlent tout à la fin,
+  pour la vitesse) : il a fallu compter une borne « décidée » dès que ses deux
+  côtés sont pleins, sinon rien n'était jamais coupé.
+- **Le gain de vitesse** : 79-80 % des simulations coupées jusqu'au tour 12, pour
+  17 à 27 % de temps en moins par itération ; rien après la pioche vide.
+- **À temps égal** (`@t400`) contre le 0.9 : `trunc=5` **41,1 % (35,0 – 47,3)**,
+  `trunc=8` **45,6 % (41,7 – 49,6)**. Plus on coupe tôt, plus on perd : juger la
+  partie avant sa fin coûte plus que les ~20 % d'itérations gagnées — la même
+  leçon que la valeur de position apprise (40,3 %, le 01/10).
 
 ## La chance des jokers (03/10)
 
