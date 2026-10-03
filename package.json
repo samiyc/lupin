@@ -44,7 +44,8 @@
     "jokers": "node scripts/jokers.js",
     "weak-wins": "node scripts/weak-wins.js",
     "oracle": "node scripts/oracle.js",
-    "journal": "node scripts/journal.js"
+    "journal": "node scripts/journal.js",
+    "versus": "node scripts/versus.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
