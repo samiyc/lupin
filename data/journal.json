@@ -695,7 +695,18 @@
    "note": "240 parties à 800 itérations, d'autres donnes."
   },
   {
-   "name": "stfig6, duels longs n°2 et 3",
+   "name": "stfig6, duel long n°2",
+   "family": "oracle",
+   "bench": "long800",
+   "score": 51.7,
+   "lo": 46.5,
+   "hi": 56.8,
+   "verdict": "neutre",
+   "when": "03/10 18:02",
+   "note": "240 parties à 800 itérations, d’autres donnes."
+  },
+  {
+   "name": "stfig6, duel long n°3",
    "family": "oracle",
    "bench": "long800",
    "score": null,
