@@ -2,6 +2,8 @@ import { writeFile } from "node:fs/promises";
 import { replayStates, rulesOf } from "../src/replay/log.js";
 import { jokerTraits, pairWithJoker } from "../src/replay/joker-features.js";
 import { parseCards } from "../src/core/notation.js";
+import { jokersOf as jokersHeld } from "../src/replay/jokers-held.js";
+import { readAllLogs } from "./lib/elo-data.js";
 import { loadGame, readIndex } from "./lib/game-index.js";
 
 /**
@@ -16,6 +18,43 @@ import { loadGame, readIndex } from "./lib/game-index.js";
  * do not — Sami's reading of "true in 80 % of the games".
  */
 const MIN_COUNT = 60;
+
+/** A player's points in a game: 1, ½ for a draw, 0. */
+const pointsOf = (winner, seat) => (winner === null ? 0.5 : Number(winner === seat));
+
+/** One record per player and game: the jokers they got (all game, starting hand), the split, and their points. */
+const luckOf = (jokers, winner, seat) => ({ total: jokers.total[seat], start: jokers.start[seat], split: `${jokers.total[seat]} contre ${jokers.total[1 - seat]}`, points: pointsOf(winner, seat) });
+
+function luckLines(records, key, values) {
+  for (const value of values) {
+    const rows = records.filter((record) => record[key] === value);
+    if (rows.length === 0) continue;
+    const mean = rows.reduce((sum, record) => sum + record.points, 0) / rows.length;
+    console.log(`    ${String(value).padEnd(11)} ${pct(mean)} de victoires  (${rows.length})`);
+  }
+}
+
+/** Win rate by jokers got: in the whole game, in the starting hand, and by how the two jokers were shared. */
+function reportLuck(title, records) {
+  console.log(`
+=== ${title}`);
+  console.log("  jokers obtenus dans la partie (main de départ et pioche) :");
+  luckLines(records, "total", [0, 1, 2]);
+  console.log("  jokers dans la main de départ :");
+  luckLines(records, "start", [0, 1, 2]);
+  console.log("  partage des deux jokers, le joueur contre l'adversaire :");
+  luckLines(records, "split", ["2 contre 0", "1 contre 0", "1 contre 1", "0 contre 0", "0 contre 1", "0 contre 2"]);
+}
+
+/** Sami's games against the bots: his side only. */
+async function humanRecords() {
+  const logs = await readAllLogs();
+  return logs.flatMap((log) => {
+    const seat = log.players.findIndex((player) => player.kind === "human");
+    if (seat < 0 || !log.result || log.result.winner === undefined) return [];
+    return [luckOf(jokersHeld(log), log.result.winner, seat)];
+  });
+}
 const WEAK_BOTS = /^(basique|stratege)@/;
 
 /** Every joker put in a game: its traits, whether its player won that border and the game. */
@@ -99,4 +138,9 @@ for (const row of equal) {
 const stats = tally(jokers);
 report(`Jokers posés entre robots de même force : ${jokers.length}, dans ${equal.length} parties (au moins ${MIN_COUNT} par ligne)`, stats);
 reportTraps(traps);
+const allRows = (await readIndex()).filter((row) => row.jokers && row.winner !== undefined);
+const equalRows = allRows.filter((row) => !row.players.some((player) => WEAK_BOTS.test(player)));
+reportLuck(`La chance des jokers, robots de même force (${equalRows.length} parties)`, equalRows.flatMap((row) => [0, 1].map((seat) => luckOf(row.jokers, row.winner, seat))));
+const humans = await humanRecords();
+reportLuck(`La chance des jokers, Sami contre les robots (${humans.length} parties, son côté)`, humans);
 await writeFile(new URL("../data/jokers-mining.json", import.meta.url), `${JSON.stringify({ built: new Date().toISOString().slice(0, 10), games: equal.length, jokers: jokers.length, stats }, null, 1)}\n`);

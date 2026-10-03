@@ -3,6 +3,7 @@ import { solveEndgame } from "../sim/endgame.js";
 import { EXACT } from "../sim/exact.js";
 import { handClass, startingHands } from "../sim/hand-classes.js";
 import { replayStates, rulesOf, stateAt } from "./log.js";
+import { jokersOf } from "./jokers-held.js";
 
 /**
  * What a finished game says about itself, computed once when it is saved
@@ -13,6 +14,8 @@ import { replayStates, rulesOf, stateAt } from "./log.js";
  * - `columns`: the turn at which each seat had a card on all seven borders
  *   (null if never) — from then on no border of theirs starts from nothing;
  * - `firstBorder`: `{ seat, turn }`, the first border won and when;
+ * - `jokers`: the jokers each seat got, in the starting hand and drawn
+ *   (`jokers-held.js`);
  * - `advantage`: who holds the game once the pile is empty, after
  *   `TURNING_TURN` moves, by exact play.
  *
@@ -62,7 +65,7 @@ export function turningPoints(log) {
 export function analyseGame(log) {
   const { spec } = rulesOf(log.rules);
   const handClasses = startingHands(spec, parseCards(spec, log.deck)).map((hand) => handClass(spec, hand));
-  return { handClasses, ...turningPoints(log), advantage: advantageAt(log) };
+  return { handClasses, ...turningPoints(log), jokers: jokersOf(log), advantage: advantageAt(log) };
 }
 
 /** 32-bit FNV-1a of `text`, in base 36: short enough to key thousands of games. */

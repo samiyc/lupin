@@ -1,6 +1,7 @@
 import { readFile, readdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { analyseGame, gameKey } from "../../src/replay/game-analysis.js";
+import { jokersOf } from "../../src/replay/jokers-held.js";
 
 /**
  * The index of the bot games kept in duels/ (`index.json`): one row per game,
@@ -24,6 +25,8 @@ export function rowOf(file, game, log) {
     turns: log.turns.length,
     winner: log.result.winner,
     ...analysis,
+    // Older games were saved before the jokers were counted: counted here from the log.
+    jokers: analysis.jokers ?? jokersOf(log),
   };
 }
 

@@ -1395,3 +1395,33 @@ l'oracle, hors du top 8). Un essai sur 3 écarts : 3,5 à 10 min de calcul par
 03/10 (deux traitements de 110 min, programmés à partir de 21 h). Dans 196 de
 ces écarts, le coup de l'oracle est celui que le 0.9 avait joué : son arbre
 l'avait trouvé, hors du top 3 du cœur.
+
+## La chance des jokers (03/10)
+
+**La question de Sami** : quel taux de victoire avec deux jokers, un, aucun ?
+
+Chaque partie gardée note maintenant les jokers de chaque joueur
+(`src/replay/jokers-held.js`, dans l'analyse des duels et dans l'index) : ceux
+de la main de départ (les 6 premières cartes du paquet pour le siège 0, les 6
+suivantes pour le siège 1) et ceux piochés ensuite. `npm run jokers` en tire
+les taux de victoire.
+
+**Robots de même force** (4 008 parties, les deux côtés) :
+
+| Jokers | obtenus dans la partie | dans la main de départ |
+| --- | --- | --- |
+| 0 | 36 % (1 991) | 48 % (5 870) |
+| 1 | 50 % (4 038) | 56 % (2 076) |
+| 2 | **64 %** (1 987) | 57 % (70) |
+
+- **Un joker vaut environ 14 points de chances de gagner** : avoir les deux
+  contre aucun, c'est 64 % contre 36 %. Presque toutes les parties vont
+  jusqu'à la pioche vide, si bien que les deux jokers sont presque toujours
+  tirés : « 1 joker » veut dire « un chacun » (4 034 cas sur 4 038).
+- **Un joker dès la main de départ** donne 56 % au lieu de 48 %. Deux jokers en
+  main de départ sont rares (70 cas) ; leur 57 % est trop incertain pour dire
+  que le second ajoute peu.
+
+**Sami contre les robots** (72 parties, son côté) : 28 % sans joker (18), 50 %
+avec un (38), 56 % avec les deux (16) — la même pente, sur trop peu de parties
+pour aller plus loin (± 20 points environ par case).
