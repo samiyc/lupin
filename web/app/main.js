@@ -58,9 +58,11 @@ function show(tab) {
   const visible = new Set(PANELS[tab]);
   for (const id of new Set(Object.values(PANELS).flat())) $(id).hidden = !visible.has(id);
   pause();
-  // Stats take the table's place: no board, no pile, no turn counter.
+  // Stats take the table's place and the sidebar's: no board, no pile, no
+  // turn counter, and no empty 300px column pushing them to the right.
   $("table").hidden = tab === "stats";
   $("counters").hidden = tab === "stats";
+  document.querySelector(".sidebar").hidden = tab === "stats";
   $("stats-view").hidden = tab !== "stats";
   setVisible(tab === "play");
   showPuzzles(tab === "puzzles");

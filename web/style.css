@@ -182,7 +182,7 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 /* Five games in sight, then the list scrolls: the player's buttons stay on screen. */
 .replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.05rem; }
 /* Stats tab */
-.stats-view { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.stats-view { display: grid; gap: 12px; align-content: start; min-width: 0; grid-column: 1 / -1; width: 100%; max-width: 1100px; justify-self: center; }
 .stats-view h2 { margin: 0; font: 700 1.6rem var(--display); }
 .stats-view h3 { margin: 14px 0 0; font-size: 1rem; }
 .stats-view table { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: var(--panel); }
