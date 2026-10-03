@@ -158,6 +158,22 @@
       "notBefore": "2026-10-03T21:00"
     },
     {
+      "id": "duel-jkxs-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkxs@800\" \"ismcts+widen=3+depth=5@800\" --long --page",
+      "estimate": "20 min",
+      "why": "jkx plus stay 0,4 (une carte sur un côté déjà commencé, le trait le plus net de l'oracle) : en cœur seul 55,5 %, 54,7 %, 54,5 % contre le 0.9 et 51,6 %, 52,1 %, 52,0 % contre jkx. Dans l'arbre, sur une partie entière ?",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
+      "id": "duel-jkxs-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkxs@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 1",
+      "estimate": "20 min",
+      "why": "jkx plus stay 0,4 (une carte sur un côté déjà commencé, le trait le plus net de l'oracle) : en cœur seul 55,5 %, 54,7 %, 54,5 % contre le 0.9 et 51,6 %, 52,1 %, 52,0 % contre jkx. Dans l'arbre, sur une partie entière ?",
+      "status": "scheduled",
+      "notBefore": "2026-10-03T21:00"
+    },
+    {
       "id": "duel-jkx-2",
       "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=jkx@800\" \"ismcts+widen=3+depth=5@800\" --long --page --offset 2",
       "estimate": "20 min",

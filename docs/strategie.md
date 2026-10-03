@@ -53,6 +53,7 @@ mesures détaillées sont plus bas, section par section.
 | L'appât : débuts bas hors des zones qui comptent (`bait`) | 02/10 | cœur seul 49,5 – 51,0 % | neutre : l'adversaire mord à peine, la borne appât se perd plus | — |
 | `junk`, `obex` et les deux (`jkx`) dans l'arbre du 0.9 | 03/10 | 52,4 % ; 50,5 % ; 51,7 % (deux jeux de donnes réunis) | pas net ; `jkx` prolongé au backlog | — |
 | Deux phases (voisinage au début, cœur nu et 7 coups à la fin), partie entière contre le Stratège | 03/10 | −1,3 ± 4,2 pts (bascule au tour 20) ; −2,0 ± 4,3 (1re borne) | écarté | — |
+| Imiter l'oracle : répondre moins, ouvrir sans figure, côtés sans figure, jokers libres | 03/10 | cœur seul 38,8 – 50,4 % | écartés ; seul `stay` 0,4 reste (jkxs, au duel long) | — |
 
 ## Comment le Stratège choisit un coup
 
@@ -1430,6 +1431,41 @@ suivante :
   pourraient venir de sa dispersion (son favori ne reçoit que 27 % des visites
   en médiane). Le résumé est dans `data/oracle-diffs.json` (les taux et ce
   comparatif ; les écarts eux-mêmes restent dans `oracle/positions.jsonl`).
+
+## Pousser le cœur dans le sens de l'oracle (03/10)
+
+**L'idée de Sami** : des bonus qui alignent le cœur sur les écarts de l'oracle,
+testés un par un puis ensemble, en cœur contre cœur (machine libre, 3 min 30
+de calcul en tout).
+
+**Les idées** (`src/sim/oracle-ideas.js`) : `stay`, une carte sur un côté déjà
+commencé ; `noAnswer`, un malus pour répondre à une borne adverse ;
+`noBlindOpen`, un malus pour ouvrir une borne vierge sans rien en main pour y
+bâtir. Les côtés sans figure sont `junk` à poids négatif, et les jokers libres
+un cœur sans l'habitude `joker`.
+
+| Cœur | Contre le cœur du 0.9 |
+| --- | --- |
+| `stay` 0,1 / 0,2 | 48,6 % / 50,9 % (puis 49,7 % et 50,1 %) |
+| **`stay` 0,4** | **51,9 %, 50,7 %, 52,1 %** |
+| `stay` 0,8 | 44,5 %, 45,8 % |
+| `noAnswer` 0,1 / 0,2 | 50,4 % (puis 50,2 %, 50,3 %) / 50,0 % |
+| `noBlindOpen` 0,1 / 0,2 | 50,0 % / 50,3 % |
+| `junk` à −0,1 / −0,2 (des côtés sans figure, comme l'oracle) | **44,3 % / 38,8 %** |
+| sans l'habitude `joker` | 48,9 % |
+| tout ensemble (0,1 / 0,2), sans `junk` négatif | 45,5 % / 47,8 % ; 49,1 % |
+
+- **Rester sur ses côtés déjà entamés paie, au bon poids** : `stay` à 0,4 gagne
+  sur les trois jeux de donnes ; à 0,8 il perd nettement.
+- **Les côtés sans figure de l'oracle font perdre le cœur** (44 % et 39 %) : ils
+  donnent raison à `junk`. Si l'oracle voit juste, c'est qu'il les bâtit pour
+  une raison que le cœur ne voit pas (sacrifier une borne) ; la confirmation de
+  ce soir le dira.
+- **Le reste est neutre** : répondre ou non, ouvrir sans figure prévue.
+- **Avec `jkx`** (cœur `jkxs` : junk 0,2, outbid 0,2, exposure 0,2, stay 0,4) :
+  51,6 %, 52,1 %, 52,0 % contre `jkx`, et **55,5 %, 54,7 %, 54,5 %** contre le cœur
+  du 0.9 — le meilleur cœur à ce jour. Deux duels longs dans l'arbre sont au
+  backlog de ce soir (`duel-jkxs-0`, `-1`), avant ceux de `jkx`.
 
 ## La chance des jokers (03/10)
 
