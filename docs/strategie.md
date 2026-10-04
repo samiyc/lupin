@@ -1934,7 +1934,7 @@ positions), 65 % aux 11-20 (1 345), 63 % aux 21-30 (1 408) ; le 1.0 a le trait d
 Puis `npm run banc -- --calibrate` : les versions au résultat connu passées sur le banc.
 Il s'est **arrêté à sa limite de 50 min** après 12 versions (le top 8 du cœur n'a pas
 été écrit) ; corrélations recalculées depuis son journal. `e12open1`, la 13e, est
-passée à part à 23 h (`npm run banc`, 9,5 min sur 18 fils) : le 1.0 y retrouve
+passée à part à 22 h 35 (`npm run banc`, 9,5 min sur 18 fils) : le 1.0 y retrouve
 exactement ses valeurs, le banc est reproductible (`data/banc.json`, `calibration`).
 
 | Version | Valeur oracle | Au début (4-10) | Duels contre le 0.9 |

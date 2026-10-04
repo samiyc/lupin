@@ -7,7 +7,7 @@
 :root {
   --felt: #1f5e45; --felt-deep: #164a36; --felt-ink: #eef4ef; --felt-soft: #b9d3c4;
   --paper: #f6f7f3; --card: #ffffff; --edge: #d4dbd5; --ink: #16181a; --ink-2: #454d48; --ink-3: #66716a;
-  --line: #dce2dc; --wash: #edf1ec; --brass: #9b7614; --brass-wash: #f5ecd2; --seal: #b3262f; --seal-wash: #f8e3e1;
+  --line: #dce2dc; --wash: #edf1ec; --brass: #9b7614; --brass-wash: #f5ecd2; --seal: #b3262f; --seal-wash: #f8e3e1; --plum: #7b4f9d;
   --off: #c3cbc5; --off-ink: #8b958e; --mark: #1f7a52; --sky: #2b5f8f; --sky-wash: #e3edf6; --tip: #16181a; --tip-ink: #f6f7f3;
   --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
   --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
@@ -18,7 +18,7 @@
     color-scheme: dark;
     --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
     --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
-    --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20;
+    --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20; --plum: #c9a3e6;
     --off: #34493f; --off-ink: #73857a; --mark: #6fd19b; --sky: #8cbbe8; --sky-wash: #1b2c3b; --tip: #eef2ec; --tip-ink: #12211b;
   }
 }
@@ -26,7 +26,7 @@
   color-scheme: dark;
   --felt: #0f3325; --felt-deep: #0a271c; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
   --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
-  --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20;
+  --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20; --plum: #c9a3e6;
   --off: #34493f; --off-ink: #73857a; --mark: #6fd19b; --sky: #8cbbe8; --sky-wash: #1b2c3b; --tip: #eef2ec; --tip-ink: #12211b;
 }
 * { box-sizing: border-box; }
@@ -220,7 +220,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       <p class="eyebrow">I · La frise</p>
       <h2 id="t-journee">La frise</h2>
     </div>
-    <p>En haut, ce qui a été écrit : un point par commit, coloré par famille. En dessous, ce que la machine a calculé pendant ce temps : chaque job du backlog, à sa vraie place dans la nuit et la journée. Les jobs en pointillés sont encore à venir. Clique sur un point.</p>
+    <p>En haut, ce qui a été écrit : un point par commit, coloré par famille. En dessous, ce que la machine a calculé pendant ce temps : chaque job du backlog, et les tests lancés à la main (plus clairs), à leur vraie place dans la nuit et la journée. Les jobs en pointillés sont encore à venir. Clique sur un point.</p>
     <div class="panel">
       <div class="scroll"><svg class="chart wide" id="timeline" viewBox="0 0 1000 300" role="img" aria-label="Commits et jobs des dernières 24 heures"></svg></div>
       <div class="legend" id="timeline-legend"></div>
@@ -393,7 +393,7 @@ function pooledText(longs) {
 $("lead").textContent = J.lead;
 {
   const B = DATA.bench;
-  const jobs = DATA.jobs.filter((j) => j.doneAt && j.doneAt >= J.since.replace(" ", "T") && j.status === "done");
+  const jobs = DATA.jobs.filter((j) => j.doneAt && j.doneAt >= J.since.replace(" ", "T") && j.status === "done" && !j.manual);
   const tiles = [
     [measured.length, (v) => `${Math.round(v)}`, `essai${measured.length > 1 ? "s" : ""} mesuré${measured.length > 1 ? "s" : ""} sur ${J.attempts.length} au carnet`],
     [B ? B.correlation[8] : 0, (v) => fr(v, 2), "corrélation de rang entre l'accord avec l'oracle (top 8) et les duels longs"],
@@ -419,9 +419,9 @@ $("lead").textContent = J.lead;
 /* ── I · The timeline ─────────────────────────────────────── */
 const toTime = (text) => new Date(text).getTime();
 const minutesOf = (estimate) => (/h/.test(estimate ?? "") ? 60 * Number((estimate.match(/(\d+)\s*h/) ?? [0, 2])[1]) : Number((String(estimate).match(/\d+/) ?? [20])[0]));
-const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"], ["banc", "le banc", "ink-2"]];
-// Five job lanes under the commits' row, 36 apart, so the last one still clears the hour labels.
-const laneY = (family) => 104 + family * 36;
+const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"], ["banc", "le banc", "ink-2"], ["duel", "duels", "plum"]];
+// Six job lanes under the commits' row, 32 apart, so the last one still clears the hour labels.
+const laneY = (family) => 100 + family * 32;
 const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefix]) => id.startsWith(prefix));
 function placeJobs() {
   const placed = [];
@@ -476,13 +476,17 @@ function drawTimeline() {
   svg.append(make("text", { x: 8, y: 16, class: "label strong" }, "ce qui a été écrit, puis calculé"));
   for (const job of jobs) {
     const family = jobFamily(job.id);
-    if (family < 0) continue;
+    // A job of the previous version (before `since`) belongs to its own page.
+    if (family < 0 || job.end <= t0) continue;
+    job.start = Math.max(job.start, t0);
     const color = css(JOB_FAMILIES[family][2]);
     const y = laneY(family) - 11;
     const rect = make("rect", { x: x(job.start), y, width: Math.max(3, x(job.end) - x(job.start)), height: 22, rx: 4, fill: job.planned ? "none" : color, stroke: color, "stroke-width": 1.5, "stroke-dasharray": job.planned ? "4 3" : "0", opacity: job.planned ? 0.9 : 0.85 });
+    // A run launched by hand, outside the backlog, is drawn lighter so it reads apart from the queue's jobs.
+    if (job.manual) rect.setAttribute("fill-opacity", "0.45");
     const when = new Date(job.start);
     const timeText = `${when.getDate()}/${when.getMonth() + 1} ${when.getHours()} h ${String(when.getMinutes()).padStart(2, "0")}`;
-    rect.setAttribute("data-tip", job.planned ? `${job.id} · prévu vers ${timeText} · environ ${minutesOf(job.estimate)} min (${job.status === "scheduled" ? "programmé" : "en file"})` : `${job.id} · ${job.minutes} min · fini le ${job.doneAt.replace("T", " à ")}`);
+    rect.setAttribute("data-tip", job.planned ? `${job.id} · prévu vers ${timeText} · environ ${minutesOf(job.estimate)} min (${job.status === "scheduled" ? "programmé" : "en file"})` : `${job.label ?? job.id} · ${job.minutes} min · fini le ${job.doneAt.replace("T", " à ")}${job.manual ? " · lancé à la main" : ""}`);
     svg.append(rect);
   }
   const now = x(toTime(DATA.builtAt));
@@ -504,6 +508,7 @@ function drawTimeline() {
   });
   for (const family of legendFamilies) $("timeline-legend").append(html("span", {}, html("i", { style: `background: ${FAMILY_COLORS[family]}; border-radius: 999px` }), J.families[family]));
   $("timeline-legend").append(html("span", {}, html("i", { style: "background: var(--wash); border: 1px solid var(--line)" }), "la nuit"));
+  if (DATA.jobs.some((j) => j.manual)) $("timeline-legend").append(html("span", {}, html("i", { style: "background: color-mix(in srgb, var(--ink-2) 45%, transparent); border: 1.5px solid var(--ink-2)" }), "lancé à la main, hors backlog"));
   const last = DATA.commits.at(-1);
   if (last) showCommit(last, J.commitLabels[last.hash]?.[0] ?? "outils", J.commitLabels[last.hash]?.[1] ?? last.subject);
 }

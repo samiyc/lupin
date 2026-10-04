@@ -71,7 +71,8 @@ const data = {
   jokers: placements(await read("data/jokers-mining.json")),
   weakWins: await read("data/weak-wins.json"),
   timings: await read("data/core-timings.json"),
-  jobs: [...jobsOf(await read("data/backlog-done.json")), ...jobsOf(await read("data/backlog.json"))],
+  // The runs launched by hand, outside the backlog, are written down in the version's data file.
+  jobs: [...jobsOf(await read("data/backlog-done.json")), ...jobsOf(await read("data/backlog.json")), ...(journal.manualJobs ?? []).map((job) => ({ ...job, status: "done", manual: true }))],
   puzzles: puzzleKinds((await read("web/data/puzzles.json")).puzzles),
   disagree: await read("data/oracle-disagree.json").catch(() => null),
   bench: await read("data/oracle-bench.json").catch(() => null),

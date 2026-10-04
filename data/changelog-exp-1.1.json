@@ -194,7 +194,7 @@
    "lo": null,
    "hi": null,
    "verdict": "neutre",
-   "when": "04/10 15:30",
+   "when": "04/10 14:54",
    "note": "Cœur contre cœur : noOpen 0,1 ~50 %, junk -0,2 ~49 %, noRun 0,1 ~48 % (perd). Au banc (1 683 coups du début) : noOpen +1,3 point (-0,5 – +3,1), junk -1,0, noRun +0,3. noOpen est la seule piste ; à repasser sur le banc calibré."
   },
   {
@@ -238,7 +238,7 @@
    "lo": null,
    "hi": null,
    "verdict": "neutre",
-   "when": "04/10 23:10",
+   "when": "04/10 22:44",
    "note": "+0,32 point de valeur oracle contre le 1.0 (-0,40 – +1,05) sur 3 721 positions, +0,8 aux tours 4-10. Neutre, comme ses 1 000 parties (50,5 %). La 13e version de la calibration."
   }
  ],
@@ -314,6 +314,10 @@
   "1095ce4": [
    "outils",
    "Le changelog avec la calibration du banc"
+  ],
+  "c3483c3": [
+   "reference",
+   "La nuit du banc dans le changelog, calibrée sur 13 versions"
   ]
  },
  "next": [
@@ -405,5 +409,37 @@
     }
    ]
   }
- }
+ },
+ "manualJobs": [
+  {
+   "id": "screen-e12-cores",
+   "label": "Les six variantes du début en cœur contre cœur, 3 jeux de donnes (6 fils)",
+   "doneAt": "2026-10-04T14:33",
+   "minutes": 2
+  },
+  {
+   "id": "banc-e12-reference",
+   "label": "Banc du début : la référence 1.0 sur les 1 683 coups de l'oracle des tours 1-12 (6 fils)",
+   "doneAt": "2026-10-04T14:43",
+   "minutes": 9
+  },
+  {
+   "id": "banc-e12-variants",
+   "label": "Banc du début : e12open1, e12junk2, e12run1 (6 fils)",
+   "doneAt": "2026-10-04T14:54",
+   "minutes": 10
+  },
+  {
+   "id": "duel-e12open1",
+   "label": "e12open1 contre le 1.0 : 4 × 250 parties à 800 itérations (18 fils)",
+   "doneAt": "2026-10-04T16:17",
+   "minutes": 45
+  },
+  {
+   "id": "banc-e12open1",
+   "label": "e12open1 au banc de similitude, 3 721 positions (18 fils)",
+   "doneAt": "2026-10-04T22:44",
+   "minutes": 10
+  }
+ ]
 }
