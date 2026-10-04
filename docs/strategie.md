@@ -1882,3 +1882,38 @@ copiés un par un dans le cœur ne passent pas dans l'arbre. La piste qui reste 
 le début de partie, où l'oracle jusqu'au tour 12 gagne 59,1 % — c'est son budget, pas
 sa largeur, qui gagne ; un 1.0 qui réfléchit plus longtemps aux premiers coups (temps,
 pas largeur) est le prochain essai.
+
+## Trois variantes du 1.0 pour le début de partie (04/10, après-midi)
+
+Les trois traits de l'oracle au début (changelog 1.1, « Coup pour coup »), en bonus du
+cœur actifs jusqu'au tour 12 seulement (`earlyIdeas`, `earlyUntil: 12`) :
+- `noOpen` (nouveau, `oracle-ideas.js`) : toute carte posée sur une borne où personne
+  n'a joué coûte, plan en main ou non (l'oracle ouvre 44 % de ses coups du début, le
+  1.0 60 %) ;
+- `junk` en négatif : un côté sans figure coûte moins (37 % des écarts de l'oracle
+  contre 2 %) ;
+- `noRun` (nouveau) : une carte qui fait d'un côté une suite de couleur coûte (18 %
+  contre 46 %).
+
+Testées sur 6 fils, d'abord cœur contre cœur du 1.0 (3 jeux de donnes), puis au banc
+de similitude sur les 1 683 coups de l'oracle des tours 1 à 12 de ses parties
+entières (`npm run banc -- … --positions games --turns 1-12`, les 5 candidats gardés par
+les replays) :
+
+| Cœur | Cœur contre cœur | Banc : écart de valeur oracle avec le 1.0 | Même coup que l'oracle (1.0 : 6,1 % aux tours 4-10) |
+| --- | --- | --- | --- |
+| `e12open1` (noOpen 0,1) | 50,0 / 49,7 / 50,5 % | **+1,3** (-0,5 – +3,1) | 8,4 % |
+| `e12open2` (0,2) | 49,4 / 49,3 / 49,5 % | — | — |
+| `e12junk1` (junk -0,1) | 49,7 / 49,2 / 49,5 % | — | — |
+| `e12junk2` (-0,2) | 50,1 / 48,6 / 49,4 % | -1,0 (-2,5 – +0,6) | 6,7 % |
+| `e12run1` (noRun 0,1) | 47,4 / 47,6 / 48,5 % | +0,3 (-1,4 – +2,0) | 6,4 % |
+| `e12run2` (0,2) | 46,7 / 46,6 / 46,5 % | — | — |
+
+- Aucune n'est « à pousser ». `e12open1` est la seule piste : elle rapproche le 1.0 de
+  l'oracle au début (même coup 8,4 % contre 6,1 %), sans rien perdre en cœur contre cœur.
+- Coûter les suites de couleur fait perdre le cœur, comme couper `suited` le 03/10 :
+  l'oracle en bâtit moins, mais celles du 1.0 lui rapportent.
+- Le banc n'est pas encore calibré (cette nuit) ; une fois calibré, `e12open1` repasse
+  sur ses positions (deux recherches, 12 coups), et `--queue` s'il est « à pousser ».
+- Le banc à 6 fils : 1 683 positions en 8,7 min pour la référence, mise en cache ; à
+  18 fils environ 3 min par version, mais la machine est saturée.

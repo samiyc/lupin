@@ -1,0 +1,181 @@
+{
+ "note": "npm run banc : la similitude avec l'oracle, version par version.",
+ "runs": {
+  "ismcts+widen=3+depth=5+core=stfig6@800": {
+   "built": "2026-10-04",
+   "oracle": 1,
+   "against": "ismcts+widen=3+depth=5+core=stfig6@800",
+   "positions": 2244,
+   "value": 0.20189249400370127,
+   "agrees": 0.06417112299465241,
+   "stable": 2244,
+   "top8": 0.3355614973262032,
+   "phases": [
+    {
+     "name": "tours 4-10",
+     "positions": 1309,
+     "value": 0.20828015470300604,
+     "agrees": 0.061115355233002294,
+     "stable": 1309,
+     "top8": 0.33613445378151263
+    },
+    {
+     "name": "tours 11-20",
+     "positions": 374,
+     "value": 0.28957549900046375,
+     "agrees": 0.12032085561497326,
+     "stable": 374,
+     "top8": 0.49732620320855614
+    },
+    {
+     "name": "tours 21-30",
+     "positions": 0,
+     "value": 0,
+     "agrees": 0,
+     "stable": 0,
+     "top8": 0
+    }
+   ],
+   "gap": {
+    "mean": 0,
+    "low": 0,
+    "high": 0,
+    "n": 2244,
+    "differ": 0
+   },
+   "verdict": "neutre"
+  },
+  "ismcts+widen=3+depth=5+core=e12open1@800": {
+   "built": "2026-10-04",
+   "oracle": 1,
+   "against": "ismcts+widen=3+depth=5+core=stfig6@800",
+   "positions": 2244,
+   "value": 0.21479887408170825,
+   "agrees": 0.07754010695187166,
+   "stable": 2244,
+   "top8": 0.3694295900178253,
+   "phases": [
+    {
+     "name": "tours 4-10",
+     "positions": 1309,
+     "value": 0.23344936476364891,
+     "agrees": 0.08403361344537816,
+     "stable": 1309,
+     "top8": 0.37738731856378915
+    },
+    {
+     "name": "tours 11-20",
+     "positions": 374,
+     "value": 0.2965750590170452,
+     "agrees": 0.13636363636363635,
+     "stable": 374,
+     "top8": 0.5427807486631016
+    },
+    {
+     "name": "tours 21-30",
+     "positions": 0,
+     "value": 0,
+     "agrees": 0,
+     "stable": 0,
+     "top8": 0
+    }
+   ],
+   "gap": {
+    "mean": 0.012906380078007068,
+    "low": -0.004702099630807494,
+    "high": 0.03051485978682163,
+    "n": 2244,
+    "differ": 794
+   },
+   "verdict": "neutre"
+  },
+  "ismcts+widen=3+depth=5+core=e12junk2@800": {
+   "built": "2026-10-04",
+   "oracle": 1,
+   "against": "ismcts+widen=3+depth=5+core=stfig6@800",
+   "positions": 2244,
+   "value": 0.19222740943008826,
+   "agrees": 0.0659536541889483,
+   "stable": 2244,
+   "top8": 0.3355614973262032,
+   "phases": [
+    {
+     "name": "tours 4-10",
+     "positions": 1309,
+     "value": 0.20605107234752126,
+     "agrees": 0.06722689075630252,
+     "stable": 1309,
+     "top8": 0.33613445378151263
+    },
+    {
+     "name": "tours 11-20",
+     "positions": 374,
+     "value": 0.2878481161146491,
+     "agrees": 0.11764705882352941,
+     "stable": 374,
+     "top8": 0.49732620320855614
+    },
+    {
+     "name": "tours 21-30",
+     "positions": 0,
+     "value": 0,
+     "agrees": 0,
+     "stable": 0,
+     "top8": 0
+    }
+   ],
+   "gap": {
+    "mean": -0.009665084573612833,
+    "low": -0.025251836110684128,
+    "high": 0.005921666963458463,
+    "n": 2244,
+    "differ": 631
+   },
+   "verdict": "neutre"
+  },
+  "ismcts+widen=3+depth=5+core=e12run1@800": {
+   "built": "2026-10-04",
+   "oracle": 1,
+   "against": "ismcts+widen=3+depth=5+core=stfig6@800",
+   "positions": 2244,
+   "value": 0.20480309675785707,
+   "agrees": 0.06283422459893048,
+   "stable": 2244,
+   "top8": 0.31194295900178254,
+   "phases": [
+    {
+     "name": "tours 4-10",
+     "positions": 1309,
+     "value": 0.21111427912456698,
+     "agrees": 0.06417112299465241,
+     "stable": 1309,
+     "top8": 0.306340718105424
+    },
+    {
+     "name": "tours 11-20",
+     "positions": 374,
+     "value": 0.28608867267179305,
+     "agrees": 0.09893048128342247,
+     "stable": 374,
+     "top8": 0.45989304812834225
+    },
+    {
+     "name": "tours 21-30",
+     "positions": 0,
+     "value": 0,
+     "agrees": 0,
+     "stable": 0,
+     "top8": 0
+    }
+   ],
+   "gap": {
+    "mean": 0.002910602754155613,
+    "low": -0.013964371041303382,
+    "high": 0.01978557654961461,
+    "n": 2244,
+    "differ": 780
+   },
+   "verdict": "neutre"
+  }
+ }
+}
