@@ -110,9 +110,10 @@ function pairPotential(side, context, skip = -1) {
 function drawPotential(side, context, jokerOk) {
   const { memo } = context;
   if (!memo) return drawPotentialOf(side, context, jokerOk);
-  // A number rather than a string: cards run from -1 (joker) up, well under 63.
-  const [low, high] = side[0] < side[1] ? side : [side[1], side[0]];
-  const key = ((low + 1) * 64 + high + 1) * 2 + Number(jokerOk);
+  // A number rather than a string: cards run from -1 (joker) up, well under 63. No array for the order: this runs millions of times.
+  const a = side[0];
+  const b = side[1];
+  const key = (a < b ? (a + 1) * 64 + b + 1 : (b + 1) * 64 + a + 1) * 2 + Number(jokerOk);
   let value = memo.get(key);
   if (value === undefined) {
     value = drawPotentialOf(side, context, jokerOk);
@@ -157,14 +158,19 @@ function upsideOf(mean, unseenTotal, draws) {
   return upside;
 }
 
+/** The pair `singlePotential` tries, refilled for each hand card: nothing below keeps it (value3, the joker gate and the memo key read its two cards). */
+const PAIR = [0, 0];
+
 function singlePotential(side, context) {
   const jokerOk = context.jokerAllowed(side);
   let best = context.valuer.single(side[0]);
   // The hand minus the card being paired: its index is skipped, not copied out.
   const { hand } = context;
+  PAIR[0] = side[0];
   for (let i = 0; i < hand.length; i += 1) {
     if (!usable(hand[i], jokerOk)) continue;
-    best = Math.max(best, PAIR_DISCOUNT * pairPotential([side[0], hand[i]], context, i));
+    PAIR[1] = hand[i];
+    best = Math.max(best, PAIR_DISCOUNT * pairPotential(PAIR, context, i));
   }
   return best;
 }
