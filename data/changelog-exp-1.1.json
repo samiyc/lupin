@@ -196,6 +196,17 @@
    "verdict": "neutre",
    "when": "04/10 15:30",
    "note": "Cœur contre cœur : noOpen 0,1 ~50 %, junk -0,2 ~49 %, noRun 0,1 ~48 % (perd). Au banc (1 683 coups du début) : noOpen +1,3 point (-0,5 – +3,1), junk -1,0, noRun +0,3. noOpen est la seule piste ; à repasser sur le banc calibré."
+  },
+  {
+   "name": "e12open1 en parties réelles (1 000 contre le 1.0)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 50.5,
+   "lo": 47.9,
+   "hi": 53.1,
+   "verdict": "neutre",
+   "when": "04/10 16:17",
+   "note": "47,6 / 51,6 / 52,0 / 50,8 % sur quatre jeux de donnes. Neutre, comme le banc (+1,3 point, -0,5 – +3,1) : les deux s'accordent."
   }
  ],
  "commitLabels": {

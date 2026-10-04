@@ -73,6 +73,12 @@
    "engine": "ismcts+widen=3+depth=5+core=v1bj@t400",
    "score": 0.46,
    "against": "1.0"
+  },
+  {
+   "name": "e12open1",
+   "engine": "ismcts+widen=3+depth=5+core=e12open1@800",
+   "score": 0.505,
+   "against": "1.0"
   }
  ]
 }

@@ -1917,3 +1917,10 @@ les replays) :
   sur ses positions (deux recherches, 12 coups), et `--queue` s'il est « à pousser ».
 - Le banc à 6 fils : 1 683 positions en 8,7 min pour la référence, mise en cache ; à
   18 fils environ 3 min par version, mais la machine est saturée.
+
+**`e12open1` en parties réelles** (Sami : le banc contre le jeu) : 4 × 250 parties contre
+le 1.0 à 800 itérations, règle de la page, 18 fils (11 min par jeu de donnes) :
+47,6 %, 51,6 %, 52,0 %, 50,8 % ; réunies par paires, **50,5 % (47,9 – 53,1)** sur 1 000
+parties. Neutre, comme le banc (+1,3 point, -0,5 – +3,1). Le banc et les duels
+s'accordent : aucun des deux ne voit d'écart. `e12open1` rejoint les versions de la
+calibration (`data/banc-calibration.json`).
