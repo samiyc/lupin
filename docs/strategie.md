@@ -1929,16 +1929,19 @@ calibration (`data/banc-calibration.json`).
 
 La nuit du banc lancée à 18 h sur 18 fils (Sami) : deux passes de l'oracle, 3 721
 positions (parties 1.0 contre 1.0, oracle contre 1.0, 1.0 contre 0.9 ; tours 4 à 30,
-deux recherches, 12 coups gardés). Stabilité de son favori : 36 % aux tours 4-10, 64 %
-aux 11-20, 62 % aux 21-30. Puis `npm run banc -- --calibrate` : les versions au résultat
-connu passées sur le banc. **Arrêté à sa limite de 50 min**, 12 versions sur 13
-(`e12open1` manque, et le top 8 du cœur n'a pas été écrit) ; corrélations recalculées
-depuis son journal (`data/banc.json`, `calibration`).
+deux recherches, 12 coups gardés). Stabilité de son favori : 38 % aux tours 4-10 (968
+positions), 65 % aux 11-20 (1 345), 63 % aux 21-30 (1 408) ; le 1.0 a le trait dans 2 772.
+Puis `npm run banc -- --calibrate` : les versions au résultat connu passées sur le banc.
+Il s'est **arrêté à sa limite de 50 min** après 12 versions (le top 8 du cœur n'a pas
+été écrit) ; corrélations recalculées depuis son journal. `e12open1`, la 13e, est
+passée à part à 23 h (`npm run banc`, 9,5 min sur 18 fils) : le 1.0 y retrouve
+exactement ses valeurs, le banc est reproductible (`data/banc.json`, `calibration`).
 
 | Version | Valeur oracle | Au début (4-10) | Duels contre le 0.9 |
 | --- | --- | --- | --- |
 | 0.9 | 45,5 % | 30,9 % | 50,0 % |
-| **1.0** | 45,6 % | **35,5 %** | **56,1 %** |
+| **1.0** | 45,6 % | 35,5 % | 56,1 % |
+| `e12open1` | 45,9 % | **36,3 %** | **56,6 %** (50,5 % contre le 1.0) |
 | stay4e10 | 46,2 % | 33,7 % | 50,6 % |
 | jkx | 45,1 % | 32,3 % | 51,7 % |
 | jk2 | 45,0 % | 32,0 % | 52,4 % |
@@ -1950,16 +1953,21 @@ depuis son journal (`data/banc.json`, `calibration`).
 | 16 jusqu'au 12 (@t400) | 40,9 % | 31,5 % | 52,8 % |
 | v1bj (@t400) | 40,2 % | 30,3 % | 52,2 % |
 
-Corrélation de rang avec les duels : **0,23** sur la valeur oracle, **0,50** sur la
-valeur au début. Sur les 6 versions à 800 itérations seulement : -0,37 et 0,56.
+Corrélation de rang avec les duels, sur les 13 versions : **0,32** sur la valeur
+oracle, **0,61** sur la valeur au début. Sur les 7 versions à 800 itérations seulement :
+-0,18 et **0,72**.
 
-- **Le banc ne trie pas.** Il ne sépare pas le 0.9 du 1.0 (45,5 % contre 45,6 %) alors
-  que le 1.0 gagne 56,1 % ; les six versions à 800 itérations tiennent en 1,4 point.
-  L'écart entre deux versions voisines est plus petit que ce que le banc sait voir.
-- **Le début de partie est la seule partie qui dit quelque chose** : le 1.0 y est en
-  tête (35,5 %), et la corrélation y monte à 0,50-0,56. C'est précisément là où l'oracle
-  est le moins stable (36 %) : un banc des tours 4-10 aurait besoin de plus de
-  recherches par position, pas de plus de positions.
+- **Le banc entier ne trie pas.** Il ne sépare pas le 0.9 du 1.0 (45,5 % contre
+  45,6 %) alors que le 1.0 gagne 56,1 % ; les sept versions à 800 itérations tiennent
+  en 1,4 point. Aux tours 11 à 30, deux versions voisines jouent presque les mêmes coups,
+  et l'écart est plus petit que ce que le banc sait voir.
+- **Le début de partie dit quelque chose** : le 1.0 et `e12open1` y sont en tête
+  (35,5 % et 36,3 %), et la corrélation y monte à 0,61, 0,72 sans les versions au
+  temps. C'est là où l'oracle est le moins stable (38 %) : un banc des tours 4-10
+  gagnerait à plus de recherches par position, pas à plus de positions. Sept points
+  ne suffisent pas à en faire un filtre.
+- **`e12open1` au banc** : +0,32 point contre le 1.0 (-0,40 – +1,05), « neutre » ;
+  +0,8 au début. Ses 1 000 parties disent la même chose (50,5 %).
 - **Les versions à temps fixe (`@t400`, `@t800`) sont faussées** : le banc tourne
   sur une machine chargée, elles y font moins d'itérations qu'en duel, et toutes
   sortent en bas (40-42 %), qu'elles gagnent ou perdent leurs duels.
@@ -1968,6 +1976,5 @@ valeur au début. Sur les 6 versions à 800 itérations seulement : -0,37 et 0,5
   final de l'arbre, où le bruit de la recherche couvre l'écart entre deux cœurs.
 
 Conséquence : le verdict du banc reste un indice, jamais un filtre (`CLAUDE.md`,
-`docs/validation.md`). Le parcours d'une idée reste cœur contre cœur, tri d'arbre (400
-parties), puis quatre duels longs. `e12open1` n'est pas repassé sur le banc : il n'en
-apprendrait rien que ses 1 000 parties (50,5 %) ne disent déjà.
+`docs/validation.md`) ; sa valeur aux tours 4-10 est celle à lire. Le parcours d'une
+idée reste cœur contre cœur, tri d'arbre (400 parties), puis quatre duels longs.

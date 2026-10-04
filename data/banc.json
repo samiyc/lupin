@@ -49,43 +49,43 @@
    "built": "2026-10-04",
    "oracle": 1,
    "against": "ismcts+widen=3+depth=5+core=stfig6@800",
-   "positions": 2244,
-   "value": 0.21479887408170825,
-   "agrees": 0.07754010695187166,
-   "stable": 2244,
-   "top8": 0.3694295900178253,
+   "positions": 3721,
+   "value": 0.4594061594335125,
+   "agrees": 0.21489161168708765,
+   "stable": 2122,
+   "top8": 0.5474334856221446,
    "phases": [
     {
      "name": "tours 4-10",
-     "positions": 1309,
-     "value": 0.23344936476364891,
-     "agrees": 0.08403361344537816,
-     "stable": 1309,
-     "top8": 0.37738731856378915
+     "positions": 968,
+     "value": 0.36341671401114,
+     "agrees": 0.14325068870523416,
+     "stable": 363,
+     "top8": 0.4524793388429752
     },
     {
      "name": "tours 11-20",
-     "positions": 374,
-     "value": 0.2965750590170452,
-     "agrees": 0.13636363636363635,
-     "stable": 374,
-     "top8": 0.5427807486631016
+     "positions": 1345,
+     "value": 0.4378419786673162,
+     "agrees": 0.21774193548387097,
+     "stable": 868,
+     "top8": 0.5695167286245353
     },
     {
      "name": "tours 21-30",
-     "positions": 0,
-     "value": 0,
-     "agrees": 0,
-     "stable": 0,
-     "top8": 0
+     "positions": 1408,
+     "value": 0.5459982093620593,
+     "agrees": 0.24130190796857465,
+     "stable": 891,
+     "top8": 0.5916193181818182
     }
    ],
    "gap": {
-    "mean": 0.012906380078007068,
-    "low": -0.004702099630807494,
-    "high": 0.03051485978682163,
-    "n": 2244,
-    "differ": 794
+    "mean": 0.0032070503168904123,
+    "low": -0.004037412825920588,
+    "high": 0.010451513459701413,
+    "n": 3721,
+    "differ": 886
    },
    "verdict": "neutre"
   },
@@ -182,7 +182,7 @@
   "built": "2026-10-04",
   "oracle": 1,
   "positions": 3721,
-  "partial": "arrêté à 50 min : 12 versions sur 13 (e12open1 manque), sans le top 8 ; recalculé depuis le journal backlog-runs/2026-10-04-21-33_banc-calibrate.txt",
+  "partial": "Le calcul (npm run banc -- --calibrate) s'est arrêté à sa limite de 50 min après 12 versions ; e12open1 passé à part (npm run banc, 9,5 min sur 18 fils), le 1.0 y retrouve les mêmes valeurs.",
   "rows": [
    {
     "name": "0.9",
@@ -267,15 +267,22 @@
     "value": 0.402,
     "early": 0.303,
     "score": 0.5217136624383938
+   },
+   {
+    "name": "e12open1",
+    "engine": "ismcts+widen=3+depth=5+core=e12open1@800",
+    "value": 0.4594061594335125,
+    "early": 0.36341671401114,
+    "score": 0.5664183054842543
    }
   ],
   "correlation": {
-   "value": 0.23,
-   "early": 0.5,
+   "value": 0.32,
+   "early": 0.61,
    "iterationsOnly": {
-    "versions": 6,
-    "value": -0.37,
-    "early": 0.56
+    "versions": 7,
+    "value": -0.18,
+    "early": 0.72
    }
   }
  }

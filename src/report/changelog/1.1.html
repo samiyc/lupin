@@ -131,7 +131,7 @@ td.fam { font-size: 0.82rem; color: var(--ink-2); }
 .step:last-child::after { content: none; }
 .step b::before { counter-increment: step; content: counter(step) ". "; color: var(--brass); }
 .step span { font-size: 0.9rem; color: var(--ink-2); }
-.toggle { display: inline-flex; border: 1px solid var(--edge); border-radius: 999px; overflow: hidden; }
+.toggle { display: inline-flex; justify-self: start; border: 1px solid var(--edge); border-radius: 999px; overflow: hidden; }
 .toggle button { border: 0; background: var(--card); padding: 4px 12px; cursor: pointer; font-size: 0.84rem; }
 .toggle button[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); }
 
@@ -209,7 +209,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     <p class="lead" id="lead"></p>
     <div class="tiles" id="tiles"></div>
     <nav class="toc" aria-label="Sections">
-      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#compare">Coup pour coup</a><a href="#suite">La suite</a>
+      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#banc">Le banc</a><a href="#compare">Coup pour coup</a><a href="#suite">La suite</a>
     </nav>
   </div>
 </header>
@@ -268,9 +268,38 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     </div>
   </section>
 
+  <section id="banc" aria-labelledby="t-banc">
+    <div>
+      <p class="eyebrow">IV · La nuit du banc, 18 h – 22 h 30</p>
+      <h2 id="t-banc">Le banc de similitude</h2>
+    </div>
+    <p>L'idée : juger une version en quelques minutes, sans jouer de parties, en regardant si ses coups sont ceux que l'oracle a le plus visités. Deux passes de l'oracle ont construit ses positions sur 18 fils, puis les versions au résultat connu y ont été passées, pour vérifier qu'il les classe comme les duels.</p>
+    <div class="panel">
+      <h3 class="small-title">Ce qu'il contient</h3>
+      <div class="grid2">
+        <div class="answers" id="banc-movers"></div>
+        <ul class="facts" id="banc-facts"></ul>
+      </div>
+      <div class="scroll"><svg class="chart" id="banc-turns" viewBox="0 0 640 250" role="img" aria-label="Part des positions où les deux recherches de l'oracle ont le même favori, tour par tour"></svg></div>
+      <div class="legend" id="banc-turns-legend"></div>
+    </div>
+    <div class="panel">
+      <h3 class="small-title">Classe-t-il les versions comme les duels ?</h3>
+      <div class="toggle" id="calib-toggle" role="group" aria-label="Positions lues"></div>
+      <div class="scroll"><svg class="chart" id="calib" viewBox="0 0 640 330" role="img" aria-label="Valeur oracle et score en duels, par version"></svg></div>
+      <div class="legend" id="calib-legend"></div>
+      <p class="small" id="calib-note"></p>
+    </div>
+    <div class="panel">
+      <h3 class="small-title">Les parties perdues par le 1.0, et ce que l'oracle en a lu</h3>
+      <div class="scroll"><table><thead><tr><th>Contre</th><th class="num">Parties</th><th class="num">Perdues</th><th class="num">Relues par l'oracle</th><th>Part relue</th></tr></thead><tbody id="v1-lost"></tbody></table></div>
+      <p class="small muted" id="v1-lost-note"></p>
+    </div>
+  </section>
+
   <section id="compare" aria-labelledby="t-compare">
     <div>
-      <p class="eyebrow">IV · L'oracle et le V1</p>
+      <p class="eyebrow">V · L'oracle et le V1</p>
       <h2 id="t-compare">Coup pour coup</h2>
     </div>
     <p>Trois lectures des mêmes coups. D'abord, à chaque coup de l'oracle, ce qu'aurait joué le 1.0 : le même coup, ou au moins un coup que son arbre regarde (le top 8 de son cœur). Puis, sur l'ensemble des parties, ce que chacun joue le plus souvent, phase par phase. Enfin, là où l'oracle s'écarte vraiment du cœur du 1.0, ce qui distingue son coup.</p>
@@ -296,7 +325,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
 
   <section id="suite" aria-labelledby="t-suite">
     <div>
-      <p class="eyebrow">V · Ce soir, demain</p>
+      <p class="eyebrow">VI · Ce soir, demain</p>
       <h2 id="t-suite">La suite</h2>
     </div>
     <div class="grid3" id="next"></div>
@@ -349,7 +378,7 @@ document.addEventListener("pointerover", (event) => {
 document.addEventListener("pointermove", (event) => { if (!tip.hidden) moveTip(event); });
 document.addEventListener("pointerout", (event) => { if (event.target.closest?.("[data-tip]")) tip.hidden = true; });
 
-const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b", sortie: "#c9a227" };
+const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b", sortie: "#c9a227", reference: "#a0522d" };
 const VERDICTS = { gagne: ["gagne", "mark"], tendance: ["tendance", "brass"], neutre: ["neutre", "off-ink"], perd: ["perd", "seal"], attente: ["en attente", "off"] };
 const attempt = (name) => J.attempts.find((a) => a.name === name);
 const measured = J.attempts.filter((a) => a.score !== null);
@@ -369,6 +398,7 @@ $("lead").textContent = J.lead;
     [measured.length, (v) => `${Math.round(v)}`, `essai${measured.length > 1 ? "s" : ""} mesuré${measured.length > 1 ? "s" : ""} sur ${J.attempts.length} au carnet`],
     [B ? B.correlation[8] : 0, (v) => fr(v, 2), "corrélation de rang entre l'accord avec l'oracle (top 8) et les duels longs"],
     [jobs.length, (v) => `${Math.round(v)}`, "jobs du backlog finis depuis le début du carnet"],
+    ...(DATA.banc ? [[DATA.banc.positions, (v) => thousands(Math.round(v)), "positions au banc de similitude, chacune cherchée deux fois par l'oracle"]] : []),
   ];
   for (const [to, format, text] of tiles) {
     const b = html("b");
@@ -389,7 +419,9 @@ $("lead").textContent = J.lead;
 /* ── I · The timeline ─────────────────────────────────────── */
 const toTime = (text) => new Date(text).getTime();
 const minutesOf = (estimate) => (/h/.test(estimate ?? "") ? 60 * Number((estimate.match(/(\d+)\s*h/) ?? [0, 2])[1]) : Number((String(estimate).match(/\d+/) ?? [20])[0]));
-const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"]];
+const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"], ["banc", "le banc", "ink-2"]];
+// Five job lanes under the commits' row, 36 apart, so the last one still clears the hour labels.
+const laneY = (family) => 104 + family * 36;
 const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefix]) => id.startsWith(prefix));
 function placeJobs() {
   const placed = [];
@@ -439,14 +471,14 @@ function drawTimeline() {
     const label = d.getHours() === 0 ? `${d.getDate()}/${String(d.getMonth() + 1).padStart(2, "0")}` : `${d.getHours()} h`;
     svg.append(make("text", { x: x(t), y: 290, "text-anchor": "middle", class: d.getHours() === 0 ? "strong" : "" }, label));
   }
-  const lanes = [["le code", 52], ...JOB_FAMILIES.map(([, label], i) => [label, 110 + i * 42])];
+  const lanes = [["le code", 52], ...JOB_FAMILIES.map(([, label], i) => [label, laneY(i)])];
   for (const [label, y] of lanes) svg.append(make("text", { x: 8, y: y + 4, class: "label" }, label));
   svg.append(make("text", { x: 8, y: 16, class: "label strong" }, "ce qui a été écrit, puis calculé"));
   for (const job of jobs) {
     const family = jobFamily(job.id);
     if (family < 0) continue;
     const color = css(JOB_FAMILIES[family][2]);
-    const y = 110 + family * 42 - 11;
+    const y = laneY(family) - 11;
     const rect = make("rect", { x: x(job.start), y, width: Math.max(3, x(job.end) - x(job.start)), height: 22, rx: 4, fill: job.planned ? "none" : color, stroke: color, "stroke-width": 1.5, "stroke-dasharray": job.planned ? "4 3" : "0", opacity: job.planned ? 0.9 : 0.85 });
     const when = new Date(job.start);
     const timeText = `${when.getDate()}/${when.getMonth() + 1} ${when.getHours()} h ${String(when.getMinutes()).padStart(2, "0")}`;
@@ -655,7 +687,121 @@ function drawBench() {
   $("bench-note").textContent = `${thousands(B.positions)} positions des tours 14 à 26, oracle version ${B.oracle}. Corrélation de rang avec les duels : top 1 ${fr(B.correlation[1], 2)}, top 3 ${fr(B.correlation[3], 2)}, top 8 ${fr(B.correlation[8], 2)}. En doré, les duels à temps égal. Limite : rien avant le tour 14 — une idée qui agit plus tôt (stay4e10) y est invisible.`;
 }
 
-/* ── IV · Move for move ──────────────────────────────────── */
+/* ── IV · The similarity bench ───────────────────────────── */
+const BANC_PHASES = [["tours 4-10", 4, 10, "sky"], ["tours 11-20", 11, 20, "mark"], ["tours 21-30", 21, 30, "brass"]];
+const bancTurns = (B) => Object.entries(B.byTurn).map(([key, row]) => ({ turn: Number(key.replace("tour ", "")), ...row, ms: B.ms[key.replace("tour ", "")]?.ms }));
+const phaseOf = (turn) => BANC_PHASES.findIndex(([, from, to]) => turn >= from && turn <= to);
+
+/** Each phase: its positions, the share where both searches agree, and the median of its turns' median times. */
+function bancPhases(B) {
+  const turns = bancTurns(B);
+  return BANC_PHASES.map(([label, , , color], i) => {
+    const rows = turns.filter((row) => phaseOf(row.turn) === i);
+    const sum = (key) => rows.reduce((n, row) => n + row[key], 0);
+    const times = rows.map((row) => row.ms).filter(Boolean).sort((a, b) => a - b);
+    return { label, color, positions: sum("positions"), stable: sum("stable") / sum("checked"), seconds: times[Math.floor(times.length / 2)] / 1000 };
+  });
+}
+
+function drawBancContents(B) {
+  const most = Math.max(...J.banc.movers.map((m) => m.positions));
+  $("banc-movers").replaceChildren(html("p", { class: "eyebrow" }, "qui avait le trait"), ...J.banc.movers.map((m) => html("div", { class: "answer" }, html("span", {}, m.label), html("div", { class: "bar", style: `width: ${(100 * m.positions) / most}%; background: ${css(m.color)}` }), html("span", {}, thousands(m.positions)))));
+  const facts = bancPhases(B).map((p) => html("li", {}, html("b", {}, `${p.label} : `), `${thousands(p.positions)} positions, ${pctText(p.stable)} où les deux recherches ont le même favori, environ ${fr(p.seconds, 0)} s par position et par fil`));
+  $("banc-facts").replaceChildren(...facts, html("li", {}, J.banc.games));
+  const svg = $("banc-turns");
+  svg.replaceChildren();
+  const turns = bancTurns(B);
+  const [left, right, bottom, height] = [56, 625, 200, 170];
+  const slot = (right - left) / turns.length;
+  const Y = (v) => bottom - v * height;
+  for (let v = 0; v <= 1.0001; v += 0.25) {
+    svg.append(make("line", { x1: left, x2: right, y1: Y(v), y2: Y(v), stroke: v === 0.5 ? css("ink-3") : css("line"), "stroke-dasharray": v === 0.5 ? "4 3" : "0" }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, `${Math.round(v * 100)} %`));
+  }
+  turns.forEach((row, i) => {
+    const x = left + i * slot;
+    const share = row.stable / row.checked;
+    svg.append(make("rect", { x: x + 3, y: Y(share), width: slot - 6, height: bottom - Y(share), rx: 2, fill: css(BANC_PHASES[phaseOf(row.turn)][3]), "data-tip": `tour ${row.turn} : ${pctText(share)} stables sur ${row.positions} positions, médiane ${fr(row.ms / 1000, 0)} s` }));
+    if (row.turn % 2 === 0) svg.append(make("text", { x: x + slot / 2, y: bottom + 16, "text-anchor": "middle" }, row.turn));
+  });
+  svg.append(make("text", { x: 340, y: 240, "text-anchor": "middle", class: "label" }, "tour de la position"));
+  svg.append(make("text", { x: 8, y: 14, class: "label" }, "les deux recherches de l'oracle ont le même favori"));
+  $("banc-turns-legend").replaceChildren(...BANC_PHASES.map(([label, , , color]) => html("span", {}, html("i", { style: `background: ${css(color)}` }), label)), html("span", { class: "muted small" }, "avant le tour 10, l'oracle hésite : son favori change d'une recherche à l'autre"));
+}
+
+function drawCalibration(C) {
+  const timed = (row) => row.engine.includes("@t");
+  const show = (key) => {
+    document.querySelectorAll("#calib-toggle button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.value === key)));
+    const svg = $("calib");
+    svg.replaceChildren();
+    const values = C.rows.map((r) => 100 * r[key]);
+    const [x0, x1] = [Math.floor(Math.min(...values) - 1), Math.ceil(Math.max(...values) + 1)];
+    const [y0, y1] = [38, 58];
+    const X = (v) => 70 + ((v - x0) / (x1 - x0)) * 520;
+    const Y = (v) => 290 - ((v - y0) / (y1 - y0)) * 260;
+    for (let v = x0; v <= x1; v += 2) {
+      svg.append(make("line", { x1: X(v), x2: X(v), y1: 30, y2: 290, stroke: css("line") }));
+      svg.append(make("text", { x: X(v), y: 308, "text-anchor": "middle" }, `${v} %`));
+    }
+    for (let v = y0; v <= y1; v += 4) {
+      svg.append(make("line", { x1: 70, x2: 590, y1: Y(v), y2: Y(v), stroke: v === 50 ? css("ink-3") : css("line"), "stroke-dasharray": v === 50 ? "4 3" : "0" }));
+      svg.append(make("text", { x: 62, y: Y(v) + 4, "text-anchor": "end" }, `${v} %`));
+    }
+    svg.append(make("text", { x: 330, y: 326, "text-anchor": "middle", class: "label" }, key === "early" ? "valeur oracle de ses coups, tours 4 à 10" : "valeur oracle de ses coups, tours 4 à 30"));
+    svg.append(make("text", { x: 8, y: 20, class: "label" }, "duels contre le 0.9"));
+    const labels = C.rows.map((r) => {
+      const [cx, cy] = [X(100 * r[key]), Y(100 * r.score)];
+      svg.append(make("circle", { cx, cy, r: 6, fill: timed(r) ? css("brass") : css("sky"), stroke: css("card"), "stroke-width": 1.5, "data-tip": `${r.name} : valeur ${fr(100 * r[key])} %, duels ${fr(100 * r.score)} %${timed(r) ? " (au temps)" : ""}` }));
+      return { cx, cy, text: r.name, strong: r.name.startsWith("1.0") };
+    });
+    // Each label tries the right, the left, above and below its point, keeping the first spot clear of every point and of the labels already placed.
+    const boxes = labels.map(({ cx, cy }) => ({ x0: cx - 7, x1: cx + 7, y0: cy - 7, y1: cy + 7 }));
+    const clear = (box) => box.x0 > 66 && box.x1 < 640 && !boxes.some((o) => box.x0 < o.x1 && o.x0 < box.x1 && box.y0 < o.y1 && o.y0 < box.y1);
+    for (const label of labels.sort((p, q) => p.cy - q.cy)) {
+      const width = label.text.length * 7.2;
+      const spots = [[9, 4, "start"], [-9, 4, "end"], [0, -10, "middle"], [0, 18, "middle"], [9, -10, "start"], [9, 18, "start"], [-9, -10, "end"], [-9, 18, "end"]];
+      const boxOf = ([dx, dy, anchor]) => {
+        const x = label.cx + dx;
+        const x0 = anchor === "start" ? x : anchor === "end" ? x - width : x - width / 2;
+        return { x, y: label.cy + dy, anchor, box: { x0, x1: x0 + width, y0: label.cy + dy - 10, y1: label.cy + dy + 2 } };
+      };
+      const spot = spots.map(boxOf).find((s) => clear(s.box)) ?? boxOf(spots[0]);
+      boxes.push(spot.box);
+      svg.append(make("text", { x: spot.x, y: spot.y, "text-anchor": spot.anchor, class: label.strong ? "strong" : "" }, label.text));
+    }
+  };
+  $("calib-toggle").replaceChildren(...[["value", "toute la partie"], ["early", "tours 4 à 10"]].map(([value, text]) => {
+    const button = html("button", { type: "button", "aria-pressed": "false", "data-value": value }, text);
+    button.addEventListener("click", () => show(value));
+    return button;
+  }));
+  show("value");
+  $("calib-legend").replaceChildren(html("span", {}, html("i", { style: "background: var(--sky); border-radius: 999px" }), "800 itérations par coup"), html("span", {}, html("i", { style: "background: var(--brass); border-radius: 999px" }), "au temps (@t400, @t800) : moins d'itérations sur une machine chargée"));
+  const K = C.correlation;
+  $("calib-note").textContent = `Corrélation de rang avec les duels : ${fr(K.value, 2)} sur toute la partie, ${fr(K.early, 2)} aux tours 4 à 10 (sur les ${K.iterationsOnly.versions} versions à 800 itérations : ${fr(K.iterationsOnly.value, 2)} et ${fr(K.iterationsOnly.early, 2)}). Le banc ne sépare pas le 0.9 du 1.0 alors que le 1.0 gagne 56 % : il ne trie pas, son verdict reste un indice. Seul le début de partie le place devant. ${C.rows.length} versions, sur ${thousands(C.positions)} positions. ${C.partial ?? ""}`;
+}
+
+function drawV1Lost() {
+  const rows = J.banc.v1.rows;
+  const total = (key) => rows.reduce((n, r) => n + r[key], 0);
+  const line = (r, strong) => html("tr", {}, html("td", {}, strong ? html("b", {}, r.against) : r.against), html("td", { class: "num" }, thousands(r.games)), html("td", { class: "num" }, thousands(r.lost)), html("td", { class: "num" }, thousands(r.read)), html("td", {}, html("div", { class: "costbar" }, html("i", { style: `width: ${(100 * r.read) / r.lost}%` }), html("span", { class: "num" }, pctText(r.read / r.lost)))));
+  $("v1-lost").replaceChildren(...rows.map((r) => line(r, false)), line({ against: "en tout", games: total("games"), lost: total("lost"), read: total("read") }, true));
+  $("v1-lost-note").textContent = J.banc.v1.note;
+}
+
+function drawBanc() {
+  const B = DATA.banc;
+  if (!B || !J.banc) {
+    $("banc").hidden = true;
+    return;
+  }
+  drawBancContents(B);
+  if (B.calibration) drawCalibration(B.calibration);
+  drawV1Lost();
+}
+
+/* ── V · Move for move ───────────────────────────────────── */
 const pctText = (x) => `${fr(100 * x, 0)} %`;
 
 /** Two dots per trait on one 0-70 % line: the oracle (sky) and the other side (brass), the gap drawn between them. */
@@ -734,15 +880,16 @@ function drawCompare() {
   drawGaps(G);
 }
 
-/* ── V · Next ────────────────────────────────────────────── */
+/* ── VI · Next ───────────────────────────────────────────── */
 function drawNext() {
   $("next").replaceChildren(...J.next.map(({ when, title, text }) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
-  $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc de <code>data/oracle-bench.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
+  $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc des cœurs de <code>data/oracle-bench.json</code>, le banc de similitude de <code>data/oracle-diffs-banc.json</code> et <code>data/banc.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
 }
 
 drawTimeline();
 renderNotebook();
 drawBench();
+drawBanc();
 drawCompare();
 drawNext();
 </script>

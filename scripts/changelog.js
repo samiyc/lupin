@@ -22,6 +22,7 @@ import { BOT_LINEUP } from "../src/config/bots.js";
  * - the oracle where two cores disagree: data/oracle-disagree.json, if read;
  * - the oracle bench across cores: data/oracle-bench.json, if built;
  * - the oracle against the V1: data/versus.json (« oracle »), data/oracle-shadow.json, data/oracle-diffs-v1ref.json;
+ * - the similarity bench: its positions (data/oracle-diffs-banc.json) and its calibration (data/banc.json);
  * - the commits since `since`: git log.
  * Rebuilt after the night's jobs, the page picks up their times by itself;
  * their scores go into the version's data file.
@@ -78,6 +79,7 @@ const data = {
   versus: await read("data/versus.json").then((file) => file.duels.oracle ?? null, () => null),
   shadow: await read("data/oracle-shadow.json").then((file) => Object.values(file.reads)[0] ?? null, () => null),
   v1ref: await read("data/oracle-diffs-v1ref.json").then(({ positions, gaps, traits }) => ({ positions, gaps, traits }), () => null),
+  banc: await Promise.all([read("data/oracle-diffs-banc.json"), read("data/banc.json")]).then(([{ positions, byTurn, ms }, { calibration }]) => ({ positions, byTurn, ms, calibration: calibration ?? null }), () => null),
 };
 
 // Each version has its own page (src/report/changelog/<version>.html), started from the previous one.
