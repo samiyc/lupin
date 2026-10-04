@@ -96,7 +96,6 @@ section { display: grid; gap: 18px; min-width: 0; scroll-margin-top: 16px; }
 .chips .what { font: 600 0.68rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); min-width: 5.5em; }
 .chip { border: 1px solid var(--edge); background: var(--card); border-radius: 999px; padding: 3px 11px; cursor: pointer; font-size: 0.84rem; }
 .chip[aria-pressed="true"] { background: var(--felt); color: var(--felt-ink); border-color: var(--felt); }
-.search { border: 1px solid var(--edge); background: var(--card); border-radius: 999px; padding: 5px 14px; min-width: 0; width: min(100%, 320px); }
 .notebook-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; }
 @media (max-width: 760px) { .notebook-top { grid-template-columns: minmax(0, 1fr); } }
 .donut-box { display: grid; grid-template-columns: 130px auto; gap: 12px; align-items: center; }
@@ -184,6 +183,9 @@ td.fam { font-size: 0.82rem; color: var(--ink-2); }
 /* A row with no score: the note sits centred under the forest's axis, clear of the score column. */
 .no-score { display: block; width: 170px; text-align: center; font-size: 0.78rem; font-style: italic; color: var(--ink-3); }
 
+/* The notebook's count, a breath below its filters. */
+#carnet .count { margin-top: 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
 /* Coup pour coup */
 .small-title { font: 600 1rem var(--body); margin: 0 0 8px; }
 #compare .panel + .panel { margin-top: 14px; }
@@ -238,14 +240,13 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
           <div class="chips" id="f-family" role="group" aria-label="Famille"></div>
           <div class="chips" id="f-bench" role="group" aria-label="Banc"></div>
           <div class="chips" id="f-verdict" role="group" aria-label="Verdict"></div>
-          <div class="chips"><span class="what">Chercher</span><input class="search" id="f-search" type="search" placeholder="stfig, joker, connector…" aria-label="Chercher un essai"><button type="button" class="chip" id="f-reset" hidden>Tout afficher</button></div>
         </div>
         <div class="donut-box">
           <svg id="verdict-donut" viewBox="0 0 130 130" width="130" height="130" role="img" aria-label="Verdicts des essais affichés"></svg>
           <div class="legend" id="verdict-legend" style="flex-direction: column; gap: 4px"></div>
         </div>
       </div>
-      <p class="count" id="count" aria-live="polite"></p>
+      <p class="count"><span id="count" aria-live="polite"></span> <button type="button" class="chip" id="f-reset" hidden>Tout afficher</button></p>
       <div class="scroll">
         <table>
           <thead><tr><th><button type="button" data-sort="name">Essai</button></th><th><button type="button" data-sort="family">Famille</button></th><th><button type="button" data-sort="bench">Banc</button></th><th class="num"><button type="button" data-sort="score">Score</button></th><th>Forêt <span class="muted">35 · 50 · 65</span></th><th><button type="button" data-sort="verdict">Verdict</button></th><th><button type="button" data-sort="when">Quand</button></th></tr></thead>
@@ -488,7 +489,7 @@ function showCommit(commit, family, label) {
 }
 
 /* ── II · The notebook ───────────────────────────────────── */
-const filters = { family: new Set(), bench: new Set(), verdict: new Set(), search: "" };
+const filters = { family: new Set(), bench: new Set(), verdict: new Set() };
 let sort = { key: "order", dir: 1 };
 // Points gained at turn 30, centred on the same line as a win rate.
 const isDelta = (a) => a.bench === "jeu";
@@ -511,8 +512,6 @@ function toggle(key, value) {
 }
 function resetFilters() {
   for (const key of ["family", "bench", "verdict"]) filters[key].clear();
-  filters.search = "";
-  $("f-search").value = "";
   document.querySelectorAll(".chip[data-key]").forEach((chip) => chip.setAttribute("aria-pressed", "false"));
   renderNotebook();
 }
@@ -550,12 +549,10 @@ function scoreText(a) {
   return `${fr(a.score)} %`;
 }
 function visibleAttempts() {
-  const words = filters.search.toLowerCase().trim();
   const list = J.attempts.map((a, order) => ({ ...a, order })).filter((a) =>
     (!filters.family.size || filters.family.has(a.family)) &&
     (!filters.bench.size || filters.bench.has(a.bench)) &&
-    (!filters.verdict.size || filters.verdict.has(a.verdict)) &&
-    (!words || `${a.name} ${a.note} ${J.families[a.family]}`.toLowerCase().includes(words)));
+    (!filters.verdict.size || filters.verdict.has(a.verdict)));
   const value = (a) => {
     if (sort.key === "score") return a.score === null ? -999 : isDelta(a) ? 50 + a.score : a.score;
     if (sort.key === "when") return whenKey(a);
@@ -587,7 +584,7 @@ function renderNotebook() {
     item.addEventListener("click", () => toggle("verdict", key));
     return item;
   }));
-  const filtered = filters.family.size + filters.bench.size + filters.verdict.size > 0 || filters.search.trim() !== "";
+  const filtered = filters.family.size + filters.bench.size + filters.verdict.size > 0;
   $("f-reset").hidden = !filtered;
 }
 function donut(svg, parts, size, center, sub) {
@@ -613,7 +610,6 @@ chipRow("f-family", "family", "Famille", usedValues("family", Object.entries(J.f
 chipRow("f-bench", "bench", "Banc", usedValues("bench", Object.entries(J.benches)));
 chipRow("f-verdict", "verdict", "Verdict", usedValues("verdict", Object.entries(VERDICTS).map(([key, [label]]) => [key, label])));
 $("f-reset").addEventListener("click", resetFilters);
-$("f-search").addEventListener("input", (event) => { filters.search = event.target.value; renderNotebook(); });
 document.querySelectorAll("[data-sort]").forEach((button) => button.addEventListener("click", () => {
   const key = button.dataset.sort;
   sort = sort.key === key ? { key, dir: -sort.dir } : { key, dir: key === "score" ? -1 : 1 };
