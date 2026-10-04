@@ -248,7 +248,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       <p class="count" id="count" aria-live="polite"></p>
       <div class="scroll">
         <table>
-          <thead><tr><th><button type="button" data-sort="name">Essai</button></th><th>Famille</th><th>Banc</th><th class="num"><button type="button" data-sort="score">Score</button></th><th>Forêt <span class="muted">35 · 50 · 65</span></th><th>Verdict</th><th><button type="button" data-sort="when">Quand</button></th></tr></thead>
+          <thead><tr><th><button type="button" data-sort="name">Essai</button></th><th><button type="button" data-sort="family">Famille</button></th><th><button type="button" data-sort="bench">Banc</button></th><th class="num"><button type="button" data-sort="score">Score</button></th><th>Forêt <span class="muted">35 · 50 · 65</span></th><th><button type="button" data-sort="verdict">Verdict</button></th><th><button type="button" data-sort="when">Quand</button></th></tr></thead>
           <tbody id="attempts"></tbody>
         </table>
       </div>
@@ -560,6 +560,10 @@ function visibleAttempts() {
     if (sort.key === "score") return a.score === null ? -999 : isDelta(a) ? 50 + a.score : a.score;
     if (sort.key === "when") return whenKey(a);
     if (sort.key === "name") return a.name.toLowerCase();
+    // Verdicts from best to worst (the order of VERDICTS), families and benches by their label.
+    if (sort.key === "verdict") return Object.keys(VERDICTS).indexOf(a.verdict);
+    if (sort.key === "family") return J.families[a.family].toLowerCase();
+    if (sort.key === "bench") return J.benches[a.bench].toLowerCase();
     return a.order;
   };
   return list.sort((a, b) => (value(a) < value(b) ? -1 : value(a) > value(b) ? 1 : a.order - b.order) * sort.dir);
