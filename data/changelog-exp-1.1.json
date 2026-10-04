@@ -167,12 +167,23 @@
    "name": "Tri dans l'arbre : v1bj à temps égal",
    "family": "oracle",
    "bench": "temps",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "ce matin",
-   "note": "Un tri écarte, il ne promeut pas : s'il tient, quatre duels longs ce soir."
+   "score": 46,
+   "lo": 42.3,
+   "hi": 49.8,
+   "verdict": "perd",
+   "when": "04/10 11:30",
+   "note": "528 parties : écarté. Ses 52 % en cœur contre cœur ne passent pas dans l'arbre — le banc oracle l'avait annoncé."
+  },
+  {
+   "name": "Le 1.0 contre lui-même (corpus de référence)",
+   "family": "reference",
+   "bench": "duel",
+   "score": 51.5,
+   "lo": 48.2,
+   "hi": 54.8,
+   "verdict": "neutre",
+   "when": "04/10 11:05",
+   "note": "2 × 336 parties gardées : 50,0 % et 53,0 %, comme un miroir doit le faire."
   }
  ],
  "commitLabels": {
@@ -211,23 +222,31 @@
   "bd7b52b": [
    "reference",
    "L'oracle bat le V1"
+  ],
+  "2300fa4": [
+   "reference",
+   "La relecture des parties du 1.0 par l'oracle"
+  ],
+  "a84b736": [
+   "oracle",
+   "Regarder plus de coups perd à temps égal"
   ]
  },
  "next": [
   {
-   "when": "Ce matin",
-   "title": "L'oracle bat-il le V1 ?",
-   "text": "Deux passes Oracle contre 1.0 (110 parties chacune) et 110 parties où l'oracle ne joue que jusqu'au tour 12. Puis l'oracle relit les parties du 1.0 aux tours 12-28, là où il est fiable."
+   "when": "Prochain essai",
+   "title": "Plus de temps aux premiers coups",
+   "text": "L'oracle jusqu'au tour 12 gagne 59,1 % : c'est son budget, pas sa largeur. Un 1.0 qui réfléchit plus longtemps au début, à temps total égal."
   },
   {
-   "when": "Ce soir, 23 h",
-   "title": "Le corpus V1 contre V1",
-   "text": "Deux duels longs du 1.0 contre lui-même, gardés en replays pour la base de référence."
+   "when": "Le protocole",
+   "title": "Le banc d'abord",
+   "text": "Le banc oracle (positions du 1.0, tours 12-28) trie une idée en minutes ; il a écarté v1bj avant l'arbre. Puis un tri d'arbre, puis quatre duels longs."
   },
   {
-   "when": "Ensuite",
-   "title": "Le 1.1",
-   "text": "Une idée se trie au banc oracle (tours 12 et plus), se vérifie là où elle change un coup (--disagree), puis se décide sur quatre jeux de donnes en duels longs."
+   "when": "Plus tard",
+   "title": "Oracle contre Oracle",
+   "text": "En attente : avant le tour 10, ses recherches ne s'accordent pas. Ses parties ne seraient une référence qu'à partir du tour 12."
   }
  ]
 }

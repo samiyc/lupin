@@ -1865,3 +1865,20 @@ du cœur, mais à budget égal, l'arbre qui regarde plus de coups en creuse chac
 — et perd. L'oracle peut chercher large parce qu'il a 25 fois plus d'itérations : la
 largeur ne se copie pas sans le budget qui va avec. Ce qui se copie, c'est le choix
 du cœur (quels coups mettre dans le top 8), d'où les cœurs `v1…`.
+
+**`v1bj` dans l'arbre** (`screen-v1bj`, `@t400` contre le 1.0, 528 parties) : **46,0 %**
+(42,3 – 49,8) — écarté. Ses 52 % en cœur contre cœur ne passent pas dans l'arbre, et le
+banc oracle l'avait annoncé (top 8 : 60,0 % contre 60,6 %). C'est le premier cas où le
+banc tranche contre un tri du cœur : avant de donner un tri d'arbre à une idée, le banc
+d'abord.
+
+**Le 1.0 contre lui-même** (`ref-v1-self-0/1`, 2 × 336 parties gardées) : 50,0 % et 53,0 %,
+comme attendu d'un miroir — le corpus V1 contre V1 de la base de référence.
+
+**Le bilan de la nuit et du matin** : l'oracle est un étalon solide à partir du tour 12
+(57,4 % contre le 1.0, ses écarts confirmés par le jeu), pas avant. Aucune variante du
+1.0 n'a tenu : regarder plus de coups perd à temps égal, et les traits de l'oracle
+copiés un par un dans le cœur ne passent pas dans l'arbre. La piste qui reste ouverte :
+le début de partie, où l'oracle jusqu'au tour 12 gagne 59,1 % — c'est son budget, pas
+sa largeur, qui gagne ; un 1.0 qui réfléchit plus longtemps aux premiers coups (temps,
+pas largeur) est le prochain essai.
