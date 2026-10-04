@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { BOT_LINEUP } from "../src/config/bots.js";
 import { againstBase, bancVerdict, judge, pairedDiff, rankCorrelation, summarizeBanc } from "../src/replay/banc.js";
 import { ORACLE } from "../src/replay/oracle.js";
+import { loadGame, readIndex } from "./lib/game-index.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -14,6 +15,10 @@ import { runPool } from "./lib/pool.js";
  * decision on whole games takes hours.
  *
  * - `--threads 4` leaves the machine usable (about four times slower).
+ * - `--positions games`: instead of the bench's positions, the oracle's own
+ *   moves in its whole games (oracle against the 1.0, and the oracle up to
+ *   turn 12), judged by the candidates the replay kept — one search, its 5 (or
+ *   12) most visited moves; `--turns 1-12` keeps the start of the game.
  * - `--queue`: the version's four long duels against the 1.0 go to the
  *   backlog (`--long --page --offset 0..3`, a pause between two): the second
  *   step, the one that decides.
@@ -31,6 +36,9 @@ const V1 = BOT_LINEUP.experimental.engine;
 const tested = args.find((arg, i) => !arg.startsWith("--") && !args[i - 1]?.startsWith("--")) ?? V1;
 const against = option("--against", V1);
 const positionsName = option("--positions", "banc");
+const [fromTurn, toTurn = fromTurn] = option("--turns", "1-99").split("-").map(Number);
+const inTurns = (entry) => entry.turn >= fromTurn && entry.turn <= toTurn;
+const ORACLE_ID = `${ORACLE.engine}@${ORACLE.budget}`;
 if (args.includes("--threads")) process.env.LOPIN_THREADS = option("--threads", "");
 const BATCH = 20;
 const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
@@ -39,9 +47,28 @@ const keyOf = (entry) => `${entry.key}|${entry.turn}`;
 const readJson = (path, fallback) => readFile(new URL(path, ROOT), "utf8").then(JSON.parse, () => fallback);
 const writeJson = (path, value) => writeFile(new URL(path, ROOT), `${JSON.stringify(value, null, 1)}\n`);
 
+/** The oracle's moves in its whole games, as bench positions: the replay's candidates are its one search's visits. */
+async function gameEntries() {
+  const rows = (await readIndex()).filter((row) => row.engines.some((engine) => engine.includes(ORACLE_ID)));
+  const entries = [];
+  for (const row of rows) {
+    const log = await loadGame(row);
+    const seat = row.engines.findIndex((engine) => engine.includes(ORACLE_ID));
+    // A `phase:N:` player is the oracle only before its switch (state.turn < N, so logged turns up to N).
+    const until = Number(/^phase:(\d+):/.exec(row.engines[seat])?.[1] ?? Infinity);
+    const own = (entry) => entry.player === seat && entry.turn <= until && entry.move && entry.candidates?.length > 1;
+    for (const turn of log.turns.filter(own)) {
+      const visits = [turn.candidates.map((c) => ({ move: `${c.card}→${c.border}`, share: c.gain }))];
+      entries.push({ key: row.key, file: row.file, game: row.game, turn: turn.turn, visits });
+    }
+  }
+  return entries;
+}
+
 async function readEntries() {
+  if (positionsName === "games") return (await gameEntries()).filter(inTurns);
   const text = await readFile(new URL(`oracle/positions-${positionsName}.jsonl`, ROOT), "utf8").catch(() => "");
-  return text.split("\n").filter(Boolean).map((line) => JSON.parse(line)).filter((entry) => !entry.skipped && entry.visits?.length > 0);
+  return text.split("\n").filter(Boolean).map((line) => JSON.parse(line)).filter((entry) => !entry.skipped && entry.visits?.length > 0 && inTurns(entry));
 }
 
 /** One move per position for `engine`, in batches grouped by file (each worker reads a file once). */

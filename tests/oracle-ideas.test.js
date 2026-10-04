@@ -33,6 +33,23 @@ describe("bonuses that follow the oracle", () => {
     assert.equal(oracleBonus(context(["noBlindOpen"], { hand: [JOKER] }), 0, JOKER), 0);
   });
 
+  it("make any opening of an untouched border pay with noOpen, a plan in hand or not", () => {
+    const card = c(0, 5);
+    const extra = { noOpen: 0.15 };
+    assert.equal(oracleBonus(context(["noOpen"], { hand: [card, c(2, 9)], extra }), 0, card), -0.15);
+    assert.equal(oracleBonus(context(["noOpen"], { hand: [card, c(1, 5)], extra }), 0, card), -0.15, "a pair in hand does not spare it");
+    assert.equal(oracleBonus(context(["noOpen"], { theirs: [c(2, 7)], extra }), 0, card), 0, "answering is not opening");
+    assert.equal(oracleBonus(context(["noOpen"], { mine: [c(1, 5)], extra }), 0, card), 0);
+  });
+
+  it("make building a suited run pay with noRun, and not trips", () => {
+    const extra = { noRun: 0.1 };
+    assert.equal(oracleBonus(context(["noRun"], { mine: [c(0, 5)], extra }), 0, c(0, 6)), -0.1);
+    assert.equal(oracleBonus(context(["noRun"], { mine: [c(0, 5)], extra }), 0, c(1, 5)), 0, "trips");
+    assert.equal(oracleBonus(context(["noRun"], { mine: [c(0, 5)], extra }), 0, c(1, 6)), 0, "not suited");
+    assert.ok(Math.abs(oracleBonus(context(["noRun", "stay"], { mine: [c(0, 5)], extra }), 0, c(0, 6)) - 0.3) < 1e-12, "with stay, both count");
+  });
+
   it("cost nothing when none of them is on", () => {
     assert.equal(oracleBonus(context([], { mine: [c(0, 5)] }), 0, c(1, 5)), 0);
   });

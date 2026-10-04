@@ -198,6 +198,9 @@ export const CORES = Object.freeze({
   // `junk` below 0 accepts sides with no figure (37 % of its gaps against 2 %, turns 12-28).
   ...Object.fromEntries([["v1ans1", "noAnswer", -0.1], ["v1ans2", "noAnswer", -0.2], ["v1blind1", "noBlindOpen", 0.1], ["v1blind2", "noBlindOpen", 0.2], ["v1jneg1", "junk", -0.1], ["v1jneg2", "junk", -0.2]].map(([name, idea, weight]) => [name, { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", idea], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, [idea]: weight } }])),
   // In its gaps against the 1.0 core (turns 12-28), the oracle plays a joker 14 % of the time against 2 %: the 1.0 without the joker habit.
+  // The start of a game only (turns 1-12, earlyIdeas), on the 1.0 (Sami, 04/10): open fewer untouched borders (noOpen),
+  // accept sides with no figure (junk below 0), build fewer suited runs (noRun) — the oracle's three early traits.
+  ...Object.fromEntries([["e12open1", "noOpen", 0.1], ["e12open2", "noOpen", 0.2], ["e12junk1", "junk", -0.1], ["e12junk2", "junk", -0.2], ["e12run1", "noRun", 0.1], ["e12run2", "noRun", 0.2]].map(([name, idea, weight]) => [name, { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], earlyIdeas: [idea], earlyUntil: 12, weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, [idea]: weight } }])),
   // The two that held in core against core (04/10), together.
   v1bj: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", "noBlindOpen", "junk"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, noBlindOpen: 0.1, junk: -0.2 } },
   v1freejk: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },

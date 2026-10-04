@@ -61,6 +61,8 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 
 ## Commandes
 
+Toutes les commandes, rangées par usage et avec le parcours d'une idée : [docs/commandes.md](docs/commandes.md).
+
 ```bash
 npm run play      # le jeu dans le navigateur, http://127.0.0.1:4742/
 npm run duel -- experimental stratege 2000   # deux robots face à face

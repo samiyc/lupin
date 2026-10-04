@@ -177,6 +177,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   long duels: on the 03/10 cores the top-8 agreement ranked them as the duels
   did (rank correlation 0.93). Its positions are turns 14-26 only, so it is
   blind to an idea that acts earlier (stay4e10).
+- **Every npm script is listed in ** (French, by use, with the
+  path of an idea);  fails when a script of 
+  is missing from it, so a new script comes with its line there.
 - **The similarity bench** (`npm run banc`, Sami, 04/10): an idea is sorted in under
   10 minutes by how close its moves come to the oracle's on the bench's
   positions (each searched twice by the oracle, its 12 most visited moves kept),

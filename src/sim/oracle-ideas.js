@@ -1,5 +1,6 @@
 import { colorOf, isJoker, valueOf } from "../core/cards.js";
 import { gateOn } from "./gates.js";
+import { shapeOf } from "./shapes.js";
 
 /**
  * Bonuses that push the core the way the oracle played (03/10,
@@ -20,13 +21,21 @@ import { gateOn } from "./gates.js";
  * that turn; `stayBehind`, only while the opponent has started as many
  * borders as I have, or more.
  *
+ * Two more from the oracle's whole games against the 1.0 (04/10), meant for
+ * the start of a game (`earlyIdeas`):
+ * - `noOpen`: any card on a border nobody has played on costs `noOpen`, a
+ *   plan in hand or not (the oracle opens on 44 % of its early moves, the 1.0
+ *   on 60 %);
+ * - `noRun`: a card that makes a side a suited run costs `noRun` (18 % of the
+ *   oracle's gaps against 46 % for the 1.0's core).
+ *
  * The other two traits need no new code: sides with no figure (33 % against
  * 9 %) are `junk` with a negative weight, more jokers (14 % against 4 %) a
  * core without the `joker` habit.
  */
-export const ORACLE_IDEAS = Object.freeze(["stay", "noAnswer", "noBlindOpen"]);
+export const ORACLE_IDEAS = Object.freeze(["stay", "noAnswer", "noBlindOpen", "noOpen", "noRun"]);
 
-export const anyOracleIdea = (ideas) => ideas.has("stay") || ideas.has("noAnswer") || ideas.has("noBlindOpen");
+export const anyOracleIdea = (ideas) => ORACLE_IDEAS.some((idea) => ideas.has(idea));
 
 /** Another card of the hand that makes `card` the start of trips or of a suited run (as `startsOf`, move-features.js). */
 function plannedStart(spec, hand, card) {
@@ -78,11 +87,21 @@ function stayCard({ spec, weights }, mine, card) {
 
 const stayBonus = (context, mine, card) => (stayMoment(context) && stayCard(context, mine, card) ? context.weights.stay : 0);
 
+/** `noRun`: the card makes my side a suited run. */
+const runCost = ({ ideas, weights, spec }, mine, card) => (ideas.has("noRun") && shapeOf(spec, [...mine, card])?.kind === "run" ? -weights.noRun : 0);
+
+/** On a border nobody has played on: `noOpen` whatever the hand, `noBlindOpen` without a plan for the card. */
+function openCost(context, card) {
+  const { ideas, weights } = context;
+  const open = ideas.has("noOpen") ? -weights.noOpen : 0;
+  return open + (ideas.has("noBlindOpen") && !plannedStart(context.spec, context.hand, card) ? -weights.noBlindOpen : 0);
+}
+
 export function oracleBonus(context, border, card) {
   const { ideas, weights } = context;
   if (!gateOn(context, "oracle", anyOracleIdea)) return 0;
   const [mine, theirs] = [context.mySides[border], context.theirSides[border]];
-  if (mine.length > 0) return ideas.has("stay") ? stayBonus(context, mine, card) : 0;
+  if (mine.length > 0) return (ideas.has("stay") ? stayBonus(context, mine, card) : 0) + runCost(context, mine, card);
   if (theirs.length > 0) return ideas.has("noAnswer") ? -weights.noAnswer : 0;
-  return ideas.has("noBlindOpen") && !plannedStart(context.spec, context.hand, card) ? -weights.noBlindOpen : 0;
+  return openCost(context, card);
 }

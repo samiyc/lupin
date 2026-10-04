@@ -36,7 +36,8 @@ export function referenceOf(entry) {
   let [best, top] = [null, -1];
   for (const [move, share] of shares) if (share > top) [best, top] = [move, share];
   const favourites = (entry.visits ?? []).map((run) => run[0]?.move);
-  const stable = favourites.length > 1 && favourites.every((move) => move === favourites[0]);
+  // One search (a move of a whole game) counts as stable: there is nothing to disagree with.
+  const stable = favourites.length > 0 && favourites.every((move) => move === favourites[0]);
   return { best, top, stable, shares };
 }
 

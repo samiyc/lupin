@@ -1,0 +1,103 @@
+# Les commandes npm
+
+Toutes les commandes du projet (`package.json`), rangées par usage. Chaque
+script décrit ses options en détail dans son en-tête (`scripts/<nom>.js`) ; les
+recettes de mesure sont dans [validation.md](validation.md). Un test
+(`tests/docs.test.js`) échoue si une commande de `package.json` manque ici.
+
+## Le parcours d'une idée
+
+1. **Cœur contre cœur** (quelques secondes) : `npm run duel -- core:<idée> core:stfig6`. Écarte ce qui
+   perd nettement ; un gain du cœur seul ne passe pas toujours dans l'arbre.
+2. **Le banc de similitude** (moins de 10 min) : `npm run banc -- "ismcts+widen=3+depth=5+core=<idée>@800"`.
+   Ses coups jugés par les visites de l'oracle, contre le 1.0 sur les mêmes positions :
+   « à pousser », « neutre » ou « à écarter ».
+3. **Les duels qui décident** (environ 1 000 parties) : `npm run banc -- <moteur> --queue`, puis
+   `npm run backlog` — quatre duels longs contre le 1.0, une pause entre deux.
+4. **Le verdict** : `npm run versus -- <moteur> <moteur du 1.0>` réunit les quatre duels par paires ;
+   une version se décide sur une fourchette basse au-dessus de 50 %.
+
+Les identifiants de moteur : un robot de la gamme (`experimental`, `stratege`, `basique`), un cœur
+seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un arbre
+(`ismcts+widen=3+depth=5+core=<nom>@800` : 800 itérations ; `@t800` : 800 ms par coup).
+
+## Jouer
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run play` | le serveur local du jeu, http://127.0.0.1:4742/ ; sert aussi les pages de `out/` | `replays/` (les parties jouées) |
+
+## Vérifier
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run check` | lint puis tests : avant chaque commit | — |
+| `npm run test` | les tests (`node --test tests/`) | — |
+| `npm run test:coverage` | les tests avec la couverture du code | — |
+| `npm run lint` | ESLint sur tout le projet (limites de complexité, voir `CLAUDE.md`) | — |
+| `npm run lint:fix` | ESLint, en corrigeant ce qui peut l'être tout seul | les fichiers corrigés |
+| `npm run fingerprint -- <moteur>,<moteur> [parties]` | une empreinte de tous les coups de parties fixes : une optimisation doit la laisser identique. Ex. `npm run fingerprint -- "ismcts+widen=3+depth=5+core=stfig6@150,greedy" 40` | — |
+
+## Mesurer un robot
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run duel -- <A> <B> [--quick \| --screen \| --long] [--games N] [--page] [--offset K] [--save]` | A contre B, chaque donne jouée des deux côtés, avec la fourchette à 95 % par paires ; s'arrête dès que c'est clair. `--page` : la règle du jeu (claim-end) ; `--offset` : d'autres donnes | `duels/` (les parties longues ou à pleine force) |
+| `npm run duel:long -- <A> <B>` | le même, profil long (20 min au plus) | `duels/` |
+| `npm run versus -- <A> <B> [--label nom]` | toutes les parties de A contre B gardées dans `duels/`, réunies par paires : score, par siège, par jokers, ce que A joue autrement | `data/versus.json` (avec `--label`) |
+| `npm run elo [-- --duels]` | le classement Elo des joueurs et de chaque version | — (lit `data/elo-duels.json`) |
+| `npm run bench [-- budget seeds moteur]` | l'étalon de la recherche : les puzzles les plus durs, trouvés ou non, en combien d'itérations | — |
+| `npm run ab -- <référence> <variante>… [--vs stratege] [--pairs 200]` | plusieurs moteurs contre le même adversaire, sur les mêmes donnes : l'écart de chaque variante | — |
+| `npm run core-test -- <moteur> [--from 23] [--games 200]` | un changement de jugement testé à partir d'un tour décisif de parties gardées | `data/core-tests.json` |
+| `npm run selfplay -- [moteur] [--minutes N]` | le moteur contre lui-même sur tous les cœurs, 20 min au plus | `selfplay/<moteur>.json` |
+| `npm run time-study` | plus de temps de réflexion donne-t-il un meilleur coup ? | — |
+
+## L'oracle et le banc
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run oracle -- [--minutes N] [--turns 15,16 \| 1-30] [--source A,B;C,D] [--out nom] [--runs 1\|2] [--keep 12] [--spread] [--rank cœur]` | l'oracle (un arbre sur tous les coups, 20 000 itérations) sur des positions de parties gardées. Aussi : `--summary`, `--confirm` (ses écarts rejoués jusqu'au tour 30), `--disagree <cœur>`, `--bench <cœur>,…` (le banc du cœur) | `oracle/positions*.jsonl`, `data/oracle-diffs*.json`, `data/oracle-confirm.json`, `data/oracle-bench.json` |
+| `npm run banc -- [<moteur>] [--against <moteur>] [--positions banc \| games] [--turns 1-12] [--threads N] [--queue] [--calibrate]` | le banc de similitude : une version jugée en minutes par les visites de l'oracle sur ses coups, contre le 1.0 sur les mêmes positions. `--positions games` : les coups de l'oracle dans ses parties entières | `data/banc.json`, `oracle/banc-cache.json` |
+| `npm run shadow -- [<moteur oracle>] [--engine <V1>]` | le V1 relit les parties de l'oracle : même coup, top 1/3/8 de son cœur, par tranche de tours | `data/oracle-shadow.json` |
+
+## Relire les replays
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run replays` | le bilan des parties enregistrées (`replays/`, `data/replays/`), tes coups comparés au Stratège | — |
+| `npm run games -- [filtres] [--reindex]` | les parties de robots gardées qui correspondent aux filtres ; `--reindex` reconstruit `duels/index.json` | `duels/index.json` (avec `--reindex`) |
+| `npm run branch -- [filtres] [--check \| --force random \| --engine A]` | des parties gardées rejouées à partir d'un tour | — |
+| `npm run error-impact -- [--turns 18-29] [--points]` | à quel tour une erreur coûte le plus | `data/error-impact.json` |
+| `npm run rules -- [--min 0.7]` | des règles tirées des parties : ce que font plus les gagnants que les perdants | `data/rules-mining.json` |
+| `npm run jokers` | où sont allés les jokers, et ce qu'il en est sorti | `data/jokers-mining.json` |
+| `npm run weak-wins` | les bornes gagnées avec des cartes faibles : des pièges ? | `data/weak-wins.json` |
+| `npm run luck` | était-ce les cartes ? Chaque donne rejouée par des robots | — |
+| `npm run pivots` | quand viennent les tournants d'une partie | — |
+| `npm run hiding` | l'Expérimental cache-t-il son jeu ? | — |
+| `npm run policy` | que vaut le robot qui joue les simulations de la recherche ? | — |
+| `npm run mine -- [fichier d'auto-jeu]` | les parties d'auto-jeu suivent-elles déjà les règles prouvées ? | — |
+
+## Puzzles
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run puzzles -- [--minutes N] [--count 50] [--add]` | des fins de partie résolues exactement, gagnées par peu de coups | `web/data/puzzles.json` |
+| `npm run puzzles:immediate` | des puzzles de milieu de partie, gagnés tout de suite par revendication | `web/data/puzzles.json` |
+
+## La nuit
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run backlog [-- --list \| --archive]` | les longs traitements de `data/backlog.json`, l'un après l'autre, 2 h au plus chacun ; un job `scheduled` attend son `notBefore`. **Le lanceur s'arrête s'il n'y a rien de prêt** : le lancer après l'heure | `backlog-runs/`, `data/backlog-done.json` |
+| `npm run cooldown -- [minutes]` | une pause entre deux jobs, avec la charge du CPU (et la température si LibreHardwareMonitor tourne) | — |
+
+## Pages et documents
+
+| Commande | Ce qu'elle fait | Écrit |
+| --- | --- | --- |
+| `npm run build` | toutes les statistiques des rapports, à partir de zéro (environ 3 min) ; `--reports-only` refait seulement les pages | `out/data.json`, `out/deck-options.html` |
+| `npm run build:quick` | le même, sur de petits échantillons, pour travailler la mise en page | `out/` |
+| `npm run changelog -- [1.1]` | le changelog d'une version de l'Expérimental (la page `src/report/changelog/<version>.html`) | `out/changelog-exp-<version>.html` et `out/artifact/` |
+| `npm run retrospective` | la rétrospective du robot, archivée | `out/OLD/retrospective.html` |
+| `npm run pdf` | les règles en PDF, avec Edge ou Chrome sans fenêtre | `regles/regles.pdf` |
+| `npm run bretagne` | une proposition de paquet (« Les 7 Menhirs ») : ses combinaisons énumérées | `out/lore-exploration.json` |

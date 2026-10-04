@@ -71,6 +71,8 @@ export const IDEA_WEIGHTS = Object.freeze({
   stay: 0.1,
   noAnswer: 0.1,
   noBlindOpen: 0.1,
+  noOpen: 0.1,
+  noRun: 0.1,
   counter: 0.15,
   exposed: 0.05,
   middleSolid: 0.15,
