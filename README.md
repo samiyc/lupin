@@ -68,6 +68,10 @@ npm run replays   # bilan des parties enregistrées
 npm run build     # recalcule toutes les statistiques → out/ (environ 3 min)
 npm run pdf       # regles/regles.html → regles/regles.pdf (Edge ou Chrome)
 npm run check     # lint + tests, avant chaque commit
+npm run backlog   # les longs traitements de la nuit, l'un après l'autre (data/backlog.json)
+npm run oracle -- --bench stfig6,lean   # le banc oracle : classe des cœurs comme les duels longs
+npm run shadow    # le V1 relit les parties jouées par l'oracle
+npm run versus -- <A> <B>   # deux moteurs comparés sur leurs parties gardées
 ```
 
 Aucun chiffre n'est tapé à la main dans les rapports : ils sortent tous de

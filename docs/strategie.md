@@ -1774,3 +1774,48 @@ le coup de l'oracle est dans le top 8 de son cœur 23 % du temps au début, 75-8
 **Pour la suite** : la base de référence part des tours 12 et plus (`ref-annotate-0` :
 l'oracle relit les parties du 1.0 aux tours 12-28, deux recherches, classées par le
 cœur du 1.0). Oracle contre Oracle attend : son début de partie n'est pas fiable.
+
+### Le matin du 04/10 : l'oracle bat le V1
+
+**La confirmation complète** (`oracle-confirm-1` et `-2`, les 2 300 écarts) : le coup
+de l'oracle tient **+2,4 ± 1,3 points** de plus que celui du 0.9 au tour 30, +4,6 ± 1,2
+de plus que le favori du cœur. Sûr de lui (marge ≥ 0,15, 1 269 écarts) : +3,5 ± 1,8 ;
+hésitant : +1,1 ± 1,8.
+
+**Oracle contre 1.0, réunis par paires** (`npm run versus`, pilote + deux passes) :
+
+| | Parties | Score | Fourchette par paires |
+| --- | --- | --- | --- |
+| l'oracle | 242 | **57,4 %** | 51,7 – 63,1 % |
+| l'oracle jusqu'au tour 12, puis le 1.0 | 132 | 59,1 % | 50,9 – 67,3 % |
+
+La fourchette basse passe 50 % : l'oracle est plus fort que le V1, il peut servir
+d'étalon — à partir du tour 10-12, où ses recherches sont stables. Et chercher
+large au début rapporte autant que chercher large partout.
+
+**Ce que l'oracle joue autrement** (sur ses 242 parties contre le 1.0) :
+- au début (tours 1-12), il **ouvre moins de bornes vierges** (44 % de ses coups
+  contre 60 %), **répond plus aux bornes adverses** (33 % contre 23 %), joue plus au
+  centre (45 % contre 36 %) et bâtit plus tôt ses brelans ;
+- au milieu, il répond encore plus (31 % contre 21 %), accepte des côtés sans figure
+  (20 % contre 11 %) et bâtit moins de suites de couleur (26 % contre 34 %) ;
+- à la fin, il joue à côté de ses bornes gagnées (41 % contre 31 %) ;
+- au tour 10, il a entamé 4,08 bornes contre 4,37 ; il en gagne 3,02 contre 2,69.
+
+Le constat sur les parties entières contredit en partie celui des écarts de la
+veille (l'oracle « répondait » moins dans ses écarts, d'où `noAnswer`) : ici, sur
+tous ses coups, il répond plus.
+
+**Pour copier l'oracle, deux pistes en tri ce matin** :
+- **regarder plus de coups** : son coup est dans le top 8 du cœur du 1.0 dans 66 % des
+  positions, le top 12 dans 77,6 %, le top 16 dans 84 % (au début : 42, 62 et 73 %).
+  Tris à temps égal : `candidates=12`, `candidates=16`, et 16 jusqu'au tour 12 ;
+- **jouer comme lui** : quatre cœurs sur le 1.0 (`v1ans1/2` : un bonus pour répondre ;
+  `v1blind1/2` : un coût pour ouvrir à l'aveugle), triés cœur contre cœur.
+
+**La vitesse** : deux optimisations à coups identiques (les trois empreintes inchangées) —
+la carte seule sur un côté vide calculée une fois par évaluation et non par borne vide,
+et plus de tableau alloué pour la clé de la mémoire des paires — font environ 5 % de
+temps en moins pour la recherche du 1.0. Le reste du temps est dans l'évaluation des
+côtés à une et deux cartes, déjà optimisée : un gain plus gros demanderait de revoir
+sa structure.
