@@ -473,6 +473,8 @@ function setOnly(key, value) {
   renderNotebook();
 }
 function forestOf(a) {
+  // No score to place (a cost, a count of positions): no axis, rather than an empty one that looks broken.
+  if (a.score === null && a.verdict !== "attente") return html("span", { class: "muted small" }, "pas un score");
   const svg = make("svg", { class: "forest", viewBox: "0 0 170 20", "aria-hidden": "true" });
   const scale = (v) => 5 + ((v - 35) / 30) * 160;
   const at = (v) => scale(Math.max(35, Math.min(65, isDelta(a) ? 50 + v : v)));
