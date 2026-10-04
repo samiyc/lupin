@@ -71,6 +71,7 @@ npm run check     # lint + tests, avant chaque commit
 npm run backlog   # les longs traitements de la nuit, l'un après l'autre (data/backlog.json)
 npm run oracle -- --bench stfig6,lean   # le banc oracle : classe des cœurs comme les duels longs
 npm run shadow    # le V1 relit les parties jouées par l'oracle
+npm run banc -- <moteur>   # trier une idée en quelques minutes : sa similitude avec l'oracle, contre le 1.0
 npm run versus -- <A> <B>   # deux moteurs comparés sur leurs parties gardées
 ```
 

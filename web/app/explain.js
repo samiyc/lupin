@@ -20,7 +20,8 @@ function sideText(side) {
 
 function candidateList(title, candidates, move) {
   if (!candidates || candidates.length === 0) return [];
-  const items = candidates.map((c) => {
+  // A duel's replay keeps 12 candidates; the panel shows the first 5.
+  const items = candidates.slice(0, 5).map((c) => {
     const chosen = move && c.card === move.card && c.border === move.border;
     return el("li", { class: chosen ? "chosen" : "" }, `${c.card} → borne ${c.border} · ${gain(c.gain)}`);
   });

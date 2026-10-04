@@ -1,0 +1,78 @@
+{
+ "note": "npm run banc -- --calibrate : les versions dont on connaît le vrai score en duels longs (ou en tri, contre le 1.0), chacune avec le budget de son duel. Les scores contre le 1.0 sont ramenés à l'échelle « contre le 0.9 » par le score du 1.0 contre le 0.9 (via).",
+ "via": 0.5615,
+ "versions": [
+  {
+   "name": "0.9",
+   "engine": "ismcts+widen=3+depth=5@800",
+   "score": 0.5,
+   "against": "0.9"
+  },
+  {
+   "name": "1.0 (stfig6)",
+   "engine": "ismcts+widen=3+depth=5+core=stfig6@800",
+   "score": 0.5615,
+   "against": "0.9"
+  },
+  {
+   "name": "stay4e10",
+   "engine": "ismcts+widen=3+depth=5+core=stay4e10@800",
+   "score": 0.5064,
+   "against": "0.9"
+  },
+  {
+   "name": "jkx",
+   "engine": "ismcts+widen=3+depth=5+core=jkx@800",
+   "score": 0.5174,
+   "against": "0.9"
+  },
+  {
+   "name": "jk2",
+   "engine": "ismcts+widen=3+depth=5+core=jk2@800",
+   "score": 0.5243,
+   "against": "0.9"
+  },
+  {
+   "name": "obex",
+   "engine": "ismcts+widen=3+depth=5+core=obex@800",
+   "score": 0.5052,
+   "against": "0.9"
+  },
+  {
+   "name": "lean",
+   "engine": "ismcts+widen=3+depth=5+core=lean@t800",
+   "score": 0.4191,
+   "against": "0.9"
+  },
+  {
+   "name": "nobonus",
+   "engine": "ismcts+widen=3+depth=5+core=nobonus@t800",
+   "score": 0.3973,
+   "against": "0.9"
+  },
+  {
+   "name": "candidates=12",
+   "engine": "ismcts+candidates=12+widen=3+depth=5+core=stfig6@t400",
+   "score": 0.382,
+   "against": "1.0"
+  },
+  {
+   "name": "candidates=16",
+   "engine": "ismcts+candidates=16+widen=3+depth=5+core=stfig6@t400",
+   "score": 0.425,
+   "against": "1.0"
+  },
+  {
+   "name": "16 jusqu'au 12",
+   "engine": "phase:13:ismcts+candidates=16+widen=3+depth=5+core=stfig6@t400/ismcts+widen=3+depth=5+core=stfig6@t400",
+   "score": 0.466,
+   "against": "1.0"
+  },
+  {
+   "name": "v1bj",
+   "engine": "ismcts+widen=3+depth=5+core=v1bj@t400",
+   "score": 0.46,
+   "against": "1.0"
+  }
+ ]
+}

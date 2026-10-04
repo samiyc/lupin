@@ -37,7 +37,17 @@ function oracleRuns(state, moves, { key, budget, ranking, runs }) {
 /** The core's ranking of every legal move: the 0.9's, or `rank`'s (`--rank stfig6`). */
 const rankingAt = (state, moves, rank) => coreRanking(strategistBot(createRng(1), rank ? coreOf(rank) : EXPERIMENT).scoreMoves(state, moves, { keepAll: true }));
 
-parentPort.on("message", async ({ row, turn, budget, runs, rank, at }) => {
+/** Each search's `keep` most visited moves and their share of its visits (`--keep 12`): the oracle's whole opinion, for the bench (banc.js). */
+function visitsOf(spec, searched, keep) {
+  if (!keep) return {};
+  const top = (scored) => {
+    const total = scored.reduce((sum, entry) => sum + entry.gain, 0) || 1;
+    return [...scored].sort((a, b) => b.gain - a.gain).slice(0, keep).map(({ move, gain }) => ({ move: labelOf(spec, move), share: Number((gain / total).toFixed(4)) }));
+  };
+  return { visits: searched.map(top) };
+}
+
+parentPort.on("message", async ({ row, turn, budget, runs, rank, keep, at }) => {
   const started = Date.now();
   const log = await loadGame(row);
   const state = stateAt(log, turn);
@@ -68,6 +78,7 @@ parentPort.on("message", async ({ row, turn, budget, runs, rank, at }) => {
     opens: { oracle: opensSide(state, mover, verdict.move), core: opensSide(state, mover, ranking[0]) },
     traits: { oracle: traitsOf(state, mover, hand, verdict.move), core: traitsOf(state, mover, hand, ranking[0]) },
     contexts: contextsOf(state, mover, row.handClasses?.[mover] ?? "medium", turn),
+    ...visitsOf(spec, searched, keep),
     ms: Date.now() - started,
   });
 });

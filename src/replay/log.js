@@ -60,11 +60,12 @@ function sideContext(state, player, border) {
   };
 }
 
-function candidatesOf(spec, scored) {
+/** A search's `kept` best moves with their gains: 5 on the page, 12 in a duel's replay (bot-games.js). */
+export function candidatesOf(spec, scored, kept = CANDIDATES_KEPT) {
   if (!scored) return null;
   return [...scored]
     .sort((a, b) => b.gain - a.gain)
-    .slice(0, CANDIDATES_KEPT)
+    .slice(0, kept)
     .map(({ move, gain }) => ({ card: formatCard(spec, move.card), border: move.border + 1, gain: Number(gain.toFixed(4)) }));
 }
 

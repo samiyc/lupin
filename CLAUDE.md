@@ -177,6 +177,13 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   long duels: on the 03/10 cores the top-8 agreement ranked them as the duels
   did (rank correlation 0.93). Its positions are turns 14-26 only, so it is
   blind to an idea that acts earlier (stay4e10).
+- **The similarity bench** (`npm run banc`, Sami, 04/10): an idea is sorted in under
+  10 minutes by how close its moves come to the oracle's on the bench's
+  positions (each searched twice by the oracle, its 12 most visited moves kept),
+  paired against the 1.0; `--queue` then sends its four long duels to the
+  backlog, which decide. Whether the bench ranks versions as the duels do is
+  `npm run banc -- --calibrate`; until that has answered, treat its verdict as a
+  hint, not a filter.
 - **The oracle is frozen as version 1** (`ORACLE.version`, written into every
   line it produces): its games and opinions are the reference for the V1 and
   later. A speed-up keeps the version only if its fingerprint is unchanged

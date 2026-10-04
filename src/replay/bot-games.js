@@ -3,7 +3,7 @@ import { engineFor } from "../sim/bots.js";
 import { createGame, legalMoves } from "../sim/game.js";
 import { gameRules } from "../sim/simulate.js";
 import { analyseGame } from "./game-analysis.js";
-import { finishLog, playLogged, startLog } from "./log.js";
+import { candidatesOf, finishLog, playLogged, startLog } from "./log.js";
 
 /**
  * Duels between bots, kept as replays (`npm run duel -- … --save`, and every
@@ -27,6 +27,8 @@ export const seatRng = (seed, seat) => createRng((Math.imul(seed, 2) + seat + 1)
  * searches): the replay keeps its best candidates, so a game played by the
  * oracle carries its opinion at every move (Sami, 03/10).
  */
+// A duel keeps 12 candidates a move, the page 5: the oracle's games then carry most of its opinion (banc.js).
+const DUEL_CANDIDATES = 12;
 const choice = (bot, state, moves) => (bot.pick ? bot.pick(state, moves) : { move: bot.choose(state, moves), scored: null });
 
 /** One game between `players` (engine ids), logged, with its analysis. */
@@ -37,7 +39,8 @@ function recordedGame(spec, rules, { players, seats, seed }) {
   while (!state.over) {
     const moves = legalMoves(state);
     const { move, scored } = moves.length > 0 ? choice(bots[state.current], state, moves) : { move: null, scored: null };
-    playLogged(log, state, move, scored);
+    const entry = playLogged(log, state, move, scored);
+    if (entry.candidates) entry.candidates = candidatesOf(spec, scored, DUEL_CANDIDATES);
   }
   finishLog(log, state);
   log.analysis = analyseGame(log);

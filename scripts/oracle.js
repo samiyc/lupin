@@ -58,10 +58,14 @@ const parseTurns = (text) => text.split(",").flatMap((part) => {
   return Array.from({ length: to - from + 1 }, (_, i) => from + i);
 });
 const turns = parseTurns(option("--turns", ORACLE.turns.join(",")));
-const source = option("--source", null)?.split(",") ?? null;
+// "A,B" or several pairs "A,B;C,D": the games played exactly by those two (A,A for a bot against itself).
+const source = option("--source", null)?.split(";").map((pair) => pair.split(",")) ?? null;
 const out = option("--out", null);
 const runs = Number(option("--runs", 0)) || null;
 const rank = option("--rank", null);
+const keep = Number(option("--keep", 0)) || null;
+/** `--spread`: a fixed shuffle by key, so a pass cut short by `--minutes` reads an even sample, not the first games only. */
+const shuffleKey = (task) => `${task.row.key}|${task.turn}`.split("").reduce((hash, char) => Math.imul(hash ^ char.charCodeAt(0), 0x01000193) >>> 0, 0x811c9dc5);
 const games = Number(option("--games", Infinity));
 const hands = option("--hands", null);
 const at = option("--at", null);
@@ -77,9 +81,14 @@ async function readPositions() {
 }
 
 /** The games to read: the 0.9 against itself first, then (`--all`) every other game between equals. */
+/** Did these two play this game, one per seat, by engine id or tag? */
+function playedExactly(row, [a, b]) {
+  const as = (seat, id) => row.players[seat] === id || row.engines[seat] === id;
+  return (as(0, a) && as(1, b)) || (as(0, b) && as(1, a));
+}
+
 async function rowsToRead() {
-  const playedBy = (row, engine) => row.engines.includes(engine) || row.players.includes(engine);
-  if (source) return (await readIndex()).filter((row) => source.every((engine) => playedBy(row, engine))).slice(0, games);
+  if (source) return (await readIndex()).filter((row) => source.some((pair) => playedExactly(row, pair))).slice(0, games);
   const rows = (await readIndex()).filter((row) => !row.players.some((player) => WEAK_BOTS.test(player)));
   const self = rows.filter((row) => row.players.every((player) => player === SELF));
   const others = args.includes("--all") ? rows.filter((row) => !self.includes(row)) : [];
@@ -175,8 +184,9 @@ async function hunt() {
   await mkdir(new URL("oracle/", ROOT), { recursive: true });
   const done = new Set((await readPositions()).map((entry) => `${entry.key}|${entry.turn}`));
   const tasks = (await rowsToRead())
-    .flatMap((row) => turnsOf(row).map((turn) => ({ row: { key: row.key, file: row.file, game: row.game, handClasses: row.handClasses }, turn, budget, runs, rank, at: at ?? "tours fixes" })))
+    .flatMap((row) => turnsOf(row).map((turn) => ({ row: { key: row.key, file: row.file, game: row.game, handClasses: row.handClasses }, turn, budget, runs, rank, keep, at: at ?? "tours fixes" })))
     .filter((task) => !done.has(`${task.row.key}|${task.turn}`));
+  if (args.includes("--spread")) tasks.sort((x, y) => shuffleKey(x) - shuffleKey(y));
   const started = Date.now();
   const tally = { done: 0, gaps: 0 };
   const cap = Number.isFinite(minutes) ? `${minutes} min au plus` : "sans limite de temps";
