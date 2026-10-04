@@ -66,6 +66,126 @@
       "doneAt": "2026-10-04T22:23",
       "minutes": 50,
       "output": "backlog-runs/2026-10-04-21-33_banc-calibrate.txt"
+    },
+    {
+      "id": "screen-dist1-root",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "dist1 (npm run distill : top 8 de l'oracle 59,6 → 66,0 % sur les positions gardées de côté) choisit seulement les coups examinés à la racine ; le 1.0 joue les simulations (dist1 perd en cœur contre cœur, 47,6 %). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-dist1",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-dist1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=dist1@1720\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "dist1 partout, à temps égal (16 % plus cher par itération : 1 720 itérations contre 2 000). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-infer",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-infer",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+infer=48@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "La main adverse devinée d'après son dernier coup (infer.js, 48 mains pondérées par le cœur à température 0,2), au même coût par itération. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-early4000",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-early4000",
+      "command": "npm run duel -- \"phase:13:ismcts+widen=3+depth=5+core=stfig6@4000/ismcts+widen=3+depth=5+core=stfig6@750\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "La même, plus marquée : 4 000 aux tours 1-12, 750 ensuite (l'oracle jusqu'au tour 12 : 59,1 %). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-lite",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-lite",
+      "command": "npm run duel -- \"phase:13:ismcts+candidates=16+widen=4+depth=5+core=stfig6@4000/ismcts+widen=3+depth=5+core=stfig6@750\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "L'oracle allégé au début : 16 candidats, 4 réponses, 4 000 itérations aux tours 1-12, puis le 1.0 à 750. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-early3000",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-early3000",
+      "command": "npm run duel -- \"phase:13:ismcts+widen=3+depth=5+core=stfig6@3000/ismcts+widen=3+depth=5+core=stfig6@1400\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "Plus de budget au début, même total par partie (6,5 coups cherchés par joueur avant le tour 13, 10,5 après) : 3 000 itérations aux tours 1-12, 1 400 ensuite. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-w10",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-w10",
+      "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "La largeur avec le budget : à 2 000 itérations, 10 candidats et 4 réponses par nœud (l'oracle gagne large avec ses 20 000). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
+      "status": "todo"
+    },
+    {
+      "id": "pause-screen-w12",
+      "command": "npm run cooldown -- 15",
+      "estimate": "15 min",
+      "limit": 17,
+      "why": "Une pause entre deux jobs (Sami, 04/10).",
+      "status": "todo"
+    },
+    {
+      "id": "screen-w12",
+      "command": "npm run duel -- \"ismcts+candidates=12+widen=4+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "45 min",
+      "limit": 60,
+      "why": "La même, 12 candidats. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
+      "status": "todo"
     }
   ]
 }

@@ -47,6 +47,7 @@
     "changelog": "node scripts/changelog.js",
     "versus": "node scripts/versus.js",
     "shadow": "node scripts/shadow.js",
+    "distill": "node scripts/distill.js",
     "cooldown": "node scripts/cooldown.js",
     "banc": "node scripts/banc.js"
   },

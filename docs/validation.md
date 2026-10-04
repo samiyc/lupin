@@ -233,7 +233,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | relire le résumé de l'oracle (data/oracle-diffs.json) | `npm run oracle -- --summary` |
 | confirmer les écarts de l'oracle par le jeu (suite jouée par le 0.9, jugée au tour 30) | `npm run oracle -- --confirm --seeds 4 --minutes 110` → `data/oracle-confirm.json` |
 | tester un moteur à arbre en journée | **400 itérations au plus** (`…@400`), sauf demande ; 800 pour valider, au backlog de nuit |
-| décider une version (Sami, 03/10 : un tri à 400 écarte une idée, il ne la promeut plus) | 4 duels longs à 800 (`--long --page --offset 0` à `3`, ~1 000 parties), puis `npm run versus -- <A> <B>` : la borne basse réunie par paires au-dessus de 50 % |
+| décider une version (Sami, 03/10 : un tri à 400 écarte une idée, il ne la promeut plus) | 4 duels longs (`--long --games 125 --page --offset 0` à `3`, 1 000 parties), à 2 000 itérations des deux côtés depuis le 04/10 (le V1 à battre : `…stfig6@2000`), puis `npm run versus -- <A> <B>` : la borne basse réunie par paires au-dessus de 50 % |
 | demander à l'oracle avant les duels longs : quel coup joue-t-il là où deux cœurs divergent ? | `npm run oracle -- --disagree <cœur> --minutes 40` → `data/oracle-disagree.json` |
 | le coup de l'oracle est-il entré dans le top 8 d'un cœur ? (sans nouvelle recherche, quelques s) | `npm run oracle -- --summary --core <cœur>` → `data/oracle-diffs.json` |
 | une pause entre deux jobs du backlog : 15 min, la charge du CPU et la température (si LibreHardwareMonitor tourne) | `npm run cooldown -- 15` (job `pause-N`) |

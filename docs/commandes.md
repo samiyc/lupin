@@ -9,11 +9,12 @@ recettes de mesure sont dans [validation.md](validation.md). Un test
 
 1. **Cœur contre cœur** (quelques secondes) : `npm run duel -- core:<idée> core:stfig6`. Écarte ce qui
    perd nettement ; un gain du cœur seul ne passe pas toujours dans l'arbre.
-2. **Le banc de similitude** (moins de 10 min) : `npm run banc -- "ismcts+widen=3+depth=5+core=<idée>@800"`.
+2. **Le banc de similitude** (moins de 10 min, un indice : sa valeur aux tours 4-10) : `npm run banc -- "ismcts+widen=3+depth=5+core=<idée>@800"`.
    Ses coups jugés par les visites de l'oracle, contre le 1.0 sur les mêmes positions :
    « à pousser », « neutre » ou « à écarter ».
-3. **Les duels qui décident** (environ 1 000 parties) : `npm run banc -- <moteur> --queue`, puis
-   `npm run backlog` — quatre duels longs contre le 1.0, une pause entre deux.
+3. **Les duels qui décident** (1 000 parties) : `npm run banc -- <moteur> --queue --against <V1>`, puis
+   `npm run backlog` — quatre duels longs de 250 parties, une pause entre deux. Depuis le 04/10, le labo
+   joue à 2 000 itérations : le V1 à battre est `ismcts+widen=3+depth=5+core=stfig6@2000`.
 4. **Le verdict** : `npm run versus -- <moteur> <moteur du 1.0>` réunit les quatre duels par paires ;
    une version se décide sur une fourchette basse au-dessus de 50 %.
 
@@ -59,6 +60,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | `npm run oracle -- [--minutes N] [--turns 15,16 \| 1-30] [--source A,B;C,D] [--out nom] [--runs 1\|2] [--keep 12] [--spread] [--rank cœur]` | l'oracle (un arbre sur tous les coups, 20 000 itérations) sur des positions de parties gardées. Aussi : `--summary`, `--confirm` (ses écarts rejoués jusqu'au tour 30), `--disagree <cœur>`, `--bench <cœur>,…` (le banc du cœur) | `oracle/positions*.jsonl`, `data/oracle-diffs*.json`, `data/oracle-confirm.json`, `data/oracle-bench.json` |
 | `npm run banc -- [<moteur>] [--against <moteur>] [--positions banc \| games] [--turns 1-12] [--threads N] [--queue] [--calibrate]` | le banc de similitude : une version jugée en minutes par les visites de l'oracle sur ses coups, contre le 1.0 sur les mêmes positions. `--positions games` : les coups de l'oracle dans ses parties entières | `data/banc.json`, `oracle/banc-cache.json` |
 | `npm run shadow -- [<moteur oracle>] [--engine <V1>]` | le V1 relit les parties de l'oracle : même coup, top 1/3/8 de son cœur, par tranche de tours | `data/oracle-shadow.json` |
+| `npm run distill -- [--minutes 15] [--threads N] [--rebuild]` | le cœur du 1.0 réglé sur l'oracle : tous ses poids bougent ensemble (SPSA) pour mettre le coup de l'oracle dans son top 8, jugé sur un quart des parties gardé de côté ; le résultat est le cœur `dist1` | `src/sim/distilled-core.js`, `data/distill.json`, `oracle/distill-cache.json` |
 
 ## Relire les replays
 

@@ -2,6 +2,7 @@ import { createRng } from "../core/random.js";
 import { createBudget } from "./budget.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
+import { inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
 import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
@@ -149,7 +150,7 @@ function descend(root, game, ctx) {
 
 /** One iteration: a deal, a walk down the tree, a rollout, and the result carried back up. */
 function iterate(root, ctx) {
-  const game = determinize(ctx.state, ctx.player, ctx.deals);
+  const game = determinize(ctx.state, ctx.player, ctx.deals, ctx.hands && pickHand(ctx.hands, ctx.deals));
   const { path, played } = descend(root, game, ctx);
   const winner = game.over ? game.winner : rolloutOf(game, ctx, played);
   for (const { child, mover } of path) {
@@ -166,13 +167,15 @@ function iterate(root, ctx) {
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
 export function createIsmcts(state, scored, { policy, seed, ...settings }) {
-  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null } = { ...ISMCTS, ...settings };
+  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null, infer = 0 } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
   const rootMoves = [...scored]
     .sort((a, b) => b.gain - a.gain)
     .slice(0, candidates)
     .map(({ move }) => move);
-  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null };
+  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
+  // `infer`: the opponent's hand guessed from their last move (infer.js), from a seed of its own.
+  if (infer > 0) ctx.hands = inferredHands(state, ctx.judge, createRng(seed ^ 0x5bd1e995), infer);
   const root = newNode();
   let iterations = 0;
   const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
@@ -240,7 +243,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300` (`createIsmcts`), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
  * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
@@ -251,7 +254,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

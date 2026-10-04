@@ -30,19 +30,33 @@ export function cloneState(state) {
 
 /**
  * The game as `player` might find it: their own hand and the board as they
- * are, the cards they cannot see shuffled into the opponent's hand and the pile.
+ * are, the cards they cannot see shuffled into the opponent's hand and the pile
+ * — or, given `hand` (a guess of the opponent's, infer.js), that hand and the
+ * rest shuffled into the pile.
  */
-export function determinize(state, player, rng) {
-  const hidden = unseenCards(state, player).entries.flatMap(([card, count]) => Array.from({ length: count }, () => card));
-  rng.shuffle(hidden);
+export function determinize(state, player, rng, hand = null) {
+  const unseen = unseenCards(state, player).entries.flatMap(([card, count]) => Array.from({ length: count }, () => card));
   const copy = cloneState(state);
   // Rollouts settle borders at the end: proving claims on every simulated move
   // would cost a third of the search speed, as the certainty in 0.6 did.
   if (copy.endMode.startsWith("claim")) copy.endMode = "final";
+  if (hand) {
+    copy.hands[1 - player] = [...hand];
+    copy.pile = rng.shuffle(withoutCards(unseen, hand));
+    return copy;
+  }
+  rng.shuffle(unseen);
   const theirs = copy.hands[1 - player].length;
-  copy.hands[1 - player] = hidden.slice(0, theirs);
-  copy.pile = hidden.slice(theirs);
+  copy.hands[1 - player] = unseen.slice(0, theirs);
+  copy.pile = unseen.slice(theirs);
   return copy;
+}
+
+/** The cards of `all` left once one of each card of `taken` is removed. */
+export function withoutCards(all, taken) {
+  const rest = [...all];
+  for (const card of taken) rest.splice(rest.indexOf(card), 1);
+  return rest;
 }
 
 /** Plays `game` to its end with `policy` on both sides; returns the winner (or null). */

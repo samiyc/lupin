@@ -1978,3 +1978,66 @@ oracle, **0,61** sur la valeur au début. Sur les 7 versions à 800 itérations 
 Conséquence : le verdict du banc reste un indice, jamais un filtre (`CLAUDE.md`,
 `docs/validation.md`) ; sa valeur aux tours 4-10 est celle à lire. Le parcours d'une
 idée reste cœur contre cœur, tri d'arbre (400 parties), puis quatre duels longs.
+
+## Vers 55 % contre la V1 : le labo à 2 000 itérations (04/10, nuit)
+
+**La demande** (Sami) : des pistes qui pourraient atteindre 55 % contre la V1. Le cœur
+est plus rapide : le labo passe de 800 à **2 000 itérations par coup** (environ 2 s), des
+deux côtés. Le V1 à battre est `ismcts+widen=3+depth=5+core=stfig6@2000`. Une version se
+décide toujours sur 4 duels longs, désormais de 250 parties chacun
+(`--long --games 125 --page --offset 0..3`), réunis par `npm run versus`.
+
+**Ce que valent 2,5 fois plus d'itérations** : le V1 à 2 000 contre le V1 à 800, 250
+parties, **55,2 % (49,8 – 60,6)**, en 19 min sur 18 fils. Le 1.0 profite du calcul bien
+plus que le 0.9 (1 600 contre 800 : 52,1 %) : à ce niveau, chaque gain de vitesse est un
+gain de force. À 2 000 contre 2 000, un duel de 250 parties prend environ 27 min, un tri
+de 400 parties environ 43 min.
+
+**Le budget au début, au même total** : une partie compte en moyenne 6,5 coups cherchés
+par joueur avant le tour 13 et 10,5 après (36,5 tours). Les variantes `phase:13:…@3000/…@1400`
+et `phase:13:…@4000/…@750` dépensent donc autant qu'à 2 000 partout.
+
+**Le plan** (dans l'ordre, chaque étape triée sur 400 parties puis, si elle tient, ses
+4 duels longs) :
+1. sans code : la largeur à 2 000 (`candidates=10/12+widen=4`), plus de budget au début,
+   l'oracle allégé au début (`candidates=16+widen=4` jusqu'au tour 12) ;
+2. `npm run distill` : tous les poids du cœur réglés ensemble sur les coups de l'oracle ;
+3. `+infer=N` : la main adverse devinée d'après son dernier coup, au lieu d'un tirage
+   uniforme ;
+4. les gagnants combinés, puis les 4 duels longs.
+
+**Le cœur appris sur l'oracle** (`npm run distill`, 15 min sur 18 fils, 218 manches de SPSA) :
+les 13 poids de `src/sim/distill.js` bougent ensemble pour mettre le coup de l'oracle dans le
+top 8 du cœur, sur ses 6 821 positions stables (`oracle/positions*.jsonl`), un quart des
+parties gardé de côté.
+
+| Sur les 1 580 positions gardées de côté | top 1 | top 3 | top 8 |
+| --- | --- | --- | --- |
+| le cœur du 1.0 (`stfig6`) | 9,9 % | 27,5 % | 59,6 % |
+| **`dist1`** | 11,1 % | 32,2 % | **66,0 %** |
+
+- Ce qui bouge le plus : `stay` 0,6 → 1,0, le coût d'un joker 0,08 → 0,04 (l'oracle joue
+  plus de jokers), la température 0,35 → 0,28, `junk` 0 → 0,25, les bonus du milieu divisés
+  par deux (`openMiddle` 0,1 → 0,03, `middleSolid`/`middleWeak` 0,15 → 0,08).
+- Le gain de top 8 (+6,4 points) vaut la moitié de celui du 0.9 au 1.0 (+12 sur ce banc).
+- **En cœur contre cœur, il perd** : 47,8 / 47,4 / 47,9 %. Le réglage porte sur les coups que
+  l'arbre examine, pas sur le cœur qui joue seul. Deux tris dans l'arbre : `dist1` à la
+  racine seulement (`+shortlist=dist1`, le 1.0 joue les simulations), et `dist1` partout à
+  temps égal (16 % plus cher par itération : 1 720 itérations contre 2 000).
+
+**La main adverse devinée** (`+infer=48`, `src/sim/infer.js`) : au début de chaque recherche,
+48 mains sont tirées pour l'adversaire, chacune pondérée par la vraisemblance de son dernier
+coup selon le cœur (un softmax à 0,2 : le 1er et le 8e coup du cœur sont à environ 0,4
+d'écart). Chaque itération tire une de ces mains, la pioche avec le reste. Approximations :
+la carte piochée après ce coup compte comme déjà en main ; un coup qui a revendiqué une
+borne n'est pas lu. Même coût par itération que le V1 ; `infer=0` (par défaut) laisse
+l'empreinte du 1.0 intacte (`152e2a9c9d66170c`).
+
+**Le coût par itération des variantes** (µs, 4 parties à 300) : V1 960, `candidates=10/12/16+widen=4`
+917 – 926 (un peu moins cher : les comparer au même nombre d'itérations est prudent),
+`dist1` 1 115, `infer=48` 951.
+
+**La file de la nuit** (`npm run backlog -- --threads 18`, 8 tris de 400 parties, environ
+45 min chacun, une pause entre deux) : `dist1` à la racine, `dist1` partout, `infer`, puis
+le budget au début (4 000 / 750), l'oracle allégé, le budget au début (3 000 / 1 400), la
+largeur (10 puis 12 candidats).

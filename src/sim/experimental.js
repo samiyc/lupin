@@ -1,3 +1,4 @@
+import { DISTILLED_CORE } from "./distilled-core.js";
 import { IDEA_WEIGHTS, STRATEGIST_IDEAS } from "./ideas.js";
 import { SEARCH } from "./search.js";
 import { HABITS, STRATEGY } from "./strategist.js";
@@ -204,6 +205,14 @@ export const CORES = Object.freeze({
   // The two that held in core against core (04/10), together.
   v1bj: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", "noBlindOpen", "junk"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, noBlindOpen: 0.1, junk: -0.2 } },
   v1freejk: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
+  // The 1.0's core with every weight tuned at once on the oracle's moves (npm run distill, distill.js; Sami, 04/10).
+  dist1: {
+    ...EXPERIMENT,
+    ideas: [...EXPERIMENT.ideas, "stay", ...DISTILLED_CORE.ideas],
+    strategy: { ...EXPERIMENT.strategy, ...DISTILLED_CORE.strategy },
+    weights: { ...EXPERIMENT.weights, stayFigure: 1, ...DISTILLED_CORE.weights },
+    params: DISTILLED_CORE.params,
+  },
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
   blind1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noBlindOpen"], weights: { ...EXPERIMENT.weights, noBlindOpen: 0.1 } },

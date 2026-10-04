@@ -167,9 +167,11 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
 - **A 400 screen rejects, it never promotes** (Sami, 03/10): three 10-minute
   screens promoted ideas that did not hold (stay 0.4 at 58.3 %, connector from
   turn 15 at 54.5 %, stay4e10 at 55.4 % — 48.5 % and 50.6 % once measured
-  properly). A version is decided on **4 deck sets of long duels at 800**
-  (~1 000 games, `--offset 0` to `3`), pooled over the deck pairs with
-  `npm run versus`, the lower bound above 50 %. Before spending those, ask the
+  properly). A version is decided on **4 deck sets of long duels**
+  (`--long --games 125 --page --offset 0` to `3`, 1 000 games), pooled over
+  the deck pairs with `npm run versus`, the lower bound above 50 %. **Since
+  04/10 the lab plays at 2 000 iterations** (Sami: the core got faster), both
+  sides: `…stfig6@2000` is the V1 to beat; the 1.0's own figures stay at 800. Before spending those, ask the
   oracle: `npm run oracle -- --disagree <core>` says which of the two cores'
   favourites it plays where they differ, `--summary --core <core>` whether the
   oracle's move entered the core's top 8 (stfig6: 54 % → 66 %).

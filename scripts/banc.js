@@ -19,9 +19,10 @@ import { runPool } from "./lib/pool.js";
  *   moves in its whole games (oracle against the 1.0, and the oracle up to
  *   turn 12), judged by the candidates the replay kept — one search, its 5 (or
  *   12) most visited moves; `--turns 1-12` keeps the start of the game.
- * - `--queue`: the version's four long duels against the 1.0 go to the
- *   backlog (`--long --page --offset 0..3`, a pause between two): the second
- *   step, the one that decides.
+ * - `--queue`: the version's four long duels against `--against` (the 1.0
+ *   by default; the lab plays it at 2 000 iterations since 04/10) go to the
+ *   backlog, 250 games each (`--long --games 125 --page --offset 0..3`, a
+ *   pause between two): the second step, the one that decides.
  * - `--calibrate`: every version of data/banc-calibration.json, whose real
  *   duel scores are known — does the bench rank them as the duels do?
  *
@@ -143,7 +144,7 @@ async function queueDuels() {
   const name = (/core=(\w+)/.exec(tested)?.[1] ?? "variante").replace(/[^\w-]/g, "");
   const pause = (n) => ({ id: `pause-${name}-${n}`, command: "npm run cooldown -- 15", estimate: "15 min", limit: 17, why: "Une pause entre deux jobs (Sami, 04/10).", status: "todo" });
   const offset = (n) => (n ? ` --offset ${n}` : "");
-  const duel = (n) => ({ id: `duel-${name}-${n}`, command: `npm run duel -- "${tested}" "${V1}" --long --page${offset(n)}`, estimate: "20 min", limit: 30, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo" });
+  const duel = (n) => ({ id: `duel-${name}-${n}`, command: `npm run duel -- "${tested}" "${against}" --long --games 125 --page${offset(n)}`, estimate: "30 min", limit: 45, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo" });
   const jobs = [0, 1, 2, 3].flatMap((n) => (n === 0 ? [duel(n)] : [pause(n), duel(n)]));
   backlog.jobs.push(...jobs);
   // The backlog keeps its own two-space indent.
