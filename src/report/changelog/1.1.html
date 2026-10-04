@@ -544,7 +544,7 @@ function forestOf(a) {
 /** A measurement that is not a win rate or a gap in points (a cost, positions read): no score, no forest. */
 const hasScore = (a) => a.score !== null || a.verdict === "attente";
 function scoreText(a) {
-  if (!hasScore(a)) return "";
+  // No score: a dash in the score column, right-aligned with the scores.
   if (a.score === null) return "—";
   if (isDelta(a)) return `Δ ${a.score > 0 ? "+" : ""}${fr(a.score)} pt`;
   return `${fr(a.score)} %`;
