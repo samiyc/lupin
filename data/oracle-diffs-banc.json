@@ -1,0 +1,431 @@
+{
+ "built": "2026-10-04",
+ "engine": "ismcts+candidates=99+widen=6+depth=5+smart=1",
+ "budget": 20000,
+ "positions": 3721,
+ "gaps": 1591,
+ "byTurn": {
+  "tour 4": {
+   "positions": 143,
+   "checked": 143,
+   "stable": 19,
+   "gaps": 19,
+   "unseen": 13
+  },
+  "tour 5": {
+   "positions": 141,
+   "checked": 141,
+   "stable": 41,
+   "gaps": 34,
+   "unseen": 25
+  },
+  "tour 6": {
+   "positions": 146,
+   "checked": 146,
+   "stable": 41,
+   "gaps": 34,
+   "unseen": 28
+  },
+  "tour 7": {
+   "positions": 142,
+   "checked": 142,
+   "stable": 64,
+   "gaps": 52,
+   "unseen": 39
+  },
+  "tour 8": {
+   "positions": 131,
+   "checked": 131,
+   "stable": 63,
+   "gaps": 41,
+   "unseen": 31
+  },
+  "tour 9": {
+   "positions": 136,
+   "checked": 136,
+   "stable": 63,
+   "gaps": 52,
+   "unseen": 34
+  },
+  "tour 10": {
+   "positions": 129,
+   "checked": 129,
+   "stable": 72,
+   "gaps": 48,
+   "unseen": 37
+  },
+  "tour 11": {
+   "positions": 136,
+   "checked": 136,
+   "stable": 66,
+   "gaps": 58,
+   "unseen": 35
+  },
+  "tour 12": {
+   "positions": 134,
+   "checked": 134,
+   "stable": 84,
+   "gaps": 64,
+   "unseen": 36
+  },
+  "tour 13": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 82,
+   "gaps": 66,
+   "unseen": 40
+  },
+  "tour 14": {
+   "positions": 133,
+   "checked": 133,
+   "stable": 81,
+   "gaps": 72,
+   "unseen": 34
+  },
+  "tour 15": {
+   "positions": 128,
+   "checked": 128,
+   "stable": 90,
+   "gaps": 70,
+   "unseen": 37
+  },
+  "tour 16": {
+   "positions": 135,
+   "checked": 135,
+   "stable": 93,
+   "gaps": 75,
+   "unseen": 42
+  },
+  "tour 17": {
+   "positions": 141,
+   "checked": 141,
+   "stable": 101,
+   "gaps": 82,
+   "unseen": 41
+  },
+  "tour 18": {
+   "positions": 136,
+   "checked": 136,
+   "stable": 89,
+   "gaps": 75,
+   "unseen": 41
+  },
+  "tour 19": {
+   "positions": 131,
+   "checked": 131,
+   "stable": 88,
+   "gaps": 66,
+   "unseen": 33
+  },
+  "tour 20": {
+   "positions": 144,
+   "checked": 144,
+   "stable": 94,
+   "gaps": 70,
+   "unseen": 53
+  },
+  "tour 21": {
+   "positions": 138,
+   "checked": 138,
+   "stable": 94,
+   "gaps": 66,
+   "unseen": 36
+  },
+  "tour 22": {
+   "positions": 144,
+   "checked": 144,
+   "stable": 92,
+   "gaps": 70,
+   "unseen": 43
+  },
+  "tour 23": {
+   "positions": 143,
+   "checked": 143,
+   "stable": 93,
+   "gaps": 73,
+   "unseen": 42
+  },
+  "tour 24": {
+   "positions": 129,
+   "checked": 129,
+   "stable": 78,
+   "gaps": 61,
+   "unseen": 37
+  },
+  "tour 25": {
+   "positions": 132,
+   "checked": 132,
+   "stable": 80,
+   "gaps": 50,
+   "unseen": 35
+  },
+  "tour 26": {
+   "positions": 133,
+   "checked": 133,
+   "stable": 91,
+   "gaps": 73,
+   "unseen": 47
+  },
+  "tour 27": {
+   "positions": 132,
+   "checked": 132,
+   "stable": 71,
+   "gaps": 46,
+   "unseen": 31
+  },
+  "tour 28": {
+   "positions": 149,
+   "checked": 149,
+   "stable": 100,
+   "gaps": 59,
+   "unseen": 36
+  },
+  "tour 29": {
+   "positions": 148,
+   "checked": 148,
+   "stable": 97,
+   "gaps": 58,
+   "unseen": 41
+  },
+  "tour 30": {
+   "positions": 160,
+   "checked": 160,
+   "stable": 95,
+   "gaps": 57,
+   "unseen": 36
+  }
+ },
+ "byPlayer": {
+  "a commencé": {
+   "positions": 1775,
+   "checked": 1775,
+   "stable": 1030,
+   "gaps": 773,
+   "unseen": 469
+  },
+  "second": {
+   "positions": 1946,
+   "checked": 1946,
+   "stable": 1092,
+   "gaps": 818,
+   "unseen": 514
+  }
+ },
+ "traits": [
+  {
+   "trait": "bâtit un côté ni brelan ni suite de couleur",
+   "oracle": 0.2916404776869893,
+   "core": 0.01508485229415462
+  },
+  {
+   "trait": "bâtit une suite de couleur",
+   "oracle": 0.23067253299811438,
+   "core": 0.3997485857950974
+  },
+  {
+   "trait": "joker",
+   "oracle": 0.15021998742928974,
+   "core": 0.010685103708359522
+  },
+  {
+   "trait": "complète un côté (3e carte)",
+   "oracle": 0.278441231929604,
+   "core": 0.14267756128221246
+  },
+  {
+   "trait": "carte moyenne (4-7)",
+   "oracle": 0.30986800754242616,
+   "core": 0.426147077309868
+  },
+  {
+   "trait": "bâtit un brelan",
+   "oracle": 0.19044626021370206,
+   "core": 0.3035826524198617
+  },
+  {
+   "trait": "répond plus bas",
+   "oracle": 0.02702702702702703,
+   "core": 0.09868007542426147
+  },
+  {
+   "trait": "carte faible (3-)",
+   "oracle": 0.22878692646134507,
+   "core": 0.29918290383406665
+  },
+  {
+   "trait": "ouvre avec de quoi faire un brelan",
+   "oracle": 0.04714016341923319,
+   "core": 0.11376492771841609
+  },
+  {
+   "trait": "ouvre une borne vierge",
+   "oracle": 0.030798240100565682,
+   "core": 0.09490886235072282
+  },
+  {
+   "trait": "pose une 2e carte",
+   "oracle": 0.5216844751728472,
+   "core": 0.5757385292269013
+  },
+  {
+   "trait": "carte forte (8+)",
+   "oracle": 0.31112507856693905,
+   "core": 0.26398491514770583
+  },
+  {
+   "trait": "face à un côté adverse plein",
+   "oracle": 0.03834066624764299,
+   "core": 0.07919547454431175
+  },
+  {
+   "trait": "ouvre avec de quoi faire une suite de couleur",
+   "oracle": 0.026398491514770583,
+   "core": 0.06599622878692646
+  },
+  {
+   "trait": "au centre (bornes 3-5)",
+   "oracle": 0.44751728472658703,
+   "core": 0.42803268384663734
+  },
+  {
+   "trait": "sur un bord (borne 1 ou 7)",
+   "oracle": 0.27467001885606535,
+   "core": 0.29352608422375864
+  },
+  {
+   "trait": "répond à une borne adverse",
+   "oracle": 0.16907605279698304,
+   "core": 0.18667504714016342
+  },
+  {
+   "trait": "à côté d'une borne perdue",
+   "oracle": 0.0666247642991829,
+   "core": 0.08108108108108109
+  },
+  {
+   "trait": "surenchérit d'un cran",
+   "oracle": 0.018856065367693273,
+   "core": 0.006285355122564425
+  },
+  {
+   "trait": "ouvre sans suite prévue en main",
+   "oracle": 0.10999371464487744,
+   "core": 0.12067881835323696
+  },
+  {
+   "trait": "à côté d'une borne gagnée",
+   "oracle": 0.08233815210559396,
+   "core": 0.07165304839723445
+  }
+ ],
+ "ms": {
+  "4": {
+   "positions": 143,
+   "ms": 131511
+  },
+  "5": {
+   "positions": 141,
+   "ms": 124458
+  },
+  "6": {
+   "positions": 146,
+   "ms": 120749
+  },
+  "7": {
+   "positions": 142,
+   "ms": 113173
+  },
+  "8": {
+   "positions": 131,
+   "ms": 107013
+  },
+  "9": {
+   "positions": 136,
+   "ms": 101857
+  },
+  "10": {
+   "positions": 129,
+   "ms": 95447
+  },
+  "11": {
+   "positions": 136,
+   "ms": 89202
+  },
+  "12": {
+   "positions": 134,
+   "ms": 84376
+  },
+  "13": {
+   "positions": 127,
+   "ms": 76526
+  },
+  "14": {
+   "positions": 133,
+   "ms": 73357
+  },
+  "15": {
+   "positions": 128,
+   "ms": 67374
+  },
+  "16": {
+   "positions": 135,
+   "ms": 61387
+  },
+  "17": {
+   "positions": 141,
+   "ms": 55915
+  },
+  "18": {
+   "positions": 136,
+   "ms": 52728
+  },
+  "19": {
+   "positions": 131,
+   "ms": 46281
+  },
+  "20": {
+   "positions": 144,
+   "ms": 42774
+  },
+  "21": {
+   "positions": 138,
+   "ms": 38702
+  },
+  "22": {
+   "positions": 144,
+   "ms": 35048
+  },
+  "23": {
+   "positions": 143,
+   "ms": 31833
+  },
+  "24": {
+   "positions": 129,
+   "ms": 28105
+  },
+  "25": {
+   "positions": 132,
+   "ms": 25834
+  },
+  "26": {
+   "positions": 133,
+   "ms": 21854
+  },
+  "27": {
+   "positions": 132,
+   "ms": 20021
+  },
+  "28": {
+   "positions": 149,
+   "ms": 17377
+  },
+  "29": {
+   "positions": 148,
+   "ms": 15231
+  },
+  "30": {
+   "positions": 160,
+   "ms": 12214
+  }
+ }
+}
