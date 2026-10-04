@@ -194,8 +194,13 @@ export const CORES = Object.freeze({
   lean: { ...EXPERIMENT, habits: ["suited"], ideas: ["certain"] },
   nobonus: { ...EXPERIMENT, habits: [], ideas: ["certain"] },
   // On the 1.0 (04/10): in 242 whole games the oracle answers the opponent's borders more (33 % of its early moves against 23 %) and opens
-  // untouched ones less (44 % against 60 %). `noAnswer` below 0 is a bonus for answering; `noBlindOpen` costs a blind opening.
-  ...Object.fromEntries([["v1ans1", "noAnswer", -0.1], ["v1ans2", "noAnswer", -0.2], ["v1blind1", "noBlindOpen", 0.1], ["v1blind2", "noBlindOpen", 0.2]].map(([name, idea, weight]) => [name, { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", idea], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, [idea]: weight } }])),
+  // untouched ones less (44 % against 60 %). `noAnswer` below 0 is a bonus for answering; `noBlindOpen` costs a blind opening;
+  // `junk` below 0 accepts sides with no figure (37 % of its gaps against 2 %, turns 12-28).
+  ...Object.fromEntries([["v1ans1", "noAnswer", -0.1], ["v1ans2", "noAnswer", -0.2], ["v1blind1", "noBlindOpen", 0.1], ["v1blind2", "noBlindOpen", 0.2], ["v1jneg1", "junk", -0.1], ["v1jneg2", "junk", -0.2]].map(([name, idea, weight]) => [name, { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", idea], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, [idea]: weight } }])),
+  // In its gaps against the 1.0 core (turns 12-28), the oracle plays a joker 14 % of the time against 2 %: the 1.0 without the joker habit.
+  // The two that held in core against core (04/10), together.
+  v1bj: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", "noBlindOpen", "junk"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, noBlindOpen: 0.1, junk: -0.2 } },
+  v1freejk: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
   blind1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noBlindOpen"], weights: { ...EXPERIMENT.weights, noBlindOpen: 0.1 } },
