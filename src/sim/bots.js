@@ -73,7 +73,7 @@ function views(state) {
   const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
   // Each view gets its own memo: the same pair is judged many times in one scoring. Written out field by field:
   // built on every scoring of every rollout, a spread costs more than it reads.
-  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map(), params: undefined };
+  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map(), params: undefined, alone: undefined };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     valuer,
@@ -212,9 +212,19 @@ function withoutCard(state, context, card) {
   hand.splice(hand.indexOf(card), 1);
   // The same fields as the view it comes from (`views`), the hand aside: written out, not spread.
   const { valuer, unseen, draws, jokerAllowed, memo, params } = context;
-  const view = { valuer, unseen, hand, draws, jokerAllowed, memo, withoutCard: context.withoutCard, params };
+  const view = { valuer, unseen, hand, draws, jokerAllowed, memo, withoutCard: context.withoutCard, params, alone: undefined };
   context.withoutCard?.set(card, view);
   return view;
+}
+
+/**
+ * The card alone on an empty side, with the rest of the hand: the same for
+ * every empty border, so worked out once per card and scoring (`alone` on
+ * the card's view) — early in a game most borders are empty.
+ */
+function aloneOf(view, card) {
+  if (view.alone === undefined) view.alone = sidePotential([card], view);
+  return view.alone;
 }
 
 function moveGain(state, { card, border }, context, threat) {
@@ -222,7 +232,7 @@ function moveGain(state, { card, border }, context, threat) {
   const side = state.borders[border].sides[state.current];
   const params = context.params ?? BOT_PARAMS;
   const before = winChance(sidePotential(side, withHand), threat, params);
-  const after = winChance(sidePotential([...side, card], withHand), threat, params);
+  const after = winChance(side.length === 0 ? aloneOf(withHand, card) : sidePotential([...side, card], withHand), threat, params);
   return after - before - cardCost(state.spec, card, params);
 }
 
