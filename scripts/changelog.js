@@ -21,6 +21,7 @@ import { BOT_LINEUP } from "../src/config/bots.js";
  * - the puzzles: web/data/puzzles.json;
  * - the oracle where two cores disagree: data/oracle-disagree.json, if read;
  * - the oracle bench across cores: data/oracle-bench.json, if built;
+ * - the oracle against the V1: data/versus.json (« oracle »), data/oracle-shadow.json, data/oracle-diffs-v1ref.json;
  * - the commits since `since`: git log.
  * Rebuilt after the night's jobs, the page picks up their times by itself;
  * their scores go into the version's data file.
@@ -73,6 +74,10 @@ const data = {
   puzzles: puzzleKinds((await read("web/data/puzzles.json")).puzzles),
   disagree: await read("data/oracle-disagree.json").catch(() => null),
   bench: await read("data/oracle-bench.json").catch(() => null),
+  // The oracle against the V1, move for move: its whole games (versus), the V1 replaying them (shadow), its gaps in the V1's games.
+  versus: await read("data/versus.json").then((file) => file.duels.oracle ?? null, () => null),
+  shadow: await read("data/oracle-shadow.json").then((file) => Object.values(file.reads)[0] ?? null, () => null),
+  v1ref: await read("data/oracle-diffs-v1ref.json").then(({ positions, gaps, traits }) => ({ positions, gaps, traits }), () => null),
 };
 
 // Each version has its own page (src/report/changelog/<version>.html), started from the previous one.

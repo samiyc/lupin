@@ -175,6 +175,11 @@ td.fam { font-size: 0.82rem; color: var(--ink-2); }
 .result { border-radius: 10px; padding: 10px 12px; background: var(--wash); font-size: 0.94rem; }
 .stepper { display: flex; gap: 6px; flex-wrap: wrap; }
 
+/* Coup pour coup */
+.small-title { font: 600 1rem var(--body); margin: 0 0 8px; }
+#compare .panel + .panel { margin-top: 14px; }
+.board-table { max-width: 520px; margin-top: 10px; }
+
 /* Jobs */
 .diagram-box { overflow-x: auto; background: var(--wash); border-radius: 10px; padding: 8px; }
 .diagram { width: 100%; min-width: 760px; height: auto; display: block; }
@@ -193,7 +198,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     <p class="lead" id="lead"></p>
     <div class="tiles" id="tiles"></div>
     <nav class="toc" aria-label="Sections">
-      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#suite">La suite</a>
+      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#compare">Coup pour coup</a><a href="#suite">La suite</a>
     </nav>
   </div>
 </header>
@@ -253,9 +258,35 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     </div>
   </section>
 
+  <section id="compare" aria-labelledby="t-compare">
+    <div>
+      <p class="eyebrow">IV · L'oracle et le V1</p>
+      <h2 id="t-compare">Coup pour coup</h2>
+    </div>
+    <p>Trois lectures des mêmes coups. D'abord, à chaque coup de l'oracle, ce qu'aurait joué le 1.0 : le même coup, ou au moins un coup que son arbre regarde (le top 8 de son cœur). Puis, sur l'ensemble des parties, ce que chacun joue le plus souvent, phase par phase. Enfin, là où l'oracle s'écarte vraiment du cœur du 1.0, ce qui distingue son coup.</p>
+    <div class="panel">
+      <h3 class="small-title">Le 1.0 joue-t-il le coup de l'oracle ?</h3>
+      <div class="scroll"><svg class="chart" id="agree" viewBox="0 0 640 260" role="img" aria-label="Part des coups de l'oracle que le 1.0 joue aussi, ou regarde, par tranche de tours"></svg></div>
+      <div class="legend" id="agree-legend"></div>
+      <p class="small" id="agree-note"></p>
+    </div>
+    <div class="panel">
+      <h3 class="small-title">Ce que chacun joue, phase par phase</h3>
+      <div class="chips" id="phase-chips" role="group" aria-label="Phase de la partie"></div>
+      <div class="scroll"><svg class="chart" id="traits" viewBox="0 0 640 300" role="img" aria-label="Part des coups de l'oracle et du 1.0 qui portent chaque trait"></svg></div>
+      <div class="legend" id="traits-legend"></div>
+      <div class="scroll"><table class="board-table"><thead><tr><th>Le plateau, en moyenne par partie</th><th class="num">Oracle</th><th class="num">1.0</th></tr></thead><tbody id="board"></tbody></table></div>
+    </div>
+    <div class="panel">
+      <h3 class="small-title">Là où l'oracle s'écarte du cœur du 1.0</h3>
+      <div class="scroll"><svg class="chart" id="gaps" viewBox="0 0 640 300" role="img" aria-label="Traits du coup de l'oracle et du favori du cœur du 1.0 dans ses écarts"></svg></div>
+      <p class="small" id="gaps-note"></p>
+    </div>
+  </section>
+
   <section id="suite" aria-labelledby="t-suite">
     <div>
-      <p class="eyebrow">IV · Ce soir, demain</p>
+      <p class="eyebrow">V · Ce soir, demain</p>
       <h2 id="t-suite">La suite</h2>
     </div>
     <div class="grid3" id="next"></div>
@@ -588,7 +619,86 @@ function drawBench() {
   $("bench-note").textContent = `${thousands(B.positions)} positions des tours 14 à 26, oracle version ${B.oracle}. Corrélation de rang avec les duels : top 1 ${fr(B.correlation[1], 2)}, top 3 ${fr(B.correlation[3], 2)}, top 8 ${fr(B.correlation[8], 2)}. En doré, les duels à temps égal. Limite : rien avant le tour 14 — une idée qui agit plus tôt (stay4e10) y est invisible.`;
 }
 
-/* ── IV · Next ───────────────────────────────────────────── */
+/* ── IV · Move for move ──────────────────────────────────── */
+const pctText = (x) => `${fr(100 * x, 0)} %`;
+
+/** Two dots per trait on one 0-70 % line: the oracle (sky) and the other side (brass), the gap drawn between them. */
+function dumbbell(svg, rows, [labelA, labelB]) {
+  svg.replaceChildren();
+  // Room on the left for the longest trait (« ouvre avec de quoi faire une suite de couleur »).
+  const [left, right, top, step] = [340, 690, 30, 32];
+  const X = (v) => left + (Math.min(v, 0.7) / 0.7) * (right - left);
+  for (let v = 0; v <= 0.7001; v += 0.1) {
+    svg.append(make("line", { x1: X(v), x2: X(v), y1: top - 12, y2: top + rows.length * step - 12, stroke: css("line") }));
+    svg.append(make("text", { x: X(v), y: top + rows.length * step + 4, "text-anchor": "middle" }, `${Math.round(v * 100)} %`));
+  }
+  rows.forEach((row, i) => {
+    const y = top + i * step;
+    svg.append(make("text", { x: left - 12, y: y + 4, "text-anchor": "end" }, row.trait));
+    svg.append(make("line", { x1: X(row.a), x2: X(row.b), y1: y, y2: y, stroke: css("ink-3"), "stroke-width": 2, opacity: 0.5 }));
+    svg.append(make("circle", { cx: X(row.b), cy: y, r: 6, fill: css("brass"), "data-tip": `${labelB} : ${pctText(row.b)}` }));
+    svg.append(make("circle", { cx: X(row.a), cy: y, r: 6, fill: css("sky"), "data-tip": `${labelA} : ${pctText(row.a)}` }));
+  });
+  svg.setAttribute("viewBox", `0 0 710 ${top + rows.length * step + 14}`);
+}
+
+function drawAgree(S) {
+  const svg = $("agree");
+  const groups = S.groups;
+  const [left, bottom, height] = [60, 210, 180];
+  const slot = (600 - left) / groups.length;
+  const Y = (v) => bottom - v * height;
+  for (let v = 0; v <= 1.0001; v += 0.25) {
+    svg.append(make("line", { x1: left, x2: 620, y1: Y(v), y2: Y(v), stroke: css("line") }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, `${Math.round(v * 100)} %`));
+  }
+  groups.forEach((g, i) => {
+    const x = left + i * slot + slot / 2;
+    const bars = [[g.agrees, css("sky"), "même coup"], [g.core8, css("mark"), "dans le top 8 de son cœur"]];
+    bars.forEach(([v, color, label], j) => svg.append(make("rect", { x: x - 22 + j * 23, y: Y(v), width: 20, height: bottom - Y(v), rx: 3, fill: color, "data-tip": `tours ${g.turns} : ${label} ${pctText(v)} (${g.moves} coups)` })));
+    svg.append(make("text", { x, y: bottom + 18, "text-anchor": "middle" }, g.turns));
+  });
+  svg.append(make("text", { x: 340, y: 252, "text-anchor": "middle", class: "label" }, "tours"));
+  $("agree-legend").replaceChildren(html("span", {}, html("i", { style: "background: var(--sky)" }), "le 1.0 joue le même coup"), html("span", {}, html("i", { style: "background: var(--mark)" }), "le coup de l'oracle est dans le top 8 de son cœur (l'arbre le regarde)"));
+  $("agree-note").textContent = `${thousands(S.all.moves)} coups de l'oracle dans ses ${S.games} parties contre le 1.0, rejoués par la recherche du 1.0 (npm run shadow). En tout, le même coup ${pctText(S.all.agrees)} du temps ; au début, l'oracle joue presque toujours un coup que le 1.0 n'aurait pas joué — et que son arbre ne regarde même pas trois fois sur quatre.`;
+}
+
+function drawTraits(V) {
+  const phases = Object.keys(V.traits);
+  const show = (phase) => {
+    document.querySelectorAll("#phase-chips .chip").forEach((chip) => chip.setAttribute("aria-pressed", String(chip.dataset.value === phase)));
+    const rows = [...V.traits[phase]].sort((x, y) => Math.abs(y.a - y.b) - Math.abs(x.a - x.b)).slice(0, 7);
+    dumbbell($("traits"), rows, ["l'oracle", "le 1.0"]);
+  };
+  $("phase-chips").replaceChildren(html("span", { class: "what" }, "Phase"), ...phases.map((phase) => {
+    const chip = html("button", { type: "button", class: "chip", "aria-pressed": "false", "data-value": phase }, phase);
+    chip.addEventListener("click", () => show(phase));
+    return chip;
+  }));
+  show(phases[0]);
+  $("traits-legend").replaceChildren(html("span", {}, html("i", { style: "background: var(--sky); border-radius: 999px" }), "l'oracle"), html("span", {}, html("i", { style: "background: var(--brass); border-radius: 999px" }), "le 1.0"), html("span", { class: "muted small" }, `part de leurs coups qui portent ce trait, sur ${V.games} parties ; les 7 plus grands écarts`));
+  const labels = { openedBy10: "bornes entamées au tour 10", complete: "côtés complets à la fin", noFigure: "dont sans figure", won: "bornes gagnées" };
+  $("board").replaceChildren(...Object.entries(labels).map(([key, label]) => html("tr", {}, html("td", {}, label), html("td", { class: "num" }, fr(V.end[key].a, 2)), html("td", { class: "num" }, fr(V.end[key].b, 2)))));
+}
+
+function drawGaps(G) {
+  const rows = G.traits.slice(0, 7).map((row) => ({ trait: row.trait, a: row.oracle, b: row.core }));
+  dumbbell($("gaps"), rows, ["le coup de l'oracle", "le favori du cœur du 1.0"]);
+  $("gaps-note").textContent = `${thousands(G.gaps)} écarts — le coup de l'oracle, le même sur ses deux recherches, hors du top 3 du cœur du 1.0 — sur ${thousands(G.positions)} positions des parties du 1.0, tours 12 à 28 (en bleu l'oracle, en doré le favori du cœur). Le cœur du 1.0 veut des suites de couleur ; l'oracle accepte un côté sans figure, complète, et sort ses jokers.`;
+}
+
+function drawCompare() {
+  const [S, V, G] = [DATA.shadow, DATA.versus, DATA.v1ref];
+  if (!S || !V || !G) {
+    $("compare").hidden = true;
+    return;
+  }
+  drawAgree(S);
+  drawTraits(V);
+  drawGaps(G);
+}
+
+/* ── V · Next ────────────────────────────────────────────── */
 function drawNext() {
   $("next").replaceChildren(...J.next.map(({ when, title, text }) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
   $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc de <code>data/oracle-bench.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
@@ -597,5 +707,6 @@ function drawNext() {
 drawTimeline();
 renderNotebook();
 drawBench();
+drawCompare();
 drawNext();
 </script>
