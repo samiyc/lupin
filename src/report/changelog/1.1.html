@@ -175,6 +175,12 @@ td.fam { font-size: 0.82rem; color: var(--ink-2); }
 .result { border-radius: 10px; padding: 10px 12px; background: var(--wash); font-size: 0.94rem; }
 .stepper { display: flex; gap: 6px; flex-wrap: wrap; }
 
+/* Filters picked from the donut's legend and the table's verdicts */
+.legend-pick { display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; border-radius: 999px; background: none; color: inherit; font: inherit; padding: 1px 8px 1px 2px; cursor: pointer; text-align: left; }
+.legend-pick[aria-pressed="true"] { border-color: var(--ink-3); background: var(--wash); }
+.legend-pick:hover, .verdict-pick:hover { filter: brightness(0.95); }
+.verdict-pick { border: 0; cursor: pointer; font: inherit; }
+
 /* Coup pour coup */
 .small-title { font: 600 1rem var(--body); margin: 0 0 8px; }
 #compare .panel + .panel { margin-top: 14px; }
@@ -229,7 +235,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
           <div class="chips" id="f-family" role="group" aria-label="Famille"></div>
           <div class="chips" id="f-bench" role="group" aria-label="Banc"></div>
           <div class="chips" id="f-verdict" role="group" aria-label="Verdict"></div>
-          <div class="chips"><span class="what">Chercher</span><input class="search" id="f-search" type="search" placeholder="stfig, joker, connector…" aria-label="Chercher un essai"></div>
+          <div class="chips"><span class="what">Chercher</span><input class="search" id="f-search" type="search" placeholder="stfig, joker, connector…" aria-label="Chercher un essai"><button type="button" class="chip" id="f-reset" hidden>Tout afficher</button></div>
         </div>
         <div class="donut-box">
           <svg id="verdict-donut" viewBox="0 0 130 130" width="130" height="130" role="img" aria-label="Verdicts des essais affichés"></svg>
@@ -489,19 +495,34 @@ function chipRow(id, key, label, entries) {
   row.append(html("span", { class: "what" }, label));
   for (const [value, text] of entries) {
     const chip = html("button", { type: "button", class: "chip", "aria-pressed": "false", "data-key": key, "data-value": value }, text);
-    chip.addEventListener("click", () => {
-      if (filters[key].has(value)) filters[key].delete(value);
-      else filters[key].add(value);
-      chip.setAttribute("aria-pressed", String(filters[key].has(value)));
-      renderNotebook();
-    });
+    chip.addEventListener("click", () => toggle(key, value));
     row.append(chip);
   }
+}
+/** One filter value on or off — from its chip, the donut's legend or a verdict in the table. */
+function toggle(key, value) {
+  if (filters[key].has(value)) filters[key].delete(value);
+  else filters[key].add(value);
+  document.querySelectorAll(`.chip[data-key="${key}"][data-value="${value}"]`).forEach((chip) => chip.setAttribute("aria-pressed", String(filters[key].has(value))));
+  renderNotebook();
+}
+function resetFilters() {
+  for (const key of ["family", "bench", "verdict"]) filters[key].clear();
+  filters.search = "";
+  $("f-search").value = "";
+  document.querySelectorAll(".chip[data-key]").forEach((chip) => chip.setAttribute("aria-pressed", "false"));
+  renderNotebook();
 }
 function setOnly(key, value) {
   filters[key] = new Set([value]);
   document.querySelectorAll(`.chip[data-key="${key}"]`).forEach((chip) => chip.setAttribute("aria-pressed", String(chip.dataset.value === value)));
   renderNotebook();
+}
+/** A verdict in the table: clicking it keeps only that verdict. */
+function verdictButton(verdict) {
+  const button = html("button", { type: "button", class: `verdict v-${verdict} verdict-pick`, title: "Ne garder que ce verdict" }, VERDICTS[verdict][0]);
+  button.addEventListener("click", () => setOnly("verdict", verdict));
+  return button;
 }
 function forestOf(a) {
   // No score to place (a cost, a count of positions): no axis, rather than an empty one that looks broken.
@@ -545,13 +566,19 @@ function renderNotebook() {
     html("td", { class: "fam" }, J.benches[a.bench]),
     html("td", { class: "num" }, a.lo !== null && a.score !== null ? html("span", { "data-tip": `fourchette à 95 % : ${fr(a.lo)} – ${fr(a.hi)}${isDelta(a) ? " points" : " %"}` }, scoreText(a)) : scoreText(a)),
     html("td", {}, forestOf(a)),
-    html("td", {}, html("span", { class: `verdict v-${a.verdict}` }, VERDICTS[a.verdict][0])),
+    html("td", {}, verdictButton(a.verdict)),
     html("td", { class: "when" }, a.when))));
   const scored = list.filter((a) => a.score !== null);
   $("count").textContent = `${list.length} essai${list.length > 1 ? "s" : ""} affiché${list.length > 1 ? "s" : ""} sur ${J.attempts.length}, dont ${scored.length} mesuré${scored.length > 1 ? "s" : ""}.`;
   const counts = Object.keys(VERDICTS).map((key) => [key, list.filter((a) => a.verdict === key).length]).filter(([, n]) => n > 0);
   donut($("verdict-donut"), counts.map(([key, n]) => ({ value: n, color: css(VERDICTS[key][1]), tip: `${VERDICTS[key][0]} : ${n}` })), 65, String(list.length), "essais");
-  $("verdict-legend").replaceChildren(...counts.map(([key, n]) => html("span", {}, html("i", { style: `background: ${css(VERDICTS[key][1])}` }), `${VERDICTS[key][0]} · ${n}`)));
+  $("verdict-legend").replaceChildren(...counts.map(([key, n]) => {
+    const item = html("button", { type: "button", class: "legend-pick", "aria-pressed": String(filters.verdict.has(key)), title: "Ne garder que ce verdict (ou le retirer du filtre)" }, html("i", { style: `background: ${css(VERDICTS[key][1])}` }), `${VERDICTS[key][0]} · ${n}`);
+    item.addEventListener("click", () => toggle("verdict", key));
+    return item;
+  }));
+  const filtered = filters.family.size + filters.bench.size + filters.verdict.size > 0 || filters.search.trim() !== "";
+  $("f-reset").hidden = !filtered;
 }
 function donut(svg, parts, size, center, sub) {
   svg.replaceChildren();
@@ -570,9 +597,12 @@ function donut(svg, parts, size, center, sub) {
   svg.append(make("text", { x: size, y: size + 2, "text-anchor": "middle", style: `font: 700 ${size * 0.34}px var(--mono); fill: var(--ink)` }, center));
   svg.append(make("text", { x: size, y: size + size * 0.28, "text-anchor": "middle", style: "font: 600 10px var(--mono); fill: var(--ink-3)" }, sub));
 }
-chipRow("f-family", "family", "Famille", Object.entries(J.families).filter(([key]) => J.attempts.some((a) => a.family === key)));
-chipRow("f-bench", "bench", "Banc", Object.entries(J.benches));
-chipRow("f-verdict", "verdict", "Verdict", Object.entries(VERDICTS).map(([key, [label]]) => [key, label]));
+/** The values of a filter that some attempt carries, each with its count. */
+const usedValues = (key, entries) => entries.map(([value, text]) => [value, text, J.attempts.filter((a) => a[key] === value).length]).filter(([, , n]) => n > 0).map(([value, text, n]) => [value, `${text} · ${n}`]);
+chipRow("f-family", "family", "Famille", usedValues("family", Object.entries(J.families)));
+chipRow("f-bench", "bench", "Banc", usedValues("bench", Object.entries(J.benches)));
+chipRow("f-verdict", "verdict", "Verdict", usedValues("verdict", Object.entries(VERDICTS).map(([key, [label]]) => [key, label])));
+$("f-reset").addEventListener("click", resetFilters);
 $("f-search").addEventListener("input", (event) => { filters.search = event.target.value; renderNotebook(); });
 document.querySelectorAll("[data-sort]").forEach((button) => button.addEventListener("click", () => {
   const key = button.dataset.sort;
