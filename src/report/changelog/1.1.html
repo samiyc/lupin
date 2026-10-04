@@ -181,6 +181,9 @@ td.fam { font-size: 0.82rem; color: var(--ink-2); }
 .legend-pick:hover, .verdict-pick:hover { filter: brightness(0.95); }
 .verdict-pick { border: 0; cursor: pointer; font: inherit; }
 
+/* A row with no score: the note sits centred under the forest's axis, clear of the score column. */
+.no-score { display: block; width: 170px; text-align: center; font-size: 0.78rem; font-style: italic; color: var(--ink-3); }
+
 /* Coup pour coup */
 .small-title { font: 600 1rem var(--body); margin: 0 0 8px; }
 #compare .panel + .panel { margin-top: 14px; }
@@ -526,7 +529,7 @@ function verdictButton(verdict) {
 }
 function forestOf(a) {
   // No score to place (a cost, a count of positions): no axis, rather than an empty one that looks broken.
-  if (a.score === null && a.verdict !== "attente") return html("span", { class: "muted small" }, "pas un score");
+  if (!hasScore(a)) return html("span", { class: "no-score" }, "pas un score");
   const svg = make("svg", { class: "forest", viewBox: "0 0 170 20", "aria-hidden": "true" });
   const scale = (v) => 5 + ((v - 35) / 30) * 160;
   const at = (v) => scale(Math.max(35, Math.min(65, isDelta(a) ? 50 + v : v)));
@@ -538,7 +541,10 @@ function forestOf(a) {
   svg.append(make("circle", { cx: at(a.score), cy: 10, r: 4.5, fill: color, stroke: css("card"), "stroke-width": 1 }));
   return svg;
 }
+/** A measurement that is not a win rate or a gap in points (a cost, positions read): no score, no forest. */
+const hasScore = (a) => a.score !== null || a.verdict === "attente";
 function scoreText(a) {
+  if (!hasScore(a)) return "";
   if (a.score === null) return "—";
   if (isDelta(a)) return `Δ ${a.score > 0 ? "+" : ""}${fr(a.score)} pt`;
   return `${fr(a.score)} %`;
