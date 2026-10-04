@@ -177,5 +177,106 @@
    },
    "verdict": "neutre"
   }
+ },
+ "calibration": {
+  "built": "2026-10-04",
+  "oracle": 1,
+  "positions": 3721,
+  "partial": "arrêté à 50 min : 12 versions sur 13 (e12open1 manque), sans le top 8 ; recalculé depuis le journal backlog-runs/2026-10-04-21-33_banc-calibrate.txt",
+  "rows": [
+   {
+    "name": "0.9",
+    "engine": "ismcts+widen=3+depth=5@800",
+    "value": 0.455,
+    "early": 0.309,
+    "score": 0.5
+   },
+   {
+    "name": "1.0 (stfig6)",
+    "engine": "ismcts+widen=3+depth=5+core=stfig6@800",
+    "value": 0.456,
+    "early": 0.355,
+    "score": 0.5615
+   },
+   {
+    "name": "stay4e10",
+    "engine": "ismcts+widen=3+depth=5+core=stay4e10@800",
+    "value": 0.462,
+    "early": 0.337,
+    "score": 0.5064
+   },
+   {
+    "name": "jkx",
+    "engine": "ismcts+widen=3+depth=5+core=jkx@800",
+    "value": 0.451,
+    "early": 0.32299999999999995,
+    "score": 0.5174
+   },
+   {
+    "name": "jk2",
+    "engine": "ismcts+widen=3+depth=5+core=jk2@800",
+    "value": 0.45,
+    "early": 0.32,
+    "score": 0.5243
+   },
+   {
+    "name": "obex",
+    "engine": "ismcts+widen=3+depth=5+core=obex@800",
+    "value": 0.46399999999999997,
+    "early": 0.32299999999999995,
+    "score": 0.5052
+   },
+   {
+    "name": "lean",
+    "engine": "ismcts+widen=3+depth=5+core=lean@t800",
+    "value": 0.41700000000000004,
+    "early": 0.26899999999999996,
+    "score": 0.4191
+   },
+   {
+    "name": "nobonus",
+    "engine": "ismcts+widen=3+depth=5+core=nobonus@t800",
+    "value": 0.406,
+    "early": 0.264,
+    "score": 0.3973
+   },
+   {
+    "name": "candidates=12",
+    "engine": "ismcts+candidates=12+widen=3+depth=5+core=stfig6@t400",
+    "value": 0.423,
+    "early": 0.319,
+    "score": 0.44181088641073063
+   },
+   {
+    "name": "candidates=16",
+    "engine": "ismcts+candidates=16+widen=3+depth=5+core=stfig6@t400",
+    "value": 0.40299999999999997,
+    "early": 0.32299999999999995,
+    "score": 0.4862462431867964
+   },
+   {
+    "name": "16 jusqu'au 12",
+    "engine": "phase:13:ismcts+candidates=16+widen=3+depth=5+core=stfig6@t400/ismcts+widen=3+depth=5+core=stfig6@t400",
+    "value": 0.409,
+    "early": 0.315,
+    "score": 0.5277319500300514
+   },
+   {
+    "name": "v1bj",
+    "engine": "ismcts+widen=3+depth=5+core=v1bj@t400",
+    "value": 0.402,
+    "early": 0.303,
+    "score": 0.5217136624383938
+   }
+  ],
+  "correlation": {
+   "value": 0.23,
+   "early": 0.5,
+   "iterationsOnly": {
+    "versions": 6,
+    "value": -0.37,
+    "early": 0.56
+   }
+  }
  }
 }

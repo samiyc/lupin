@@ -33,6 +33,39 @@
       "doneAt": "2026-10-04T11:30",
       "minutes": 10,
       "output": "backlog-runs/2026-10-04-11-20_screen-v1bj.txt"
+    },
+    {
+      "id": "banc-build-0",
+      "command": "npm run oracle -- --source \"experimental@1.0,experimental@1.0\" --out banc --turns 4-30 --runs 2 --keep 12 --spread --rank stfig6 --minutes 105",
+      "estimate": "110 min",
+      "limit": 115,
+      "why": "La base du banc de similitude (Sami, 04/10 : trier une idée en moins de 10 min) : l'oracle relit les 672 parties du 1.0 contre lui-même, tours 4 à 30 dans un ordre réparti, deux recherches par position, ses 12 coups les plus visités gardés à chaque fois. Environ 1 300 positions.",
+      "status": "done",
+      "doneAt": "2026-10-04T19:46",
+      "minutes": 107,
+      "output": "backlog-runs/2026-10-04-18-00_banc-build-0.txt"
+    },
+    {
+      "id": "banc-build-1",
+      "command": "npm run oracle -- --source \"ismcts+candidates=99+widen=6+depth=5+smart=1@20000,experimental@1.0;ismcts+widen=3+depth=5+core=stfig6@800,ismcts+widen=3+depth=5@800\" --out banc --turns 4-30 --runs 2 --keep 12 --spread --rank stfig6 --minutes 105",
+      "estimate": "110 min",
+      "limit": 115,
+      "why": "La base du banc, suite : les parties Oracle contre 1.0 et 1.0 contre 0.9, pour varier les positions. Même fichier, oracle/positions-banc.jsonl.",
+      "status": "done",
+      "doneAt": "2026-10-04T21:33",
+      "minutes": 106,
+      "output": "backlog-runs/2026-10-04-19-46_banc-build-1.txt"
+    },
+    {
+      "id": "banc-calibrate",
+      "command": "npm run banc -- --calibrate",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "Le banc classe-t-il les versions comme les duels ? Les 13 versions au résultat connu (data/banc-calibration.json), chacune avec le budget de son duel : corrélation de rang entre leur valeur oracle et leur score.",
+      "status": "timeout",
+      "doneAt": "2026-10-04T22:23",
+      "minutes": 50,
+      "output": "backlog-runs/2026-10-04-21-33_banc-calibrate.txt"
     }
   ]
 }

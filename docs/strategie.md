@@ -1924,3 +1924,50 @@ le 1.0 à 800 itérations, règle de la page, 18 fils (11 min par jeu de donnes)
 parties. Neutre, comme le banc (+1,3 point, -0,5 – +3,1). Le banc et les duels
 s'accordent : aucun des deux ne voit d'écart. `e12open1` rejoint les versions de la
 calibration (`data/banc-calibration.json`).
+
+## La calibration du banc : il ne trie pas (04/10, soir)
+
+La nuit du banc lancée à 18 h sur 18 fils (Sami) : deux passes de l'oracle, 3 721
+positions (parties 1.0 contre 1.0, oracle contre 1.0, 1.0 contre 0.9 ; tours 4 à 30,
+deux recherches, 12 coups gardés). Stabilité de son favori : 36 % aux tours 4-10, 64 %
+aux 11-20, 62 % aux 21-30. Puis `npm run banc -- --calibrate` : les versions au résultat
+connu passées sur le banc. **Arrêté à sa limite de 50 min**, 12 versions sur 13
+(`e12open1` manque, et le top 8 du cœur n'a pas été écrit) ; corrélations recalculées
+depuis son journal (`data/banc.json`, `calibration`).
+
+| Version | Valeur oracle | Au début (4-10) | Duels contre le 0.9 |
+| --- | --- | --- | --- |
+| 0.9 | 45,5 % | 30,9 % | 50,0 % |
+| **1.0** | 45,6 % | **35,5 %** | **56,1 %** |
+| stay4e10 | 46,2 % | 33,7 % | 50,6 % |
+| jkx | 45,1 % | 32,3 % | 51,7 % |
+| jk2 | 45,0 % | 32,0 % | 52,4 % |
+| obex | 46,4 % | 32,3 % | 50,5 % |
+| lean (@t800) | 41,7 % | 26,9 % | 41,9 % |
+| nobonus (@t800) | 40,6 % | 26,4 % | 39,7 % |
+| candidates=12 (@t400) | 42,3 % | 31,9 % | 44,2 % |
+| candidates=16 (@t400) | 40,3 % | 32,3 % | 48,6 % |
+| 16 jusqu'au 12 (@t400) | 40,9 % | 31,5 % | 52,8 % |
+| v1bj (@t400) | 40,2 % | 30,3 % | 52,2 % |
+
+Corrélation de rang avec les duels : **0,23** sur la valeur oracle, **0,50** sur la
+valeur au début. Sur les 6 versions à 800 itérations seulement : -0,37 et 0,56.
+
+- **Le banc ne trie pas.** Il ne sépare pas le 0.9 du 1.0 (45,5 % contre 45,6 %) alors
+  que le 1.0 gagne 56,1 % ; les six versions à 800 itérations tiennent en 1,4 point.
+  L'écart entre deux versions voisines est plus petit que ce que le banc sait voir.
+- **Le début de partie est la seule partie qui dit quelque chose** : le 1.0 y est en
+  tête (35,5 %), et la corrélation y monte à 0,50-0,56. C'est précisément là où l'oracle
+  est le moins stable (36 %) : un banc des tours 4-10 aurait besoin de plus de
+  recherches par position, pas de plus de positions.
+- **Les versions à temps fixe (`@t400`, `@t800`) sont faussées** : le banc tourne
+  sur une machine chargée, elles y font moins d'itérations qu'en duel, et toutes
+  sortent en bas (40-42 %), qu'elles gagnent ou perdent leurs duels.
+- Ce n'est pas l'accord du banc oracle d'hier (top 8 du cœur, 0,93 sur 8 cœurs) : ce
+  banc-là compare des cœurs seuls, sans arbre ; le banc de similitude juge le coup
+  final de l'arbre, où le bruit de la recherche couvre l'écart entre deux cœurs.
+
+Conséquence : le verdict du banc reste un indice, jamais un filtre (`CLAUDE.md`,
+`docs/validation.md`). Le parcours d'une idée reste cœur contre cœur, tri d'arbre (400
+parties), puis quatre duels longs. `e12open1` n'est pas repassé sur le banc : il n'en
+apprendrait rien que ses 1 000 parties (50,5 %) ne disent déjà.

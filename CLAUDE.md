@@ -185,8 +185,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   positions (each searched twice by the oracle, its 12 most visited moves kept),
   paired against the 1.0; `--queue` then sends its four long duels to the
   backlog, which decide. Whether the bench ranks versions as the duels do is
-  `npm run banc -- --calibrate`; until that has answered, treat its verdict as a
-  hint, not a filter.
+  `npm run banc -- --calibrate`. It answered no on 04/10 (rank correlation 0.23
+  over 12 versions, 0.50 on turns 4-10; it does not tell the 0.9 from the 1.0):
+  its verdict is a hint, never a filter, and an idea still goes to a tree screen.
 - **The oracle is frozen as version 1** (`ORACLE.version`, written into every
   line it produces): its games and opinions are the reference for the V1 and
   later. A speed-up keeps the version only if its fingerprint is unchanged
