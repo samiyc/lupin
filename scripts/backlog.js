@@ -23,6 +23,10 @@ import { localTimestamp } from "../src/replay/log.js";
  * `--archive` moves the older finished ones (done, failed, timeout) to
  * data/backlog-done.json, the queue's history, once their results are read.
  *
+ * `--threads N` (Sami, 04/10: run in the day on 9 cores of 12): every job
+ * inherits `LOPIN_THREADS=N`, the number of worker threads its pools use
+ * (scripts/lib/pool.js), so the machine stays usable.
+ *
  * `--queue laptop`: another machine's own queue, data/backlog-laptop.json,
  * so that two machines never write the same file. Its outputs go to
  * data/runs-laptop/, which git carries back: `git pull`, run, then commit and
@@ -32,6 +36,10 @@ const LIMIT = 120;
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const args = process.argv.slice(2);
 const queue = args.includes("--queue") ? args[args.indexOf("--queue") + 1] : null;
+const threads = args.includes("--threads") ? Number(args[args.indexOf("--threads") + 1]) : null;
+if (threads !== null && (Number.isNaN(threads) || threads <= 0)) throw new Error("--threads attend un nombre de fils");
+// The jobs are child processes: they inherit the variable their pools read.
+if (threads) process.env.LOPIN_THREADS = String(threads);
 if (queue !== null && !/^[a-z0-9-]+$/.test(queue)) throw new Error(`File inconnue : « ${queue} »`);
 const suffix = queue ? `-${queue}` : "";
 const FILE = `${ROOT}data/backlog${suffix}.json`;
@@ -109,7 +117,8 @@ if (args.includes("--archive")) {
   process.exit(0);
 }
 await mkdir(RUNS, { recursive: true });
-console.log(`${pending.length} traitement(s) à faire.`);
+const onThreads = threads ? `, sur ${threads} fils` : "";
+console.log(`${pending.length} traitement(s) à faire${onThreads}.`);
 // The next job is read from the file each time: one added while another ran is played too.
 const tried = new Set();
 const nextJob = async () => (await readBacklog()).jobs.find((job) => ready(job) && !tried.has(job.id));

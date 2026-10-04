@@ -88,7 +88,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 
 | Commande | Ce qu'elle fait | Écrit |
 | --- | --- | --- |
-| `npm run backlog [-- --list \| --archive]` | les longs traitements de `data/backlog.json`, l'un après l'autre, 2 h au plus chacun ; un job `scheduled` attend son `notBefore`. **Le lanceur s'arrête s'il n'y a rien de prêt** : le lancer après l'heure | `backlog-runs/`, `data/backlog-done.json` |
+| `npm run backlog [-- --list \| --archive \| --threads 18]` | les longs traitements de `data/backlog.json`, l'un après l'autre, 2 h au plus chacun ; un job `scheduled` attend son `notBefore`. `--threads 18` : chaque job sur 18 fils (9 cœurs sur 12), pour garder le PC utilisable en journée. **Le lanceur s'arrête s'il n'y a rien de prêt** : le lancer après l'heure | `backlog-runs/`, `data/backlog-done.json` |
 | `npm run cooldown -- [minutes]` | une pause entre deux jobs, avec la charge du CPU (et la température si LibreHardwareMonitor tourne) | — |
 
 ## Pages et documents
