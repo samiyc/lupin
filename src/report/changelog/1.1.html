@@ -348,7 +348,7 @@ $("lead").textContent = J.lead;
 /* ── I · The timeline ─────────────────────────────────────── */
 const toTime = (text) => new Date(text).getTime();
 const minutesOf = (estimate) => (/h/.test(estimate ?? "") ? 60 * Number((estimate.match(/(\d+)\s*h/) ?? [0, 2])[1]) : Number((String(estimate).match(/\d+/) ?? [20])[0]));
-const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["duel", "duels", "mark"]];
+const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"]];
 const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefix]) => id.startsWith(prefix));
 function placeJobs() {
   const placed = [];
@@ -569,11 +569,19 @@ function drawBench() {
   }
   svg.append(make("text", { x: 340, y: 326, "text-anchor": "middle", class: "label" }, "le coup de l'oracle dans le top 8 du cœur"));
   svg.append(make("text", { x: 8, y: 20, class: "label" }, "duels longs contre le 0.9"));
+  const labels = [];
   for (const r of rows) {
     const [cx, cy] = [X(100 * r.top[8]), Y(100 * r.score)];
     if (r.low !== null && r.low !== undefined) svg.append(make("line", { x1: cx, x2: cx, y1: Y(100 * r.high), y2: Y(100 * r.low), stroke: css("sky"), "stroke-width": 3, opacity: 0.35, "stroke-linecap": "round" }));
     svg.append(make("circle", { cx, cy, r: 6, fill: r.timed ? css("brass") : css("sky"), stroke: css("card"), "stroke-width": 1.5, "data-tip": `${r.core} : top 8 ${fr(100 * r.top[8])} %, duels ${fr(100 * r.score)} %${r.timed ? " à temps égal" : ""}` }));
-    svg.append(make("text", { x: cx + 9, y: cy + 4 }, r.core));
+    labels.push({ x: cx + 9, y: cy + 4, text: r.core });
+  }
+  // Points close together (0.9, obex, stay4e10): each label moves down until it clears the ones already placed.
+  const placed = [];
+  for (const label of labels.sort((a, b) => a.y - b.y)) {
+    while (placed.some((p) => Math.abs(p.x - label.x) < 70 && Math.abs(p.y - label.y) < 13)) label.y += 13;
+    placed.push(label);
+    svg.append(make("text", { x: label.x, y: label.y }, label.text));
   }
   $("bench-note").textContent = `${thousands(B.positions)} positions des tours 14 à 26, oracle version ${B.oracle}. Corrélation de rang avec les duels : top 1 ${fr(B.correlation[1], 2)}, top 3 ${fr(B.correlation[3], 2)}, top 8 ${fr(B.correlation[8], 2)}. En doré, les duels à temps égal. Limite : rien avant le tour 14 — une idée qui agit plus tôt (stay4e10) y est invisible.`;
 }
