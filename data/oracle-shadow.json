@@ -2,81 +2,162 @@
  "note": "npm run shadow : les parties de l'oracle relues par un autre robot.",
  "reads": {
   "ismcts+widen=3+depth=5+core=stfig6@800": {
-   "built": "2026-10-03",
+   "built": "2026-10-04",
    "oracle": "ismcts+candidates=99+widen=6+depth=5+smart=1@20000",
    "oracleVersion": 1,
-   "games": 22,
+   "games": 242,
    "all": {
-    "moves": 377,
-    "agrees": 0.22546419098143236,
-    "core8": 0.5888594164456233
+    "moves": 4199,
+    "agrees": 0.23172183853298403,
+    "core8": 0.59347463681829
    },
    "groups": [
     {
      "turns": "1-4",
-     "moves": 44,
-     "agrees": 0.045454545454545456,
-     "core1": 0,
-     "core3": 0.11363636363636363,
-     "core8": 0.22727272727272727,
-     "lost": 0.19778935482564722
+     "moves": 484,
+     "agrees": 0.03925619834710744,
+     "core1": 0.028925619834710745,
+     "core3": 0.1012396694214876,
+     "core8": 0.23553719008264462,
+     "lost": 0.21884897974136422
     },
     {
      "turns": "5-8",
-     "moves": 44,
-     "agrees": 0.06818181818181818,
-     "core1": 0.022727272727272728,
-     "core3": 0.09090909090909091,
-     "core8": 0.22727272727272727,
-     "lost": 0.21618728539858534
+     "moves": 484,
+     "agrees": 0.05991735537190083,
+     "core1": 0.03512396694214876,
+     "core3": 0.10537190082644628,
+     "core8": 0.29958677685950413,
+     "lost": 0.24156742056494826
     },
     {
      "turns": "9-12",
-     "moves": 44,
-     "agrees": 0.1590909090909091,
-     "core1": 0.09090909090909091,
-     "core3": 0.2727272727272727,
-     "core8": 0.5454545454545454,
-     "lost": 0.22832758126810845
+     "moves": 484,
+     "agrees": 0.12190082644628099,
+     "core1": 0.05991735537190083,
+     "core3": 0.19421487603305784,
+     "core8": 0.4628099173553719,
+     "lost": 0.2699146976150654
     },
     {
      "turns": "13-16",
-     "moves": 44,
-     "agrees": 0.18181818181818182,
-     "core1": 0.09090909090909091,
-     "core3": 0.20454545454545456,
-     "core8": 0.4772727272727273,
-     "lost": 0.28076543513864427
+     "moves": 484,
+     "agrees": 0.18801652892561985,
+     "core1": 0.08264462809917356,
+     "core3": 0.2334710743801653,
+     "core8": 0.5454545454545454,
+     "lost": 0.2581690559355141
     },
     {
      "turns": "17-20",
-     "moves": 44,
-     "agrees": 0.2727272727272727,
-     "core1": 0.1590909090909091,
-     "core3": 0.4090909090909091,
-     "core8": 0.75,
-     "lost": 0.21825090774944753
+     "moves": 484,
+     "agrees": 0.19834710743801653,
+     "core1": 0.10950413223140495,
+     "core3": 0.30165289256198347,
+     "core8": 0.6756198347107438,
+     "lost": 0.278637024473469
     },
     {
      "turns": "21-24",
-     "moves": 44,
-     "agrees": 0.22727272727272727,
-     "core1": 0.09090909090909091,
-     "core3": 0.3409090909090909,
-     "core8": 0.6818181818181818,
-     "lost": 0.23653141018365023
+     "moves": 484,
+     "agrees": 0.256198347107438,
+     "core1": 0.12396694214876033,
+     "core3": 0.30991735537190085,
+     "core8": 0.7169421487603306,
+     "lost": 0.22881307821573377
     },
     {
      "turns": "25+",
-     "moves": 113,
-     "agrees": 0.3805309734513274,
-     "core1": 0.3805309734513274,
-     "core3": 0.6194690265486725,
-     "core8": 0.831858407079646,
-     "lost": 0.15020514977089164
+     "moves": 1295,
+     "agrees": 0.42857142857142855,
+     "core1": 0.338996138996139,
+     "core3": 0.5891891891891892,
+     "core8": 0.827027027027027,
+     "lost": 0.12914681477907852
     }
    ],
    "clearest": [
+    {
+     "key": "rjl961-i9el3h",
+     "turn": 30,
+     "move": "10♣→4",
+     "searched": "10♣→7",
+     "coreRank": 19,
+     "agrees": false,
+     "lost": 0.9858277213790331
+    },
+    {
+     "key": "2r3gcv-1y1wlfr",
+     "turn": 33,
+     "move": "5♦→6",
+     "searched": "7♥→5",
+     "coreRank": 1,
+     "agrees": false,
+     "lost": 0.9851190476190477
+    },
+    {
+     "key": "r8icpx-1lq0qix",
+     "turn": 32,
+     "move": "4♠→7",
+     "searched": "7♦→4",
+     "coreRank": 16,
+     "agrees": false,
+     "lost": 0.9794193676675282
+    },
+    {
+     "key": "ew25a-1sxn49u",
+     "turn": 34,
+     "move": "4♦→2",
+     "searched": "2♥→3",
+     "coreRank": 3,
+     "agrees": false,
+     "lost": 0.9592217745897612
+    },
+    {
+     "key": "r8icpx-1lq0qix",
+     "turn": 34,
+     "move": "5♣→1",
+     "searched": "6♥→1",
+     "coreRank": 2,
+     "agrees": false,
+     "lost": 0.9577193489357604
+    },
+    {
+     "key": "1plrpiq-c5qyfm",
+     "turn": 19,
+     "move": "3♦→2",
+     "searched": "8♣→1",
+     "coreRank": 14,
+     "agrees": false,
+     "lost": 0.9460339384372534
+    },
+    {
+     "key": "yf72hv-8k0an7",
+     "turn": 29,
+     "move": "5♦→7",
+     "searched": "10♠→6",
+     "coreRank": 10,
+     "agrees": false,
+     "lost": 0.9410870006083958
+    },
+    {
+     "key": "19hm7j0-1s1npn8",
+     "turn": 27,
+     "move": "10♠→5",
+     "searched": "JK→5",
+     "coreRank": 17,
+     "agrees": false,
+     "lost": 0.938316254771951
+    },
+    {
+     "key": "11omxk6-ifn9g6",
+     "turn": 31,
+     "move": "7♥→5",
+     "searched": "7♦→5",
+     "coreRank": 1,
+     "agrees": false,
+     "lost": 0.9196968243308069
+    },
     {
      "key": "hd4f4n-gsxmav",
      "turn": 29,
@@ -85,6 +166,33 @@
      "coreRank": 4,
      "agrees": false,
      "lost": 0.8915971168437026
+    },
+    {
+     "key": "14foior-fmpaoj",
+     "turn": 23,
+     "move": "JK→1",
+     "searched": "4♠→4",
+     "coreRank": 11,
+     "agrees": false,
+     "lost": 0.890094204967171
+    },
+    {
+     "key": "19cjp6l-wwwsl5",
+     "turn": 26,
+     "move": "10♥→7",
+     "searched": "10♠→7",
+     "coreRank": 4,
+     "agrees": false,
+     "lost": 0.8776798236826288
+    },
+    {
+     "key": "1bn2b5d-8evvel",
+     "turn": 34,
+     "move": "4♦→2",
+     "searched": "7♥→5",
+     "coreRank": 1,
+     "agrees": false,
+     "lost": 0.8712777090666921
     },
     {
      "key": "1mhnlx1-1mpbert",
@@ -96,166 +204,58 @@
      "lost": 0.8681916190119059
     },
     {
-     "key": "1uhnwyq-1ip7gsa",
-     "turn": 30,
-     "move": "3♦→4",
-     "searched": "6♠→7",
-     "coreRank": 29,
+     "key": "2r3gcv-1y1wlfr",
+     "turn": 29,
+     "move": "8♣→5",
+     "searched": "10♣→1",
+     "coreRank": 2,
      "agrees": false,
-     "lost": 0.837976813762154
+     "lost": 0.8650004645544923
     },
     {
-     "key": "1oo1279-gma3u1",
-     "turn": 21,
-     "move": "5♦→6",
-     "searched": "9♠→7",
+     "key": "1ig4ms8-x8nml4",
+     "turn": 29,
+     "move": "8♣→7",
+     "searched": "1♥→7",
+     "coreRank": 9,
+     "agrees": false,
+     "lost": 0.8639126403626248
+    },
+    {
+     "key": "1ma14be-gl52xi",
+     "turn": 30,
+     "move": "6♣→6",
+     "searched": "6♣→2",
+     "coreRank": 1,
+     "agrees": false,
+     "lost": 0.86175431711146
+    },
+    {
+     "key": "xba9m1-1f3h3qd",
+     "turn": 26,
+     "move": "10♦→7",
+     "searched": "10♥→6",
+     "coreRank": 16,
+     "agrees": false,
+     "lost": 0.8538438764433041
+    },
+    {
+     "key": "11ivhr3-15zk6bj",
+     "turn": 32,
+     "move": "5♠→4",
+     "searched": "10♠→4",
      "coreRank": 3,
      "agrees": false,
-     "lost": 0.7284347986021703
+     "lost": 0.8537861404313906
     },
     {
-     "key": "1jt8uof-u56kiv",
-     "turn": 30,
-     "move": "1♥→5",
-     "searched": "5♣→4",
-     "coreRank": 5,
-     "agrees": false,
-     "lost": 0.7209743152307838
-    },
-    {
-     "key": "qckrby-d1xv3e",
-     "turn": 20,
-     "move": "1♥→6",
-     "searched": "2♣→7",
-     "coreRank": 14,
-     "agrees": false,
-     "lost": 0.7108146219763531
-    },
-    {
-     "key": "1yp9fp9-1il9yvp",
-     "turn": 12,
-     "move": "3♠→1",
-     "searched": "2♥→6",
+     "key": "wmlcue-gpx15q",
+     "turn": 25,
+     "move": "1♠→6",
+     "searched": "3♥→1",
      "coreRank": 10,
      "agrees": false,
-     "lost": 0.709217611656636
-    },
-    {
-     "key": "18idroa-30ae3i",
-     "turn": 14,
-     "move": "6♥→5",
-     "searched": "3♣→7",
-     "coreRank": 14,
-     "agrees": false,
-     "lost": 0.6836930968155589
-    },
-    {
-     "key": "1ux2eix-38l539",
-     "turn": 29,
-     "move": "5♦→4",
-     "searched": "6♦→7",
-     "coreRank": 7,
-     "agrees": false,
-     "lost": 0.6504658112146248
-    },
-    {
-     "key": "1yp9fp9-1il9yvp",
-     "turn": 26,
-     "move": "10♥→3",
-     "searched": "8♥→3",
-     "coreRank": 12,
-     "agrees": false,
-     "lost": 0.635285531837256
-    },
-    {
-     "key": "kwtfv4-1vj6a7w",
-     "turn": 27,
-     "move": "3♣→3",
-     "searched": "2♠→1",
-     "coreRank": 9,
-     "agrees": false,
-     "lost": 0.6308394801545486
-    },
-    {
-     "key": "1mhnlx1-1mpbert",
-     "turn": 17,
-     "move": "3♦→6",
-     "searched": "1♣→7",
-     "coreRank": 11,
-     "agrees": false,
-     "lost": 0.6275659824046921
-    },
-    {
-     "key": "1phjcl8-pi769c",
-     "turn": 18,
-     "move": "JK→3",
-     "searched": "2♣→1",
-     "coreRank": 15,
-     "agrees": false,
-     "lost": 0.612342099813626
-    },
-    {
-     "key": "lwv4fk-nyl5cs",
-     "turn": 8,
-     "move": "4♦→3",
-     "searched": "9♣→6",
-     "coreRank": 7,
-     "agrees": false,
-     "lost": 0.6108693094930008
-    },
-    {
-     "key": "4n0r13-xp8dhj",
-     "turn": 13,
-     "move": "7♣→4",
-     "searched": "6♦→7",
-     "coreRank": 14,
-     "agrees": false,
-     "lost": 0.5884461311406283
-    },
-    {
-     "key": "17l8imm-1tnidy2",
-     "turn": 20,
-     "move": "4♦→4",
-     "searched": "9♣→7",
-     "coreRank": 1,
-     "agrees": false,
-     "lost": 0.5812139346014106
-    },
-    {
-     "key": "kwtfv4-1vj6a7w",
-     "turn": 13,
-     "move": "1♠→1",
-     "searched": "3♠→1",
-     "coreRank": 9,
-     "agrees": false,
-     "lost": 0.5724557522123894
-    },
-    {
-     "key": "hd4f4n-gsxmav",
-     "turn": 23,
-     "move": "8♠→5",
-     "searched": "5♥→6",
-     "coreRank": 1,
-     "agrees": false,
-     "lost": 0.5636037114636336
-    },
-    {
-     "key": "1mhnlx1-1mpbert",
-     "turn": 31,
-     "move": "8♣→5",
-     "searched": "10♠→6",
-     "coreRank": 1,
-     "agrees": false,
-     "lost": 0.5570032573289901
-    },
-    {
-     "key": "kwtfv4-1vj6a7w",
-     "turn": 11,
-     "move": "7♠→6",
-     "searched": "1♠→4",
-     "coreRank": 6,
-     "agrees": false,
-     "lost": 0.5533482559224026
+     "lost": 0.8535927566942786
     }
    ]
   }

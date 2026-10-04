@@ -1819,3 +1819,35 @@ et plus de tableau alloué pour la clé de la mémoire des paires — font envir
 temps en moins pour la recherche du 1.0. Le reste du temps est dans l'évaluation des
 côtés à une et deux cartes, déjà optimisée : un gain plus gros demanderait de revoir
 sa structure.
+
+**L'oracle relit les parties du 1.0** (`ref-annotate-0`, tours 12 à 28, 2 159 positions,
+deux recherches, classées par le cœur du 1.0) : ses deux recherches s'accordent dans
+57 % des positions au tour 12, 65-71 % ensuite. Ses écarts face au cœur du 1.0 (1 035,
+hors de son top 3) : il **bâtit un côté sans figure** dans 37 % de ses coups contre 2 %
+pour le cœur, **complète un côté** (3e carte) 32 % contre 15 %, **joue un joker** 14 %
+contre 2 % ; le cœur du 1.0, lui, bâtit une suite de couleur (46 % contre 18 %) et pose
+une 2e carte (69 % contre 52 %) — stfig en fait peut-être trop. Ces positions
+(`oracle/positions-v1ref.jsonl`) sont la base du banc des versions V1+ : sur elles, le
+coup de l'oracle est dans le top 8 du cœur du 1.0 dans 60,6 % des cas, le top 16 dans 82 %.
+
+**Le V1 relit toutes les parties de l'oracle** (`ref-shadow`, 242 parties) : même coup
+dans 4 % des cas aux tours 1-4, 12 % aux 9-12, 20 % aux 17-20, 43 % après le 25 ; le
+coup de l'oracle est dans le top 8 de son cœur 24 % du temps au début, 83 % à la fin.
+
+**Copier l'oracle dans le cœur** (cœur contre cœur du 1.0, 6 000 à 8 000 parties, quelques
+secondes) :
+
+| Cœur (sur le 1.0) | Jeu de donnes 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| `v1ans1` / `v1ans2` : un bonus pour répondre | 46,9 % / 45,8 % | | |
+| `v1blind1` : ouvrir à l'aveugle coûte 0,1 | 51,1 % | 49,3 % | |
+| `v1blind2` : 0,2 | 50,7 % | | |
+| `v1jneg1` / `v1jneg2` : un côté sans figure accepté (junk -0,1 / -0,2) | 50,4 % / 51,0 % | — / 50,4 % | |
+| `v1freejk` : sans l'habitude du joker | 47,5 % | | |
+| **`v1bj`** : `noBlindOpen` 0,1 et `junk` -0,2 ensemble | **52,0 %** | **52,1 %** | **51,5 %** |
+
+Répondre plus, comme l'oracle le fait dans ses parties entières, fait perdre le cœur :
+il répond quand c'est juste, pas par principe. Seul `v1bj` tient sur trois jeux de donnes,
+mais le banc oracle ne lui voit rien (top 8 : 60,0 % contre 60,6 % sur les positions du
+1.0, 64,7 % contre 66,0 % sur celles du 0.9). Il passe un tri dans l'arbre à temps égal
+ce matin (`screen-v1bj`) ; s'il n'est pas écarté, ses quatre duels longs ce soir.

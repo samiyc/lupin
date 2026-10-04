@@ -1,0 +1,321 @@
+{
+ "built": "2026-10-04",
+ "engine": "ismcts+candidates=99+widen=6+depth=5+smart=1",
+ "budget": 20000,
+ "positions": 2159,
+ "gaps": 1035,
+ "byTurn": {
+  "tour 12": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 72,
+   "gaps": 60,
+   "unseen": 30
+  },
+  "tour 13": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 75,
+   "gaps": 55,
+   "unseen": 32
+  },
+  "tour 14": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 83,
+   "gaps": 74,
+   "unseen": 34
+  },
+  "tour 15": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 89,
+   "gaps": 70,
+   "unseen": 29
+  },
+  "tour 16": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 84,
+   "gaps": 65,
+   "unseen": 36
+  },
+  "tour 17": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 80,
+   "gaps": 63,
+   "unseen": 30
+  },
+  "tour 18": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 87,
+   "gaps": 69,
+   "unseen": 32
+  },
+  "tour 19": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 86,
+   "gaps": 65,
+   "unseen": 29
+  },
+  "tour 20": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 90,
+   "gaps": 65,
+   "unseen": 41
+  },
+  "tour 21": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 87,
+   "gaps": 65,
+   "unseen": 34
+  },
+  "tour 22": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 83,
+   "gaps": 60,
+   "unseen": 36
+  },
+  "tour 23": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 84,
+   "gaps": 52,
+   "unseen": 30
+  },
+  "tour 24": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 77,
+   "gaps": 57,
+   "unseen": 34
+  },
+  "tour 25": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 85,
+   "gaps": 53,
+   "unseen": 32
+  },
+  "tour 26": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 88,
+   "gaps": 60,
+   "unseen": 37
+  },
+  "tour 27": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 87,
+   "gaps": 50,
+   "unseen": 31
+  },
+  "tour 28": {
+   "positions": 127,
+   "checked": 127,
+   "stable": 84,
+   "gaps": 52,
+   "unseen": 33
+  }
+ },
+ "byPlayer": {
+  "a commencé": {
+   "positions": 1016,
+   "checked": 1016,
+   "stable": 673,
+   "gaps": 473,
+   "unseen": 247
+  },
+  "second": {
+   "positions": 1143,
+   "checked": 1143,
+   "stable": 748,
+   "gaps": 562,
+   "unseen": 313
+  }
+ },
+ "traits": [
+  {
+   "trait": "bâtit un côté ni brelan ni suite de couleur",
+   "oracle": 0.370048309178744,
+   "core": 0.017391304347826087
+  },
+  {
+   "trait": "bâtit une suite de couleur",
+   "oracle": 0.18357487922705315,
+   "core": 0.45603864734299515
+  },
+  {
+   "trait": "complète un côté (3e carte)",
+   "oracle": 0.3207729468599034,
+   "core": 0.14589371980676327
+  },
+  {
+   "trait": "pose une 2e carte",
+   "oracle": 0.5246376811594203,
+   "core": 0.6908212560386473
+  },
+  {
+   "trait": "bâtit un brelan",
+   "oracle": 0.2144927536231884,
+   "core": 0.36328502415458935
+  },
+  {
+   "trait": "joker",
+   "oracle": 0.13816425120772946,
+   "core": 0.017391304347826087
+  },
+  {
+   "trait": "carte moyenne (4-7)",
+   "oracle": 0.30531400966183575,
+   "core": 0.4038647342995169
+  },
+  {
+   "trait": "carte faible (3-)",
+   "oracle": 0.23671497584541062,
+   "core": 0.31980676328502416
+  },
+  {
+   "trait": "sur un bord (borne 1 ou 7)",
+   "oracle": 0.28019323671497587,
+   "core": 0.2144927536231884
+  },
+  {
+   "trait": "carte forte (8+)",
+   "oracle": 0.31980676328502416,
+   "core": 0.2589371980676328
+  },
+  {
+   "trait": "au centre (bornes 3-5)",
+   "oracle": 0.4434782608695652,
+   "core": 0.4995169082125604
+  },
+  {
+   "trait": "ouvre avec de quoi faire un brelan",
+   "oracle": 0.02608695652173913,
+   "core": 0.06956521739130435
+  },
+  {
+   "trait": "face à un côté adverse plein",
+   "oracle": 0.033816425120772944,
+   "core": 0.06956521739130435
+  },
+  {
+   "trait": "répond plus bas",
+   "oracle": 0.024154589371980676,
+   "core": 0.057971014492753624
+  },
+  {
+   "trait": "ouvre sans suite prévue en main",
+   "oracle": 0.09565217391304348,
+   "core": 0.06859903381642513
+  },
+  {
+   "trait": "répond à une borne adverse",
+   "oracle": 0.13140096618357489,
+   "core": 0.14782608695652175
+  },
+  {
+   "trait": "ouvre avec de quoi faire une suite de couleur",
+   "oracle": 0.02318840579710145,
+   "core": 0.03671497584541063
+  },
+  {
+   "trait": "ouvre une borne vierge",
+   "oracle": 0.02318840579710145,
+   "core": 0.015458937198067632
+  },
+  {
+   "trait": "surenchérit d'un cran",
+   "oracle": 0.00676328502415459,
+   "core": 0.011594202898550725
+  },
+  {
+   "trait": "à côté d'une borne gagnée",
+   "oracle": 0.06086956521739131,
+   "core": 0.05893719806763285
+  },
+  {
+   "trait": "à côté d'une borne perdue",
+   "oracle": 0.06183574879227053,
+   "core": 0.06086956521739131
+  }
+ ],
+ "ms": {
+  "12": {
+   "positions": 127,
+   "ms": 101209
+  },
+  "13": {
+   "positions": 127,
+   "ms": 93127
+  },
+  "14": {
+   "positions": 127,
+   "ms": 87039
+  },
+  "15": {
+   "positions": 127,
+   "ms": 79666
+  },
+  "16": {
+   "positions": 127,
+   "ms": 75209
+  },
+  "17": {
+   "positions": 127,
+   "ms": 69333
+  },
+  "18": {
+   "positions": 127,
+   "ms": 62754
+  },
+  "19": {
+   "positions": 127,
+   "ms": 57258
+  },
+  "20": {
+   "positions": 127,
+   "ms": 52605
+  },
+  "21": {
+   "positions": 127,
+   "ms": 47169
+  },
+  "22": {
+   "positions": 127,
+   "ms": 42502
+  },
+  "23": {
+   "positions": 127,
+   "ms": 39447
+  },
+  "24": {
+   "positions": 127,
+   "ms": 35045
+  },
+  "25": {
+   "positions": 127,
+   "ms": 31555
+  },
+  "26": {
+   "positions": 127,
+   "ms": 28056
+  },
+  "27": {
+   "positions": 127,
+   "ms": 24268
+  },
+  "28": {
+   "positions": 127,
+   "ms": 20382
+  }
+ }
+}

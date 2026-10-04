@@ -16,7 +16,8 @@
   "jeu": "écarts rejoués au tour 30",
   "duel": "parties entières",
   "long800": "arbre @800, 20 min",
-  "temps": "arbre, à temps égal"
+  "temps": "arbre, à temps égal",
+  "coeur": "cœur contre cœur"
  },
  "attempts": [
   {
@@ -141,7 +142,29 @@
    "note": "Le coup de l'oracle est dans le top 12 du cœur du 1.0 dans 77,6 % des positions, le top 16 dans 84 %, contre 66 % dans le top 8."
   },
   {
-   "name": "Tri cœur contre cœur : répondre, ne pas ouvrir à l'aveugle",
+   "name": "Cœur contre cœur : répondre, ne pas ouvrir à l'aveugle, accepter les côtés sans figure",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 52,
+   "lo": 50.9,
+   "hi": 53.2,
+   "verdict": "tendance",
+   "when": "04/10 09:38",
+   "note": "Répondre plus fait perdre (46,9 %, 45,8 %) ; chaque idée seule ne tient pas. v1bj (noBlindOpen 0,1 + junk -0,2) : 52,0 / 52,1 / 51,5 % sur trois jeux de donnes. Le banc oracle ne lui voit rien (top 8 60,0 % contre 60,6 %)."
+  },
+  {
+   "name": "L'oracle relit les parties du 1.0 (tours 12-28)",
+   "family": "reference",
+   "bench": "positions",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "04/10 08:53",
+   "note": "2 159 positions, 57 à 71 % stables. Dans ses écarts : un côté sans figure 37 % contre 2 %, une 3e carte 32 % contre 15 %, un joker 14 % contre 2 % ; le cœur du 1.0 bâtit des suites de couleur (46 % contre 18 %)."
+  },
+  {
+   "name": "Tri dans l'arbre : v1bj à temps égal",
    "family": "oracle",
    "bench": "temps",
    "score": null,
@@ -149,7 +172,7 @@
    "hi": null,
    "verdict": "attente",
    "when": "ce matin",
-   "note": "v1ans1/2 (noAnswer -0,1 / -0,2) et v1blind1/2 (noBlindOpen 0,1 / 0,2), sur le cœur du 1.0."
+   "note": "Un tri écarte, il ne promeut pas : s'il tient, quatre duels longs ce soir."
   }
  ],
  "commitLabels": {
@@ -180,6 +203,14 @@
   "1f8e42b": [
    "oracle",
    "Quatre cœurs qui copient l'oracle"
+  ],
+  "0b4a0a1": [
+   "oracle",
+   "v1bj, et trois cœurs de plus"
+  ],
+  "bd7b52b": [
+   "reference",
+   "L'oracle bat le V1"
   ]
  },
  "next": [
