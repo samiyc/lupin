@@ -1851,3 +1851,17 @@ il répond quand c'est juste, pas par principe. Seul `v1bj` tient sur trois jeux
 mais le banc oracle ne lui voit rien (top 8 : 60,0 % contre 60,6 % sur les positions du
 1.0, 64,7 % contre 66,0 % sur celles du 0.9). Il passe un tri dans l'arbre à temps égal
 ce matin (`screen-v1bj`) ; s'il n'est pas écarté, ses quatre duels longs ce soir.
+
+**Regarder plus de coups, à temps égal** (`screen-copy-oracle`, tris à `@t400` contre le 1.0) :
+
+| Variante | Score | Fourchette par paires |
+| --- | --- | --- |
+| `candidates=12` | 38,2 % | 31,3 – 45,0 % |
+| `candidates=16` | 42,5 % | 36,9 – 48,1 % |
+| 16 jusqu'au tour 12, puis 8 | 46,6 % | 42,7 – 50,4 % |
+
+Les trois sont écartées. Le coup de l'oracle est bien plus souvent dans le top 12 ou 16
+du cœur, mais à budget égal, l'arbre qui regarde plus de coups en creuse chacun moins
+— et perd. L'oracle peut chercher large parce qu'il a 25 fois plus d'itérations : la
+largeur ne se copie pas sans le budget qui va avec. Ce qui se copie, c'est le choix
+du cœur (quels coups mettre dans le top 8), d'où les cœurs `v1…`.

@@ -131,15 +131,15 @@
    "note": "La carte seule sur un côté vide calculée une fois ; plus de tableau pour la clé des paires. Environ 5 % de temps en moins, les trois empreintes inchangées."
   },
   {
-   "name": "Tri : candidates=12, candidates=16, 16 jusqu'au tour 12",
+   "name": "Tri : candidates=12, candidates=16, 16 jusqu'au tour 12 (à temps égal)",
    "family": "oracle",
    "bench": "temps",
-   "score": null,
-   "lo": null,
-   "hi": null,
-   "verdict": "attente",
-   "when": "ce matin",
-   "note": "Le coup de l'oracle est dans le top 12 du cœur du 1.0 dans 77,6 % des positions, le top 16 dans 84 %, contre 66 % dans le top 8."
+   "score": 46.6,
+   "lo": 42.7,
+   "hi": 50.4,
+   "verdict": "perd",
+   "when": "04/10 10:13",
+   "note": "38,2 % / 42,5 % / 46,6 % : écartées. À budget égal, regarder plus de coups, c'est creuser chacun moins. La largeur de l'oracle va avec ses 25 fois plus d'itérations."
   },
   {
    "name": "Cœur contre cœur : répondre, ne pas ouvrir à l'aveugle, accepter les côtés sans figure",
