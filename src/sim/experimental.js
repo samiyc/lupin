@@ -193,6 +193,9 @@ export const CORES = Object.freeze({
   // Only the suited habit kept (03/10): the one bonus whose loss shows (41.1 % without it before turn 15).
   lean: { ...EXPERIMENT, habits: ["suited"], ideas: ["certain"] },
   nobonus: { ...EXPERIMENT, habits: [], ideas: ["certain"] },
+  // On the 1.0 (04/10): in 242 whole games the oracle answers the opponent's borders more (33 % of its early moves against 23 %) and opens
+  // untouched ones less (44 % against 60 %). `noAnswer` below 0 is a bonus for answering; `noBlindOpen` costs a blind opening.
+  ...Object.fromEntries([["v1ans1", "noAnswer", -0.1], ["v1ans2", "noAnswer", -0.2], ["v1blind1", "noBlindOpen", 0.1], ["v1blind2", "noBlindOpen", 0.2]].map(([name, idea, weight]) => [name, { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", idea], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, [idea]: weight } }])),
   noans1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.1 } },
   noans2: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noAnswer"], weights: { ...EXPERIMENT.weights, noAnswer: 0.2 } },
   blind1: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "noBlindOpen"], weights: { ...EXPERIMENT.weights, noBlindOpen: 0.1 } },
