@@ -7,6 +7,32 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
 
 ## Comment le robot choisit un coup
 
+**En résumé** (le V1 à 2 000 itérations ; le changelog 1.1 le montre en schéma, section
+« Comment le robot choisit un coup ») :
+
+1. **42 coups** au plus (6 cartes en main × 7 bornes). Le cœur complet, certitudes comprises, en
+   garde **8**, les candidats. Une seule fois par coup.
+2. **2 000 fois** :
+   1. **le tirage** : la main adverse et la pioche, invisibles, sont redistribuées au hasard ;
+   2. **la descente** : un des 8 candidats, puis à chaque étage une des 3 réponses que le cœur
+      propose dans ce monde-là — une par étage, selon UCB, jusqu'au premier nœud nouveau,
+      5 coups au plus ;
+   3. **la fin de partie** : le cœur des simulations joue son meilleur coup pour les deux joueurs,
+      jusqu'au bout : gagné ou perdu ;
+   4. **le retour** (la rétropropagation) : une visite, et une victoire ou non, sur chaque nœud du
+      chemin jusqu'au candidat.
+3. Le robot joue le candidat **le plus visité**.
+
+**Les ordres de grandeur** :
+- au premier coup, **42 coups** possibles (6 cartes × 7 bornes) ; le produit 42 × 41 × … × 37
+  compte les mains de départ possibles (dans l'ordre ; C(42, 6) ≈ 5,2 millions sans l'ordre),
+  mais une fois la donne faite, on n'en a qu'une, et on la voit ;
+- ce qu'on ne voit pas est énorme : **36 cartes invisibles** au départ (6 en main adverse, 30 en
+  pioche), soit C(36, 6) ≈ **1,95 million de mains adverses**, et la pioche dans n'importe quel
+  ordre ; le tirage en essaie 2 000 ;
+- **≈ 10⁵⁰ parties possibles** (35 coups, 20 à 40 choix chacun) : aucune recherche ne parcourt
+  tout ; d'où les deux filtres, le cœur (8, puis 3) et le tirage (2 000 mondes).
+
 - **Le cœur** : la fonction qui note tous les coups possibles d'une position en un éclair (moins
   d'un dixième de milliseconde) : la valeur de chaque côté de borne (le *potentiel*), les chances
   de gagner la borne avant et après le coup, plus des bonus (habitudes et idées). Le cœur du V1

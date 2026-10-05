@@ -71,6 +71,22 @@ section { display: grid; gap: 18px; min-width: 0; scroll-margin-top: 16px; }
 .chart .label { fill: var(--ink-2); font: 400 12px var(--body); }
 .chart .strong { fill: var(--ink); font-weight: 700; }
 .wide { min-width: 760px; }
+/* The tree, step by step: a diagram drawn with the page's tokens, so it reads in both themes. */
+.tree-steps { margin-top: 4px; }
+.tree-steps .step { padding-right: 18px; }
+.tree-diagram { width: 100%; min-width: 640px; height: auto; display: block; }
+.tree-diagram .t-strong { fill: var(--ink); font-weight: 700; }
+.tree-diagram .t-root, .tree-diagram .t-end, .tree-diagram .t-deal { fill: var(--wash); stroke: var(--edge); stroke-width: 1.5; }
+.tree-diagram .t-deal { stroke-dasharray: 4 3; }
+.tree-diagram .t-links line { stroke: var(--line); stroke-width: 1.5; }
+.tree-diagram .t-nodes circle { fill: var(--card); stroke: var(--sky); stroke-width: 1.5; }
+.tree-diagram .t-path line { stroke: var(--brass); stroke-width: 3; }
+.tree-diagram .t-picked circle { fill: var(--brass); }
+.tree-diagram .t-new { fill: var(--card); stroke: var(--brass); stroke-width: 2.5; stroke-dasharray: 3 2; }
+.tree-diagram .t-rollout { fill: none; stroke: var(--mark); stroke-width: 2.5; }
+.tree-diagram .t-back { fill: none; stroke: var(--seal); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.tree-diagram .t-back-label { fill: var(--seal); }
+.tree-diagram .t-arrowhead { fill: var(--seal); }
 /* The timeline: lane names fixed on the left, the hours scrolling (or dragged) on the right, at a fixed scale. */
 .timeline-box { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: start; }
 .timeline-lanes { width: 150px; height: 300px; display: block; }
@@ -216,7 +232,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     <p class="lead" id="lead"></p>
     <div class="tiles" id="tiles"></div>
     <nav class="toc" aria-label="Sections">
-      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#banc">Le banc</a><a href="#compare">Coup pour coup</a><a href="#cout">Le coût du cœur</a><a href="#suite">La suite</a>
+      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#banc">Le banc</a><a href="#compare">Coup pour coup</a><a href="#arbre">L'arbre</a><a href="#cout">Le coût du cœur</a><a href="#suite">La suite</a>
     </nav>
   </div>
 </header>
@@ -334,9 +350,106 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     </div>
   </section>
 
+  <section id="arbre" aria-labelledby="t-arbre">
+    <div>
+      <p class="eyebrow">VI · L'arbre du V1, pas à pas</p>
+      <h2 id="t-arbre">Comment le robot choisit un coup</h2>
+    </div>
+    <p>Le robot Expérimental ne calcule pas toute la partie : il essaie 2 000 fois une suite possible, chaque fois dans un monde différent pour les cartes qu'il ne voit pas, et joue le coup qui a tenu le plus souvent. Le cœur note les coups ; l'arbre décide lesquels creuser et retient ce qui gagne. Les mots sont dans <code>docs/glossaire.md</code>.</p>
+    <div class="steps tree-steps">
+      <div class="step"><b>42 coups possibles</b><span>6 cartes en main × 7 bornes, au plus. Le cœur complet (certitudes comprises) les note et en garde <strong>8</strong>, les candidats. Une seule fois par coup.</span></div>
+      <div class="step"><b>Le tirage</b><span>La main adverse et la pioche, invisibles, sont redistribuées au hasard : chaque itération joue dans un monde différent (1,95 million de mains adverses possibles au premier coup).</span></div>
+      <div class="step"><b>La descente</b><span>Un seul chemin : un des 8 candidats, puis à chaque étage une des 3 réponses que le cœur propose dans ce monde-là — d'abord un coup jamais essayé, sinon le meilleur compromis gagner / peu essayé (UCB). Arrêt au premier nœud nouveau, 5 coups au plus.</span></div>
+      <div class="step"><b>La fin de partie</b><span>Le cœur des simulations joue son meilleur coup pour les deux joueurs, jusqu'au bout (une trentaine de coups) : gagné ou perdu.</span></div>
+      <div class="step"><b>Le retour</b><span>Une visite, et une victoire ou non, sur chaque nœud du chemin jusqu'au candidat. Puis on recommence au tirage : 2 000 fois.</span></div>
+      <div class="step"><b>Le coup joué</b><span>Le candidat le <strong>plus visité</strong> : l'arbre revient plus souvent sur ce qui gagne, et un coup peu visité a un taux trop incertain.</span></div>
+    </div>
+    <div class="panel">
+      <h3 class="small-title">Une itération dans l'arbre</h3>
+      <div class="scroll"><svg class="diagram tree-diagram" viewBox="0 0 760 340" role="img" aria-label="Une itération : la racine, 8 candidats, un chemin descendu jusqu'à un nœud nouveau, la fin de partie jouée, et le retour du résultat">
+        <defs><marker id="t-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" class="t-arrowhead" /></marker></defs>
+        <!-- The root and its 8 candidates. -->
+        <rect class="t-root" x="16" y="146" width="104" height="48" rx="8" />
+        <text class="t-strong" x="68" y="166" text-anchor="middle">la position</text>
+        <text x="68" y="182" text-anchor="middle">42 coups</text>
+        <g class="t-links">
+          <line x1="120" y1="170" x2="196" y2="40" /><line x1="120" y1="170" x2="196" y2="76" /><line x1="120" y1="170" x2="196" y2="112" /><line x1="120" y1="170" x2="196" y2="148" />
+          <line x1="120" y1="170" x2="196" y2="184" /><line x1="120" y1="170" x2="196" y2="220" /><line x1="120" y1="170" x2="196" y2="256" /><line x1="120" y1="170" x2="196" y2="292" />
+        </g>
+        <g class="t-nodes">
+          <circle cx="204" cy="40" r="8" /><circle cx="204" cy="76" r="8" /><circle cx="204" cy="112" r="8" /><circle cx="204" cy="148" r="8" />
+          <circle cx="204" cy="220" r="8" /><circle cx="204" cy="256" r="8" /><circle cx="204" cy="292" r="8" />
+        </g>
+        <text x="204" y="330" text-anchor="middle">8 candidats</text>
+        <!-- The path taken: candidate 5, then one reply of 3 at each level. -->
+        <g class="t-links">
+          <line x1="212" y1="184" x2="318" y2="150" /><line x1="212" y1="184" x2="318" y2="234" />
+          <line x1="326" y1="184" x2="432" y2="152" /><line x1="326" y1="184" x2="432" y2="232" />
+          <line x1="440" y1="184" x2="534" y2="156" /><line x1="440" y1="184" x2="534" y2="228" />
+        </g>
+        <g class="t-nodes">
+          <circle cx="326" cy="150" r="7" /><circle cx="326" cy="234" r="7" />
+          <circle cx="440" cy="152" r="7" /><circle cx="440" cy="232" r="7" />
+          <circle cx="542" cy="156" r="6" /><circle cx="542" cy="228" r="6" />
+        </g>
+        <g class="t-path">
+          <line x1="212" y1="184" x2="318" y2="184" /><line x1="334" y1="184" x2="432" y2="184" /><line x1="448" y1="184" x2="534" y2="184" />
+        </g>
+        <g class="t-picked">
+          <circle cx="204" cy="184" r="9" /><circle cx="326" cy="184" r="8" /><circle cx="440" cy="184" r="8" />
+        </g>
+        <circle class="t-new" cx="542" cy="184" r="8" />
+        <text x="326" y="270" text-anchor="middle">3 réponses</text>
+        <text x="440" y="270" text-anchor="middle">3 réponses</text>
+        <text x="542" y="270" text-anchor="middle">nœud nouveau</text>
+        <text x="380" y="300" text-anchor="middle">la descente : un chemin, 5 coups au plus</text>
+        <!-- The rollout to the end, then the result carried back. -->
+        <path class="t-rollout" d="M552 184 q 13 -14 26 0 t 26 0 t 26 0 t 26 0 t 26 0" />
+        <rect class="t-end" x="680" y="162" width="74" height="44" rx="6" />
+        <text class="t-strong" x="717" y="181" text-anchor="middle">gagné</text>
+        <text x="717" y="197" text-anchor="middle">ou perdu</text>
+        <text x="620" y="232" text-anchor="middle">la fin de partie,</text>
+        <text x="620" y="246" text-anchor="middle">jouée par le cœur</text>
+        <path class="t-back" d="M717 160 Q 630 112 548 172 Q 434 112 332 172 Q 268 120 210 172" marker-end="url(#t-arrow)" />
+        <text class="t-back-label" x="470" y="100" text-anchor="middle">le retour : +1 visite, +1 victoire ou non, sur tout le chemin</text>
+        <!-- The deal, above. -->
+        <rect class="t-deal" x="16" y="18" width="128" height="56" rx="8" />
+        <text class="t-strong" x="80" y="40" text-anchor="middle">le tirage</text>
+        <text x="80" y="56" text-anchor="middle">main adverse et</text>
+        <text x="80" y="68" text-anchor="middle">pioche imaginées</text>
+      </svg></div>
+      <p class="small">Recommencé 2 000 fois, chaque fois avec un autre tirage : les chemins qui gagnent sont redescendus plus souvent, donc creusés plus profond ; les autres restent courts. Le cœur filtre (quels coups entrent : 8, puis 3), il ne classe pas : le 1er candidat n'a aucune avance sur le 8e.</p>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h3 class="small-title">Où sert le cœur, par coup</h3>
+        <div class="scroll"><table>
+          <thead><tr><th>Où</th><th>Quel cœur</th><th class="num">Combien de fois</th></tr></thead>
+          <tbody>
+            <tr><td>la racine</td><td>complet, avec les certitudes</td><td class="num">1</td></tr>
+            <tr><td>les nœuds de l'arbre</td><td>celui des simulations</td><td class="num">quelques milliers</td></tr>
+            <tr><td>les fins de partie</td><td>celui des simulations, son meilleur coup</td><td class="num">≈ 60 000</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small">Presque tout le temps part dans les fins de partie (section suivante) : c'est là que <code>B1Lite1</code> allège le cœur, et pourquoi un cœur plus rapide rend le robot plus fort. <code>DistOracle1Root</code> ne change que la racine : il ne coûte rien.</p>
+      </div>
+      <div class="panel">
+        <h3 class="small-title">Les ordres de grandeur</h3>
+        <ul class="facts">
+          <li><b>42 coups</b> au premier coup (6 cartes × 7 bornes), dont l'arbre regarde 8.</li>
+          <li><b>36 cartes invisibles</b> au départ (6 en main adverse, 30 en pioche) : 1,95 million de mains adverses possibles, et la pioche dans n'importe quel ordre.</li>
+          <li><b>648 chemins</b> de 5 coups au plus dans l'arbre (8 × 3⁴), un peu plus en pratique : les 3 réponses changent avec la main adverse imaginée.</li>
+          <li><b>2 000 fins de partie</b>, toutes différentes : un tirage et une fin par itération.</li>
+          <li><b>≈ 10⁵⁰ parties possibles</b> en tout (35 coups, 20 à 40 choix chacun) : d'où les deux filtres, le cœur (8, puis 3) et le tirage (2 000 mondes).</li>
+          <li><b>La profondeur 5</b> : l'arbre apprend sur 5 coups (au-delà, trop peu de visites, du bruit) ; la fin de partie, jouée sans rien retenir, sert seulement à dire qui gagne.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section id="cout" aria-labelledby="t-cout">
     <div>
-      <p class="eyebrow">VI · Où passe le temps</p>
+      <p class="eyebrow">VII · Où passe le temps</p>
       <h2 id="t-cout">Le coût du cœur</h2>
     </div>
     <p>Chaque feature du cœur du 1.0, mesurée de deux façons. Son temps : un profil du processeur attribue chaque fonction appelée à sa feature. Son activité : on l'éteint, on note à nouveau les mêmes coups, et on compte combien de notes changent, et combien de fois le coup préféré change. En haut à gauche, ce qui coûte cher et sert peu : les premières pistes d'optimisation.</p>
@@ -357,7 +470,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
 
   <section id="suite" aria-labelledby="t-suite">
     <div>
-      <p class="eyebrow">VII · Ce soir, demain</p>
+      <p class="eyebrow">VIII · Ce soir, demain</p>
       <h2 id="t-suite">La suite</h2>
     </div>
     <div class="grid3" id="next"></div>
@@ -955,7 +1068,7 @@ function drawCompare() {
   drawGaps(G);
 }
 
-/* ── VI · What the core costs ───────────────────────────── */
+/* ── VII · What the core costs ──────────────────────────── */
 const FAMILY_TONES = { valeur: "sky", habitudes: "brass", idees: "mark", certitudes: "seal", moteur: "plum", autre: "off-ink" };
 const COST_SCOPES = [["rollout", "dans les simulations"], ["root", "à la racine"], ["iteration", "une itération entière"]];
 const pctOf = (x, digits = 1) => `${fr(100 * x, digits)} %`;
@@ -1055,7 +1168,7 @@ function drawCost() {
   $("cost-note").textContent = `${thousands(F.positions)} positions de parties du cœur du 1.0 contre lui-même (un tour sur deux), ${F.searches} recherches à ${F.budget} itérations, sur un fil (npm run features, ${F.built.replace("T", " à ")}). Une évaluation de tous les coups par le cœur des simulations : ${fr(F.perScoringMs, 3)} ms. Les parts tiennent sous la charge, les millisecondes moins : à refaire sur une machine au repos avant d'en tirer des chiffres absolus.`;
 }
 
-/* ── VII · Next ──────────────────────────────────────────── */
+/* ── VIII · Next ─────────────────────────────────────────── */
 function drawNext() {
   $("next").replaceChildren(...J.next.map(({ when, title, text }) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
   $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc des cœurs de <code>data/oracle-bench.json</code>, le banc de similitude de <code>data/oracle-diffs-banc.json</code> et <code>data/banc.json</code>, le coût du cœur de <code>data/core-features.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
