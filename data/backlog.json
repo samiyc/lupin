@@ -539,6 +539,14 @@
       "doneAt": "2026-10-06T00:41",
       "minutes": 43,
       "output": "backlog-runs/2026-10-05-23-58_VALIDATE_SHRT_@_RootHalving.txt"
+    },
+    {
+      "id": "VALIDATE_SHRT_@_RootHalving-Tree-2r-6d",
+      "command": "npm run duel -- \"ismcts+widen=2+depth=6+core=stfig6+halving=750-375-375@1500\" \"ismcts+widen=3+depth=5+core=stfig6@1500\" --games 150 --page",
+      "estimate": "25 min",
+      "limit": 45,
+      "why": "Le duel pour l'honneur de Sami (06/10) : RootHalving (750 / 375 / 375 itérations, la même forme que 1000-500-500 sur 1 500) avec un arbre plus étroit et plus profond (2 réponses, 6 coups), contre le V1, 1 500 itérations des deux côtés. 300 parties : seul un écart au-delà de 55 % ou en deçà de 45 % dira quelque chose ; deux changements à la fois, il ne valide pas RootHalving seul.",
+      "status": "todo"
     }
   ]
 }

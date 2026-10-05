@@ -212,6 +212,7 @@ version :
 | `DistOraclePair` | la remise sur une paire réglée sur l'oracle (B3) | `…+core=distpair` |
 | `NoConnector` | le V1 sans l'idée `connector` | `…+core=v1nc` |
 | `Tree-10c-4r` | l'arbre à 10 candidats et 4 réponses par étage | `ismcts+candidates=10+widen=4…` |
+| `RootHalving-Tree-2r-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |
 | `EarlyBudget-4000-750` | plus d'itérations aux tours 1-12, moins ensuite, même total | `phase:13:…@4000/…@750` |
 | `InferLast3` | la main adverse devinée d'après ses 3 derniers coups | `…+infer=48+memory=3` |
