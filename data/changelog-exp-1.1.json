@@ -340,6 +340,17 @@
    "verdict": "attente",
    "when": "05/10 06:33",
    "note": "Coupé à 180 parties par le redémarrage de Windows Update (6 h 38). À relancer."
+  },
+  {
+   "name": "dist1 à la racine, 4 duels longs contre le V1 à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 51.6,
+   "lo": 49,
+   "hi": 54.2,
+   "verdict": "tendance",
+   "when": "05/10 10:15",
+   "note": "1 000 parties sur d'autres donnes que le tri : 53,6 / 48,8 / 50,8 / 53,2 %. La fourchette basse reste sous 50 % : pas décidé, un gain d'environ 1,5 point au mieux. Il ouvre moins de bornes vierges et répond plus, comme l'oracle."
   }
  ],
  "commitLabels": {
@@ -422,23 +433,35 @@
   "a9539b8": [
    "oracle",
    "Vers 55 % : le labo à 2 000, le cœur appris sur l'oracle, la main adverse devinée"
+  ],
+  "2085f0c": [
+   "outils",
+   "La file de jour : dist1 à la racine en duels longs, puis les tris"
+  ],
+  "b0af8cf": [
+   "oracle",
+   "infer v2 : la main adverse devinée d'après ses 3 derniers coups"
+  ],
+  "4a78163": [
+   "oracle",
+   "La nuit des tris à 2 000 : dist1 à la racine 52,8 %"
   ]
  },
  "next": [
   {
-   "when": "Prochain essai",
-   "title": "dist1 à la racine, en duels longs",
-   "text": "52,8 % (48,4 – 57,1) en tri : ses 4 duels longs de 250 parties contre le V1 à 2 000 (environ 4 h) décident. S'il tient, c'est la base du 1.1."
-  },
-  {
-   "when": "En file",
-   "title": "Finir les tris",
-   "text": "Le budget au début (3 000 / 1 400), coupé par Windows Update, et la largeur à 2 000 (10 et 12 candidats) : environ 3 h."
+   "when": "En cours",
+   "title": "Les derniers tris",
+   "text": "Le budget au début (3 000 / 1 400), la largeur à 2 000 (10 et 12 candidats) et infer v2 (les 3 derniers coups adverses) : fin vers 14 h 15."
   },
   {
    "when": "Ensuite",
+   "title": "Combiner avec dist1 à la racine",
+   "text": "51,6 % (49,0 – 54,2) en duels longs : un petit gain, pas décidé. Il servira de base si un autre tri tient, les deux combinés en 4 duels longs."
+  },
+  {
+   "when": "Plus tard",
    "title": "Un distill pour la racine",
-   "text": "dist1 gagne à la racine et perd dans les simulations : régler un cœur pour la racine seulement, sur plus de positions de l'oracle, et le combiner avec le 1.0 pour jouer."
+   "text": "Régler un cœur pour la racine seulement, sur plus de positions de l'oracle (un job de nuit pour en lire d'autres), et garder le 1.0 pour les simulations."
   },
   {
    "when": "Plus tard",

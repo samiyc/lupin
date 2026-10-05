@@ -2082,3 +2082,24 @@ reste `152e2a9c9d66170c`. Tri en file : `ismcts+…+core=stfig6+infer=48+memory=
 **La file de jour du 05/10** (`--threads 18`, sans pauses, lancée à 8 h 22) : les 4 duels
 longs de `dist1` à la racine (offsets 1 à 4 : le tri avait joué ceux de l'offset 0), puis
 les tris `early3000`, `w10`, `w12` et `infer2`.
+
+**`dist1` à la racine, en duels longs** (4 × 250 parties contre le V1 à 2 000, offsets 1 à 4,
+de 8 h 22 à 10 h 15, 26 à 30 min chacun) :
+
+| Jeu de donnes | Score | Fourchette par paires |
+| --- | --- | --- |
+| offset 1 | 53,6 % | 49,0 – 58,2 % |
+| offset 2 | 48,8 % | 43,6 – 54,0 % |
+| offset 3 | 50,8 % | 45,2 – 56,4 % |
+| offset 4 | 53,2 % | 47,7 – 58,7 % |
+| **les 4 réunis (500 paires)** | **51,6 %** | **49,0 – 54,2 %** |
+
+- **Pas décidé** : la fourchette basse reste sous 50 %. `dist1` à la racine est au mieux
+  un petit gain (environ +1,5 point), loin des 55 %. Avec le tri de la nuit (qui l'a choisi,
+  donc biaisé), `npm run versus` donne 51,9 % (49,7 – 54,2) sur 1 400 parties.
+- Ce qu'il joue autrement : au début, il ouvre moins de bornes vierges (45,7 % contre 54,1 %)
+  et plus au centre ; au milieu, il répond bien plus (31,4 % contre 22,7 %) — les traits de
+  l'oracle, sans l'oracle.
+- Par jokers : 60,3 % à 2 contre 0, 43,1 % à 0 contre 2, 52,0 % à un chacun.
+- Pour trancher sur un effet d'environ 1,5 point, il faudrait environ 4 000 parties : ce
+  n'est pas la meilleure dépense tant qu'aucune autre piste n'a été combinée avec lui.
