@@ -2,7 +2,7 @@ import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
-import { createValuer, sidePotential, unseenCards } from "./potential.js";
+import { createPairMemo, createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
 import { phaseBot, phaseSettings } from "./phase.js";
@@ -73,7 +73,7 @@ function views(state) {
   const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
   // Each view gets its own memo: the same pair is judged many times in one scoring. Written out field by field:
   // built on every scoring of every rollout, a spread costs more than it reads.
-  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: new Map(), withoutCard: new Map(), params: undefined, alone: undefined };
+  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: createPairMemo(), withoutCard: new Map(), params: undefined, alone: undefined };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     valuer,
@@ -81,7 +81,7 @@ function views(state) {
     hand: [],
     draws: state.spec.handSize + Math.floor(state.pile.length / 2),
     jokerAllowed: jokerGate(state, 1 - player),
-    memo: new Map(),
+    memo: createPairMemo(),
   };
   const threat = state.borders.map((border) => sidePotential(border.sides[1 - player], theirs));
   return { mine, threat };
@@ -163,7 +163,7 @@ function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, 
     memo: new Map(),
     ...ideasContext(state, player, tuning, seen),
   };
-  const factors = context.ideas ? borderFactors(context, state.borders.length, context.chances) : null;
+  const factors = (context.gates?.factors ?? Boolean(context.ideas)) ? borderFactors(context, state.borders.length, context.chances) : null;
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   const certainty = certaintyOf(context.ideas);
   const gainOf = certainty ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params)) : plainGain;

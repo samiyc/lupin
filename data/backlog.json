@@ -266,35 +266,35 @@
       "output": "backlog-runs/2026-10-05-12-39_screen-infer2.txt"
     },
     {
-      "id": "duel-v1nc-0",
-      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2160\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page",
+      "id": "duel-v1nc10-1",
+      "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=v1nc@2200\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
       "estimate": "30 min",
       "limit": 50,
-      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7,9 % plus rapide par itération au repos, donc 2 160 itérations contre 2 000. Jeu de donnes 1 sur 4 (1 000 parties, npm run versus).",
+      "why": "Le 1.0 sans connector, 10 candidats et 4 réponses (le tri à 10 candidats : 52,8 %, joué sur l'offset 0, d'où les offsets 1 à 4), à temps égal : 10 % plus rapide par itération au repos (665 contre 732 µs, avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 1 sur 4 (1 000 parties, npm run versus).",
       "status": "todo"
     },
     {
-      "id": "duel-v1nc-1",
-      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2160\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "id": "duel-v1nc10-2",
+      "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=v1nc@2200\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
       "estimate": "30 min",
       "limit": 50,
-      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7,9 % plus rapide par itération au repos, donc 2 160 itérations contre 2 000. Jeu de donnes 2 sur 4 (1 000 parties, npm run versus).",
+      "why": "Le 1.0 sans connector, 10 candidats et 4 réponses (le tri à 10 candidats : 52,8 %, joué sur l'offset 0, d'où les offsets 1 à 4), à temps égal : 10 % plus rapide par itération au repos (665 contre 732 µs, avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 2 sur 4 (1 000 parties, npm run versus).",
       "status": "todo"
     },
     {
-      "id": "duel-v1nc-2",
-      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2160\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "id": "duel-v1nc10-3",
+      "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=v1nc@2200\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
       "estimate": "30 min",
       "limit": 50,
-      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7,9 % plus rapide par itération au repos, donc 2 160 itérations contre 2 000. Jeu de donnes 3 sur 4 (1 000 parties, npm run versus).",
+      "why": "Le 1.0 sans connector, 10 candidats et 4 réponses (le tri à 10 candidats : 52,8 %, joué sur l'offset 0, d'où les offsets 1 à 4), à temps égal : 10 % plus rapide par itération au repos (665 contre 732 µs, avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 3 sur 4 (1 000 parties, npm run versus).",
       "status": "todo"
     },
     {
-      "id": "duel-v1nc-3",
-      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2160\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "id": "duel-v1nc10-4",
+      "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=v1nc@2200\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
       "estimate": "30 min",
       "limit": 50,
-      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7,9 % plus rapide par itération au repos, donc 2 160 itérations contre 2 000. Jeu de donnes 4 sur 4 (1 000 parties, npm run versus).",
+      "why": "Le 1.0 sans connector, 10 candidats et 4 réponses (le tri à 10 candidats : 52,8 %, joué sur l'offset 0, d'où les offsets 1 à 4), à temps égal : 10 % plus rapide par itération au repos (665 contre 732 µs, avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 4 sur 4 (1 000 parties, npm run versus).",
       "status": "todo"
     }
   ]

@@ -2183,3 +2183,30 @@ de 40 parties du cœur contre lui-même, 181 recherches à 300 itérations) mesu
   10 candidats sont indépendants : l'un choisit les candidats, l'autre en prend deux de plus),
   et **gagner en vitesse** sans changer les coups (le 1.0 gagne 55,2 % avec 2,5 fois plus
   d'itérations).
+
+**Le potentiel plus vite, à coups identiques** (A1 à A4, 05/10, Sami) :
+- A1 : la mémoire des paires de `drawPotential` n'est plus une `Map` par vue et par évaluation,
+  mais deux tableaux typés partagés, chaque évaluation sous un numéro à elle
+  (`createPairMemo`) ; une évaluation imbriquée ne cause qu'un manque, jamais une fausse valeur ;
+- A2 : `upsideOf` lit les chances de pioche dans une table (cartes invisibles × tirages ×
+  cartes utiles), calculée une fois ;
+- A3 : `borderFactors` n'est plus appelé quand aucune idée ne pondère les bornes (`neighbors`,
+  `weight`, `runs`) : ses facteurs valaient tous 1 ;
+- A4 : l'aiguillage des bonus ne recrée plus d'objet par `...spread` à chaque coup.
+- A5 (le meilleur appariement d'un côté à une carte, une fois pour tous) n'est pas fait : un côté
+  à une carte n'est évalué qu'une fois par vue, il n'y avait rien à garder.
+
+Les empreintes 1.0, 0.9, arbre du 0.9 et oracle sont inchangées. Au repos (arbre à 400, 107
+positions, 3 passes) :
+
+| Version | Itérations/s | Gain |
+| --- | --- | --- |
+| V1 avant | 1 131 | — |
+| V1, idées éteintes sautées | 1 138 | +0,6 % (les +3,8 % du premier essai étaient du bruit) |
+| **V1, A1 à A4** | **1 366** | **+20,7 %** |
+| `v1nc`, A1 à A4 | 1 502 | +32,8 % |
+| `v1nc` + 10 candidats, 4 réponses, A1 à A4 | 1 503 | +32,8 % |
+
+Le V1 lui-même est 20 % plus rapide, sans changer un coup : dans la page (10 s par coup), c'est
+20 % d'itérations de plus. La file passe à la combinaison `ismcts+candidates=10+widen=4+depth=5+core=v1nc`
+à temps égal (2 200 itérations contre 2 000), 4 duels longs sur les offsets 1 à 4.

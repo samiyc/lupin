@@ -78,7 +78,28 @@ function columns(unseen) {
   return unseen;
 }
 
-/** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? }. */
+/**
+ * The memory of pair potentials (`drawPotential`), for one view of one scoring:
+ * a stamp in two tables shared by every scoring (npm run features, 05/10: a Map
+ * per view and per scoring cost a fifth of the core's time). An entry is the
+ * memo's own while it carries its stamp; another scoring, even one nested
+ * inside, writes under a stamp of its own and only causes a miss.
+ */
+const PAIR_KEYS = 64 * 64 * 2;
+const PAIR_VALUES = new Float64Array(PAIR_KEYS);
+const PAIR_STAMPS = new Uint32Array(PAIR_KEYS);
+let stamps = 0;
+
+export function createPairMemo() {
+  stamps += 1;
+  if (stamps >= 0xffffffff) {
+    PAIR_STAMPS.fill(0);
+    stamps = 1;
+  }
+  return stamps;
+}
+
+/** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? (`createPairMemo`) }. */
 export function sidePotential(side, context) {
   if (side.length >= 3) return context.valuer.value(side);
   if (side.length === 2) return pairPotential(side, context);
@@ -105,7 +126,7 @@ function pairPotential(side, context, skip = -1) {
  *
  * It depends only on the two cards (the unseen cards and the draws are fixed
  * for one scoring), yet one scoring asks for the same pair dozens of times:
- * a context may carry a `memo` Map, fresh for each scoring, to answer once.
+ * a context may carry a `memo` (`createPairMemo`), fresh for each scoring, to answer once.
  */
 function drawPotential(side, context, jokerOk) {
   const { memo } = context;
@@ -114,11 +135,10 @@ function drawPotential(side, context, jokerOk) {
   const a = side[0];
   const b = side[1];
   const key = (a < b ? (a + 1) * 64 + b + 1 : (b + 1) * 64 + a + 1) * 2 + Number(jokerOk);
-  let value = memo.get(key);
-  if (value === undefined) {
-    value = drawPotentialOf(side, context, jokerOk);
-    memo.set(key, value);
-  }
+  if (PAIR_STAMPS[key] === memo) return PAIR_VALUES[key];
+  const value = drawPotentialOf(side, context, jokerOk);
+  PAIR_STAMPS[key] = memo;
+  PAIR_VALUES[key] = value;
   return value;
 }
 
@@ -148,13 +168,30 @@ function drawPotentialOf(side, { valuer, unseen, draws }, jokerOk) {
   return mean / total + upsideOf(mean / total, unseen.total, draws);
 }
 
+/**
+ * The chance of drawing one of `outs` cards out of `total` unseen in `draws`
+ * draws, worked out once per (total, draws, outs) and kept: the same few
+ * dozen values are asked millions of times (NaN until first asked). Each
+ * stays under 64: 46 unseen cards at most, 29 draws.
+ */
+const CHANCES = new Float64Array(64 * 64 * 64).fill(Number.NaN);
+
+function chanceOf(outs, total, draws) {
+  // A deck bigger than the printed one would overflow the table: worked out each time.
+  if (total >= 64 || draws >= 64) return 1 - (1 - outs / total) ** draws;
+  const index = (total * 64 + draws) * 64 + outs;
+  let chance = CHANCES[index];
+  if (Number.isNaN(chance)) {
+    chance = 1 - (1 - outs / total) ** draws;
+    CHANCES[index] = chance;
+  }
+  return chance;
+}
+
 /** The best upside of any formation over the mean, weighted by the chance of drawing one of its outs (read from the scratch). */
 function upsideOf(mean, unseenTotal, draws) {
   let upside = 0;
-  for (let rank = 1; rank < OUTS.length; rank += 1) {
-    const chance = 1 - (1 - OUTS[rank] / unseenTotal) ** draws;
-    upside = Math.max(upside, chance * (BEST_OF[rank] - mean));
-  }
+  for (let rank = 1; rank < OUTS.length; rank += 1) upside = Math.max(upside, chanceOf(OUTS[rank], unseenTotal, draws) * (BEST_OF[rank] - mean));
   return upside;
 }
 

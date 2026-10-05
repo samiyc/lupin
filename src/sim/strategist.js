@@ -99,7 +99,11 @@ export function strategistAdjust(side, card, context, border) {
  * dropped moves stay in, scored and marked `refused`.
  */
 export function strategistMoves(moves, sideOf, context, { gainOf, scale, keepAll = false }) {
-  const judged = moves.map((move) => ({ move, ...strategistAdjust(sideOf(move), move.card, context, move.border) }));
+  // Written out rather than spread: this runs on every move of every rollout.
+  const judged = moves.map((move) => {
+    const { allowed, bonus } = strategistAdjust(sideOf(move), move.card, context, move.border);
+    return { move, allowed, bonus };
+  });
   const allowed = judged.filter((entry) => entry.allowed);
   const pool = allowed.length > 0 ? allowed : judged;
   const kept = keepAll ? judged : pool;

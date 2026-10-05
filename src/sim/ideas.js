@@ -45,6 +45,8 @@ export const gatesOf = (ideas) => ({
   // time went to bonus functions that only found out they were off): the sums stay the same.
   jokerTrap: ideas.has("jokerTrap"),
   bait: ideas.has("bait"),
+  // `borderFactors` only when an idea scales the borders: otherwise every factor is 1.
+  factors: ideas.has("neighbors") || ideas.has("weight") || ideas.has("runs"),
 });
 
 export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"]);
