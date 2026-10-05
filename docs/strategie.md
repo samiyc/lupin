@@ -2041,3 +2041,31 @@ l'empreinte du 1.0 intacte (`152e2a9c9d66170c`).
 45 min chacun, une pause entre deux) : `dist1` à la racine, `dist1` partout, `infer`, puis
 le budget au début (4 000 / 750), l'oracle allégé, le budget au début (3 000 / 1 400), la
 largeur (10 puis 12 candidats).
+
+**La nuit du 04 au 05/10** (`npm run backlog -- --threads 18`, lancé à 0 h 11) : six tris joués,
+puis **Windows Update a redémarré le PC à 6 h 38** (mise à jour 26H2, redémarrage planifié) au
+milieu du sixième. Tris de 400 parties contre le V1 à 2 000 :
+
+| Tri | Parties | Score | Fourchette par paires | Verdict |
+| --- | --- | --- | --- | --- |
+| **`dist1` à la racine** (`+shortlist=dist1`) | 400 | **52,8 %** | 48,4 – 57,1 % | candidat aux duels longs |
+| `dist1` partout, 1 720 itérations (temps égal) | 400 | 46,3 % | 42,0 – 50,5 % | écarté |
+| `infer=48` | 400 | 49,5 % | 45,2 – 53,8 % | neutre |
+| budget au début, 4 000 / 750 | 360 | 49,7 % | 44,4 – 55,0 % | neutre |
+| oracle allégé au début (16 candidats, 4 réponses, 4 000 / 750) | 360 | 46,9 % | 41,0 – 52,9 % | plutôt perdant |
+| budget au début, 3 000 / 1 400 | 180 | 49,4 % | 42,0 – 56,9 % | coupé par le redémarrage |
+| 10 et 12 candidats, 4 réponses | — | — | — | pas joués |
+
+- **`dist1` à la racine** est le seul qui se détache : le cœur appris sur l'oracle choisit
+  mieux les coups que l'arbre examine, à condition de laisser le 1.0 jouer les simulations.
+  Partout, il perd (46,3 %), comme en cœur contre cœur (47,6 %) : ses poids, réglés pour
+  classer, jouent moins bien seuls. Un tri ne promeut pas : ses 4 duels longs décideront.
+- **Deviner la main adverse** d'après son seul dernier coup ne change rien (49,5 %). Une
+  inférence sur plus d'un coup (l'historique de la partie) serait l'étape suivante, plus
+  coûteuse à écrire.
+- **Le budget au début ne paie pas** à total égal (49,7 % et 49,4 %), et la largeur de
+  l'oracle sans son budget perd encore (46,9 %) : les 59,1 % de l'oracle jusqu'au tour 12
+  viennent de ses 20 000 itérations, qu'on ne peut pas prendre sur la fin de partie.
+- Les deux tris « budget au début » ont dépassé leur limite de 60 min (2 × 180 parties en
+  46 min) : les tours 1 à 12 coûtent plus cher par itération que la moyenne. Les tris
+  restants ont maintenant 75 min.

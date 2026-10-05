@@ -18,7 +18,8 @@
   "long800": "arbre @800, 20 min",
   "temps": "arbre, à temps égal",
   "coeur": "cœur contre cœur",
-  "banc": "banc de similitude"
+  "banc": "banc de similitude",
+  "arbre2000": "arbre @2000, 400 parties"
  },
  "attempts": [
   {
@@ -240,6 +241,105 @@
    "verdict": "neutre",
    "when": "04/10 22:44",
    "note": "+0,32 point de valeur oracle contre le 1.0 (-0,40 – +1,05) sur 3 721 positions, +0,8 aux tours 4-10. Neutre, comme ses 1 000 parties (50,5 %). La 13e version de la calibration."
+  },
+  {
+   "lo": 49.8,
+   "hi": 60.6,
+   "score": 55.2,
+   "name": "Le V1 à 2 000 itérations contre le V1 à 800",
+   "family": "vitesse",
+   "bench": "duel",
+   "verdict": "tendance",
+   "when": "04/10 23:35",
+   "note": "250 parties, 19 min sur 18 fils. 2,5 fois plus de calcul vaut déjà environ 55 % : le labo passe à 2 000 itérations des deux côtés (Sami)."
+  },
+  {
+   "lo": null,
+   "hi": null,
+   "score": null,
+   "name": "dist1 : le cœur du 1.0 réglé sur l'oracle (npm run distill)",
+   "family": "oracle",
+   "bench": "positions",
+   "verdict": "gagne",
+   "when": "04/10 23:58",
+   "note": "13 poids réglés ensemble (SPSA, 15 min) : sur les 1 580 positions gardées de côté, le coup de l'oracle dans le top 8 passe de 59,6 à 66,0 % (top 3 : 27,5 → 32,2 %)."
+  },
+  {
+   "lo": 46.4,
+   "hi": 49.2,
+   "score": 47.6,
+   "name": "dist1 en cœur contre cœur",
+   "family": "oracle",
+   "bench": "coeur",
+   "verdict": "perd",
+   "when": "05/10 00:01",
+   "note": "47,8 / 47,4 / 47,9 % sur trois jeux de donnes : réglé pour classer les coups, il joue moins bien seul."
+  },
+  {
+   "lo": 48.4,
+   "hi": 57.1,
+   "score": 52.8,
+   "name": "Tri : dist1 à la racine seulement",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "tendance",
+   "when": "05/10 01:03",
+   "note": "dist1 choisit les coups examinés à la racine, le 1.0 joue les simulations. Le seul tri de la nuit qui se détache : candidat aux 4 duels longs."
+  },
+  {
+   "lo": 42,
+   "hi": 50.5,
+   "score": 46.3,
+   "name": "Tri : dist1 partout, à temps égal",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "perd",
+   "when": "05/10 02:18",
+   "note": "1 720 itérations contre 2 000 (16 % plus cher par itération). Écarté."
+  },
+  {
+   "lo": 45.2,
+   "hi": 53.8,
+   "score": 49.5,
+   "name": "Tri : la main adverse devinée (infer=48)",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "neutre",
+   "when": "05/10 03:26",
+   "note": "48 mains pondérées par la vraisemblance de son dernier coup : rien ne change. Lire plus d'un coup serait l'étape suivante."
+  },
+  {
+   "lo": 44.4,
+   "hi": 55,
+   "score": 49.7,
+   "name": "Tri : plus de budget au début (4 000 / 750)",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "neutre",
+   "when": "05/10 04:41",
+   "note": "Même total par partie. 360 parties : arrêté à sa limite de 60 min."
+  },
+  {
+   "lo": 41,
+   "hi": 52.9,
+   "score": 46.9,
+   "name": "Tri : l'oracle allégé au début (16 candidats, 4 réponses)",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "neutre",
+   "when": "05/10 05:57",
+   "note": "4 000 itérations aux tours 1-12 puis 750 : plutôt perdant. La largeur de l'oracle ne vient pas sans ses 20 000 itérations. 360 parties (limite de 60 min)."
+  },
+  {
+   "lo": 42,
+   "hi": 56.9,
+   "score": 49.4,
+   "name": "Tri : plus de budget au début (3 000 / 1 400)",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "verdict": "attente",
+   "when": "05/10 06:33",
+   "note": "Coupé à 180 parties par le redémarrage de Windows Update (6 h 38). À relancer."
   }
  ],
  "commitLabels": {
@@ -318,23 +418,27 @@
   "c3483c3": [
    "reference",
    "La nuit du banc dans le changelog, calibrée sur 13 versions"
+  ],
+  "a9539b8": [
+   "oracle",
+   "Vers 55 % : le labo à 2 000, le cœur appris sur l'oracle, la main adverse devinée"
   ]
  },
  "next": [
   {
    "when": "Prochain essai",
-   "title": "Plus de temps aux premiers coups",
-   "text": "L'oracle jusqu'au tour 12 gagne 59,1 % : c'est son budget, pas sa largeur. Un 1.0 qui réfléchit plus longtemps au début, à temps total égal."
+   "title": "dist1 à la racine, en duels longs",
+   "text": "52,8 % (48,4 – 57,1) en tri : ses 4 duels longs de 250 parties contre le V1 à 2 000 (environ 4 h) décident. S'il tient, c'est la base du 1.1."
   },
   {
-   "when": "Le protocole",
-   "title": "Le tri d'arbre reste le filtre",
-   "text": "Le banc de similitude ne classe pas les versions comme les duels (0,32) : il ne voit que le début de partie (0,61), là où l'oracle hésite. Cœur contre cœur, puis 400 parties d'arbre, puis quatre duels longs."
+   "when": "En file",
+   "title": "Finir les tris",
+   "text": "Le budget au début (3 000 / 1 400), coupé par Windows Update, et la largeur à 2 000 (10 et 12 candidats) : environ 3 h."
   },
   {
-   "when": "Si le banc doit servir",
-   "title": "Un banc du début, cherché plus",
-   "text": "Le seul endroit où le banc classe bien les versions (0,61, 0,72 à 800 itérations), c'est aux tours 4 à 10, là où deux recherches de l'oracle ne s'accordent qu'une fois sur trois. Quatre recherches par position plutôt que plus de positions."
+   "when": "Ensuite",
+   "title": "Un distill pour la racine",
+   "text": "dist1 gagne à la racine et perd dans les simulations : régler un cœur pour la racine seulement, sur plus de positions de l'oracle, et le combiner avec le 1.0 pour jouer."
   },
   {
    "when": "Plus tard",
@@ -440,6 +544,24 @@
    "label": "e12open1 au banc de similitude, 3 721 positions (18 fils)",
    "doneAt": "2026-10-04T22:44",
    "minutes": 10
+  },
+  {
+   "id": "duel-v1-2000",
+   "label": "Le V1 à 2 000 contre le V1 à 800, 250 parties (18 fils)",
+   "doneAt": "2026-10-04T23:35",
+   "minutes": 19
+  },
+  {
+   "id": "banc-distill",
+   "label": "npm run distill : le cœur du 1.0 réglé sur l'oracle, 218 manches (18 fils)",
+   "doneAt": "2026-10-04T23:58",
+   "minutes": 15
+  },
+  {
+   "id": "screen-dist1-cores",
+   "label": "dist1 contre le cœur du 1.0, 3 jeux de donnes (18 fils)",
+   "doneAt": "2026-10-05T00:01",
+   "minutes": 2
   }
  ]
 }
