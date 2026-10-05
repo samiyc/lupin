@@ -645,6 +645,10 @@
   "917a1da": [
    "outils",
    "Le changelog : l'arbre pas à pas"
+  ],
+  "f78321f": [
+   "oracle",
+   "DistOracle1Root sur 2 000 parties : neutre"
   ]
  },
  "next": [
@@ -657,6 +661,11 @@
    "when": "Ensuite",
    "title": "Le potentiel : B1 à B4",
    "text": "B1 en tri ce soir. B3 fait : PAIR_DISCOUNT réglé sur l'oracle à 0,867, sans rien changer à l'accord (59,6 → 59,1 %). Restent B2 (la mémoire des paires d'un coup à l'autre) et B4 (la pioche pondérée par les tirages restants)."
+  },
+  {
+   "when": "Piste",
+   "title": "C1 : les réponses adverses regroupées",
+   "text": "Au tour 1, 116 réponses adverses différentes sous le meilleur candidat, 14 visites au plus chacune : l'arbre n'y apprend rien. Les regrouper par borne et hauteur de carte ferait apprendre sous les candidats dès le début."
   }
  ],
  "banc": {

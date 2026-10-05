@@ -2309,3 +2309,26 @@ temps par coup des deux côtés (`@t3200`), le temps égal mesuré sous charge n
 fait choisir) : 50,9 % (49,2 – 52,7) sur 2 400 parties. Mieux classer les candidats comme l'oracle
 (top 8 : 59,6 → 66,0 %) ne fait pas gagner de parties : l'arbre, avec 2 000 itérations, retrouve
 déjà le bon coup parmi les 8 du 1.0.
+
+**L'arbre au début de la partie** (05/10, mesuré pour Sami : une recherche du V1 à 2 000
+itérations, la même partie à trois moments, `root` exposé dans une copie temporaire de
+`ismcts.js`) :
+
+| Tour | Candidat le plus visité | Réponses adverses différentes sous lui | Les 5 plus suivies | Vues une seule fois |
+| --- | --- | --- | --- | --- |
+| 1 | 503 visites | 116 | 14, 14, 14, 13, 13 | 35 |
+| 11 | 480 | 57 | 45, 31, 30, 30, 24 | 11 |
+| 21 | 633 | 19 | 115, 66, 52, 50, 43 | 0 |
+
+Une réponse est une carte précise sur une borne ; la main adverse imaginée change à chaque
+itération, et son top 3 avec. Au tour 1, sous chaque candidat, les réponses se comptent par
+dizaines, avec quelques visites chacune : aucune statistique n'y tient, l'arbre ne compare que
+ses 8 candidats. Ce qui explique l'oracle instable au début (10 % de recherches d'accord au tour
+2), l'échec des essais pour mieux jouer les premiers coups, et pourquoi la vitesse paie (plus de
+fins de partie par candidat).
+
+**Piste C1, les réponses regroupées** : compter une réponse adverse par borne et par hauteur de
+carte (sans la couleur), ou par type (« une carte haute sur la borne 4 ») ; une réponse
+accumulerait les visites de dizaines de mains imaginées, et l'arbre apprendrait sous ses candidats
+dès le début de partie. Une abstraction des coups, classique dans les arbres à information cachée.
+Du code (la clé des nœuds adverses dans `ismcts.js`), puis une validation courte.

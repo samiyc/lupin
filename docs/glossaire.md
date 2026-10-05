@@ -90,6 +90,23 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
     la profondeur, par le budget — 250 visites par candidat en moyenne, seuls les chemins qui
     gagnent atteignent le 4e ou 5e coup. L'oracle regarde tous les coups à la racine et 6
     réponses : il lui faut 20 000 itérations, à 2 000 cela dilue les visites (`Tree-12c-4r`).
+- **Le candidat le plus visité** : chacun des 8 est d'abord essayé une fois (une sorte
+  d'initialisation), puis les 1 992 itérations restantes se répartissent selon UCB : le taux de
+  victoire du candidat, plus un bonus qui grandit pour ceux qu'on visite peu (0,7 × √(ln N / n),
+  N les visites de la racine, n les siennes). Le meilleur est repris tant que son taux tient ; si
+  son taux baisse, ou si le bonus d'un autre a assez grandi, c'est l'autre qui passe. Pas un
+  tour de rôle : un équilibre continu. À la fin, les visites sont très inégales (une recherche
+  au tour 1 : 503, 371, 287, 222, 220, 165, 134, 98), et le plus visité est joué.
+- **Une réponse** (un nœud) : **une carte précise sur une borne précise** (`7♠@4`) ; deux
+  réponses ne se confondent que si c'est la même carte, couleur comprise, sur la même borne. Le
+  paquet a 41 cartes différentes (les 2 jokers sont identiques), soit 287 coups possibles en
+  tout ; au premier coup, l'adversaire peut tenir 36 de ces cartes : **252 réponses possibles**
+  sous chaque candidat. Comme la main adverse est imaginée autrement à chaque itération, son
+  top 3 change sans cesse : une recherche au tour 1 voit **116 réponses différentes** sous le
+  candidat le plus visité (503 visites), la plus suivie n'en a que 14 ; au tour 21, 19 réponses,
+  les principales à 50-140 visites. Au début de la partie, l'arbre ne fait donc guère que
+  comparer ses 8 candidats sur la moyenne de leurs fins de partie ; il n'apprend vraiment sous
+  eux qu'en milieu et fin de partie.
 - **La profondeur (`depth`, 5) et la fin de partie** : deux rôles différents.
   - **Les 5 premiers coups, l'arbre, apprennent** : chaque coup essayé y devient un nœud qui garde
     ses visites et ses victoires ; d'une itération à l'autre, l'arbre compare, retient et revient
