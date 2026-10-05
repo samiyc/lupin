@@ -183,7 +183,10 @@
       "estimate": "35 min",
       "limit": 50,
       "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 1 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T08:49",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-05-08-22_duel-dist1root-1.txt"
     },
     {
       "id": "duel-dist1root-2",
@@ -191,7 +194,10 @@
       "estimate": "35 min",
       "limit": 50,
       "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 2 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T09:19",
+      "minutes": 30,
+      "output": "backlog-runs/2026-10-05-08-49_duel-dist1root-2.txt"
     },
     {
       "id": "duel-dist1root-3",
@@ -199,7 +205,10 @@
       "estimate": "35 min",
       "limit": 50,
       "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 3 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T09:47",
+      "minutes": 28,
+      "output": "backlog-runs/2026-10-05-09-19_duel-dist1root-3.txt"
     },
     {
       "id": "duel-dist1root-4",
@@ -207,7 +216,10 @@
       "estimate": "35 min",
       "limit": 50,
       "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 4 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T10:15",
+      "minutes": 28,
+      "output": "backlog-runs/2026-10-05-09-47_duel-dist1root-4.txt"
     },
     {
       "id": "screen-early3000",
@@ -215,7 +227,10 @@
       "estimate": "55 min",
       "limit": 75,
       "why": "Plus de budget au début, même total par partie (6,5 coups cherchés par joueur avant le tour 13, 10,5 après) : 3 000 itérations aux tours 1-12, 1 400 ensuite. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T11:07",
+      "minutes": 52,
+      "output": "backlog-runs/2026-10-05-10-15_screen-early3000.txt"
     },
     {
       "id": "screen-w10",
@@ -223,7 +238,10 @@
       "estimate": "55 min",
       "limit": 75,
       "why": "La largeur avec le budget : à 2 000 itérations, 10 candidats et 4 réponses par nœud (l'oracle gagne large avec ses 20 000). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T11:53",
+      "minutes": 46,
+      "output": "backlog-runs/2026-10-05-11-07_screen-w10.txt"
     },
     {
       "id": "screen-w12",
@@ -231,7 +249,10 @@
       "estimate": "55 min",
       "limit": 75,
       "why": "La même, 12 candidats. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T12:39",
+      "minutes": 46,
+      "output": "backlog-runs/2026-10-05-11-53_screen-w12.txt"
     },
     {
       "id": "screen-infer2",
@@ -239,6 +260,41 @@
       "estimate": "55 min",
       "limit": 75,
       "why": "infer v2 : la main adverse devinée d'après ses 3 derniers coups, retenus d'un coup à l'autre (48 mains, environ 1 % du temps d'un coup). La v1, sur le seul dernier coup : 49,5 %. Tri de 400 parties contre le V1 à 2 000.",
+      "status": "done",
+      "doneAt": "2026-10-05T13:26",
+      "minutes": 47,
+      "output": "backlog-runs/2026-10-05-12-39_screen-infer2.txt"
+    },
+    {
+      "id": "duel-v1nc-0",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2140\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7 % plus rapide par itération, donc 2 140 itérations contre 2 000. Jeu de donnes 1 sur 4 (1 000 parties, npm run versus).",
+      "status": "todo"
+    },
+    {
+      "id": "duel-v1nc-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2140\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7 % plus rapide par itération, donc 2 140 itérations contre 2 000. Jeu de donnes 2 sur 4 (1 000 parties, npm run versus).",
+      "status": "todo"
+    },
+    {
+      "id": "duel-v1nc-2",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2140\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7 % plus rapide par itération, donc 2 140 itérations contre 2 000. Jeu de donnes 3 sur 4 (1 000 parties, npm run versus).",
+      "status": "todo"
+    },
+    {
+      "id": "duel-v1nc-3",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=v1nc@2140\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "Le 1.0 sans connector (npm run features : 4,4 % du temps, 1,7 % de favoris changés ; 48,3 % en cœur contre cœur), à temps égal : 7 % plus rapide par itération, donc 2 140 itérations contre 2 000. Jeu de donnes 4 sur 4 (1 000 parties, npm run versus).",
       "status": "todo"
     }
   ]

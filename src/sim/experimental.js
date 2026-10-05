@@ -205,6 +205,8 @@ export const CORES = Object.freeze({
   // The two that held in core against core (04/10), together.
   v1bj: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay", "noBlindOpen", "junk"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1, noBlindOpen: 0.1, junk: -0.2 } },
   v1freejk: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
+  // The 1.0 without connector (Sami, 05/10, npm run features: 4.4 % of the core's time, the favourite changed in 1.7 % of positions).
+  v1nc: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas.filter((idea) => idea !== "connector"), "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   // The 1.0's core with every weight tuned at once on the oracle's moves (npm run distill, distill.js; Sami, 04/10).
   dist1: {
     ...EXPERIMENT,

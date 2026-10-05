@@ -36,7 +36,16 @@ export const IDEAS = Object.freeze(["counter", "middle", "edges", "spread", "wei
  * on every move of every rollout (`context.gates`; a context without it falls
  * back to asking the set).
  */
-export const gatesOf = (ideas) => ({ mined: anyMined(ideas), shapes: anyShapeIdea(ideas), oracle: anyOracleIdea(ideas), principles: activePrinciples(ideas) });
+export const gatesOf = (ideas) => ({
+  mined: anyMined(ideas),
+  shapes: anyShapeIdea(ideas),
+  oracle: anyOracleIdea(ideas),
+  principles: activePrinciples(ideas),
+  // Families an idea set leaves off are not even called (npm run features, 05/10: 7 % of the core's
+  // time went to bonus functions that only found out they were off): the sums stay the same.
+  jokerTrap: ideas.has("jokerTrap"),
+  bait: ideas.has("bait"),
+});
 
 export const STRATEGIST_IDEAS = Object.freeze(["middle", "spread", "connector"]);
 
@@ -155,14 +164,23 @@ function spreadPenalty({ spec, mySides, weights }, card) {
  */
 export function ideasBonus(context, border, card) {
   const { ideas } = context;
+  const gates = context.gates ?? gatesOf(ideas);
   const mine = context.mySides[border];
   let bonus = 0;
   if (ideas.has("counter")) bonus += counterBonus(context, mine, context.theirSides[border], card);
   if (ideas.has("dump")) bonus += dumpBonus(context, border, card);
-  bonus += principlesBonus(context, border, card);
-  bonus += minedBonus(context, border, card) + jokerTrapBonus(context, mine, card) + baitBonus(context, border, card) + oracleBonus(context, border, card);
-  if (mine.length > 0) return bonus + shapesBonus(context, mine, card);
+  if (gates.principles.length > 0) bonus += principlesBonus(context, border, card);
+  bonus += familiesBonus(context, gates, border, card);
+  if (mine.length > 0) return gates.shapes ? bonus + shapesBonus(context, mine, card) : bonus;
   return bonus + firstCardBonus(context, border, card);
+}
+
+/** The mined, joker-trap, bait and oracle families, each called only when on — a skipped one adds the 0 it would have returned. */
+function familiesBonus(context, gates, border, card) {
+  const mined = gates.mined ? minedBonus(context, border, card) : 0;
+  const trap = gates.jokerTrap ? jokerTrapBonus(context, context.mySides[border], card) : 0;
+  const bait = gates.bait ? baitBonus(context, border, card) : 0;
+  return mined + trap + bait + (gates.oracle ? oracleBonus(context, border, card) : 0);
 }
 
 /** The ideas that only judge the first card on my side of a border. */
