@@ -546,7 +546,8 @@ function drawTimeline() {
     job.start = Math.max(job.start, t0);
     const color = css(JOB_FAMILIES[family][2]);
     const y = laneY(family) - 11;
-    const rect = make("rect", { x: x(job.start), y, width: Math.max(3, x(job.end) - x(job.start)), height: 22, rx: 4, fill: job.planned ? "none" : color, stroke: color, "stroke-width": 1.5, "stroke-dasharray": job.planned ? "4 3" : "0", opacity: job.planned ? 0.9 : 0.85 });
+    const rect = make("rect", { x: x(job.start), y, width: Math.max(3, x(job.end) - x(job.start)), height: 22, rx: 4, fill: color, "fill-opacity": job.planned ? 0.16 : 1, stroke: color, "stroke-width": 1.5, "stroke-dasharray": job.planned ? "4 3" : "0", opacity: job.planned ? 0.9 : 0.85 });
+    // A job to come gets a pale fill of its colour, so that the whole box (not just its dashed edge) shows its tooltip.
     // A run launched by hand, outside the backlog, is drawn lighter so it reads apart from the queue's jobs.
     if (job.manual) rect.setAttribute("fill-opacity", "0.45");
     const when = new Date(job.start);
