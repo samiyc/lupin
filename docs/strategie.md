@@ -2261,3 +2261,10 @@ contre le V1** : aucune autre que `dist1` à la racine (51,6 %) ; `e12open1` fai
 **La file du soir** : les duels de `v1nc` (fin vers 19 h), les tris de B1 (`lite=1`, `lite=2`,
 vers 20 h 40), puis 4 duels longs de la combinaison `ismcts+widen=3+depth=5+core=v1nc+shortlist=dist1@2200`
 (vers 22 h 20).
+
+**10 candidats, 4 réponses, en duels longs** (4 × 250 parties contre le V1 à 2 000, offsets 1 à 4,
+15 h 41 – 17 h 15) : 48,8 / 48,8 / 50,4 / 49,6 % ; **les 4 réunis, 49,4 % (46,6 – 52,2)** sur
+500 paires. Écarté : le 52,8 % du tri était du bruit. `npm run versus`, qui compte aussi le tri de
+l'offset 0 (celui qui l'a fait choisir) : 50,4 % (48,0 – 52,7) sur 1 400 parties ; 46,9 % quand il
+commence, 53,9 % en second. Comme `dist1` à la racine (52,8 % en tri, 51,6 % en duels), un tri
+de 400 parties qui sort à 52-53 % ne dit presque rien.

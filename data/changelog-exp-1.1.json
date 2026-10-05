@@ -417,6 +417,17 @@
    "verdict": "gagne",
    "when": "05/10 15:40",
    "note": "Mémoire des paires en tableaux typés, chances de pioche en table, borderFactors sauté, aiguillage sans spread. Le V1 : 1 131 → 1 366 itérations/s (+20,7 %), toutes les empreintes inchangées. v1nc + 10 candidats : 1 503 (+32,8 %)."
+  },
+  {
+   "name": "10 candidats, 4 réponses, 4 duels longs contre le V1 à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 49.4,
+   "lo": 46.6,
+   "hi": 52.2,
+   "verdict": "neutre",
+   "when": "05/10 17:15",
+   "note": "1 000 parties sur d'autres donnes que le tri : 48,8 / 48,8 / 50,4 / 49,6 %. Écarté : le 52,8 % du tri était du bruit. Retiré de la version combinée."
   }
  ],
  "commitLabels": {
@@ -531,18 +542,21 @@
   "cb68948": [
    "oracle",
    "Les tris de la journée : 10 candidats 52,8 %"
+  ],
+  "b3c4369": [
+   "vitesse",
+   "B1 : le cœur allégé dans les simulations (+lite)"
+  ],
+  "4d69e14": [
+   "outils",
+   "B1 à B4 consignés"
   ]
  },
  "next": [
   {
-   "when": "En file",
-   "title": "v1nc, 10 candidats, 4 réponses",
-   "text": "Le 1.0 sans connector, plus large (10 candidats, 4 réponses), 10 % plus rapide par itération : 4 duels longs à temps égal (2 200 itérations contre 2 000), environ 2 h."
-  },
-  {
-   "when": "Prochain essai",
-   "title": "Combiner les deux candidats",
-   "text": "dist1 à la racine (51,6 % en duels longs) et 10 candidats, 4 réponses (52,8 % en tri) : indépendants, donc à essayer ensemble, en tri puis en 4 duels longs."
+   "when": "Ce soir",
+   "title": "v1nc, B1, puis la combinaison",
+   "text": "Les duels de v1nc (fin vers 19 h), les tris de B1 (lite=1 et lite=2, vers 20 h 40), puis 4 duels longs de v1nc avec dist1 à la racine (vers 22 h 20). 10c4r en est retiré."
   },
   {
    "when": "Ensuite",
