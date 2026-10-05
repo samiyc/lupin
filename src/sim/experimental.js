@@ -1,4 +1,5 @@
 import { DISTILLED_CORE } from "./distilled-core.js";
+import { DISTILLED_CORE as PAIR_CORE } from "./distilled-pair.js";
 import { IDEA_WEIGHTS, STRATEGIST_IDEAS } from "./ideas.js";
 import { SEARCH } from "./search.js";
 import { HABITS, STRATEGY } from "./strategist.js";
@@ -207,6 +208,8 @@ export const CORES = Object.freeze({
   v1freejk: { ...EXPERIMENT, habits: HABITS.filter((habit) => habit !== "joker"), ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   // The 1.0's core with B1 (lite): a one-card side is worth its card alone, for core duels (`core:v1lite`).
   v1lite: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, lite: true },
+  // B3: the 1.0 with its pair discount tuned on the oracle (npm run distill -- --keys pairDiscount --name pair); nothing else moves.
+  distpair: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, params: PAIR_CORE.params },
   // The 1.0 without connector (Sami, 05/10, npm run features: 4.4 % of the core's time, the favourite changed in 1.7 % of positions).
   v1nc: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas.filter((idea) => idea !== "connector"), "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   // The 1.0's core with every weight tuned at once on the oracle's moves (npm run distill, distill.js; Sami, 04/10).

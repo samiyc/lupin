@@ -1,0 +1,75 @@
+{
+ "built": "2026-10-05T17:28",
+ "base": "stfig6",
+ "positions": 6821,
+ "test": 1580,
+ "rounds": 463,
+ "sample": 1500,
+ "start": {
+  "strategy": {
+   "openMiddle": 0.1,
+   "openNewSuit": 0.1,
+   "suitedStart": 0.2
+  },
+  "weights": {
+   "middleSolid": 0.15,
+   "middleWeak": 0.15,
+   "spread": 0.6,
+   "connector": 0.6,
+   "stay": 0.6,
+   "junk": 0,
+   "noBlindOpen": 0
+  },
+  "params": {
+   "temperature": 0.35,
+   "jokerCost": 0.08,
+   "cardCost": 0.02,
+   "pairDiscount": 0.9
+  },
+  "ideas": [
+   "junk",
+   "noBlindOpen"
+  ]
+ },
+ "tuned": {
+  "strategy": {
+   "openMiddle": 0.1,
+   "openNewSuit": 0.1,
+   "suitedStart": 0.2
+  },
+  "weights": {
+   "middleSolid": 0.15,
+   "middleWeak": 0.15,
+   "spread": 0.6,
+   "connector": 0.6,
+   "stay": 0.6,
+   "junk": 0,
+   "noBlindOpen": 0
+  },
+  "params": {
+   "temperature": 0.35,
+   "jokerCost": 0.08,
+   "cardCost": 0.02,
+   "pairDiscount": 0.8673
+  },
+  "ideas": [
+   "junk",
+   "noBlindOpen"
+  ]
+ },
+ "tops": {
+  "before": {
+   "1": 0.09936708860759494,
+   "3": 0.2746835443037975,
+   "8": 0.5955696202531645
+  },
+  "after": {
+   "1": 0.10063291139240506,
+   "3": 0.26962025316455696,
+   "8": 0.5911392405063292
+  }
+ },
+ "keys": [
+  "pairDiscount"
+ ]
+}

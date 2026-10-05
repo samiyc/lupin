@@ -439,6 +439,17 @@
    "verdict": "perd",
    "when": "05/10 18:37",
    "note": "2 200 itérations contre 2 000 (10 % plus rapide) : 48,4 / 48,8 / 48,4 / 48,8 %. La vitesse ne rachète pas ce que connector apporte : écarté, connector reste."
+  },
+  {
+   "name": "B3 : la remise sur une paire réglée sur l'oracle (distill)",
+   "family": "oracle",
+   "bench": "positions",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "05/10 19:35",
+   "note": "PAIR_DISCOUNT 0,9 → 0,867 ; sur les positions gardées de côté, top 8 de l'oracle 59,6 → 59,1 % : rien ne change. 0,9 était déjà la bonne valeur ; pas de tri dans l'arbre."
   }
  ],
  "commitLabels": {
@@ -572,7 +583,7 @@
   {
    "when": "Ensuite",
    "title": "Le potentiel : B1 à B4",
-   "text": "B1 : un côté à une carte jugé seul dans les simulations (la racine garde tout), environ un quart de temps en moins. B2 : la mémoire des paires gardée d'un coup à l'autre. B3 : PAIR_DISCOUNT réglé par distill. B4 : la pioche pondérée par les tirages restants. B1 d'abord, à temps égal."
+   "text": "B1 en tri ce soir. B3 fait : PAIR_DISCOUNT réglé sur l'oracle à 0,867, sans rien changer à l'accord (59,6 → 59,1 %). Restent B2 (la mémoire des paires d'un coup à l'autre) et B4 (la pioche pondérée par les tirages restants)."
   }
  ],
  "banc": {
@@ -697,6 +708,12 @@
    "label": "npm run features au repos, le V1 et v1nc (un fil)",
    "doneAt": "2026-10-05T14:30",
    "minutes": 6
+  },
+  {
+   "id": "banc-distill-pair",
+   "label": "npm run distill -- --keys pairDiscount --name pair (6 fils)",
+   "doneAt": "2026-10-05T19:35",
+   "minutes": 15
   }
  ]
 }

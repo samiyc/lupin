@@ -12,7 +12,8 @@ import { JOKER, isJoker, realCardCount, valueOf } from "../core/cards.js";
  * constant.
  */
 const SPAN = 64;
-const PAIR_DISCOUNT = 0.9;
+// A pair not yet placed is worth this much of a placed one; a core may carry its own (`params.pairDiscount`, B3).
+export const PAIR_DISCOUNT = 0.9;
 
 /** One valuer per evaluator: it only reads the spec and the evaluator, and a scoring used to rebuild it. */
 const valuers = new WeakMap();
@@ -205,13 +206,14 @@ const PAIR = [0, 0];
 function singlePotential(side, context) {
   const jokerOk = context.jokerAllowed(side);
   let best = context.valuer.single(side[0]);
+  const discount = context.params?.pairDiscount ?? PAIR_DISCOUNT;
   // The hand minus the card being paired: its index is skipped, not copied out.
   const { hand } = context;
   PAIR[0] = side[0];
   for (let i = 0; i < hand.length; i += 1) {
     if (!usable(hand[i], jokerOk)) continue;
     PAIR[1] = hand[i];
-    best = Math.max(best, PAIR_DISCOUNT * pairPotential(PAIR, context, i));
+    best = Math.max(best, discount * pairPotential(PAIR, context, i));
   }
   return best;
 }

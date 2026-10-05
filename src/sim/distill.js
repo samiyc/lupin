@@ -27,6 +27,8 @@ export const DISTILLED = Object.freeze([
   { key: "temperature", in: "params", step: 0.03 },
   { key: "jokerCost", in: "params", step: 0.02 },
   { key: "cardCost", in: "params", step: 0.01 },
+  // B3 (05/10): what a pair not yet placed is worth, against a placed one (potential.js).
+  { key: "pairDiscount", in: "params", step: 0.03 },
 ]);
 /** A weight never moves further than this many steps from the 1.0's. */
 export const LIMIT = 8;

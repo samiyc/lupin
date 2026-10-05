@@ -2,7 +2,7 @@ import { isJoker, valueOf } from "../core/cards.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
-import { createPairMemo, createValuer, sidePotential, unseenCards } from "./potential.js";
+import { PAIR_DISCOUNT, createPairMemo, createValuer, sidePotential, unseenCards } from "./potential.js";
 import { IDEAS, IDEA_WEIGHTS, STRATEGIST_IDEAS, borderFactors } from "./ideas.js";
 import { lookaheadBot } from "./lookahead.js";
 import { phaseBot, phaseSettings } from "./phase.js";
@@ -34,7 +34,7 @@ const CARD_COST = 0.02;
 /** Slope of the win chance at even odds: value units → win-chance units. */
 const VALUE_TO_CHANCE = 1 / (4 * TEMPERATURE);
 /** The estimate's settings; a bot may carry its own (`params`), to be tuned. */
-export const BOT_PARAMS = Object.freeze({ temperature: TEMPERATURE, jokerCost: JOKER_COST, cardCost: CARD_COST });
+export const BOT_PARAMS = Object.freeze({ temperature: TEMPERATURE, jokerCost: JOKER_COST, cardCost: CARD_COST, pairDiscount: PAIR_DISCOUNT });
 export { pickBest, pickSampled };
 
 export const randomBot = (rng) => ({
@@ -68,12 +68,12 @@ export const strategistBot = (rng, options = {}) => {
   };
 };
 
-function views(state, lite = false) {
+function views(state, lite = false, params = undefined) {
   const player = state.current;
   const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
   // Each view gets its own memo: the same pair is judged many times in one scoring. Written out field by field:
   // built on every scoring of every rollout, a spread costs more than it reads.
-  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: createPairMemo(), withoutCard: new Map(), params: undefined, alone: undefined, lite };
+  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: createPairMemo(), withoutCard: new Map(), params, alone: undefined, lite };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     valuer,
@@ -81,7 +81,7 @@ function views(state, lite = false) {
     hand: [],
     draws: state.spec.handSize + Math.floor(state.pile.length / 2),
     jokerAllowed: jokerGate(state, 1 - player),
-    memo: createPairMemo(), lite,
+    memo: createPairMemo(), lite, params,
   };
   const threat = state.borders.map((border) => sidePotential(border.sides[1 - player], theirs));
   return { mine, threat };
@@ -149,8 +149,7 @@ function certaintyOf(ideas) {
 }
 
 function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, keepAll = false) {
-  const { threat, mine } = views(state, tuning.lite);
-  mine.params = params;
+  const { threat, mine } = views(state, tuning.lite, params);
   const seen = { mine, threat };
   const player = state.current;
   const context = {

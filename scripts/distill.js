@@ -5,7 +5,7 @@ import { DUELS_DIR } from "./lib/game-index.js";
 import { runPool, workerCount } from "./lib/pool.js";
 
 /**
- * `npm run distill -- [--minutes 15] [--threads N] [--rebuild]`: the 1.0's core
+ * `npm run distill -- [--minutes 15] [--threads N] [--rebuild] [--keys pairDiscount] [--name pair]`: the 1.0's core
  * tuned on the oracle (Sami, 04/10: a version at 55 % against the V1). Every
  * weight of src/sim/distill.js moves at once, by SPSA: each round, every
  * thread probes one random direction — the weights nudged one way, then the
@@ -17,6 +17,9 @@ import { runPool, workerCount } from "./lib/pool.js";
  * game in four is kept aside: the result is judged there, against the 1.0's
  * core, before any tree sees it. The mean of the run's second half goes to
  * src/sim/distilled-core.js (`ismcts+…+core=dist1`); the run to data/distill.json.
+ * `--keys`: only those weights move, the others stay the 1.0's (B3: `--keys
+ * pairDiscount`); `--name pair`: src/sim/distilled-pair.js and
+ * data/distill-pair.json instead, so a core under test is never overwritten.
  */
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
@@ -28,6 +31,10 @@ const WORKER = new URL("./lib/distill-worker.js", import.meta.url);
 const SOURCES = ["positions", "positions-v1ref", "positions-banc"];
 const SAMPLE = 1500;
 const [A0, C0, STABILITY] = [400, 1, 10];
+const KEYS = option("--keys", null)?.split(",") ?? null;
+const NAME = option("--name", "core");
+// A weight left out of `--keys` gets no probe: its step stays 0, so it never moves.
+const moving = DISTILLED.map(({ key }) => !KEYS || KEYS.includes(key));
 const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
 
 /** A logged game, with only what replaying it needs (stateAt). */
@@ -80,7 +87,7 @@ async function round(units, t, { train, rng }) {
   const c = C0 / (t + 1) ** 0.101;
   const threads = workerCount();
   const indices = sampleOf(train, SAMPLE, rng);
-  const deltas = Array.from({ length: threads }, () => DISTILLED.map(() => (rng.next() < 0.5 ? -1 : 1)));
+  const deltas = Array.from({ length: threads }, () => DISTILLED.map((_, i) => (rng.next() < 0.5 ? -1 : 1) * Number(moving[i])));
   const tasks = deltas.map((delta) => ({ cores: [valuesAt(units.map((u, i) => u + c * delta[i])), valuesAt(units.map((u, i) => u - c * delta[i]))], indices }));
   const results = await runPool(WORKER, tasks);
   const margins = results.map(([plus, minus]) => (plus.score - minus.score) / indices.length);
@@ -104,7 +111,7 @@ function printTable(rows) {
 
 async function writeCore(values, stamp) {
   const body = JSON.stringify(values, null, 2);
-  await writeFile(new URL("src/sim/distilled-core.js", ROOT), `/** Written by \`npm run distill\` (${stamp}): the 1.0's core tuned on the oracle's moves (distill.js). */\nexport const DISTILLED_CORE = Object.freeze(${body});\n`);
+  await writeFile(new URL(`src/sim/distilled-${NAME}.js`, ROOT), `/** Written by \`npm run distill\` (${stamp}): the 1.0's core tuned on the oracle's moves (distill.js). */\nexport const DISTILLED_CORE = Object.freeze(${body});\n`);
 }
 
 const started = Date.now();
@@ -136,5 +143,6 @@ console.log(`  réglé       : ${pct(after[1])} / ${pct(after[3])} / ${pct(after
 const stamp = `${new Date().toISOString().slice(0, 10)}, ${history.length} rounds of ${workerCount()} probes`;
 await writeCore(tuned, stamp);
 const report = { built: new Date().toISOString().slice(0, 16), base: BASE_CORE, positions: positions.length, test: test.length, rounds: history.length, sample: SAMPLE, start, tuned, tops: { before, after } };
-await writeFile(new URL("data/distill.json", ROOT), `${JSON.stringify(report, null, 1)}\n`);
-console.log(`\n${((Date.now() - started) / 60_000).toFixed(1)} min → src/sim/distilled-core.js, data/distill.json`);
+const reportName = NAME === "core" ? "distill" : `distill-${NAME}`;
+await writeFile(new URL(`data/${reportName}.json`, ROOT), `${JSON.stringify({ ...report, keys: KEYS }, null, 1)}\n`);
+console.log(`\n${((Date.now() - started) / 60_000).toFixed(1)} min → src/sim/distilled-${NAME}.js, data/${reportName}.json`);

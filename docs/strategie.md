@@ -2276,3 +2276,13 @@ seul perdait 1,7 point sans lui) : écarté, `connector` reste. La combinaison a
 racine est remplacée par 4 duels de `dist1` à la racine seul sur de nouvelles donnes (offsets 5
 à 8) : avec ceux du matin (51,6 %), 2 000 parties, assez pour trancher un écart de 1,5 point.
 A1 à A4 ne changeant aucun coup, les deux séries se réunissent.
+
+**B3, la remise sur une paire réglée par l'oracle** (`npm run distill -- --keys pairDiscount --name pair`,
+15 min sur 6 fils, 463 manches de SPSA, seul ce paramètre bouge) : `PAIR_DISCOUNT` devient un
+paramètre du cœur (`params.pairDiscount`, 0,9 par défaut : toutes les empreintes inchangées, `dist1`
+compris). Il descend vite à environ 0,87 et y reste (**0,867**). Sur les 1 580 positions gardées de
+côté, le coup de l'oracle dans le top 1 / 3 / 8 : 9,9 / 27,5 / 59,6 % pour le 1.0, 10,1 / 27,0 /
+59,1 % réglé — **rien ne change** : 0,9 était déjà la bonne valeur pour classer les coups comme
+l'oracle. Pas de tri dans l'arbre : il n'y a pas de signal à tester. Le cœur `distpair` reste
+disponible (`src/sim/distilled-pair.js`). `distill` sait maintenant ne régler que certains poids
+(`--keys`) et écrire ailleurs que dans le cœur en test (`--name`).
