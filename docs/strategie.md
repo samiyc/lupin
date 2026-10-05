@@ -2268,3 +2268,11 @@ vers 20 h 40), puis 4 duels longs de la combinaison `ismcts+widen=3+depth=5+core
 l'offset 0 (celui qui l'a fait choisir) : 50,4 % (48,0 – 52,7) sur 1 400 parties ; 46,9 % quand il
 commence, 53,9 % en second. Comme `dist1` à la racine (52,8 % en tri, 51,6 % en duels), un tri
 de 400 parties qui sort à 52-53 % ne dit presque rien.
+
+**`v1nc` en duels longs** (le 1.0 sans `connector`, 2 200 itérations à temps égal contre 2 000,
+offsets 1 à 4, 17 h 15 – 18 h 37) : 48,4 / 48,8 / 48,4 / 48,8 % ; **les 4 réunis, 48,6 % (45,9 –
+51,3)**. Les 10 % de vitesse ne rachètent pas ce que `connector` apporte au jugement (le cœur
+seul perdait 1,7 point sans lui) : écarté, `connector` reste. La combinaison avec `dist1` à la
+racine est remplacée par 4 duels de `dist1` à la racine seul sur de nouvelles donnes (offsets 5
+à 8) : avec ceux du matin (51,6 %), 2 000 parties, assez pour trancher un écart de 1,5 point.
+A1 à A4 ne changeant aucun coup, les deux séries se réunissent.

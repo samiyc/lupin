@@ -2694,6 +2694,256 @@
      "b": 2.802857142857143
     }
    }
+  },
+  "v1nc": {
+   "a": "ismcts+widen=3+depth=5+core=v1nc@2200",
+   "b": "ismcts+widen=3+depth=5+core=stfig6@2000",
+   "built": "2026-10-05",
+   "files": 4,
+   "pairs": 500,
+   "low": 0.45884201028037563,
+   "high": 0.5131579897196243,
+   "games": 1000,
+   "score": 0.486,
+   "bySeat": {
+    "A commence": {
+     "games": 500,
+     "score": 0.466
+    },
+    "B commence": {
+     "games": 500,
+     "score": 0.506
+    }
+   },
+   "byJokers": {
+    "0 contre 1": {
+     "games": 2,
+     "score": 1
+    },
+    "0 contre 2": {
+     "games": 236,
+     "score": 0.3813559322033898
+    },
+    "1 contre 0": {
+     "games": 1,
+     "score": 1
+    },
+    "1 contre 1": {
+     "games": 523,
+     "score": 0.4837476099426386
+    },
+    "2 contre 0": {
+     "games": 238,
+     "score": 0.5882352941176471
+    }
+   },
+   "turns": 34.826,
+   "traits": {
+    "début (1-12)": [
+     {
+      "trait": "ouvre une borne vierge",
+      "a": 0.5003333333333333,
+      "b": 0.518
+     },
+     {
+      "trait": "répond plus bas",
+      "a": 0.119,
+      "b": 0.10616666666666667
+     },
+     {
+      "trait": "carte forte (8+)",
+      "a": 0.279,
+      "b": 0.29083333333333333
+     },
+     {
+      "trait": "bâtit une suite de couleur",
+      "a": 0.18466666666666667,
+      "b": 0.17433333333333334
+     },
+     {
+      "trait": "répond à une borne adverse",
+      "a": 0.2935,
+      "b": 0.284
+     },
+     {
+      "trait": "pose une 2e carte",
+      "a": 0.20216666666666666,
+      "b": 0.19433333333333333
+     },
+     {
+      "trait": "carte faible (3-)",
+      "a": 0.2905,
+      "b": 0.2828333333333333
+     },
+     {
+      "trait": "ouvre sans suite prévue en main",
+      "a": 0.36866666666666664,
+      "b": 0.37483333333333335
+     },
+     {
+      "trait": "au centre (bornes 3-5)",
+      "a": 0.3433333333333333,
+      "b": 0.339
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.4305,
+      "b": 0.42633333333333334
+     },
+     {
+      "trait": "bâtit un brelan",
+      "a": 0.0215,
+      "b": 0.023333333333333334
+     },
+     {
+      "trait": "surenchérit d'un cran",
+      "a": 0.043666666666666666,
+      "b": 0.045
+     }
+    ],
+    "milieu (13-24)": [
+     {
+      "trait": "bâtit une suite de couleur",
+      "a": 0.3451150383461154,
+      "b": 0.369
+     },
+     {
+      "trait": "bâtit un brelan",
+      "a": 0.22307435811937312,
+      "b": 0.20133333333333334
+     },
+     {
+      "trait": "pose une 2e carte",
+      "a": 0.48999666555518506,
+      "b": 0.5041666666666667
+     },
+     {
+      "trait": "complète un côté (3e carte)",
+      "a": 0.17939313104368124,
+      "b": 0.1695
+     },
+     {
+      "trait": "carte forte (8+)",
+      "a": 0.31393797932644213,
+      "b": 0.30666666666666664
+     },
+     {
+      "trait": "répond plus bas",
+      "a": 0.06385461820606869,
+      "b": 0.06983333333333333
+     },
+     {
+      "trait": "ouvre une borne vierge",
+      "a": 0.07619206402134045,
+      "b": 0.07166666666666667
+     },
+     {
+      "trait": "face à un côté adverse plein",
+      "a": 0.018839613204401466,
+      "b": 0.023333333333333334
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.3922974324774925,
+      "b": 0.396
+     },
+     {
+      "trait": "ouvre avec de quoi faire une suite de couleur",
+      "a": 0.07602534178059353,
+      "b": 0.0795
+     },
+     {
+      "trait": "sur un bord (borne 1 ou 7)",
+      "a": 0.26292097365788597,
+      "b": 0.2595
+     },
+     {
+      "trait": "ouvre sans suite prévue en main",
+      "a": 0.16388796265421807,
+      "b": 0.1605
+     }
+    ],
+    "fin (25+)": [
+     {
+      "trait": "bâtit une suite de couleur",
+      "a": 0.21567527123082678,
+      "b": 0.22983569828230022
+     },
+     {
+      "trait": "bâtit un brelan",
+      "a": 0.2777777777777778,
+      "b": 0.2684839432412248
+     },
+     {
+      "trait": "sur un bord (borne 1 ou 7)",
+      "a": 0.267863823419379,
+      "b": 0.2750186706497386
+     },
+     {
+      "trait": "complète un côté (3e carte)",
+      "a": 0.5963337074448185,
+      "b": 0.6013816280806572
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.3348297792742237,
+      "b": 0.3386855862584018
+     },
+     {
+      "trait": "bâtit un côté ni brelan ni suite de couleur",
+      "a": 0.46408529741863075,
+      "b": 0.46135175504107545
+     },
+     {
+      "trait": "à côté d'une borne perdue",
+      "a": 0.3466142910587355,
+      "b": 0.34391336818521284
+     },
+     {
+      "trait": "répond à une borne adverse",
+      "a": 0.036288814066591846,
+      "b": 0.03379387602688574
+     },
+     {
+      "trait": "à côté d'une borne gagnée",
+      "a": 0.3327721661054994,
+      "b": 0.3302837938760269
+     },
+     {
+      "trait": "joker",
+      "a": 0.10624766180321736,
+      "b": 0.10380881254667662
+     },
+     {
+      "trait": "pose une 2e carte",
+      "a": 0.367003367003367,
+      "b": 0.36463778939507097
+     },
+     {
+      "trait": "ouvre sans suite prévue en main",
+      "a": 0.01421623643845866,
+      "b": 0.01194921583271098
+     }
+    ]
+   },
+   "end": {
+    "openedBy10": {
+     "a": 4.179,
+     "b": 4.222
+    },
+    "complete": {
+     "a": 4.288,
+     "b": 4.26
+    },
+    "noFigure": {
+     "a": 1.939,
+     "b": 1.91
+    },
+    "won": {
+     "a": 2.799,
+     "b": 2.848
+    }
+   }
   }
  }
 }

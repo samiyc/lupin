@@ -428,6 +428,17 @@
    "verdict": "neutre",
    "when": "05/10 17:15",
    "note": "1 000 parties sur d'autres donnes que le tri : 48,8 / 48,8 / 50,4 / 49,6 %. Écarté : le 52,8 % du tri était du bruit. Retiré de la version combinée."
+  },
+  {
+   "name": "v1nc : le 1.0 sans connector, 4 duels longs à temps égal",
+   "family": "vitesse",
+   "bench": "duel",
+   "score": 48.6,
+   "lo": 45.9,
+   "hi": 51.3,
+   "verdict": "perd",
+   "when": "05/10 18:37",
+   "note": "2 200 itérations contre 2 000 (10 % plus rapide) : 48,4 / 48,8 / 48,4 / 48,8 %. La vitesse ne rachète pas ce que connector apporte : écarté, connector reste."
   }
  ],
  "commitLabels": {
@@ -555,8 +566,8 @@
  "next": [
   {
    "when": "Ce soir",
-   "title": "v1nc, B1, puis la combinaison",
-   "text": "Les duels de v1nc (fin vers 19 h), les tris de B1 (lite=1 et lite=2, vers 20 h 40), puis 4 duels longs de v1nc avec dist1 à la racine (vers 22 h 20). 10c4r en est retiré."
+   "title": "B1, puis dist1 à la racine sur 2 000 parties",
+   "text": "Les tris de B1 (lite=1 et lite=2, vers 20 h 30), puis 4 duels de plus de dist1 à la racine sur de nouvelles donnes (vers 22 h) : réunis aux 4 du matin, 2 000 parties pour trancher. v1nc (48,6 %) et 10c4r (49,4 %) sont écartés."
   },
   {
    "when": "Ensuite",
