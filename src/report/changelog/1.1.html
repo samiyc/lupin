@@ -420,6 +420,21 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       </svg></div>
       <p class="small">Recommencé 2 000 fois, chaque fois avec un autre tirage : les chemins qui gagnent sont redescendus plus souvent, donc creusés plus profond ; les autres restent courts. Le cœur filtre (quels coups entrent : 8, puis 3), il ne classe pas : le 1er candidat n'a aucune avance sur le 8e.</p>
     </div>
+    <div class="panel">
+      <h3 class="small-title">Le choix des candidats : UCB, le taux de victoire plus un bonus de curiosité</h3>
+      <p class="small">À chaque itération, l'arbre note chaque candidat : <strong>son taux de victoire + 0,7 × √(ln N / n)</strong>, où N est le nombre d'itérations déjà faites et n le nombre de visites du candidat. Il prend le meilleur. Le bonus grandit doucement avec N et fond quand n monte : un candidat oublié finit par être revisité, un candidat très visité doit tenir par son taux.</p>
+      <div class="grid2">
+        <div>
+          <div class="scroll"><svg class="chart" id="ucb-bonus" viewBox="0 0 640 330" role="img" aria-label="Le bonus de curiosité en fonction du nombre d'itérations, pour plusieurs nombres de visites du candidat"></svg></div>
+          <div class="legend" id="ucb-bonus-legend"></div>
+        </div>
+        <div>
+          <div class="scroll"><svg class="chart" id="ucb-race" viewBox="0 0 640 330" role="img" aria-label="Simulation : 8 candidats aux chances de gain connues, leurs visites au fil de 2 000 itérations"></svg></div>
+          <div class="legend" id="ucb-race-legend"></div>
+        </div>
+      </div>
+      <ul class="facts" id="ucb-facts"></ul>
+    </div>
     <div class="grid2">
       <div class="panel">
         <h3 class="small-title">Où sert le cœur, par coup</h3>
@@ -1068,6 +1083,110 @@ function drawCompare() {
   drawGaps(G);
 }
 
+/* ── VI · The tree: how UCB shares the visits ───────────────── */
+const UCB_C = 0.7;
+const bonusOf = (N, n) => UCB_C * Math.sqrt(Math.log(N) / n);
+const UCB_TONES = ["seal", "brass", "mark", "sky", "plum"];
+
+/** The curiosity bonus against N, one curve per number of visits n (drawn from N = n on). */
+function drawUcbBonus() {
+  const svg = $("ucb-bonus");
+  const [left, right, top, bottom] = [56, 590, 20, 280];
+  const X = (N) => left + (N / 2000) * (right - left);
+  const Y = (v) => bottom - (v / 0.8) * (bottom - top);
+  for (let v = 0; v <= 0.8001; v += 0.2) {
+    svg.append(make("line", { x1: left, x2: right, y1: Y(v), y2: Y(v), stroke: css("line") }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, fr(v, 1)));
+  }
+  for (let N = 0; N <= 2000; N += 500) svg.append(make("text", { x: X(N), y: bottom + 16, "text-anchor": "middle" }, thousands(N)));
+  // The band where the candidates' win rates usually differ: a bonus inside it can overturn a ranking.
+  svg.append(make("rect", { x: left, y: Y(0.15), width: right - left, height: Y(0.05) - Y(0.15), fill: css("brass-wash"), opacity: 0.8 }));
+  svg.append(make("text", { x: left + 6, y: Y(0.05) + 14, fill: css("brass") }, "en doré : les écarts de taux habituels entre candidats (5 à 15 points)"));
+  [25, 50, 100, 250, 500].forEach((n, i) => {
+    const points = [];
+    for (let N = n; N <= 2000; N += 10) points.push(`${X(N).toFixed(1)},${Y(bonusOf(N, n)).toFixed(1)}`);
+    const tip = `n = ${n} visites : bonus ${fr(bonusOf(2000, n), 3)} à N = 2 000`;
+    svg.append(make("polyline", { points: points.join(" "), fill: "none", stroke: css(UCB_TONES[i]), "stroke-width": 2.5, "data-tip": tip }));
+    svg.append(make("text", { x: right + 2, y: Y(bonusOf(2000, n)) + 4, fill: css(UCB_TONES[i]) }, `${n}`));
+  });
+  svg.append(make("text", { x: (left + right) / 2, y: bottom + 36, "text-anchor": "middle", class: "label" }, "N : itérations déjà faites (2 000 par coup)"));
+  svg.append(make("text", { x: 8, y: 12, class: "label" }, "le bonus de curiosité"));
+  $("ucb-bonus-legend").replaceChildren(html("span", { class: "muted small" }, "une courbe par nombre de visites n du candidat (25 à 500 : la fourchette mesurée sur une vraie recherche, 28 à 633)"));
+}
+
+/** A small seeded generator, so that the race is the same at every visit of the page. */
+function seeded(seed) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** The race: 8 candidates with known win chances, chosen by UCB for 2 000 iterations, each fin de partie a coin with that chance. */
+function ucbRace(chances, iterations, random) {
+  const visits = chances.map(() => 0);
+  const wins = chances.map(() => 0);
+  const history = chances.map(() => []);
+  for (let N = 1; N <= iterations; N += 1) {
+    const fresh = visits.findIndex((n) => n === 0);
+    const score = (i) => wins[i] / visits[i] + bonusOf(N, visits[i]);
+    const pick = fresh >= 0 ? fresh : chances.reduce((best, _, i) => (score(i) > score(best) ? i : best), 0);
+    visits[pick] += 1;
+    if (random() < chances[pick]) wins[pick] += 1;
+    if (N % 20 === 0) chances.forEach((_, i) => history[i].push(visits[i]));
+  }
+  return { visits, wins, history };
+}
+
+function drawUcbRace() {
+  const svg = $("ucb-race");
+  const chances = [0.58, 0.56, 0.55, 0.53, 0.52, 0.5, 0.47, 0.44];
+  const { visits, wins, history } = ucbRace(chances, 2000, seeded(742));
+  const [left, right, top, bottom] = [56, 530, 20, 280];
+  const yMax = Math.ceil(Math.max(...visits) / 100) * 100;
+  const X = (N) => left + (N / 2000) * (right - left);
+  const Y = (v) => bottom - (v / yMax) * (bottom - top);
+  for (let v = 0; v <= yMax; v += yMax / 4) {
+    svg.append(make("line", { x1: left, x2: right, y1: Y(v), y2: Y(v), stroke: css("line") }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, thousands(Math.round(v))));
+  }
+  for (let N = 0; N <= 2000; N += 500) svg.append(make("text", { x: X(N), y: bottom + 16, "text-anchor": "middle" }, thousands(N)));
+  const tones = ["seal", "brass", "mark", "sky", "plum", "ink-2", "ink-3", "off-ink"];
+  const ends = [];
+  chances.forEach((chance, i) => {
+    const points = history[i].map((v, k) => `${X((k + 1) * 20).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+    const tip = `chances réelles ${pctText(chance)} : ${visits[i]} visites, taux mesuré ${pctText(wins[i] / visits[i])}`;
+    svg.append(make("polyline", { points, fill: "none", stroke: css(tones[i]), "stroke-width": 2.2, "data-tip": tip }));
+    ends.push({ y: Y(visits[i]), text: `${pctText(chance)} → ${visits[i]}`, tone: tones[i] });
+  });
+  // End labels, pushed apart so they do not overlap.
+  ends.sort((a, b) => a.y - b.y).forEach((end, k, all) => {
+    if (k > 0 && end.y - all[k - 1].y < 12) end.y = all[k - 1].y + 12;
+    svg.append(make("text", { x: right + 4, y: end.y + 4, fill: css(end.tone) }, end.text));
+  });
+  svg.append(make("text", { x: (left + right) / 2, y: bottom + 36, "text-anchor": "middle", class: "label" }, "N : itérations"));
+  svg.append(make("text", { x: 8, y: 12, class: "label" }, "visites de chaque candidat"));
+  $("ucb-race-legend").replaceChildren(html("span", { class: "muted small" }, "8 candidats aux chances de gain fixées (58 % à 44 %), chaque fin de partie tirée à pile ou face avec ces chances, et UCB qui choisit : une simulation, pas une vraie recherche"));
+  const best = visits.indexOf(Math.max(...visits));
+  const at = (n) => fr(bonusOf(2000, n), 2);
+  $("ucb-facts").replaceChildren(
+    html("li", {}, html("b", {}, "Au début : "), "les 8 candidats sont joués une fois chacun, puis le bonus est grand partout (0,7 × √(ln 10 / 1) ≈ 1,06 au 10e essai) : le choix tient plus à la curiosité qu'au taux, encore très incertain."),
+    html("li", {}, html("b", {}, "À N = 2 000 : "), `le bonus vaut ${at(500)} pour un candidat visité 500 fois, ${at(100)} pour 100 visites, ${at(25)} pour 25. Un candidat à 50 % visité 100 fois note donc 0,50 + ${at(100)} ≈ ${fr(0.5 + bonusOf(2000, 100), 2)}, autant qu'un candidat à 60 % visité 500 fois (0,60 + ${at(500)} ≈ ${fr(0.6 + bonusOf(2000, 500), 2)}) : le moins bon garde une part des visites, pour vérifier qu'on ne l'a pas sous-estimé.`),
+    html("li", {}, html("b", {}, "Le résultat : "), `dans cette simulation, le candidat à ${pctText(chances[best])} reçoit ${visits[best]} visites sur 2 000, le moins bon ${Math.min(...visits)} ; les candidats proches (52 à 58 %) se partagent l'essentiel. C'est la forme mesurée sur une vraie recherche au tour 1 : 503, 371, 287, 222, 220, 165, 134, 98.`),
+    html("li", {}, html("b", {}, "Les candidats proches : "), `le meilleur réel (${pctText(chances[0])}) reçoit ${visits[0]} visites, pas forcément le plus : sur 2 000 essais, 2 ou 3 points d'écart ne se distinguent pas du hasard des fins de partie. Le coup joué est alors l'un des bons, rarement le meilleur à coup sûr — une raison pour laquelle plus d'itérations rendent le robot plus fort.`),
+    html("li", {}, html("b", {}, "Le 0,7 : "), "il dose l'exploration. Plus grand, les visites s'étalent (plus de vérifications, moins de précision sur le meilleur) ; plus petit, l'arbre s'enferme plus vite sur son premier favori, au risque de rater un meilleur coup mal parti."),
+  );
+}
+
+function drawUcb() {
+  drawUcbBonus();
+  drawUcbRace();
+}
+
 /* ── VII · What the core costs ──────────────────────────── */
 const FAMILY_TONES = { valeur: "sky", habitudes: "brass", idees: "mark", certitudes: "seal", moteur: "plum", autre: "off-ink" };
 const COST_SCOPES = [["rollout", "dans les simulations"], ["root", "à la racine"], ["iteration", "une itération entière"]];
@@ -1179,6 +1298,7 @@ renderNotebook();
 drawBench();
 drawBanc();
 drawCompare();
+drawUcb();
 drawCost();
 drawNext();
 </script>

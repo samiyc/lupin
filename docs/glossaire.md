@@ -97,6 +97,12 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   son taux baisse, ou si le bonus d'un autre a assez grandi, c'est l'autre qui passe. Pas un
   tour de rôle : un équilibre continu. À la fin, les visites sont très inégales (une recherche
   au tour 1 : 503, 371, 287, 222, 220, 165, 134, 98), et le plus visité est joué.
+- **Le bonus de curiosité en chiffres** (`0,7 × √(ln N / n)`, à N = 2 000) : 0,09 pour un candidat
+  visité 500 fois, 0,19 pour 100, 0,39 pour 25 ; au 10e essai, il dépasse 1 pour tous. Un candidat
+  à 50 % visité 100 fois note 0,69, autant qu'un candidat à 60 % visité 500 fois : le moins bon garde
+  une part des visites. Sur 2 000 essais, deux candidats à 2 ou 3 points l'un de l'autre ne se
+  distinguent pas du hasard des fins de partie (une simulation dans le changelog 1.1 : le
+  candidat à 58 % reçoit 391 visites, celui à 56 % 504) ; le 0,7 dose cette exploration.
 - **Une réponse** (un nœud) : **une carte précise sur une borne précise** (`7♠@4`) ; deux
   réponses ne se confondent que si c'est la même carte, couleur comprise, sur la même borne. Le
   paquet a 41 cartes différentes (les 2 jokers sont identiques), soit 287 coups possibles en
