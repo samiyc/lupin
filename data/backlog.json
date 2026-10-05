@@ -178,6 +178,38 @@
       "output": "backlog-runs/2026-10-05-05-57_pause-screen-early3000.txt"
     },
     {
+      "id": "duel-dist1root-1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 1 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-dist1root-2",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 2 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-dist1root-3",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 3 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
+      "status": "todo"
+    },
+    {
+      "id": "duel-dist1root-4",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "dist1 à la racine (tri : 52,8 %, 48,4 – 57,1) : le jeu de donnes 4 sur 4 des duels longs qui décident, contre le V1 à 2 000 (fourchette basse réunie au-dessus de 50 %, npm run versus). Offsets 1 à 4 : le tri a joué ceux de l'offset 0.",
+      "status": "todo"
+    },
+    {
       "id": "screen-early3000",
       "command": "npm run duel -- \"phase:13:ismcts+widen=3+depth=5+core=stfig6@3000/ismcts+widen=3+depth=5+core=stfig6@1400\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
       "estimate": "55 min",
@@ -186,27 +218,11 @@
       "status": "todo"
     },
     {
-      "id": "pause-screen-w10",
-      "command": "npm run cooldown -- 15",
-      "estimate": "15 min",
-      "limit": 17,
-      "why": "Une pause entre deux jobs (Sami, 04/10).",
-      "status": "todo"
-    },
-    {
       "id": "screen-w10",
       "command": "npm run duel -- \"ismcts+candidates=10+widen=4+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
       "estimate": "55 min",
       "limit": 75,
       "why": "La largeur avec le budget : à 2 000 itérations, 10 candidats et 4 réponses par nœud (l'oracle gagne large avec ses 20 000). Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
-      "status": "todo"
-    },
-    {
-      "id": "pause-screen-w12",
-      "command": "npm run cooldown -- 15",
-      "estimate": "15 min",
-      "limit": 17,
-      "why": "Une pause entre deux jobs (Sami, 04/10).",
       "status": "todo"
     },
     {
