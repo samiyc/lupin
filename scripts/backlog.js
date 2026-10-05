@@ -1,9 +1,10 @@
 import { spawn } from "node:child_process";
-import { createWriteStream } from "node:fs";
+import { createWriteStream, readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { localTimestamp } from "../src/replay/log.js";
+import { stopReason } from "./lib/backlog-stop.js";
 
 /**
  * `npm run backlog [-- --list]`: the long jobs kept for the night
@@ -26,6 +27,10 @@ import { localTimestamp } from "../src/replay/log.js";
  * `--threads N` (Sami, 04/10: run in the day on 9 cores of 12): every job
  * inherits `LOPIN_THREADS=N`, the number of worker threads its pools use
  * (scripts/lib/pool.js), so the machine stays usable.
+ *
+ * `stopIf` (Sami, 05/10): a job may be cancelled before it starts — marked
+ * `skipped`, with its reason — when the duels it names, done, pool under a bar:
+ * a series of long duels that started badly stops there (scripts/lib/backlog-stop.js).
  *
  * `--queue laptop`: another machine's own queue, data/backlog-laptop.json,
  * so that two machines never write the same file. Its outputs go to
@@ -91,12 +96,13 @@ const ready = (job) => job.status === "todo" || (job.status === "scheduled" && D
 const backlog = await readBacklog();
 const pending = backlog.jobs.filter(ready);
 const SHOWN_DONE = 3;
-const finished = (job) => ["done", "failed", "timeout"].includes(job.status);
+const finished = (job) => ["done", "failed", "timeout", "skipped"].includes(job.status);
 
 function lineOf(job) {
   const done = job.doneAt ? " (fait le " + job.doneAt + ", " + job.minutes + " min)" : "";
   const wait = job.status === "scheduled" ? ` (pas avant ${job.notBefore})` : "";
-  return `[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}${wait}`;
+  const why = job.reason ? ` (${job.reason})` : "";
+  return `[${job.status}] ${job.id} — ${job.estimate} — ${job.command}${done}${wait}${why}`;
 }
 
 if (args.includes("--list")) {
@@ -122,8 +128,28 @@ console.log(`${pending.length} traitement(s) à faire${onThreads}.`);
 // The next job is read from the file each time: one added while another ran is played too.
 const tried = new Set();
 const nextJob = async () => (await readBacklog()).jobs.find((job) => ready(job) && !tried.has(job.id));
+/** A finished job's output, for `stopIf`: empty when it cannot be read. */
+const outputOf = (job) => {
+  try {
+    return readFileSync(`${ROOT}${job.output}`, "utf8");
+  } catch {
+    return "";
+  }
+};
+
+/** Cancels `job` before it starts, when its `stopIf` says so; true if it did. */
+async function skipped(job) {
+  const fresh = await readBacklog();
+  const reason = stopReason(job, fresh.jobs, outputOf);
+  if (!reason) return false;
+  Object.assign(fresh.jobs.find((candidate) => candidate.id === job.id), { status: "skipped", doneAt: localTimestamp().slice(0, 16), minutes: 0, reason });
+  await saveBacklog(fresh);
+  console.log(`■ ${job.id} : annulé — ${reason}`);
+  return true;
+}
 for (let job = await nextJob(); job; job = await nextJob()) {
   tried.add(job.id);
+  if (await skipped(job)) continue;
   const started = Date.now();
   const stamp = localTimestamp().slice(0, 16).replace(/[:T]/g, "-");
   const output = `${RUNS_DIR}${stamp}_${job.id}.txt`;

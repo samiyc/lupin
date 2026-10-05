@@ -3,6 +3,7 @@ import { BOT_LINEUP } from "../src/config/bots.js";
 import { againstBase, bancVerdict, judge, pairedDiff, rankCorrelation, summarizeBanc } from "../src/replay/banc.js";
 import { ORACLE } from "../src/replay/oracle.js";
 import { loadGame, readIndex } from "./lib/game-index.js";
+import { stopIfFor } from "./lib/backlog-stop.js";
 import { runPool } from "./lib/pool.js";
 
 /**
@@ -144,7 +145,9 @@ async function queueDuels() {
   const name = (/core=(\w+)/.exec(tested)?.[1] ?? "variante").replace(/[^\w-]/g, "");
   const pause = (n) => ({ id: `pause-${name}-${n}`, command: "npm run cooldown -- 15", estimate: "15 min", limit: 17, why: "Une pause entre deux jobs (Sami, 04/10).", status: "todo" });
   const offset = (n) => (n ? ` --offset ${n}` : "");
-  const duel = (n) => ({ id: `duel-${name}-${n}`, command: `npm run duel -- "${tested}" "${against}" --long --games 125 --page${offset(n)}`, estimate: "30 min", limit: 45, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo" });
+  const ids = [0, 1, 2, 3].map((n) => `duel-${name}-${n}`);
+  // A series that starts badly stops there (stopIf, scripts/lib/backlog-stop.js).
+  const duel = (n) => ({ id: ids[n], command: `npm run duel -- "${tested}" "${against}" --long --games 125 --page${offset(n)}`, estimate: "30 min", limit: 45, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo", stopIf: stopIfFor(ids, n + 1) });
   const jobs = [0, 1, 2, 3].flatMap((n) => (n === 0 ? [duel(n)] : [pause(n), duel(n)]));
   backlog.jobs.push(...jobs);
   // The backlog keeps its own two-space indent.
