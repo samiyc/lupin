@@ -99,11 +99,15 @@ export function createPairMemo() {
   return stamps;
 }
 
-/** `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? (`createPairMemo`) }. */
+/**
+ * `context`: { valuer, hand, unseen, draws, jokerAllowed(side), memo? (`createPairMemo`), lite? }.
+ * `lite` (B1, 05/10): a side of one card is worth that card alone, without trying
+ * every pair the hand could make with it — a lighter core for the rollouts.
+ */
 export function sidePotential(side, context) {
   if (side.length >= 3) return context.valuer.value(side);
   if (side.length === 2) return pairPotential(side, context);
-  if (side.length === 1) return singlePotential(side, context);
+  if (side.length === 1) return context.lite ? context.valuer.single(side[0]) : singlePotential(side, context);
   return context.valuer.empty;
 }
 

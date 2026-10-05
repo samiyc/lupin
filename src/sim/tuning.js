@@ -11,10 +11,10 @@ import { gatesOf } from "./ideas.js";
  *
  * Returns the settings for a turn: early, late, or the core's own between.
  */
-export function tuningsOf({ habits, strategy, ideas, earlyIdeas, earlyHabits, lateIdeas, lateHabits, earlyUntil, lateFrom, weights, params }) {
+export function tuningsOf({ habits, strategy, ideas, earlyIdeas, earlyHabits, lateIdeas, lateHabits, earlyUntil, lateFrom, weights, params, lite = false }) {
   const tuningFor = (extraHabits, extraIdeas) => {
     const set = new Set([...ideas, ...extraIdeas]);
-    return { habits: new Set([...habits, ...extraHabits]), strategy, ideas: set, gates: gatesOf(set), weights, params };
+    return { habits: new Set([...habits, ...extraHabits]), strategy, ideas: set, gates: gatesOf(set), weights, params, lite };
   };
   const base = tuningFor([], []);
   const early = earlyIdeas.length + earlyHabits.length > 0 ? tuningFor(earlyHabits, earlyIdeas) : base;

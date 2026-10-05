@@ -169,14 +169,14 @@ const guessedHands = (state, judge, seed, { infer, readings }) => (infer > 0 ? i
  * against its clock. `scored`: the core's `scoreMoves` output; the root
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
-export function createIsmcts(state, scored, { policy, seed, ...settings }) {
+export function createIsmcts(state, scored, { policy, treePolicy, seed, ...settings }) {
   const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
   const rootMoves = [...scored]
     .sort((a, b) => b.gain - a.gain)
     .slice(0, candidates)
     .map(({ move }) => move);
-  const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
+  const ctx = { state, player: state.current, deals, rootMoves, judge: (treePolicy ?? policy)(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
   ctx.hands = guessedHands(state, ctx.judge, seed, settings);
   const root = newNode();
   let iterations = 0;
@@ -256,7 +256,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+lite=1|2` (B1, bots.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
  * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
@@ -267,7 +267,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

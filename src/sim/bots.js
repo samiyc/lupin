@@ -68,12 +68,12 @@ export const strategistBot = (rng, options = {}) => {
   };
 };
 
-function views(state) {
+function views(state, lite = false) {
   const player = state.current;
   const [valuer, unseen] = [createValuer(state), unseenCards(state, player)];
   // Each view gets its own memo: the same pair is judged many times in one scoring. Written out field by field:
   // built on every scoring of every rollout, a spread costs more than it reads.
-  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: createPairMemo(), withoutCard: new Map(), params: undefined, alone: undefined };
+  const mine = { valuer, unseen, hand: null, draws: Math.ceil(state.pile.length / 2), jokerAllowed: jokerGate(state, player), memo: createPairMemo(), withoutCard: new Map(), params: undefined, alone: undefined, lite };
   // The opponent's hand is unknown: treat it as more draws from the unseen.
   const theirs = {
     valuer,
@@ -81,7 +81,7 @@ function views(state) {
     hand: [],
     draws: state.spec.handSize + Math.floor(state.pile.length / 2),
     jokerAllowed: jokerGate(state, 1 - player),
-    memo: createPairMemo(),
+    memo: createPairMemo(), lite,
   };
   const threat = state.borders.map((border) => sidePotential(border.sides[1 - player], theirs));
   return { mine, threat };
@@ -149,7 +149,7 @@ function certaintyOf(ideas) {
 }
 
 function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, keepAll = false) {
-  const { threat, mine } = views(state);
+  const { threat, mine } = views(state, tuning.lite);
   mine.params = params;
   const seen = { mine, threat };
   const player = state.current;
@@ -211,8 +211,8 @@ function withoutCard(state, context, card) {
   const hand = [...state.hands[state.current]];
   hand.splice(hand.indexOf(card), 1);
   // The same fields as the view it comes from (`views`), the hand aside: written out, not spread.
-  const { valuer, unseen, draws, jokerAllowed, memo, params } = context;
-  const view = { valuer, unseen, hand, draws, jokerAllowed, memo, withoutCard: context.withoutCard, params, alone: undefined };
+  const { valuer, unseen, draws, jokerAllowed, memo, params, lite } = context;
+  const view = { valuer, unseen, hand, draws, jokerAllowed, memo, withoutCard: context.withoutCard, params, alone: undefined, lite };
   context.withoutCard?.set(card, view);
   return view;
 }
@@ -292,8 +292,9 @@ export const BOTS = Object.freeze({
 });
 
 /** The ISMCTS bot on the experimental core; `sample` makes its rollouts draw their moves. */
-const ismctsOf = ({ sample, core = "exp", shortlist = core, rollout = core, ...tree }, budget) => (rng) =>
-  ismctsBot(rng, { base: strategistBot(rng, coreOf(shortlist)), policy: rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample }), oddsOf: winOdds, ...tree, ...budget });
+// `lite` (B1): the rollouts' core judges a one-card side by its card alone; at 1 the tree's nodes keep the whole core, at 2 only the root does.
+const ismctsOf = ({ sample, core = "exp", shortlist = core, rollout = core, lite = 0, ...tree }, budget) => (rng) =>
+  ismctsBot(rng, { base: strategistBot(rng, coreOf(shortlist)), policy: rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample, lite: lite > 0 }), treePolicy: lite === 1 ? rolloutPolicyOf({ ...coreOf(rollout), rolloutSample: sample }) : undefined, oddsOf: winOdds, ...tree, ...budget });
 
 /**
  * An engine by id: one of `BOTS`, or `experimental:N` — the experimental bot

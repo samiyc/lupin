@@ -2225,3 +2225,39 @@ temps égal, après A1 à A4 qui ne changent aucun coup) :
   à faire avec `npm run distill`, en ajoutant ce paramètre aux poids réglés.
 - **B4, pondérer la pioche par le nombre de tirages restants**, en fin de partie surtout : plus
   juste, pas plus rapide ; seulement si les autres échouent.
+
+**B1 écrit : `+lite=1|2`, le cœur allégé selon l'étage de l'arbre** (05/10, Sami : « sablier,
+pyramide ? »). L'arbre était déjà une pyramide à deux étages : la racine classe ses candidats
+avec le cœur complet (certitudes comprises, ou `shortlist=dist1`), les nœuds de l'arbre
+(`ctx.judge`) et les simulations (`ctx.rollout`) avec le cœur des simulations. Avec `lite`, un
+côté à une carte vaut sa carte seule (`valuer.single`) dans ce cœur-là :
+- `lite=1` : les simulations seulement ; les nœuds de l'arbre gardent le cœur complet
+  (`treePolicy` dans `createIsmcts`) ;
+- `lite=2` : les nœuds aussi ; seule la racine garde tout.
+
+Sans `lite`, l'empreinte du 1.0 reste `152e2a9c9d66170c`. Mesures (la file tournait, les
+rapports tiennent, les absolus non) :
+- en cœur contre cœur, le cœur allégé perd lourdement : **37,4 / 39,3 / 39,7 %** — les paires
+  que la main peut faire avec une carte seule sont une grande part de son jugement ;
+- vitesse : `lite=1` +31 % par itération (2 620 à temps égal), `lite=2` +39 % (2 780) ;
+  `dist1` à la racine ne se voit pas (un classement de plus par coup, contre 2 000 itérations).
+- Deux tris de 400 parties à temps égal en file ; B1 n'entre dans la version combinée que s'ils
+  tiennent.
+
+**Ce que dit la littérature sur la profondeur** (de mémoire) : les *progressive strategies*
+(Chaslot et al., 2008) n'appliquent une connaissance coûteuse qu'aux nœuds assez visités, donc en
+haut de l'arbre ; le *simulation balancing* (Silver et Tesauro, 2009) montre qu'une politique de
+simulation plus forte ne fait pas forcément un meilleur arbre — ce qui compte est qu'elle soit
+sans biais (exactement `dist1` : meilleur pour classer, moins bon pour simuler) ; et des
+simulations légères mais nombreuses gagnent souvent à temps égal (le pari de B1). Le précis en
+haut (racine, premiers étages, nœuds très visités), le léger en fin de branche, où le bruit des
+tirages domine. Plus fin, à essayer si B1 tient : le cœur complet dans un nœud à partir de K
+visites seulement (`+heavyFrom=K`).
+
+**10c4r en duels longs** : 48,8 / 48,8 / 50,4 / 49,6 % — environ 49,4 %, le 52,8 % du tri était du
+bruit ; il est retiré de la combinaison. **Les autres features à 51 % ou plus sur 1 000 parties
+contre le V1** : aucune autre que `dist1` à la racine (51,6 %) ; `e12open1` fait 50,5 %.
+
+**La file du soir** : les duels de `v1nc` (fin vers 19 h), les tris de B1 (`lite=1`, `lite=2`,
+vers 20 h 40), puis 4 duels longs de la combinaison `ismcts+widen=3+depth=5+core=v1nc+shortlist=dist1@2200`
+(vers 22 h 20).
