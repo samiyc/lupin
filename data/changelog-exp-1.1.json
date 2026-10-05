@@ -450,6 +450,28 @@
    "verdict": "neutre",
    "when": "05/10 19:35",
    "note": "PAIR_DISCOUNT 0,9 → 0,867 ; sur les positions gardées de côté, top 8 de l'oracle 59,6 → 59,1 % : rien ne change. 0,9 était déjà la bonne valeur ; pas de tri dans l'arbre."
+  },
+  {
+   "family": "vitesse",
+   "bench": "arbre2000",
+   "name": "Validation courte : B1Lite1, le cœur allégé dans les simulations",
+   "score": 55.8,
+   "lo": 51.5,
+   "hi": 60,
+   "verdict": "gagne",
+   "when": "05/10 19:26",
+   "note": "2 620 itérations contre 2 000 (31 % plus rapide). Première validation courte au-dessus de 50 % en fourchette basse, alors que le cœur allégé seul perd 38,8 %. En validation longue au même temps par coup."
+  },
+  {
+   "family": "vitesse",
+   "bench": "arbre2000",
+   "name": "Validation courte : B1Lite2, aussi dans les nœuds de l'arbre",
+   "score": 47.3,
+   "lo": 42.6,
+   "hi": 51.9,
+   "verdict": "perd",
+   "when": "05/10 20:12",
+   "note": "2 780 itérations contre 2 000 (39 % plus rapide) : écarté. Les réponses regardées dans l'arbre doivent rester choisies par le cœur complet."
   }
  ],
  "commitLabels": {
@@ -572,13 +594,25 @@
   "4d69e14": [
    "outils",
    "B1 à B4 consignés"
+  ],
+  "51d2824": [
+   "outils",
+   "Le glossaire : l'arbre, les validations, les noms"
+  ],
+  "4eb22ba": [
+   "outils",
+   "stopIf : une validation longue qui part mal s'arrête"
+  ],
+  "3a0bd5d": [
+   "oracle",
+   "B3 : la remise sur une paire réglée sur l'oracle"
   ]
  },
  "next": [
   {
    "when": "Ce soir",
-   "title": "B1, puis dist1 à la racine sur 2 000 parties",
-   "text": "Les tris de B1 (lite=1 et lite=2, vers 20 h 30), puis 4 duels de plus de dist1 à la racine sur de nouvelles donnes (vers 22 h) : réunis aux 4 du matin, 2 000 parties pour trancher. v1nc (48,6 %) et 10c4r (49,4 %) sont écartés."
+   "title": "DistOracle1Root et B1Lite1 en validation longue",
+   "text": "DistOracle1Root sur 2 000 parties (offsets 1 à 8, vers 22 h), puis B1Lite1 en 1k au même temps par coup (vers 0 h 10). Si les deux tiennent : les combiner."
   },
   {
    "when": "Ensuite",

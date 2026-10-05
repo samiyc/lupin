@@ -2286,3 +2286,18 @@ côté, le coup de l'oracle dans le top 1 / 3 / 8 : 9,9 / 27,5 / 59,6 % pour le 
 l'oracle. Pas de tri dans l'arbre : il n'y a pas de signal à tester. Le cœur `distpair` reste
 disponible (`src/sim/distilled-pair.js`). `distill` sait maintenant ne régler que certains poids
 (`--keys`) et écrire ailleurs que dans le cœur en test (`--name`).
+
+**Les validations courtes de B1** (400 parties contre le V1 à 2 000, temps égal mesuré pendant que
+la file tournait) :
+
+| Version | Itérations | Score | Fourchette par paires | Verdict |
+| --- | --- | --- | --- | --- |
+| **`B1Lite1`** (`lite=1` : les simulations allégées) | 2 620 | **55,8 %** | **51,5 – 60,0 %** | passe en validation longue |
+| `B1Lite2` (`lite=2` : les nœuds aussi) | 2 780 | 47,3 % | 42,6 – 51,9 % | écarté |
+
+La pyramide gagne : léger dans les simulations, complet dans les nœuds et à la racine. Alléger
+les nœuds aussi fait perdre, même avec 39 % d'itérations de plus : les réponses regardées à
+chaque étage doivent rester bien choisies. C'est la première validation courte dont la fourchette
+basse dépasse 50 %, alors que le cœur allégé seul perd 38,8 % en cœur contre cœur : des
+simulations moins justes mais plus nombreuses. La validation longue de `B1Lite1` se joue au même
+temps par coup des deux côtés (`@t3200`), le temps égal mesuré sous charge n'étant pas assez sûr.
