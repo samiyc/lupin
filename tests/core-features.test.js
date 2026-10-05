@@ -11,6 +11,8 @@ describe("npm run features: the core's features, their time and their activation
     assert.equal(featureOf(at("potential.js", "unseenCards")).id, "unseen");
     assert.equal(featureOf(at("strategist.js", "suitedOutLeft")).id, "suited");
     assert.equal(featureOf(at("strategist.js", "strategistAdjust")).id, "dispatch");
+    assert.equal(featureOf(at("ideas.js", "ideasBonus")).id, "dispatch");
+    assert.equal(featureOf(at("mined.js", "minedBonus")).id, "idle");
     assert.equal(featureOf(at("bots.js", "moveGain")).id, "gain");
     assert.equal(featureOf(at("bots.js", "cardCost")).id, "price");
     assert.equal(featureOf(at("oracle-ideas.js", "stayMoment")).id, "stay");

@@ -360,8 +360,19 @@
    "lo": null,
    "hi": null,
    "verdict": "neutre",
-   "when": "05/10 11:20",
-   "note": "Le potentiel d'un côté prend 45 % du temps des simulations ; 18 % sert à appeler des bonus, dont 7 % des idées éteintes. connector : 4,4 % du temps pour 1,7 % de favoris changés. stay et l'habitude « ouvrir » sont les plus décisives pour leur coût."
+   "when": "05/10 14:30",
+   "note": "Mesuré au repos. Le potentiel d'un côté prend 46 % du temps des simulations, l'aiguillage des bonus 12 %, connector 4,2 % pour 1,7 % de favoris changés. Les idées éteintes ne sont plus appelées : +3,8 % de vitesse à coups identiques ; sans connector, +12 %."
+  },
+  {
+   "name": "Vitesse : les idées éteintes plus appelées, et le 1.0 sans connector",
+   "family": "vitesse",
+   "bench": "cout",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "gagne",
+   "when": "05/10 14:30",
+   "note": "Au repos, arbre à 400 : 1 119 → 1 162 itérations/s (+3,8 %, mêmes coups, empreintes inchangées) ; sans connector 1 253 (+12 %). v1nc : 48,3 % en cœur contre cœur ; ses 4 duels longs à temps égal (2 160 contre 2 000) sont en file."
   }
  ],
  "commitLabels": {
@@ -456,6 +467,14 @@
   "4a78163": [
    "oracle",
    "La nuit des tris à 2 000 : dist1 à la racine 52,8 %"
+  ],
+  "afe5c90": [
+   "vitesse",
+   "Les idées éteintes plus appelées, et le 1.0 sans connector"
+  ],
+  "299319d": [
+   "vitesse",
+   "npm run features : le coût du cœur, feature par feature"
   ]
  },
  "next": [
@@ -601,6 +620,12 @@
    "label": "dist1 contre le cœur du 1.0, 3 jeux de donnes (18 fils)",
    "doneAt": "2026-10-05T00:01",
    "minutes": 2
+  },
+  {
+   "id": "banc-features",
+   "label": "npm run features au repos, le V1 et v1nc (un fil)",
+   "doneAt": "2026-10-05T14:30",
+   "minutes": 6
   }
  ]
 }

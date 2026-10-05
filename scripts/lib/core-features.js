@@ -31,7 +31,7 @@ export const FEATURES = Object.freeze([
   { id: "opening", label: "Habitude : ouvrir au milieu, une nouvelle couleur", family: "habitudes", file: "strategist.js", fn: named("openingBonus", "openedSuits") },
   { id: "suited", label: "Habitude : départ assorti (suite de couleur encore possible)", family: "habitudes", file: "strategist.js", fn: named("suitedBonus", "suitedOutLeft", "suitedConnector") },
   { id: "joker", label: "Habitude : le joker seulement pour un brelan", family: "habitudes", file: "strategist.js", fn: named("jokerCompletesTrips", "jokerBonus", "jokerCompletesRun") },
-  { id: "dispatch", label: "L'aiguillage des bonus (habitudes et idées appelées par coup)", family: "idees", file: ["strategist.js", "tuning.js", "bots.js"] },
+  { id: "dispatch", label: "L'aiguillage des bonus (habitudes et idées appelées par coup)", family: "idees", file: ["strategist.js", "tuning.js", "bots.js", "ideas.js"], fn: (fn, file) => file !== "ideas.js" || ["ideasBonus", "familiesBonus", "gatesOf"].includes(fn) },
   { id: "middle", label: "Idée : le milieu, solide ou faible", family: "idees", file: "ideas.js", fn: named("placeBonus", "solidStart", "openConnector", "isMiddle", "firstCardBonus") },
   { id: "spread", label: "Idée : ne pas séparer une paire (spread)", family: "idees", file: "ideas.js", fn: named("spreadPenalty") },
   { id: "connector", label: "Idée : garder un connecteur assorti (connector)", family: "idees", file: "principles.js" },
@@ -55,7 +55,7 @@ const fileMatches = (feature, file) => (Array.isArray(feature.file) ? feature.fi
 /** The feature a profiled function belongs to: its file, then its name where the file is shared. */
 export function featureOf({ url, functionName }) {
   const file = fileOf(url ?? "");
-  return FEATURES.find((feature) => fileMatches(feature, file) && (!feature.fn || feature.fn(functionName))) ?? OTHER;
+  return FEATURES.find((feature) => fileMatches(feature, file) && (!feature.fn || feature.fn(functionName, file))) ?? OTHER;
 }
 
 /**

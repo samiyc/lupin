@@ -10,7 +10,7 @@ import { cloneState } from "../src/sim/lookahead.js";
 import { ABLATIONS, FAMILIES, FEATURES, compareScorings, timeByFeature } from "./lib/core-features.js";
 
 /**
- * `npm run features -- [--games 40] [--budget 300]`: what each feature of the
+ * `npm run features -- [--games 40] [--budget 300] [--core v1nc]`: what each feature of the
  * 1.0's core costs and how often it acts (Sami, 05/10: which cost the most and
  * serve the least, to try variations or remove them). On one thread, on
  * positions of games the core plays against itself (every other turn):
@@ -22,14 +22,16 @@ import { ABLATIONS, FAMILIES, FEATURES, compareScorings, timeByFeature } from ".
  * - activation: each feature switched off in turn, the same moves scored
  *   again — how many gains change, and how often the favourite does.
  *
- * Results in data/core-features.json, which the changelog plots. Run it on a
+ * Results in data/core-features.json, which the changelog plots (another core,
+ * `--core`, goes to data/core-features-<core>.json). Run it on a
  * quiet machine: the shares hold under load, the milliseconds do not.
  */
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? Number(args[args.indexOf(name) + 1]) : fallback);
 const GAMES = option("--games", 40);
 const BUDGET = option("--budget", 300);
-const CORE = "stfig6";
+const CORE = args.includes("--core") ? args[args.indexOf("--core") + 1] : "stfig6";
+const OUT = CORE === "stfig6" ? "core-features.json" : `core-features-${CORE}.json`;
 // The rollout core scores all moves in a fraction of a millisecond: repeated, for enough samples.
 const REPEATS = 10;
 const { spec, order, jokerRule, endMode } = rulesOf(OFFICIAL_RULES);
@@ -131,5 +133,5 @@ const report = {
   time: { rollout: scope(time.rollout), root: scope(time.root), iteration: scope(time.iteration) },
   activation: acting,
 };
-await writeFile(new URL("../data/core-features.json", import.meta.url), `${JSON.stringify(report, null, 1)}\n`);
-console.log("→ data/core-features.json");
+await writeFile(new URL(`../data/${OUT}`, import.meta.url), `${JSON.stringify(report, null, 1)}\n`);
+console.log(`→ data/${OUT}`);

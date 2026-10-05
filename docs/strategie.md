@@ -2145,3 +2145,21 @@ de 40 parties du cœur contre lui-même, 181 recherches à 300 itérations) mesu
   positions ; à la racine seulement, elles ne pèsent rien dans une itération.
 - Le changelog 1.1 trace tout cela (section « Le coût du cœur »). Mesuré pendant que la file
   tournait sur 18 fils : les parts tiennent, les millisecondes sont à refaire au repos.
+
+**Au repos, après la file** (05/10, 14 h 30) : les mêmes mesures, la machine libre.
+
+| Arbre à 400, 107 positions, 3 passes | Itérations/s | µs par itération | Gain |
+| --- | --- | --- | --- |
+| V1 avant | 1 119 | 893 | — |
+| V1, les familles d'idées éteintes plus appelées | 1 162 | 861 | +3,8 % (mêmes coups : les empreintes 1.0, 0.9 et oracle sont inchangées) |
+| `v1nc` : sans `connector` | 1 253 | 798 | +12,0 % (+7,9 % sur le V1 actuel) |
+
+- Les parts du profil au repos confirment celles mesurées sous charge, à un ou deux points
+  près. Avec le V1 actuel : le potentiel d'un côté 45,9 % du temps des simulations, le gain
+  d'un coup 13,5 %, l'aiguillage 12,3 %, `connector` 4,2 %, ce qui reste des idées éteintes
+  3,7 % (surtout `borderFactors`, 1,9 %, qui calcule des facteurs tous à 1, et `gateOn`, 1 %).
+- Sans `connector`, le potentiel monte à 49 % : c'est lui qui reste à accélérer.
+- Les duels de `v1nc` en file passent à 2 160 itérations (temps égal mesuré au repos).
+- Le détail par fonction du potentiel : `drawPotential` 18,8 % (surtout la mémoire des paires,
+  une `Map` vidée à chaque évaluation), `singlePotential` 9,7 %, `drawPotentialOf` 6,8 %,
+  `sidePotential` 4,5 %, `upsideOf` 3,7 % (une puissance par figure à chaque calcul).
