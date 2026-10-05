@@ -494,6 +494,17 @@
    "verdict": "perd",
    "when": "05/10 22:36",
    "note": "48,0 puis 46,0 % ; la règle d'arrêt a annulé les duels 3 et 4. À temps vraiment égal (10 % d'itérations en plus, mesuré dans les replays), les simulations allégées coûtent plus qu'elles ne rapportent."
+  },
+  {
+   "name": "Validation courte : RootHalving, les candidats éliminés par moitiés à la racine",
+   "family": "oracle",
+   "bench": "arbre2000",
+   "score": 49.5,
+   "lo": 44.8,
+   "hi": 54.2,
+   "verdict": "neutre",
+   "when": "06/10 00:41",
+   "note": "1 000 / 500 / 500 itérations : 125, 250, 500 visites par candidat, au lieu d'UCB à la racine. Neutre : la façon de départager les bons candidats ne compte pas à 2 000 itérations."
   }
  ],
  "commitLabels": {
@@ -664,13 +675,25 @@
   "08507a1": [
    "outils",
    "L'arbre au début de partie, et la piste C1"
+  ],
+  "3df2c08": [
+   "oracle",
+   "RootHalving : les candidats éliminés par moitiés"
+  ],
+  "7c2139b": [
+   "outils",
+   "UCB en graphiques"
+  ],
+  "f3e7e0b": [
+   "vitesse",
+   "B1Lite1 perd à temps égal, et la leçon du banc de vitesse"
   ]
  },
  "next": [
   {
-   "when": "Bilan du 05/10",
+   "when": "Bilan",
    "title": "Aucune version ne bat le V1",
-   "text": "DistOracle1Root 50,5 % (2 000 parties), Tree-10c-4r 49,4 %, NoConnector 48,6 %, B1Lite1 47,0 %. Acquis : +20,7 % de vitesse à coups identiques (A1-A4), la règle d'arrêt, le glossaire."
+   "text": "DistOracle1Root 50,5 % (2 000 parties), RootHalving 49,5 % (validation courte), Tree-10c-4r 49,4 %, NoConnector 48,6 %, B1Lite1 47,0 %. La racine n'est pas le point faible : la piste C1 (les réponses adverses regroupées) vise l'arbre sous les candidats."
   },
   {
    "when": "Piste",

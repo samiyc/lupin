@@ -2381,3 +2381,11 @@ recherche réelle : 500 / 500 / 250 / 250 / 125 × 4 visites. Sous les candidats
 Une réserve : chez nous, les visites d'un candidat creusent aussi son sous-arbre ; un candidat
 éliminé tôt n'est plus approfondi. Seul le jeu tranchera. Validation courte en file
 (`VALIDATE_SHRT_@_RootHalving`), au même nombre d'itérations (même coût).
+
+**Validation courte de RootHalving** (400 parties contre le V1, 2 000 itérations des deux côtés,
+23 h 58 – 0 h 41) : **49,5 % (44,8 – 54,2)**, 48,5 % en commençant, 50,5 % en second. Neutre : mieux
+départager les candidats ne change rien de visible. Avec ce qu'on sait de l'arbre au début de
+partie (il ne fait que comparer ses 8 candidats) et de `DistOracle1Root` (mieux les choisir ne
+paie pas), la racine du V1 n'est pas son point faible : les écarts entre ses bons candidats sont
+trop petits pour que la façon de les départager compte, à 2 000 itérations. Pas de validation
+longue.

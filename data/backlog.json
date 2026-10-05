@@ -535,7 +535,10 @@
       "estimate": "50 min",
       "limit": 75,
       "why": "RootHalving (Sami, 05/10) : à la racine, les 8 candidats à tour de rôle (125 visites chacun sur 1 000 itérations), les 4 meilleurs par taux de victoire ensuite (125 de plus sur 500), les 2 meilleurs enfin (250 de plus sur 500) ; le finaliste au meilleur taux est joué. UCB inchangé sous les candidats. Même coût par itération : 2 000 contre 2 000. Validation courte, 400 parties.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T00:41",
+      "minutes": 43,
+      "output": "backlog-runs/2026-10-05-23-58_VALIDATE_SHRT_@_RootHalving.txt"
     }
   ]
 }
