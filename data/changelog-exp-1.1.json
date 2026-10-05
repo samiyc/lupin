@@ -472,6 +472,17 @@
    "verdict": "perd",
    "when": "05/10 20:12",
    "note": "2 780 itérations contre 2 000 (39 % plus rapide) : écarté. Les réponses regardées dans l'arbre doivent rester choisies par le cœur complet."
+  },
+  {
+   "name": "DistOracle1Root : 2 000 parties de validation longue",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 50.5,
+   "lo": 48.6,
+   "hi": 52.5,
+   "verdict": "neutre",
+   "when": "05/10 21:44",
+   "note": "8 duels de 250 parties (offsets 1 à 8) : 53,6 / 48,8 / 50,8 / 53,2 puis 52,0 / 50,8 / 48,4 / 46,8 %. Les 51,6 % du matin étaient de la chance. Classer comme l'oracle ne fait pas gagner : l'arbre retrouve déjà le bon coup parmi les 8."
   }
  ],
  "commitLabels": {
@@ -630,13 +641,17 @@
   "50a2681": [
    "outils",
    "Le glossaire : combien de chemins, le cœur filtre"
+  ],
+  "917a1da": [
+   "outils",
+   "Le changelog : l'arbre pas à pas"
   ]
  },
  "next": [
   {
-   "when": "Ce soir",
-   "title": "DistOracle1Root et B1Lite1 en validation longue",
-   "text": "DistOracle1Root sur 2 000 parties (offsets 1 à 8, vers 22 h), puis B1Lite1 en 1k au même temps par coup (vers 0 h 10). Si les deux tiennent : les combiner."
+   "when": "Cette nuit",
+   "title": "B1Lite1 en validation longue",
+   "text": "La seule piste encore en course : 55,8 % en validation courte. 1 000 parties au même temps par coup, fin vers 0 h ; la règle d'arrêt coupe la série si elle part mal. DistOracle1Root (50,5 % sur 2 000), Tree-10c-4r (49,4 %) et NoConnector (48,6 %) sont écartés."
   },
   {
    "when": "Ensuite",

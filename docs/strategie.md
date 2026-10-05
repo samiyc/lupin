@@ -2301,3 +2301,11 @@ chaque étage doivent rester bien choisies. C'est la première validation courte
 basse dépasse 50 %, alors que le cœur allégé seul perd 38,8 % en cœur contre cœur : des
 simulations moins justes mais plus nombreuses. La validation longue de `B1Lite1` se joue au même
 temps par coup des deux côtés (`@t3200`), le temps égal mesuré sous charge n'étant pas assez sûr.
+
+**`DistOracle1Root` sur 2 000 parties** (`dist1` à la racine, 8 duels de 250 parties contre le V1 à
+2 000, offsets 1 à 8) : 53,6 / 48,8 / 50,8 / 53,2 % le matin, 52,0 / 50,8 / 48,4 / 46,8 % le soir ;
+**les 8 réunis, 50,5 % (48,6 – 52,5)** sur 1 000 paires. Neutre : les 51,6 % des 4 premiers duels
+étaient de la chance, la 2e série fait 49,5 %. `npm run versus` (avec le tri de l'offset 0, qui l'a
+fait choisir) : 50,9 % (49,2 – 52,7) sur 2 400 parties. Mieux classer les candidats comme l'oracle
+(top 8 : 59,6 → 66,0 %) ne fait pas gagner de parties : l'arbre, avec 2 000 itérations, retrouve
+déjà le bon coup parmi les 8 du 1.0.
