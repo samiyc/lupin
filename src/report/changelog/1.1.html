@@ -71,6 +71,13 @@ section { display: grid; gap: 18px; min-width: 0; scroll-margin-top: 16px; }
 .chart .label { fill: var(--ink-2); font: 400 12px var(--body); }
 .chart .strong { fill: var(--ink); font-weight: 700; }
 .wide { min-width: 760px; }
+/* The timeline: lane names fixed on the left, the hours scrolling (or dragged) on the right, at a fixed scale. */
+.timeline-box { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: start; }
+.timeline-lanes { width: 150px; height: 300px; display: block; }
+.timeline-scroll { overflow-x: auto; min-width: 0; cursor: grab; scrollbar-width: thin; }
+.timeline-scroll.dragging { cursor: grabbing; user-select: none; }
+.timeline-scroll:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+#timeline { display: block; width: auto; height: 300px; max-width: none; }
 .seal { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; background: var(--seal-wash); border-radius: 10px; padding: 12px 16px; max-width: 86ch; }
 .seal::before { content: "!"; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; background: var(--seal); color: var(--paper); font: 700 1.1rem/1 var(--display); }
 .seal p { color: var(--ink-2); font-size: 0.97rem; }
@@ -222,7 +229,11 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     </div>
     <p>En haut, ce qui a été écrit : un point par commit, coloré par famille. En dessous, ce que la machine a calculé pendant ce temps : chaque job du backlog, et les tests lancés à la main (plus clairs), à leur vraie place dans la nuit et la journée. Les jobs en pointillés sont encore à venir. Clique sur un point.</p>
     <div class="panel">
-      <div class="scroll"><svg class="chart wide" id="timeline" viewBox="0 0 1000 300" role="img" aria-label="Commits et jobs des dernières 24 heures"></svg></div>
+      <div class="timeline-box">
+        <svg class="chart timeline-lanes" id="timeline-lanes" viewBox="0 0 150 300" aria-hidden="true"></svg>
+        <div class="timeline-scroll" id="timeline-scroll" tabindex="0" aria-label="La frise : glisse-la ou fais-la défiler"><svg class="chart" id="timeline" height="300" role="img" aria-label="Commits et jobs depuis le début du carnet"></svg></div>
+      </div>
+      <p class="small muted">Glisse la frise à la souris, ou fais-la défiler, pour remonter le temps ; elle s'ouvre sur le présent.</p>
       <div class="legend" id="timeline-legend"></div>
       <div class="detail" id="commit-detail" aria-live="polite"></div>
     </div>
@@ -472,14 +483,45 @@ function placeJobs() {
   }
   return placed;
 }
+/** Drag the timeline left and right with the mouse; a touch screen scrolls it natively. A drag never clicks a commit. */
+function dragToScroll(box) {
+  let start = null;
+  box.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse") start = { x: event.clientX, left: box.scrollLeft, moved: false };
+  });
+  box.addEventListener("pointermove", (event) => {
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    if (Math.abs(dx) > 4) start.moved = true;
+    if (!start.moved) return;
+    box.classList.add("dragging");
+    box.scrollLeft = start.left - dx;
+  });
+  const end = () => {
+    if (start?.moved) box.dataset.dragged = "1";
+    start = null;
+    box.classList.remove("dragging");
+  };
+  for (const type of ["pointerup", "pointerleave", "pointercancel"]) box.addEventListener(type, end);
+  box.addEventListener("click", (event) => {
+    if (box.dataset.dragged) event.stopPropagation();
+    box.dataset.dragged = "";
+  }, true);
+}
+
+// A fixed scale, so that two days are not crushed into the width of the page.
+const PX_PER_HOUR = 36;
+
 function drawTimeline() {
   const svg = $("timeline");
   const jobs = placeJobs();
   const t0 = toTime(`${J.since.replace(" ", "T")}`);
   const t1 = Math.max(toTime(DATA.builtAt), ...jobs.map((j) => j.end)) + 30 * 60000;
-  const [left, right] = [140, 985];
-  const x = (t) => left + ((t - t0) / (t1 - t0)) * (right - left);
   const hour = 3600000;
+  const [left, right] = [12, 12 + ((t1 - t0) / hour) * PX_PER_HOUR];
+  svg.setAttribute("width", right + 60);
+  svg.setAttribute("viewBox", `0 0 ${right + 60} 300`);
+  const x = (t) => left + ((t - t0) / (t1 - t0)) * (right - left);
   const firstHour = Math.ceil(t0 / hour) * hour;
   // Nights: midnight to 8 h.
   for (let t = firstHour; t < t1; t += hour) {
@@ -494,8 +536,9 @@ function drawTimeline() {
     svg.append(make("text", { x: x(t), y: 290, "text-anchor": "middle", class: d.getHours() === 0 ? "strong" : "" }, label));
   }
   const lanes = [["le code", 52], ...JOB_FAMILIES.map(([, label], i) => [label, laneY(i)])];
-  for (const [label, y] of lanes) svg.append(make("text", { x: 8, y: y + 4, class: "label" }, label));
-  svg.append(make("text", { x: 8, y: 16, class: "label strong" }, "ce qui a été écrit, puis calculé"));
+  const names = $("timeline-lanes");
+  for (const [label, y] of lanes) names.append(make("text", { x: 8, y: y + 4, class: "label" }, label));
+  names.append(make("text", { x: 8, y: 16, class: "label strong" }, "écrit, puis calculé"));
   for (const job of jobs) {
     const family = jobFamily(job.id);
     // A job of the previous version (before `since`) belongs to its own page.
@@ -531,6 +574,10 @@ function drawTimeline() {
   for (const family of legendFamilies) $("timeline-legend").append(html("span", {}, html("i", { style: `background: ${FAMILY_COLORS[family]}; border-radius: 999px` }), J.families[family]));
   $("timeline-legend").append(html("span", {}, html("i", { style: "background: var(--wash); border: 1px solid var(--line)" }), "la nuit"));
   if (DATA.jobs.some((j) => j.manual)) $("timeline-legend").append(html("span", {}, html("i", { style: "background: color-mix(in srgb, var(--ink-2) 45%, transparent); border: 1.5px solid var(--ink-2)" }), "lancé à la main, hors backlog"));
+  // Open on the present: the far right.
+  const scroller = $("timeline-scroll");
+  scroller.scrollLeft = scroller.scrollWidth;
+  dragToScroll(scroller);
   const last = DATA.commits.at(-1);
   if (last) showCommit(last, J.commitLabels[last.hash]?.[0] ?? "outils", J.commitLabels[last.hash]?.[1] ?? last.subject);
 }
