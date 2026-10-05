@@ -50,6 +50,22 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
    ├─ B
    └─ … (8 en tout)
   ```
+- **La profondeur (`depth`, 5) et la fin de partie** : deux rôles différents.
+  - **Les 5 premiers coups, l'arbre, apprennent** : chaque coup essayé y devient un nœud qui garde
+    ses visites et ses victoires ; d'une itération à l'autre, l'arbre compare, retient et revient
+    sur ce qui gagne. C'est la seule partie de la recherche qui apprend.
+  - **Au-delà, la simulation mesure** : le cœur joue seul jusqu'au bout, rien n'est retenu ; elle
+    ne sert qu'à dire qui gagne, pour créditer le chemin. On va jusqu'au bout faute d'un bon juge
+    d'une position en cours : une valeur apprise (40 %) et des simulations arrêtées tôt (41 à
+    46 %) ont perdu.
+  - **Pourquoi 5** : plus profond, il n'y a presque plus de visites (à 800 itérations, 12 % des
+    descentes atteignaient le 4e coup, 0,2 % le 5e) : des statistiques de bruit. Moins profond,
+    l'arbre ne voit pas les ripostes ; 5 couvre mon coup, sa réponse, mon coup, sa réponse, mon
+    coup. Le 0.9 a pris 3 réponses sur 5 coups plutôt que 4 réponses sur 3 : un arbre plus
+    étroit va plus loin pour le même nombre d'itérations.
+  - D'où `B1Lite1` : un cœur moins juste dans la simulation n'ajoute que du bruit au résultat,
+    qui se moyenne sur 2 000 itérations ; dans l'arbre (`B1Lite2`, 47,3 %), ce sont les choix
+    eux-mêmes qui se dégradent.
 - **Où sert le cœur, et combien de fois par coup** (V1 à 2 000 itérations) :
 
   | Où | Quel cœur | Combien de fois |
