@@ -50,6 +50,20 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
    ├─ B
    └─ … (8 en tout)
   ```
+- **Combien de chemins, et qui choisit** :
+  - au plus 8 × 3⁴ = **648 chemins de 5 coups** (la profondeur compte le coup de la racine) ; mais
+    les 3 réponses sont choisies dans une position où la main adverse est imaginée autrement à
+    chaque itération : elles changent, et un nœud finit souvent avec plus de 3 réponses
+    essayées. Les 8 candidats de la racine, eux, sont fixés une fois ;
+  - **2 000 fins de partie toutes différentes** (un tirage et une fin par itération), pour
+    quelques centaines de chemins dans l'arbre ;
+  - **le cœur filtre, il ne classe pas** : il décide quels coups entrent (8, puis 3) ; ensuite
+    chacun est essayé une fois, puis l'arbre choisit selon les résultats (UCB) — le 1er
+    candidat du cœur n'a aucune avance sur le 8e ;
+  - **ce qui est coupé** : les coups hors des 8 et des 3, par le filtre du cœur, jamais regardés ;
+    la profondeur, par le budget — 250 visites par candidat en moyenne, seuls les chemins qui
+    gagnent atteignent le 4e ou 5e coup. L'oracle regarde tous les coups à la racine et 6
+    réponses : il lui faut 20 000 itérations, à 2 000 cela dilue les visites (`Tree-12c-4r`).
 - **La profondeur (`depth`, 5) et la fin de partie** : deux rôles différents.
   - **Les 5 premiers coups, l'arbre, apprennent** : chaque coup essayé y devient un nœud qui garde
     ses visites et ses victoires ; d'une itération à l'autre, l'arbre compare, retient et revient
