@@ -528,6 +528,14 @@
       "doneAt": "2026-10-05T22:36",
       "minutes": 0,
       "reason": "VALIDATE_LONG_1_B1Lite1 + VALIDATE_LONG_2_B1Lite1 : 47.0 % réunis, sous 50 %"
+    },
+    {
+      "id": "VALIDATE_SHRT_@_RootHalving",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+halving=1000-500-500@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "50 min",
+      "limit": 75,
+      "why": "RootHalving (Sami, 05/10) : à la racine, les 8 candidats à tour de rôle (125 visites chacun sur 1 000 itérations), les 4 meilleurs par taux de victoire ensuite (125 de plus sur 500), les 2 meilleurs enfin (250 de plus sur 500) ; le finaliste au meilleur taux est joué. UCB inchangé sous les candidats. Même coût par itération : 2 000 contre 2 000. Validation courte, 400 parties.",
+      "status": "todo"
     }
   ]
 }

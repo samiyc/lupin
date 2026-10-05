@@ -2353,3 +2353,31 @@ verdict tient.
 47,0 % (arrêté). Ce qui reste acquis : le V1 cherche 20,7 % plus vite à coups identiques (A1 à
 A4), la règle d'arrêt, le glossaire, et une meilleure compréhension de l'arbre (au début de
 partie, il ne fait que comparer ses 8 candidats : la piste C1).
+
+## RootHalving : éliminer des candidats à la racine (05/10, soir)
+
+**L'idée** (Sami) : à la racine, seul le choix final compte. UCB, lui, concentre ses visites sur
+son favori (sur une vraie recherche : 471, 349, 269, 244, 237, 190, 168, 72), si bien que les
+candidats moyens, ceux qu'il faut départager, sont peu mesurés. Le problème a un nom,
+l'identification du meilleur bras à budget fixe : Successive Rejects (Audibert et al., 2010),
+Sequential Halving (Karnin et al., 2013). En MCTS, un algorithme à « regret simple » à la racine et
+UCB dessous (SR+CR, Tolpin et Shimony, 2012 ; H-MCTS, Pepels, Cazenave et Winands, 2014) fait
+mieux que l'arbre UCB ; Gumbel MuZero met Sequential Halving à la racine.
+
+**`+halving=1000-500-500`** (`src/sim/halving.js`) : les 8 candidats à tour de rôle pendant 1 000
+itérations (125 chacun), les 4 meilleurs par taux de victoire pendant 500 (250 en tout), les 2
+meilleurs pendant les 500 dernières (500 en tout) ; le finaliste au meilleur taux est joué. Sur une
+recherche réelle : 500 / 500 / 250 / 250 / 125 × 4 visites. Sous les candidats, rien ne change
+(UCB, 3 réponses, 5 coups). Sans l'option, l'empreinte du 1.0 reste `152e2a9c9d66170c`.
+
+| Méthode | Visites à la 1re élimination | Finalistes | Choix |
+| --- | --- | --- | --- |
+| UCB 0,7 (le V1) | pas d'élimination ; le moins visité 28 à 98 | le 1er 500 à 633, le 2e 370 à 609 | le plus visité |
+| 7 sections égales | 36 | 492 | meilleur taux |
+| Successive Rejects | 112 | 449 | meilleur taux |
+| Sequential Halving (3 × 667) | 83 | 583 | meilleur taux |
+| **RootHalving 1000-500-500** | **125** | **500** | meilleur taux |
+
+Une réserve : chez nous, les visites d'un candidat creusent aussi son sous-arbre ; un candidat
+éliminé tôt n'est plus approfondi. Seul le jeu tranchera. Validation courte en file
+(`VALIDATE_SHRT_@_RootHalving`), au même nombre d'itérations (même coût).

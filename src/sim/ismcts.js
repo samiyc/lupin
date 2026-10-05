@@ -2,6 +2,7 @@ import { createRng } from "../core/random.js";
 import { createBudget } from "./budget.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
+import { createHalving, parseHalving } from "./halving.js";
 import { createReader, inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
 import { decidedCount } from "./truncate.js";
@@ -130,15 +131,21 @@ function creditShared(amaf, played, winner) {
   }
 }
 
+/** The move taken at this ply: the root's halving, or UCB among the root's candidates or the core's shortlist. */
+function choiceAt(node, ply, game, ctx) {
+  if (ply === 0 && ctx.halving) return rootChoice(node, ctx);
+  const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx));
+  return select(node, moves, ctx, game.current);
+}
+
 /** The walk down the tree: the path taken, and the moves made on it (`rave`). */
 function descend(root, game, ctx) {
   const path = [];
   const played = [];
   let node = root;
   for (let ply = 0; ply < ctx.depth && !game.over; ply += 1) {
-    const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx));
     const mover = game.current;
-    const { move, child } = select(node, moves, ctx, mover);
+    const { move, child } = choiceAt(node, ply, game, ctx);
     path.push({ child, mover });
     if (move) played.push(`${mover}|${moveKey(move)}`);
     applyMove(game, move);
@@ -146,6 +153,34 @@ function descend(root, game, ctx) {
     if (child.visits === 0) break;
   }
   return { path, played };
+}
+
+/** A root candidate's visits and wins, for `halving`. */
+const rootStats = (root) => (move) => root.children.get(moveKey(move)) ?? { visits: 0, wins: 0 };
+
+/** `halving` (halving.js): at the root, the candidate whose turn it is, instead of UCB's pick. */
+function rootChoice(root, ctx) {
+  const move = ctx.halving.pick(ctx.iterations, rootStats(root));
+  const key = moveKey(move);
+  if (!root.children.has(key)) root.children.set(key, newNode());
+  const child = root.children.get(key);
+  child.avail += 1;
+  return { move, child };
+}
+
+/**
+ * The root's moves as the search rates them: a candidate's gain is its visits;
+ * with `halving`, the finalist with the best win rate gets one more than the
+ * most visited, so that it is the one played.
+ */
+function ratingOf(root, scored, ctx) {
+  const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
+  const chosen = ctx.halving?.best(rootStats(root));
+  const top = Math.max(0, ...ctx.rootMoves.map(visits));
+  return scored.map((entry) => {
+    if (!ctx.rootMoves.includes(entry.move)) return { ...entry, gain: -1 + entry.gain / 100 };
+    return { ...entry, gain: entry.move === chosen ? top + 1 : visits(entry.move) };
+  });
 }
 
 /** One iteration: a deal, a walk down the tree, a rollout, and the result carried back up. */
@@ -178,17 +213,19 @@ export function createIsmcts(state, scored, { policy, treePolicy, seed, ...setti
     .map(({ move }) => move);
   const ctx = { state, player: state.current, deals, rootMoves, judge: (treePolicy ?? policy)(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
   ctx.hands = guessedHands(state, ctx.judge, seed, settings);
+  // `halving` (halving.js): the root's candidates in turn, the worse half dropped at each phase's end.
+  const phases = parseHalving(settings.halving);
+  ctx.halving = phases ? createHalving(phases, rootMoves) : null;
+  ctx.iterations = 0;
   const root = newNode();
-  let iterations = 0;
-  const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
-  const rated = () => scored.map((entry) => ({ ...entry, gain: rootMoves.includes(entry.move) ? visits(entry.move) : -1 + entry.gain / 100 }));
+  const rated = () => ratingOf(root, scored, ctx);
   return {
     step() {
       iterate(root, ctx);
-      iterations += 1;
+      ctx.iterations += 1;
     },
     done: () => rootMoves.length <= 1,
-    rollouts: () => iterations,
+    rollouts: () => ctx.iterations,
     scored: rated,
     best: () => rated().reduce((a, b) => (b.gain > a.gain ? b : a)).move,
   };
@@ -256,7 +293,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+lite=1|2` (B1, bots.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+lite=1|2` (B1, bots.js), `+halving=1000-500-500` (halving.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
  * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
@@ -266,7 +303,7 @@ export function ismctsSettings(name) {
     changes.map((change) => {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
-      if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
+      if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
       if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
