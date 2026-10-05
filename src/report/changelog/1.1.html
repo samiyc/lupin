@@ -209,7 +209,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     <p class="lead" id="lead"></p>
     <div class="tiles" id="tiles"></div>
     <nav class="toc" aria-label="Sections">
-      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#banc">Le banc</a><a href="#compare">Coup pour coup</a><a href="#suite">La suite</a>
+      <a href="#journee">La frise</a><a href="#carnet">Le carnet</a><a href="#reference">La base de référence</a><a href="#banc">Le banc</a><a href="#compare">Coup pour coup</a><a href="#cout">Le coût du cœur</a><a href="#suite">La suite</a>
     </nav>
   </div>
 </header>
@@ -323,9 +323,30 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
     </div>
   </section>
 
+  <section id="cout" aria-labelledby="t-cout">
+    <div>
+      <p class="eyebrow">VI · Où passe le temps</p>
+      <h2 id="t-cout">Le coût du cœur</h2>
+    </div>
+    <p>Chaque feature du cœur du 1.0, mesurée de deux façons. Son temps : un profil du processeur attribue chaque fonction appelée à sa feature. Son activité : on l'éteint, on note à nouveau les mêmes coups, et on compte combien de notes changent, et combien de fois le coup préféré change. En haut à gauche, ce qui coûte cher et sert peu : les premières pistes d'optimisation.</p>
+    <div class="toggle" id="cost-toggle" role="group" aria-label="Où le cœur est mesuré"></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3 class="small-title">Les règles et les bonus : temps contre activité</h3>
+        <div class="scroll"><svg class="chart" id="cost-scatter" viewBox="0 0 640 380" role="img" aria-label="Part du temps du cœur et part des coups dont la note change, par feature"></svg></div>
+        <div class="legend" id="cost-legend"></div>
+      </div>
+      <div class="panel">
+        <h3 class="small-title">Toutes les features, par part du temps</h3>
+        <div class="scroll"><svg class="chart" id="cost-bars" viewBox="0 0 640 520" role="img" aria-label="Part du temps de chaque feature"></svg></div>
+      </div>
+    </div>
+    <p class="small" id="cost-note"></p>
+  </section>
+
   <section id="suite" aria-labelledby="t-suite">
     <div>
-      <p class="eyebrow">VI · Ce soir, demain</p>
+      <p class="eyebrow">VII · Ce soir, demain</p>
       <h2 id="t-suite">La suite</h2>
     </div>
     <div class="grid3" id="next"></div>
@@ -885,10 +906,110 @@ function drawCompare() {
   drawGaps(G);
 }
 
-/* ── VI · Next ───────────────────────────────────────────── */
+/* ── VI · What the core costs ───────────────────────────── */
+const FAMILY_TONES = { valeur: "sky", habitudes: "brass", idees: "mark", certitudes: "seal", moteur: "plum", autre: "off-ink" };
+const COST_SCOPES = [["rollout", "dans les simulations"], ["root", "à la racine"], ["iteration", "une itération entière"]];
+const pctOf = (x, digits = 1) => `${fr(100 * x, digits)} %`;
+
+/** The features of a scope: time share, and activity (the root's at the root, the rollouts' otherwise). */
+function costRows(F, scope) {
+  const acts = F.activation[scope === "root" ? "root" : "rollout"];
+  return F.features.map((f) => ({ ...f, share: F.time[scope].features[f.id]?.share ?? 0, act: acts[f.id] ?? null }));
+}
+
+/** Labels beside their points: right, left, above or below, the first spot clear of points and labels already placed. */
+function placeLabels(svg, labels, bounds) {
+  const boxes = labels.map(({ cx, cy }) => ({ x0: cx - 6, x1: cx + 6, y0: cy - 6, y1: cy + 6 }));
+  const clear = (box) => box.x0 > bounds.left && box.x1 < bounds.right && box.y0 > bounds.top && !boxes.some((o) => box.x0 < o.x1 && o.x0 < box.x1 && box.y0 < o.y1 && o.y0 < box.y1);
+  for (const label of labels) {
+    const width = label.text.length * 7.2;
+    const spots = [[12, 4, "start"], [-12, 4, "end"], [0, -14, "middle"], [0, 22, "middle"]].map(([dx, dy, anchor]) => {
+      const x = label.cx + dx;
+      const x0 = { start: x, end: x - width, middle: x - width / 2 }[anchor];
+      return { x, y: label.cy + dy, anchor, box: { x0, x1: x0 + width, y0: label.cy + dy - 10, y1: label.cy + dy + 2 } };
+    });
+    const spot = spots.find((s) => clear(s.box)) ?? spots[0];
+    boxes.push(spot.box);
+    svg.append(make("text", { x: spot.x, y: spot.y, "text-anchor": spot.anchor }, label.text));
+  }
+}
+
+function drawCostScatter(rows) {
+  const svg = $("cost-scatter");
+  svg.replaceChildren();
+  // The price of a card acts on every move by nature (each move pays its card): left out, or it flattens the axis.
+  const points = rows.filter((r) => r.act && r.id !== "price");
+  const [left, right, top, bottom] = [64, 600, 24, 330];
+  const xMax = Math.max(10, Math.ceil((100 * Math.max(...points.map((r) => r.act.moves))) / 10) * 10);
+  const yMax = Math.max(2, Math.ceil(120 * Math.max(...points.map((r) => r.share))));
+  const X = (v) => left + (v / xMax) * (right - left);
+  const Y = (v) => bottom - (v / yMax) * (bottom - top);
+  svg.append(make("rect", { x: left, y: top, width: (right - left) / 2, height: (bottom - top) / 2, fill: css("seal-wash"), opacity: 0.6 }));
+  svg.append(make("text", { x: left + 6, y: top + 14, fill: css("seal") }, "cher, et sert peu"));
+  for (let v = 0; v <= xMax; v += xMax / 5) {
+    svg.append(make("line", { x1: X(v), x2: X(v), y1: top, y2: bottom, stroke: css("line") }));
+    svg.append(make("text", { x: X(v), y: bottom + 16, "text-anchor": "middle" }, `${Math.round(v)} %`));
+  }
+  const yStep = yMax <= 5 ? 1 : Math.ceil(yMax / 5);
+  for (let v = 0; v <= yMax; v += yStep) {
+    svg.append(make("line", { x1: left, x2: right, y1: Y(v), y2: Y(v), stroke: css("line") }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, `${v} %`));
+  }
+  svg.append(make("text", { x: (left + right) / 2, y: bottom + 36, "text-anchor": "middle", class: "label" }, "part des coups dont la note change quand on l'éteint"));
+  svg.append(make("text", { x: 8, y: 14, class: "label" }, "part du temps du cœur"));
+  const labels = points.map((r) => {
+    const [cx, cy] = [X(100 * r.act.moves), Y(100 * r.share)];
+    const tip = `${r.label} : ${pctOf(r.share)} du temps ; la note de ${pctOf(r.act.moves)} des coups change, le coup préféré dans ${pctOf(r.act.favourite)} des positions`;
+    svg.append(make("circle", { cx, cy, r: 5 + 14 * Math.sqrt(r.act.favourite), fill: css(FAMILY_TONES[r.family]), "fill-opacity": 0.75, stroke: css("card"), "stroke-width": 1.5, "data-tip": tip }));
+    return { cx, cy, text: r.id };
+  });
+  placeLabels(svg, labels, { left, right: 636, top });
+}
+
+function drawCostBars(rows) {
+  const svg = $("cost-bars");
+  svg.replaceChildren();
+  const shown = rows.filter((r) => r.share >= 0.001).sort((a, b) => b.share - a.share);
+  const [left, right, step] = [300, 560, 22];
+  const max = Math.max(...shown.map((r) => r.share));
+  shown.forEach((r, i) => {
+    const y = 16 + i * step;
+    const width = Math.max(2, (r.share / max) * (right - left));
+    const activity = r.act ? `la note de ${pctOf(r.act.moves)} des coups change` : "toujours au travail";
+    svg.append(make("text", { x: left - 8, y: y + 4, "text-anchor": "end", class: "label" }, r.label.length > 46 ? `${r.label.slice(0, 45)}…` : r.label));
+    svg.append(make("rect", { x: left, y: y - 7, width, height: 14, rx: 3, fill: css(FAMILY_TONES[r.family]), "data-tip": `${r.label} : ${pctOf(r.share)} du temps, ${activity}` }));
+    svg.append(make("text", { x: left + width + 6, y: y + 4 }, pctOf(r.share)));
+  });
+  svg.setAttribute("viewBox", `0 0 640 ${24 + shown.length * step}`);
+}
+
+function drawCost() {
+  const F = DATA.features;
+  if (!F) {
+    $("cout").hidden = true;
+    return;
+  }
+  const show = (scope) => {
+    document.querySelectorAll("#cost-toggle button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.value === scope)));
+    const rows = costRows(F, scope);
+    drawCostScatter(rows);
+    drawCostBars(rows);
+  };
+  $("cost-toggle").replaceChildren(...COST_SCOPES.map(([value, text]) => {
+    const button = html("button", { type: "button", "aria-pressed": "false", "data-value": value }, text);
+    button.addEventListener("click", () => show(value));
+    return button;
+  }));
+  show("rollout");
+  const families = Object.entries(F.families).filter(([key]) => key !== "autre");
+  $("cost-legend").replaceChildren(...families.map(([key, label]) => html("span", {}, html("i", { style: `background: var(--${FAMILY_TONES[key]}); border-radius: 999px` }), label)), html("span", { class: "muted small" }, "la taille d'un point : combien de fois le coup préféré change ; le prix d'une carte, actif à chaque coup par nature, n'est pas tracé"));
+  $("cost-note").textContent = `${thousands(F.positions)} positions de parties du cœur du 1.0 contre lui-même (un tour sur deux), ${F.searches} recherches à ${F.budget} itérations, sur un fil (npm run features, ${F.built.replace("T", " à ")}). Une évaluation de tous les coups par le cœur des simulations : ${fr(F.perScoringMs, 3)} ms. Les parts tiennent sous la charge, les millisecondes moins : à refaire sur une machine au repos avant d'en tirer des chiffres absolus.`;
+}
+
+/* ── VII · Next ──────────────────────────────────────────── */
 function drawNext() {
   $("next").replaceChildren(...J.next.map(({ when, title, text }) => html("div", { class: "panel" }, html("p", { class: "eyebrow" }, when), html("h3", {}, title), html("p", { class: "small" }, text))));
-  $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc des cœurs de <code>data/oracle-bench.json</code>, le banc de similitude de <code>data/oracle-diffs-banc.json</code> et <code>data/banc.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
+  $("foot").innerHTML = `Construit le ${DATA.built} par <code>npm run changelog -- ${DATA.version}</code> (scripts/changelog.js) : les essais de <code>data/changelog-exp-${DATA.version}.json</code>, le banc des cœurs de <code>data/oracle-bench.json</code>, le banc de similitude de <code>data/oracle-diffs-banc.json</code> et <code>data/banc.json</code>, le coût du cœur de <code>data/core-features.json</code>, les jobs de <code>backlog.json</code> et <code>backlog-done.json</code>, et ${DATA.commits.length} commits. Le détail de chaque essai : <code>docs/strategie.md</code>.`;
 }
 
 drawTimeline();
@@ -896,5 +1017,6 @@ renderNotebook();
 drawBench();
 drawBanc();
 drawCompare();
+drawCost();
 drawNext();
 </script>

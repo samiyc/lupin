@@ -1,0 +1,443 @@
+{
+ "note": "npm run features : le temps de chaque feature du cœur du 1.0 (profil CPU, temps propre par fonction) et son activation (la feature éteinte, les mêmes coups notés à nouveau). Lu par le changelog.",
+ "built": "2026-10-05T11:20",
+ "core": "stfig6",
+ "positions": 723,
+ "searches": 181,
+ "budget": 300,
+ "perScoringMs": 0.0718,
+ "families": {
+  "valeur": "La valeur d'un coup",
+  "habitudes": "Les habitudes",
+  "idees": "Les idées",
+  "certitudes": "Les certitudes",
+  "moteur": "Le moteur de la recherche",
+  "autre": "Autre"
+ },
+ "features": [
+  {
+   "id": "unseen",
+   "label": "Les cartes invisibles (comptées une fois par évaluation)",
+   "family": "valeur"
+  },
+  {
+   "id": "potential",
+   "label": "Le potentiel d'un côté (paires, pioche, figures possibles)",
+   "family": "valeur"
+  },
+  {
+   "id": "evaluator",
+   "label": "L'évaluateur de figures",
+   "family": "valeur"
+  },
+  {
+   "id": "price",
+   "label": "Le prix d'une carte (joker, carte haute)",
+   "family": "valeur"
+  },
+  {
+   "id": "gain",
+   "label": "Le gain d'un coup (chances avant/après, menace)",
+   "family": "valeur"
+  },
+  {
+   "id": "jokerGate",
+   "label": "La porte du joker (peut-il encore servir ?)",
+   "family": "habitudes"
+  },
+  {
+   "id": "opening",
+   "label": "Habitude : ouvrir au milieu, une nouvelle couleur",
+   "family": "habitudes"
+  },
+  {
+   "id": "suited",
+   "label": "Habitude : départ assorti (suite de couleur encore possible)",
+   "family": "habitudes"
+  },
+  {
+   "id": "joker",
+   "label": "Habitude : le joker seulement pour un brelan",
+   "family": "habitudes"
+  },
+  {
+   "id": "dispatch",
+   "label": "L'aiguillage des bonus (habitudes et idées appelées par coup)",
+   "family": "idees"
+  },
+  {
+   "id": "middle",
+   "label": "Idée : le milieu, solide ou faible",
+   "family": "idees"
+  },
+  {
+   "id": "spread",
+   "label": "Idée : ne pas séparer une paire (spread)",
+   "family": "idees"
+  },
+  {
+   "id": "connector",
+   "label": "Idée : garder un connecteur assorti (connector)",
+   "family": "idees"
+  },
+  {
+   "id": "stay",
+   "label": "Idée : rester sur ses côtés tant qu'une figure y est possible (stay)",
+   "family": "idees"
+  },
+  {
+   "id": "idle",
+   "label": "Idées éteintes : appelées pour rien",
+   "family": "idees"
+  },
+  {
+   "id": "certain",
+   "label": "Les certitudes (bornes déjà perdues ou gagnées)",
+   "family": "certitudes"
+  },
+  {
+   "id": "pick",
+   "label": "Le choix du coup (tirage pondéré des simulations)",
+   "family": "moteur"
+  },
+  {
+   "id": "rules",
+   "label": "Les règles (coups légaux, poser, revendiquer)",
+   "family": "moteur"
+  },
+  {
+   "id": "deal",
+   "label": "Le tirage des cartes cachées",
+   "family": "moteur"
+  },
+  {
+   "id": "tree",
+   "label": "L'arbre (sélection, visites)",
+   "family": "moteur"
+  },
+  {
+   "id": "exact",
+   "label": "La fin de partie exacte",
+   "family": "moteur"
+  },
+  {
+   "id": "gc",
+   "label": "Le ramasse-miettes (la mémoire que tout cela alloue)",
+   "family": "autre"
+  }
+ ],
+ "time": {
+  "rollout": {
+   "wallMs": 519,
+   "profiledMs": 522,
+   "features": {
+    "other": {
+     "ms": 7.991999999999999,
+     "share": 0.01530796945301568
+    },
+    "rules": {
+     "ms": 16.18400000000002,
+     "share": 0.030999021224675433
+    },
+    "dispatch": {
+     "ms": 57.533999999999956,
+     "share": 0.11020129060432977
+    },
+    "gain": {
+     "ms": 75.61999999999985,
+     "share": 0.14484342467930975
+    },
+    "unseen": {
+     "ms": 10.097000000000007,
+     "share": 0.019339910856744174
+    },
+    "jokerGate": {
+     "ms": 0.031,
+     "share": 0.00005937775938982559
+    },
+    "potential": {
+     "ms": 235.12599999999793,
+     "share": 0.4503630662674841
+    },
+    "idle": {
+     "ms": 36.05199999999997,
+     "share": 0.06905441875877388
+    },
+    "evaluator": {
+     "ms": 2.8910000000000005,
+     "share": 0.005537454915999542
+    },
+    "stay": {
+     "ms": 16.68400000000002,
+     "share": 0.031956727021285526
+    },
+    "gc": {
+     "ms": 9.543000000000001,
+     "share": 0.018278772834100183
+    },
+    "connector": {
+     "ms": 22.742999999999988,
+     "share": 0.04356220586460654
+    },
+    "middle": {
+     "ms": 26.033999999999992,
+     "share": 0.04986582541789416
+    },
+    "opening": {
+     "ms": 3.571000000000001,
+     "share": 0.0068399347993892655
+    },
+    "suited": {
+     "ms": 1.5230000000000001,
+     "share": 0.0029171718564743347
+    },
+    "price": {
+     "ms": 0.119,
+     "share": 0.00022793397959320144
+    },
+    "joker": {
+     "ms": 0.337,
+     "share": 0.0006454937069152008
+    }
+   }
+  },
+  "root": {
+   "wallMs": 312,
+   "profiledMs": 312,
+   "features": {
+    "other": {
+     "ms": 2.7109999999999994,
+     "share": 0.008700256739409476
+    },
+    "dispatch": {
+     "ms": 30.801999999999968,
+     "share": 0.09885109114249002
+    },
+    "gain": {
+     "ms": 33.261999999999965,
+     "share": 0.10674582798459527
+    },
+    "certain": {
+     "ms": 42.15799999999992,
+     "share": 0.13529525032092368
+    },
+    "connector": {
+     "ms": 11.626000000000001,
+     "share": 0.03731065468549414
+    },
+    "middle": {
+     "ms": 11.786,
+     "share": 0.037824133504492846
+    },
+    "potential": {
+     "ms": 122.12899999999968,
+     "share": 0.3919415917843369
+    },
+    "idle": {
+     "ms": 17.931000000000008,
+     "share": 0.057544929396662274
+    },
+    "stay": {
+     "ms": 8.055000000000003,
+     "share": 0.02585044929396657
+    },
+    "suited": {
+     "ms": 1.426,
+     "share": 0.004576379974326048
+    },
+    "unseen": {
+     "ms": 8.754000000000001,
+     "share": 0.028093709884467202
+    },
+    "evaluator": {
+     "ms": 1.6669999999999998,
+     "share": 0.005349807445442862
+    },
+    "gc": {
+     "ms": 8.753,
+     "share": 0.028090500641848454
+    },
+    "rules": {
+     "ms": 8.438000000000004,
+     "share": 0.027079589216944748
+    },
+    "opening": {
+     "ms": 1.989,
+     "share": 0.0063831835686777765
+    },
+    "joker": {
+     "ms": 0.113,
+     "share": 0.0003626444159178425
+    }
+   }
+  },
+  "iteration": {
+   "wallMs": 64346,
+   "profiledMs": 64323,
+   "features": {
+    "other": {
+     "ms": 215.6739999999994,
+     "share": 0.003352962369008369
+    },
+    "tree": {
+     "ms": 1937.4089999999917,
+     "share": 0.030119807999008343
+    },
+    "potential": {
+     "ms": 27971.087999980955,
+     "share": 0.43485077238868836
+    },
+    "stay": {
+     "ms": 2236.0989999999338,
+     "share": 0.03476337342645402
+    },
+    "deal": {
+     "ms": 1509.1170000000238,
+     "share": 0.02346139317410025
+    },
+    "rules": {
+     "ms": 1409.4690000000517,
+     "share": 0.021912221766573828
+    },
+    "dispatch": {
+     "ms": 6245.453000001447,
+     "share": 0.09709454494475615
+    },
+    "gain": {
+     "ms": 9990.981000002395,
+     "share": 0.15532416203383687
+    },
+    "unseen": {
+     "ms": 1460.7050000000572,
+     "share": 0.022708759040137316
+    },
+    "jokerGate": {
+     "ms": 162.8019999999994,
+     "share": 0.0025309911236370635
+    },
+    "idle": {
+     "ms": 4490.710000000208,
+     "share": 0.06981454250456853
+    },
+    "middle": {
+     "ms": 1736.5190000000114,
+     "share": 0.026996684162523526
+    },
+    "evaluator": {
+     "ms": 268.51399999999853,
+     "share": 0.004174436128378528
+    },
+    "gc": {
+     "ms": 990.2780000000048,
+     "share": 0.015395295069674115
+    },
+    "price": {
+     "ms": 0.23299999999999998,
+     "share": 0.0000036223199457465997
+    },
+    "pick": {
+     "ms": 247.7529999999982,
+     "share": 0.003851676538706227
+    },
+    "connector": {
+     "ms": 2863.165999999962,
+     "share": 0.04451203137246083
+    },
+    "suited": {
+     "ms": 238.28499999999858,
+     "share": 0.0037044828681211304
+    },
+    "opening": {
+     "ms": 257.1309999999986,
+     "share": 0.00399747102991315
+    },
+    "joker": {
+     "ms": 66.84799999999991,
+     "share": 0.0010392482563659588
+    },
+    "exact": {
+     "ms": 14.744000000000007,
+     "share": 0.00022921667502183646
+    },
+    "certain": {
+     "ms": 10.439999999999998,
+     "share": 0.00016230480786950428
+    }
+   }
+  }
+ },
+ "activation": {
+  "rollout": {
+   "opening": {
+    "moves": 0.2889159067882472,
+    "favourite": 0.21023513139695713
+   },
+   "suited": {
+    "moves": 0.015481256332320162,
+    "favourite": 0.14522821576763487
+   },
+   "joker": {
+    "moves": 0.07096251266464032,
+    "favourite": 0.04149377593360996
+   },
+   "middle": {
+    "moves": 0.1747112462006079,
+    "favourite": 0.2157676348547718
+   },
+   "spread": {
+    "moves": 0.061073961499493415,
+    "favourite": 0.0954356846473029
+   },
+   "connector": {
+    "moves": 0.030476190476190476,
+    "favourite": 0.016597510373443983
+   },
+   "stay": {
+    "moves": 0.06508611955420467,
+    "favourite": 0.27800829875518673
+   },
+   "price": {
+    "moves": 1,
+    "favourite": 0.1908713692946058
+   }
+  },
+  "root": {
+   "opening": {
+    "moves": 0.2889159067882472,
+    "favourite": 0.21023513139695713
+   },
+   "suited": {
+    "moves": 0.015481256332320162,
+    "favourite": 0.14522821576763487
+   },
+   "joker": {
+    "moves": 0.07096251266464032,
+    "favourite": 0.04149377593360996
+   },
+   "middle": {
+    "moves": 0.1747112462006079,
+    "favourite": 0.2157676348547718
+   },
+   "spread": {
+    "moves": 0.061073961499493415,
+    "favourite": 0.0954356846473029
+   },
+   "connector": {
+    "moves": 0.030476190476190476,
+    "favourite": 0.016597510373443983
+   },
+   "stay": {
+    "moves": 0.06508611955420467,
+    "favourite": 0.27800829875518673
+   },
+   "certain": {
+    "moves": 0,
+    "favourite": 0
+   },
+   "price": {
+    "moves": 1,
+    "favourite": 0.1908713692946058
+   }
+  }
+ }
+}

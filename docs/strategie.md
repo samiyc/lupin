@@ -2103,3 +2103,45 @@ de 8 h 22 à 10 h 15, 26 à 30 min chacun) :
 - Par jokers : 60,3 % à 2 contre 0, 43,1 % à 0 contre 2, 52,0 % à un chacun.
 - Pour trancher sur un effet d'environ 1,5 point, il faudrait environ 4 000 parties : ce
   n'est pas la meilleure dépense tant qu'aucune autre piste n'a été combinée avec lui.
+
+## Le coût du cœur, feature par feature (05/10, Sami)
+
+**La question** : quelles features du cœur du 1.0 coûtent le plus et servent le moins, pour
+les optimiser, les remplacer ou les retirer ? `npm run features` (sur un fil, 723 positions
+de 40 parties du cœur contre lui-même, 181 recherches à 300 itérations) mesure :
+- **le temps** : un profil CPU (`node:inspector`, un échantillon toutes les 100 µs), chaque
+  fonction rattachée à sa feature (`scripts/lib/core-features.js`) ;
+- **l'activité** : la feature éteinte, les mêmes coups notés à nouveau — la part des notes
+  qui changent, et la part des positions où le coup préféré change.
+
+| Feature | Temps, simulations | Temps, une itération | Notes changées | Favori changé |
+| --- | --- | --- | --- | --- |
+| le potentiel d'un côté (paires, pioche) | **45,0 %** | 43,5 % | toujours | — |
+| le gain d'un coup (chances, menace) | 14,5 % | 15,5 % | toujours | — |
+| l'aiguillage des bonus | **11,0 %** | 9,7 % | toujours | — |
+| les idées éteintes, appelées pour rien | **6,9 %** | 7,0 % | — | — |
+| idée `middle` | 5,0 % | 2,7 % | 17,5 % | 21,6 % |
+| idée `connector` | **4,4 %** | 4,5 % | **3,0 %** | **1,7 %** |
+| idée `stay` | 3,2 % | 3,5 % | 6,5 % | **27,8 %** |
+| les règles du jeu | 3,1 % | 2,2 % | toujours | — |
+| l'arbre, le tirage des cartes cachées | — | 3,0 % + 2,3 % | toujours | — |
+| habitude « ouvrir » | 0,7 % | 0,4 % | 28,9 % | 21,0 % |
+| habitude « départ assorti » | 0,3 % | 0,4 % | 1,5 % | 14,5 % |
+| habitude « joker pour un brelan » | 0,1 % | 0,1 % | 7,1 % | 4,1 % |
+| idée `spread` | < 0,1 % | < 0,1 % | 6,1 % | 9,5 % |
+| les certitudes (racine seulement) | — | 0,0 % | 0,0 % | 0,0 % |
+
+- **Le potentiel d'un côté est la moitié du coût** d'une itération : c'est là qu'un gain de
+  vitesse paie. Le 1.0 gagne 55 % avec 2,5 fois plus d'itérations : chaque pourcent de vitesse
+  compte.
+- **18 % du temps sert à appeler des bonus**, dont 7 % pour des idées éteintes : leurs
+  fonctions sont appelées à chaque coup et rendent 0. Les sauter quand elles sont éteintes
+  serait un gain de vitesse sans changer un seul coup (l'empreinte resterait la même).
+- **`connector` est la seule idée chère et peu utile** : 4,4 % du temps, 3 % des notes changées,
+  le coup préféré change dans 1,7 % des positions. À tester sans lui, à temps égal.
+- `stay` (le cœur du 1.0) et l'habitude « ouvrir » sont les plus décisives pour leur coût ;
+  `spread` et les habitudes ne coûtent presque rien.
+- Les certitudes prennent 13,5 % du temps à la racine et n'ont changé aucune note sur ces
+  positions ; à la racine seulement, elles ne pèsent rien dans une itération.
+- Le changelog 1.1 trace tout cela (section « Le coût du cœur »). Mesuré pendant que la file
+  tournait sur 18 fils : les parts tiennent, les millisecondes sont à refaire au repos.

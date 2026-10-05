@@ -52,6 +52,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | `npm run core-test -- <moteur> [--from 23] [--games 200]` | un changement de jugement testé à partir d'un tour décisif de parties gardées | `data/core-tests.json` |
 | `npm run selfplay -- [moteur] [--minutes N]` | le moteur contre lui-même sur tous les cœurs, 20 min au plus | `selfplay/<moteur>.json` |
 | `npm run time-study` | plus de temps de réflexion donne-t-il un meilleur coup ? | — |
+| `npm run features -- [--games 40] [--budget 300]` | ce que coûte chaque feature du cœur du 1.0 (profil CPU : temps propre par fonction, dans les simulations, à la racine, sur une itération entière) et combien de fois elle agit (éteinte, les mêmes coups notés à nouveau) ; sur une machine au repos | `data/core-features.json` (le changelog le trace) |
 
 ## L'oracle et le banc
 

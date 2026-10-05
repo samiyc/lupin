@@ -48,6 +48,7 @@
     "versus": "node scripts/versus.js",
     "shadow": "node scripts/shadow.js",
     "distill": "node scripts/distill.js",
+    "features": "node scripts/features.js",
     "cooldown": "node scripts/cooldown.js",
     "banc": "node scripts/banc.js"
   },

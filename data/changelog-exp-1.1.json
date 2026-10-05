@@ -351,6 +351,17 @@
    "verdict": "tendance",
    "when": "05/10 10:15",
    "note": "1 000 parties sur d'autres donnes que le tri : 53,6 / 48,8 / 50,8 / 53,2 %. La fourchette basse reste sous 50 % : pas décidé, un gain d'environ 1,5 point au mieux. Il ouvre moins de bornes vierges et répond plus, comme l'oracle."
+  },
+  {
+   "name": "Le coût du cœur, feature par feature (npm run features)",
+   "family": "vitesse",
+   "bench": "cout",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "05/10 11:20",
+   "note": "Le potentiel d'un côté prend 45 % du temps des simulations ; 18 % sert à appeler des bonus, dont 7 % des idées éteintes. connector : 4,4 % du temps pour 1,7 % de favoris changés. stay et l'habitude « ouvrir » sont les plus décisives pour leur coût."
   }
  ],
  "commitLabels": {
@@ -457,6 +468,11 @@
    "when": "Ensuite",
    "title": "Combiner avec dist1 à la racine",
    "text": "51,6 % (49,0 – 54,2) en duels longs : un petit gain, pas décidé. Il servira de base si un autre tri tient, les deux combinés en 4 duels longs."
+  },
+  {
+   "when": "Vitesse",
+   "title": "Ne plus appeler les idées éteintes",
+   "text": "7 % du temps du cœur passe dans des idées éteintes, appelées à chaque coup pour rendre 0 ; les sauter ne change aucun coup. Puis un 1.0 sans connector (4,4 % du temps, 1,7 % de favoris changés), à temps égal."
   },
   {
    "when": "Plus tard",
