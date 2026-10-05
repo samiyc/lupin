@@ -232,6 +232,14 @@
       "limit": 75,
       "why": "La même, 12 candidats. Tri de 400 parties contre le V1 à 2 000 (plan des 55 %, étape 1) : il écarte, il ne promeut pas.",
       "status": "todo"
+    },
+    {
+      "id": "screen-infer2",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+infer=48+memory=3@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "55 min",
+      "limit": 75,
+      "why": "infer v2 : la main adverse devinée d'après ses 3 derniers coups, retenus d'un coup à l'autre (48 mains, environ 1 % du temps d'un coup). La v1, sur le seul dernier coup : 49,5 %. Tri de 400 parties contre le V1 à 2 000.",
+      "status": "todo"
     }
   ]
 }

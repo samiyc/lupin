@@ -2,7 +2,7 @@ import { createRng } from "../core/random.js";
 import { createBudget } from "./budget.js";
 import { EXACT, exactApplies, exactScores } from "./exact.js";
 import { applyMove, legalMoves } from "./game.js";
-import { inferredHands, pickHand } from "./infer.js";
+import { createReader, inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
 import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
@@ -160,6 +160,9 @@ function iterate(root, ctx) {
   if (ctx.amaf) creditShared(ctx.amaf, played, winner);
 }
 
+/** `infer`: the opponent's hand guessed from their moves (infer.js), from a seed of its own so the deals stay a plain search's when it is off. */
+const guessedHands = (state, judge, seed, { infer, readings }) => (infer > 0 ? inferredHands(state, judge, createRng(seed ^ 0x5bd1e995), { size: infer, readings }) : null);
+
 /**
  * A search from `state`, advanced one iteration at a time by `step()` — the
  * same interface as `createSearch` (search.js), so the page's worker runs it
@@ -167,15 +170,14 @@ function iterate(root, ctx) {
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
 export function createIsmcts(state, scored, { policy, seed, ...settings }) {
-  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null, infer = 0 } = { ...ISMCTS, ...settings };
+  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null } = { ...ISMCTS, ...settings };
   const deals = createRng(seed);
   const rootMoves = [...scored]
     .sort((a, b) => b.gain - a.gain)
     .slice(0, candidates)
     .map(({ move }) => move);
   const ctx = { state, player: state.current, deals, rootMoves, judge: policy(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
-  // `infer`: the opponent's hand guessed from their last move (infer.js), from a seed of its own.
-  if (infer > 0) ctx.hands = inferredHands(state, ctx.judge, createRng(seed ^ 0x5bd1e995), infer);
+  ctx.hands = guessedHands(state, ctx.judge, seed, settings);
   const root = newNode();
   let iterations = 0;
   const visits = (move) => root.children.get(moveKey(move))?.visits ?? 0;
@@ -200,6 +202,16 @@ export function isPivot(state) {
   return Boolean(last) && allStarted && state.borders[last.border].sides[opponent].length === 1;
 }
 
+/** `memory`: the opponent's last moves, remembered from one move to the next for `infer` (infer.js); nothing without it. */
+function memoryOf(memory) {
+  if (!memory) return () => ({});
+  const reader = createReader();
+  return (state) => {
+    reader.observe(state);
+    return { readings: reader.readings(memory) };
+  };
+}
+
 /**
  * The ISMCTS bot: the core shortlists at the root, the rollout policy plays
  * the rest; small endgames are solved. Turning points (merlin-is-dead):
@@ -209,12 +221,13 @@ export function isPivot(state) {
  * `hope`: when the solver finds no win, search anyway — every lost move is
  * equal to the solver, not to an opponent who may still slip.
  */
-export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, exact = EXACT.maxCards, pivot = 1, hope = 0, late, early, smart, ...settings }) {
+export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.budget, budgetMs = Infinity, exact = EXACT.maxCards, pivot = 1, hope = 0, late, early, smart, memory, ...settings }) {
   const seed = rng.int(2 ** 31);
   const searchFor = (state, moves, options, extra = {}) =>
     createIsmcts(state, base.scoreMoves(state, moves, options), { policy, seed: seed ^ Math.imul(state.turn + 1, 2654435761), ...settings, ...extra });
   // `budgetMs`: a clock instead of a count, to compare variants of unequal speed at equal time; `late`, `early`, `smart`: budget.js.
   const { run, usage } = createBudget({ budget, budgetMs, late, early, smart });
+  const recall = memoryOf(memory);
   const solves = (state, moves) => moves.length > 1 && exactApplies(state, exact);
   const maxNodes = exact > EXACT.maxCards ? EXACT.nodes : Infinity;
   const winning = (scores) => scores && (!hope || scores.some((entry) => entry.exact && entry.gain > 0.5));
@@ -228,7 +241,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
     if (moves.length <= 1) return base.scoreMoves(state, moves, options);
     const exactly = solved(state, moves, options);
     if (exactly) return exactly;
-    return run(searchFor(state, moves, options), state.turn, isPivot(state) ? pivot : 1).scored();
+    return run(searchFor(state, moves, options, recall(state)), state.turn, isPivot(state) ? pivot : 1).scored();
   };
   // `pick` is `choose` with the scores it chose from, for the replays to keep (bot-games.js).
   const pick = (state, moves) => {
@@ -243,7 +256,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
  * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
@@ -254,7 +267,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

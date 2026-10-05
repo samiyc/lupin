@@ -2069,3 +2069,16 @@ milieu du sixième. Tris de 400 parties contre le V1 à 2 000 :
 - Les deux tris « budget au début » ont dépassé leur limite de 60 min (2 × 180 parties en
   46 min) : les tours 1 à 12 coûtent plus cher par itération que la moyenne. Les tris
   restants ont maintenant 75 min.
+
+**La main adverse devinée, v2** (`+memory=K`, 05/10, Sami) : la v1 ne lisait que le dernier
+coup adverse (49,5 %). Le bot retient maintenant les coups de l'adversaire d'un coup à
+l'autre (`createReader`, `src/sim/infer.js`) et pondère chaque main par le produit des
+vraisemblances de ses K derniers coups. À un coup plus ancien, sa main est prise comme la
+main devinée plus toutes les cartes jouées depuis : les cartes piochées depuis comptent
+comme déjà en main, une approximation qui grandit avec K. Coût mesuré : 18,5 ms par coup
+pour 32 mains et 3 coups lus, environ 1 % d'un coup à 2 000 itérations. L'empreinte du 1.0
+reste `152e2a9c9d66170c`. Tri en file : `ismcts+…+core=stfig6+infer=48+memory=3@2000`.
+
+**La file de jour du 05/10** (`--threads 18`, sans pauses, lancée à 8 h 22) : les 4 duels
+longs de `dist1` à la racine (offsets 1 à 4 : le tri avait joué ceux de l'offset 0), puis
+les tris `early3000`, `w10`, `w12` et `infer2`.
