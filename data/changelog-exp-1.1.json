@@ -372,7 +372,7 @@
    "hi": null,
    "verdict": "gagne",
    "when": "05/10 14:30",
-   "note": "Au repos, arbre à 400 : 1 119 → 1 162 itérations/s (+3,8 %, mêmes coups, empreintes inchangées) ; sans connector 1 253 (+12 %). v1nc : 48,3 % en cœur contre cœur ; ses 4 duels longs à temps égal (2 160 contre 2 000) sont en file."
+   "note": "Au repos, arbre à 400 : les idées éteintes sautées +0,6 % seulement (le premier +3,8 % était du bruit) ; sans connector +12 %. v1nc : 48,3 % en cœur contre cœur."
   },
   {
    "family": "oracle",
@@ -406,6 +406,17 @@
    "verdict": "perd",
    "when": "05/10 13:26",
    "note": "48 mains pondérées par leurs 3 derniers coups : plutôt perdant (le dernier coup seul : 49,5 %). Les mains devinées appauvrissent les tirages."
+  },
+  {
+   "name": "Vitesse : le potentiel d'un côté (A1 à A4), à coups identiques",
+   "family": "vitesse",
+   "bench": "cout",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "gagne",
+   "when": "05/10 15:40",
+   "note": "Mémoire des paires en tableaux typés, chances de pioche en table, borderFactors sauté, aiguillage sans spread. Le V1 : 1 131 → 1 366 itérations/s (+20,7 %), toutes les empreintes inchangées. v1nc + 10 candidats : 1 503 (+32,8 %)."
   }
  ],
  "commitLabels": {
@@ -512,13 +523,21 @@
   "3fd9449": [
    "vitesse",
    "Le coût du cœur mesuré au repos"
+  ],
+  "e4aa6e7": [
+   "vitesse",
+   "Le potentiel plus vite à coups identiques : +20,7 %"
+  ],
+  "cb68948": [
+   "oracle",
+   "Les tris de la journée : 10 candidats 52,8 %"
   ]
  },
  "next": [
   {
    "when": "En file",
-   "title": "v1nc à temps égal",
-   "text": "Le 1.0 sans connector, 12 % plus rapide, 48,3 % en cœur contre cœur : 4 duels longs à 2 160 itérations contre 2 000 (environ 2 h)."
+   "title": "v1nc, 10 candidats, 4 réponses",
+   "text": "Le 1.0 sans connector, plus large (10 candidats, 4 réponses), 10 % plus rapide par itération : 4 duels longs à temps égal (2 200 itérations contre 2 000), environ 2 h."
   },
   {
    "when": "Prochain essai",
@@ -527,13 +546,8 @@
   },
   {
    "when": "Vitesse",
-   "title": "Le potentiel d'un côté, plus vite",
-   "text": "46 % du temps : une mémoire des paires en tableau typé, upsideOf en table, borderFactors sauté, un aiguillage sans objet recréé — 15 à 25 % de vitesse à coups identiques, vérifiés par l'empreinte."
-  },
-  {
-   "when": "Plus tard",
-   "title": "Un potentiel allégé dans les simulations",
-   "text": "Un côté à une carte jugé seul dans les simulations (la racine garde tout) : environ 25 % de temps en moins, à trier à temps égal."
+   "title": "Le potentiel allégé dans les simulations",
+   "text": "A1 à A4 ont donné +20,7 % à coups identiques. La suite : un côté à une carte jugé seul dans les simulations (la racine garde tout), environ 25 % de temps en moins, à trier à temps égal."
   }
  ],
  "banc": {
