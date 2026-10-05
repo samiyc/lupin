@@ -2389,3 +2389,9 @@ partie (il ne fait que comparer ses 8 candidats) et de `DistOracle1Root` (mieux 
 paie pas), la racine du V1 n'est pas son point faible : les écarts entre ses bons candidats sont
 trop petits pour que la façon de les départager compte, à 2 000 itérations. Pas de validation
 longue.
+
+**Le duel pour l'honneur** (Sami, 06/10 : `RootHalving-Tree-2r-6d`, l'élimination à la racine en
+750 / 375 / 375 avec un arbre de 2 réponses sur 6 coups, contre le V1, 1 500 itérations des deux
+côtés, 300 parties, 0 h 58 – 1 h 23) : **50,0 % (45,0 – 55,0)**, 48,0 % en commençant, 52,0 % en
+second. Une égalité parfaite : un arbre plus étroit et plus profond, avec l'élimination à la racine,
+joue aussi bien que le V1, ni mieux ni moins bien.

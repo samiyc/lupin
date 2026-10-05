@@ -505,6 +505,17 @@
    "verdict": "neutre",
    "when": "06/10 00:41",
    "note": "1 000 / 500 / 500 itérations : 125, 250, 500 visites par candidat, au lieu d'UCB à la racine. Neutre : la façon de départager les bons candidats ne compte pas à 2 000 itérations."
+  },
+  {
+   "name": "Le duel pour l'honneur : RootHalving, 2 réponses sur 6 coups, à 1 500",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 50,
+   "lo": 45,
+   "hi": 55,
+   "verdict": "neutre",
+   "when": "06/10 01:23",
+   "note": "300 parties, 1 500 itérations des deux côtés : une égalité parfaite. L'élimination à la racine avec un arbre plus étroit et plus profond joue aussi bien que le V1."
   }
  ],
  "commitLabels": {
@@ -687,6 +698,14 @@
   "f3e7e0b": [
    "vitesse",
    "B1Lite1 perd à temps égal, et la leçon du banc de vitesse"
+  ],
+  "6d3194f": [
+   "oracle",
+   "RootHalving : neutre en validation courte"
+  ],
+  "e2cc4fc": [
+   "oracle",
+   "Le duel pour l'honneur en file"
   ]
  },
  "next": [
