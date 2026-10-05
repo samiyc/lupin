@@ -2210,3 +2210,18 @@ positions, 3 passes) :
 Le V1 lui-même est 20 % plus rapide, sans changer un coup : dans la page (10 s par coup), c'est
 20 % d'itérations de plus. La file passe à la combinaison `ismcts+candidates=10+widen=4+depth=5+core=v1nc`
 à temps égal (2 200 itérations contre 2 000), 4 duels longs sur les offsets 1 à 4.
+
+**Les pistes qui changent le jeu, pour le potentiel d'un côté** (B1 à B4, 05/10 ; à trier à
+temps égal, après A1 à A4 qui ne changent aucun coup) :
+- **B1, un potentiel allégé dans les simulations** : dans les simulations seulement, un côté à
+  une carte vaut sa carte seule (`valuer.single`), sans essayer chaque paire de la main
+  (`singlePotential` et les `pairPotential` qu'il appelle, environ un quart du temps des
+  simulations) ; la racine garde le calcul complet. Des simulations moins justes mais bien plus
+  nombreuses. La plus prometteuse : à écrire, puis tri et 4 duels longs.
+- **B2, la mémoire des paires gardée d'un coup à l'autre** dans une même simulation : juste
+  seulement tant que les cartes invisibles et les tirages ne changent pas ; il faudrait les mettre
+  dans la clé, ou une mise à jour incrémentale. Gain incertain, code délicat.
+- **B3, régler `PAIR_DISCOUNT`** (0,9 aujourd'hui, la remise sur une paire pas encore posée) :
+  à faire avec `npm run distill`, en ajoutant ce paramètre aux poids réglés.
+- **B4, pondérer la pioche par le nombre de tirages restants**, en fin de partie surtout : plus
+  juste, pas plus rapide ; seulement si les autres échouent.

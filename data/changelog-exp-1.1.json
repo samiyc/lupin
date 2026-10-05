@@ -545,9 +545,9 @@
    "text": "dist1 à la racine (51,6 % en duels longs) et 10 candidats, 4 réponses (52,8 % en tri) : indépendants, donc à essayer ensemble, en tri puis en 4 duels longs."
   },
   {
-   "when": "Vitesse",
-   "title": "Le potentiel allégé dans les simulations",
-   "text": "A1 à A4 ont donné +20,7 % à coups identiques. La suite : un côté à une carte jugé seul dans les simulations (la racine garde tout), environ 25 % de temps en moins, à trier à temps égal."
+   "when": "Ensuite",
+   "title": "Le potentiel : B1 à B4",
+   "text": "B1 : un côté à une carte jugé seul dans les simulations (la racine garde tout), environ un quart de temps en moins. B2 : la mémoire des paires gardée d'un coup à l'autre. B3 : PAIR_DISCOUNT réglé par distill. B4 : la pioche pondérée par les tirages restants. B1 d'abord, à temps égal."
   }
  ],
  "banc": {
