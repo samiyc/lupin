@@ -2332,3 +2332,24 @@ carte (sans la couleur), ou par type (« une carte haute sur la borne 4 ») ; un
 accumulerait les visites de dizaines de mains imaginées, et l'arbre apprendrait sous ses candidats
 dès le début de partie. Une abstraction des coups, classique dans les arbres à information cachée.
 Du code (la clé des nœuds adverses dans `ismcts.js`), puis une validation courte.
+
+**`B1Lite1` en validation longue** (même temps par coup des deux côtés, `@t3200`) : 48,0 puis 46,0 %,
+**47,0 % réunis** ; la règle d'arrêt a annulé les duels 3 et 4. Écarté.
+
+**La leçon de méthode : le temps égal se mesure dans les duels.** Les visites gardées dans les
+replays donnent les itérations réelles par coup : dans la validation courte, `B1Lite1` en avait
+2 620 contre 2 000 (le rapport 1,31 du banc de vitesse) ; dans les duels au même temps par coup,
+2 463 contre 2 236 et 2 530 contre 2 277, **un rapport de 1,10 seulement**. Le banc de vitesse (un
+fil, des positions du cœur seul) surestimait l'avance de B1 : dans un duel, 18 parties tournent en
+même temps et l'écart fond. Sa validation courte (55,8 %) lui donnait donc 20 % d'itérations de
+trop ; à temps vraiment égal, ses simulations moins justes coûtent plus que ses 10 % de vitesse.
+Désormais, une version plus rapide ou plus lente se compare au même temps par coup (`@t`) des
+deux côtés, ou son budget se vérifie dans les replays d'un premier duel. Les essais du jour à
+budget ajusté (`NoConnector` à 2 200, `DistOracle1` à 1 720) avaient perdu malgré cela : leur
+verdict tient.
+
+**Le bilan du plan des 55 % (05/10)** : aucune version ne bat le V1. Validations longues :
+`DistOracle1Root` 50,5 % (2 000 parties), `Tree-10c-4r` 49,4 %, `NoConnector` 48,6 %, `B1Lite1`
+47,0 % (arrêté). Ce qui reste acquis : le V1 cherche 20,7 % plus vite à coups identiques (A1 à
+A4), la règle d'arrêt, le glossaire, et une meilleure compréhension de l'arbre (au début de
+partie, il ne fait que comparer ses 8 candidats : la piste C1).

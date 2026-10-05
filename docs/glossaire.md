@@ -156,8 +156,9 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   ±5,5 points sur 250 parties, ±4,5 sur 400, ±2,7 sur 1 000. **Une version est meilleure quand
   la fourchette basse dépasse 50 %**, sur 1 000 parties.
 - **À temps égal** : quand une version est plus rapide ou plus lente par itération (plus de 3 %
-  d'écart), elle reçoit le nombre d'itérations qui prend le même temps (`@2200` contre `@2000`),
-  ou les deux ont le même temps par coup (`@t3200` : 3,2 s).
+  d'écart), les deux camps jouent au **même temps par coup** (`@t3200` : 3,2 s). Un nombre
+  d'itérations ajusté (`@2200` contre `@2000`) n'est sûr que vérifié dans les replays d'un duel :
+  le 05/10, le banc de vitesse donnait à `B1Lite1` 31 % d'avance, les duels 10 % seulement.
 - **Les écritures `@`** : `@800`, `@2000` : itérations par coup ; `@t3200` : millisecondes par
   coup ; `1k@2k` : 1 000 parties à 2 000 itérations par coup.
 - **L'empreinte** (`npm run fingerprint`) : une signature de tous les coups de parties fixes. Une

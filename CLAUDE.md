@@ -210,7 +210,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   variant costs per iteration against the 1.0. Over about 3 %, duel it at
   equal time (`@tMS`; at ~1 000 iterations a second, `@400` ≈ `@t400`), since in
   a real game the clock decides; otherwise at equal iterations, which are
-  reproducible and load-free. Each of the 0.9's bonuses costs 5-14 % an
+  reproducible and load-free. **Never trust a single-thread speed bench for an
+  adjusted budget** (05/10): B1Lite1 was 31 % faster on the bench and 10 % faster
+  in an 18-thread duel, so its 2 620-against-2 000 screen (55.8 %) was a gift and
+  its equal-time long duels lost (47.0 %). Duel speed variants at `@t` on both
+  sides, or check the iterations per move in a first duel's replays (the
+  candidates' visits). Each of the 0.9's bonuses costs 5-14 % an
   iteration, all six 25 %. A profile (`node --cpu-prof`) often finds the cost
   is code, not idea: stfig cost 24.5 % through `shapeOf`, 2 % once
   `keepsFigure` read the side in place with the same moves.

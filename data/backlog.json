@@ -271,7 +271,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "10 candidats, 4 réponses par nœud (le tri : 52,8 %, 48,3 – 57,2, joué sur l'offset 0, d'où les offsets 1 à 4), au même coût par itération que le V1 (726 contre 729 µs au repos) : 2 000 itérations des deux côtés. Jeu de donnes 1 sur 4 (1 000 parties, npm run versus). Selon le verdict, la suite avec v1nc (Sami, 05/10).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T16:03",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-15-41_duel-w10-1.txt"
     },
     {
       "id": "duel-w10-2",
@@ -279,7 +282,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "10 candidats, 4 réponses par nœud (le tri : 52,8 %, 48,3 – 57,2, joué sur l'offset 0, d'où les offsets 1 à 4), au même coût par itération que le V1 (726 contre 729 µs au repos) : 2 000 itérations des deux côtés. Jeu de donnes 2 sur 4 (1 000 parties, npm run versus). Selon le verdict, la suite avec v1nc (Sami, 05/10).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T16:25",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-16-03_duel-w10-2.txt"
     },
     {
       "id": "duel-w10-3",
@@ -287,7 +293,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "10 candidats, 4 réponses par nœud (le tri : 52,8 %, 48,3 – 57,2, joué sur l'offset 0, d'où les offsets 1 à 4), au même coût par itération que le V1 (726 contre 729 µs au repos) : 2 000 itérations des deux côtés. Jeu de donnes 3 sur 4 (1 000 parties, npm run versus). Selon le verdict, la suite avec v1nc (Sami, 05/10).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T16:47",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-16-25_duel-w10-3.txt"
     },
     {
       "id": "duel-w10-4",
@@ -295,7 +304,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "10 candidats, 4 réponses par nœud (le tri : 52,8 %, 48,3 – 57,2, joué sur l'offset 0, d'où les offsets 1 à 4), au même coût par itération que le V1 (726 contre 729 µs au repos) : 2 000 itérations des deux côtés. Jeu de donnes 4 sur 4 (1 000 parties, npm run versus). Selon le verdict, la suite avec v1nc (Sami, 05/10).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T17:09",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-16-47_duel-w10-4.txt"
     },
     {
       "id": "duel-v1nc-1",
@@ -303,7 +315,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "Le 1.0 sans connector, à temps égal : 666 contre 732 µs par itération au repos (avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 1 sur 4 (1 000 parties, npm run versus). Lancé à la suite de 10c4r (Sami, 05/10, à distance).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T17:32",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-05-17-09_duel-v1nc-1.txt"
     },
     {
       "id": "duel-v1nc-2",
@@ -311,7 +326,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "Le 1.0 sans connector, à temps égal : 666 contre 732 µs par itération au repos (avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 2 sur 4 (1 000 parties, npm run versus). Lancé à la suite de 10c4r (Sami, 05/10, à distance).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T17:54",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-17-32_duel-v1nc-2.txt"
     },
     {
       "id": "duel-v1nc-3",
@@ -319,7 +337,10 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "Le 1.0 sans connector, à temps égal : 666 contre 732 µs par itération au repos (avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 3 sur 4 (1 000 parties, npm run versus). Lancé à la suite de 10c4r (Sami, 05/10, à distance).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T18:16",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-17-54_duel-v1nc-3.txt"
     },
     {
       "id": "duel-v1nc-4",
@@ -327,7 +348,186 @@
       "estimate": "25 min",
       "limit": 45,
       "why": "Le 1.0 sans connector, à temps égal : 666 contre 732 µs par itération au repos (avec A1-A4), donc 2 200 itérations contre 2 000. Jeu de donnes 4 sur 4 (1 000 parties, npm run versus). Lancé à la suite de 10c4r (Sami, 05/10, à distance).",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-05T18:37",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-05-18-16_duel-v1nc-4.txt"
+    },
+    {
+      "id": "screen-lite1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=1@2620\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "50 min",
+      "limit": 70,
+      "why": "B1 : dans les simulations, un côté à une carte vaut sa carte seule ; les nœuds de l'arbre et la racine gardent le cœur complet. 31 % plus rapide par itération, donc 2 620 contre 2 000. Le cœur allégé seul perd 38,8 % en cœur contre cœur : seule la vitesse peut compenser. Tri de 400 parties contre le V1 à 2 000 (temps égal mesuré pendant que la file tournait : à revérifier au repos si le tri tient).",
+      "status": "done",
+      "doneAt": "2026-10-05T19:26",
+      "minutes": 49,
+      "output": "backlog-runs/2026-10-05-18-37_screen-lite1.txt"
+    },
+    {
+      "id": "screen-lite2",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=2@2780\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --games 200 --page",
+      "estimate": "50 min",
+      "limit": 70,
+      "why": "B1 plus loin : les nœuds de l'arbre aussi ; seule la racine garde le cœur complet. 39 % plus rapide, donc 2 780 contre 2 000. Tri de 400 parties contre le V1 à 2 000 (temps égal mesuré pendant que la file tournait : à revérifier au repos si le tri tient).",
+      "status": "done",
+      "doneAt": "2026-10-05T20:12",
+      "minutes": 46,
+      "output": "backlog-runs/2026-10-05-19-26_screen-lite2.txt"
+    },
+    {
+      "id": "duel-dist1root-5",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 5",
+      "estimate": "25 min",
+      "limit": 45,
+      "why": "dist1 à la racine seul, 4 duels de plus sur de nouvelles donnes (offsets 5 à 8), à réunir avec les offsets 1 à 4 (51,6 %, 49,0 – 54,2) : 2 000 parties pour trancher un écart d'environ 1,5 point. Remplace la combinaison avec v1nc, qui perd 48,6 % (45,9 – 51,3) en duels longs. Jeu de donnes 5.",
+      "status": "done",
+      "doneAt": "2026-10-05T20:35",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-05-20-12_duel-dist1root-5.txt"
+    },
+    {
+      "id": "duel-dist1root-6",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 6",
+      "estimate": "25 min",
+      "limit": 45,
+      "why": "dist1 à la racine seul, 4 duels de plus sur de nouvelles donnes (offsets 5 à 8), à réunir avec les offsets 1 à 4 (51,6 %, 49,0 – 54,2) : 2 000 parties pour trancher un écart d'environ 1,5 point. Remplace la combinaison avec v1nc, qui perd 48,6 % (45,9 – 51,3) en duels longs. Jeu de donnes 6.",
+      "status": "done",
+      "doneAt": "2026-10-05T20:58",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-05-20-35_duel-dist1root-6.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_7_DistOracle1Root",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 7",
+      "estimate": "25 min",
+      "limit": 45,
+      "why": "dist1 à la racine seul, 4 duels de plus sur de nouvelles donnes (offsets 5 à 8), à réunir avec les offsets 1 à 4 (51,6 %, 49,0 – 54,2) : 2 000 parties pour trancher un écart d'environ 1,5 point. Remplace la combinaison avec v1nc, qui perd 48,6 % (45,9 – 51,3) en duels longs. Jeu de donnes 7.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "duel-dist1root-1",
+            "duel-dist1root-2",
+            "duel-dist1root-3",
+            "duel-dist1root-4",
+            "duel-dist1root-5",
+            "duel-dist1root-6"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-05T21:21",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-05-20-58_VALIDATE_LONG_7_DistOracle1Root.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_8_DistOracle1Root",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+shortlist=dist1@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 8",
+      "estimate": "25 min",
+      "limit": 45,
+      "why": "dist1 à la racine seul, 4 duels de plus sur de nouvelles donnes (offsets 5 à 8), à réunir avec les offsets 1 à 4 (51,6 %, 49,0 – 54,2) : 2 000 parties pour trancher un écart d'environ 1,5 point. Remplace la combinaison avec v1nc, qui perd 48,6 % (45,9 – 51,3) en duels longs. Jeu de donnes 8.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "duel-dist1root-1",
+            "duel-dist1root-2",
+            "duel-dist1root-3",
+            "duel-dist1root-4",
+            "duel-dist1root-5",
+            "duel-dist1root-6"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-05T21:44",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-05-21-21_VALIDATE_LONG_8_DistOracle1Root.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_B1Lite1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=1@t3200\" \"ismcts+widen=3+depth=5+core=stfig6@t3200\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "B1 (lite=1, le cœur allégé dans les simulations seulement) : son tri à 2 620 contre 2 000 itérations a fait 55,8 % (51,5 – 60,0). Les duels longs au même temps par coup des deux côtés (3,2 s, environ 2 000 itérations pour le V1 dans un duel à 18 fils) : le temps égal mesuré pendant que la file tournait n'est pas assez sûr. Offsets 1 à 4 (le tri a joué l'offset 0). Jeu de donnes 1 sur 4.",
+      "status": "done",
+      "stopIf": [],
+      "doneAt": "2026-10-05T22:10",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-05-21-44_VALIDATE_LONG_1_B1Lite1.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_B1Lite1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=1@t3200\" \"ismcts+widen=3+depth=5+core=stfig6@t3200\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "B1 (lite=1, le cœur allégé dans les simulations seulement) : son tri à 2 620 contre 2 000 itérations a fait 55,8 % (51,5 – 60,0). Les duels longs au même temps par coup des deux côtés (3,2 s, environ 2 000 itérations pour le V1 dans un duel à 18 fils) : le temps égal mesuré pendant que la file tournait n'est pas assez sûr. Offsets 1 à 4 (le tri a joué l'offset 0). Jeu de donnes 2 sur 4.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_B1Lite1"
+          ],
+          "below": 0.47
+        }
+      ],
+      "doneAt": "2026-10-05T22:36",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-05-22-10_VALIDATE_LONG_2_B1Lite1.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_B1Lite1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=1@t3200\" \"ismcts+widen=3+depth=5+core=stfig6@t3200\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "B1 (lite=1, le cœur allégé dans les simulations seulement) : son tri à 2 620 contre 2 000 itérations a fait 55,8 % (51,5 – 60,0). Les duels longs au même temps par coup des deux côtés (3,2 s, environ 2 000 itérations pour le V1 dans un duel à 18 fils) : le temps égal mesuré pendant que la file tournait n'est pas assez sûr. Offsets 1 à 4 (le tri a joué l'offset 0). Jeu de donnes 3 sur 4.",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_B1Lite1"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_B1Lite1",
+            "VALIDATE_LONG_2_B1Lite1"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-05T22:38",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_B1Lite1 + VALIDATE_LONG_2_B1Lite1 : 47.0 % réunis, sous 50 % (lancé par le lanceur à la même minute que l'annulation, arrêté à la main après 3 min)",
+      "output": "backlog-runs/2026-10-05-22-36_VALIDATE_LONG_3_B1Lite1.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_B1Lite1",
+      "command": "npm run duel -- \"ismcts+widen=3+depth=5+core=stfig6+lite=1@t3200\" \"ismcts+widen=3+depth=5+core=stfig6@t3200\" --long --games 125 --page --offset 4",
+      "estimate": "30 min",
+      "limit": 50,
+      "why": "B1 (lite=1, le cœur allégé dans les simulations seulement) : son tri à 2 620 contre 2 000 itérations a fait 55,8 % (51,5 – 60,0). Les duels longs au même temps par coup des deux côtés (3,2 s, environ 2 000 itérations pour le V1 dans un duel à 18 fils) : le temps égal mesuré pendant que la file tournait n'est pas assez sûr. Offsets 1 à 4 (le tri a joué l'offset 0). Jeu de donnes 4 sur 4.",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_B1Lite1"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_B1Lite1",
+            "VALIDATE_LONG_2_B1Lite1"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-05T22:36",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_B1Lite1 + VALIDATE_LONG_2_B1Lite1 : 47.0 % réunis, sous 50 %"
     }
   ]
 }

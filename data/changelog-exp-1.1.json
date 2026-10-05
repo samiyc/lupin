@@ -458,9 +458,9 @@
    "score": 55.8,
    "lo": 51.5,
    "hi": 60,
-   "verdict": "gagne",
+   "verdict": "neutre",
    "when": "05/10 19:26",
-   "note": "2 620 itérations contre 2 000 (31 % plus rapide). Première validation courte au-dessus de 50 % en fourchette basse, alors que le cœur allégé seul perd 38,8 %. En validation longue au même temps par coup."
+   "note": "2 620 itérations contre 2 000 : un budget trop généreux. Dans les duels au même temps par coup, B1Lite1 ne fait que 10 % d'itérations de plus, pas 31 %. Le 55,8 % venait surtout de ces itérations offertes."
   },
   {
    "family": "vitesse",
@@ -483,6 +483,17 @@
    "verdict": "neutre",
    "when": "05/10 21:44",
    "note": "8 duels de 250 parties (offsets 1 à 8) : 53,6 / 48,8 / 50,8 / 53,2 puis 52,0 / 50,8 / 48,4 / 46,8 %. Les 51,6 % du matin étaient de la chance. Classer comme l'oracle ne fait pas gagner : l'arbre retrouve déjà le bon coup parmi les 8."
+  },
+  {
+   "name": "B1Lite1 en validation longue, au même temps par coup",
+   "family": "vitesse",
+   "bench": "duel",
+   "score": 47,
+   "lo": 43.1,
+   "hi": 50.9,
+   "verdict": "perd",
+   "when": "05/10 22:36",
+   "note": "48,0 puis 46,0 % ; la règle d'arrêt a annulé les duels 3 et 4. À temps vraiment égal (10 % d'itérations en plus, mesuré dans les replays), les simulations allégées coûtent plus qu'elles ne rapportent."
   }
  ],
  "commitLabels": {
@@ -649,23 +660,27 @@
   "f78321f": [
    "oracle",
    "DistOracle1Root sur 2 000 parties : neutre"
+  ],
+  "08507a1": [
+   "outils",
+   "L'arbre au début de partie, et la piste C1"
   ]
  },
  "next": [
   {
-   "when": "Cette nuit",
-   "title": "B1Lite1 en validation longue",
-   "text": "La seule piste encore en course : 55,8 % en validation courte. 1 000 parties au même temps par coup, fin vers 0 h ; la règle d'arrêt coupe la série si elle part mal. DistOracle1Root (50,5 % sur 2 000), Tree-10c-4r (49,4 %) et NoConnector (48,6 %) sont écartés."
-  },
-  {
-   "when": "Ensuite",
-   "title": "Le potentiel : B1 à B4",
-   "text": "B1 en tri ce soir. B3 fait : PAIR_DISCOUNT réglé sur l'oracle à 0,867, sans rien changer à l'accord (59,6 → 59,1 %). Restent B2 (la mémoire des paires d'un coup à l'autre) et B4 (la pioche pondérée par les tirages restants)."
+   "when": "Bilan du 05/10",
+   "title": "Aucune version ne bat le V1",
+   "text": "DistOracle1Root 50,5 % (2 000 parties), Tree-10c-4r 49,4 %, NoConnector 48,6 %, B1Lite1 47,0 %. Acquis : +20,7 % de vitesse à coups identiques (A1-A4), la règle d'arrêt, le glossaire."
   },
   {
    "when": "Piste",
    "title": "C1 : les réponses adverses regroupées",
    "text": "Au tour 1, 116 réponses adverses différentes sous le meilleur candidat, 14 visites au plus chacune : l'arbre n'y apprend rien. Les regrouper par borne et hauteur de carte ferait apprendre sous les candidats dès le début."
+  },
+  {
+   "when": "Méthode",
+   "title": "Le temps égal mesuré dans les duels",
+   "text": "Les versions plus rapides ou plus lentes se comparent au même temps par coup des deux côtés (@t), ou avec un budget vérifié dans les replays : le banc de vitesse surestimait B1 (31 % contre 10 % en duel)."
   }
  ],
  "banc": {
