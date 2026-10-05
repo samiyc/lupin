@@ -179,6 +179,15 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   long duels: on the 03/10 cores the top-8 agreement ranked them as the duels
   did (rank correlation 0.93). Its positions are turns 14-26 only, so it is
   blind to an idea that acts earlier (stay4e10).
+- **The shared vocabulary is `docs/glossaire.md`** (Sami, 05/10): how the tree
+  uses the core, the validation steps (`VALIDATE_CORE` / `_BANC` / `_SHRT` /
+  `_LONG`, « 1k@2k »), and how versions under test are named — by what they
+  change, in CamelCase, no version number (`B1Lite1`, `DistOracle1Root`,
+  `NoConnector`). Validation jobs run as a group are named with fixed-width
+  columns on the left and the version on the right
+  (`VALIDATE_LONG_1_B1Lite1`, `@` for an empty column); never rename a job the
+  runner has started, it looks it up by id when it ends. Use those words in
+  replies, and add a term there before using a new one.
 - **Every npm script is listed in `docs/commandes.md`** (French, by use, with the
   path of an idea); `tests/docs.test.js` fails when a script of `package.json`
   is missing from it, so a new script comes with its line there.

@@ -62,6 +62,7 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 ## Commandes
 
 Toutes les commandes, rangées par usage et avec le parcours d'une idée : [docs/commandes.md](docs/commandes.md).
+Les mots des mesures (l'arbre, les validations, le nom des versions et des jobs) : [docs/glossaire.md](docs/glossaire.md).
 
 ```bash
 npm run play      # le jeu dans le navigateur, http://127.0.0.1:4742/

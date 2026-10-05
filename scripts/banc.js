@@ -7,7 +7,7 @@ import { stopIfFor } from "./lib/backlog-stop.js";
 import { runPool } from "./lib/pool.js";
 
 /**
- * `npm run banc -- [<engine>] [--against <engine>] [--positions banc] [--threads N] [--queue] [--calibrate]`:
+ * `npm run banc -- [<engine>] [--against <engine>] [--positions banc] [--threads N] [--queue [--name B1Lite1]] [--calibrate]`:
  * the similarity bench (Sami, 04/10; src/replay/banc.js). A version of the V1
  * plays one move on each of the bench's positions, and its moves are judged
  * by the oracle's visits there; against the 1.0 (or `--against`) on the same
@@ -142,10 +142,13 @@ async function calibrate() {
 async function queueDuels() {
   const path = "data/backlog.json";
   const backlog = await readJson(path, { jobs: [] });
-  const name = (/core=(\w+)/.exec(tested)?.[1] ?? "variante").replace(/[^\w-]/g, "");
+  // The version's name (docs/glossaire.md): `--name B1Lite1`, else its core's.
+  const name = option("--name", /core=(\w+)/.exec(tested)?.[1] ?? "variante").replace(/[^\w-]/g, "");
   const pause = (n) => ({ id: `pause-${name}-${n}`, command: "npm run cooldown -- 15", estimate: "15 min", limit: 17, why: "Une pause entre deux jobs (Sami, 04/10).", status: "todo" });
-  const offset = (n) => (n ? ` --offset ${n}` : "");
-  const ids = [0, 1, 2, 3].map((n) => `duel-${name}-${n}`);
+  // The decks of the four duels: offsets 1 to 4, never those of the screen that chose the version (offset 0).
+  const offset = (n) => ` --offset ${n + 1}`;
+  // Fixed-width columns on the left, the version on the right (docs/glossaire.md, Sami 05/10).
+  const ids = [1, 2, 3, 4].map((n) => `VALIDATE_LONG_${n}_${name}`);
   // A series that starts badly stops there (stopIf, scripts/lib/backlog-stop.js).
   const duel = (n) => ({ id: ids[n], command: `npm run duel -- "${tested}" "${against}" --long --games 125 --page${offset(n)}`, estimate: "30 min", limit: 45, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo", stopIf: stopIfFor(ids, n + 1) });
   const jobs = [0, 1, 2, 3].flatMap((n) => (n === 0 ? [duel(n)] : [pause(n), duel(n)]));

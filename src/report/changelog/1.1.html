@@ -440,10 +440,11 @@ $("lead").textContent = J.lead;
 /* ── I · The timeline ─────────────────────────────────────── */
 const toTime = (text) => new Date(text).getTime();
 const minutesOf = (estimate) => (/h/.test(estimate ?? "") ? 60 * Number((estimate.match(/(\d+)\s*h/) ?? [0, 2])[1]) : Number((String(estimate).match(/\d+/) ?? [20])[0]));
-const JOB_FAMILIES = [["oracle", "l'oracle", "sky"], ["pilot", "pilotes", "brass"], ["ref", "base de référence", "seal"], ["screen", "tris", "mark"], ["banc", "le banc", "ink-2"], ["duel", "duels", "plum"]];
+// Each lane takes the ids starting with one of its prefixes: the old names, and the VALIDATE_ ones (docs/glossaire.md, 05/10).
+const JOB_FAMILIES = [[["oracle"], "l'oracle", "sky"], [["pilot"], "pilotes", "brass"], [["ref"], "base de référence", "seal"], [["screen", "VALIDATE_SHRT", "VALIDATE_CORE"], "validations courtes", "mark"], [["banc", "VALIDATE_BANC"], "le banc", "ink-2"], [["duel", "VALIDATE_LONG"], "validations longues", "plum"]];
 // Six job lanes under the commits' row, 32 apart, so the last one still clears the hour labels.
 const laneY = (family) => 100 + family * 32;
-const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefix]) => id.startsWith(prefix));
+const jobFamily = (id) => JOB_FAMILIES.findIndex(([prefixes]) => prefixes.some((prefix) => id.startsWith(prefix)));
 function placeJobs() {
   const placed = [];
   let cursor = 0;
