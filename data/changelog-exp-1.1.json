@@ -331,15 +331,15 @@
    "note": "4 000 itérations aux tours 1-12 puis 750 : plutôt perdant. La largeur de l'oracle ne vient pas sans ses 20 000 itérations. 360 parties (limite de 60 min)."
   },
   {
-   "lo": 42,
-   "hi": 56.9,
-   "score": 49.4,
+   "lo": 46.1,
+   "hi": 54.4,
+   "score": 50.2,
    "name": "Tri : plus de budget au début (3 000 / 1 400)",
    "family": "oracle",
    "bench": "arbre2000",
-   "verdict": "attente",
-   "when": "05/10 06:33",
-   "note": "Coupé à 180 parties par le redémarrage de Windows Update (6 h 38). À relancer."
+   "verdict": "neutre",
+   "when": "05/10 11:07",
+   "note": "Relancé en entier de jour (400 parties) après la coupure de Windows Update : neutre, comme 4 000 / 750."
   },
   {
    "name": "dist1 à la racine, 4 duels longs contre le V1 à 2 000",
@@ -373,6 +373,39 @@
    "verdict": "gagne",
    "when": "05/10 14:30",
    "note": "Au repos, arbre à 400 : 1 119 → 1 162 itérations/s (+3,8 %, mêmes coups, empreintes inchangées) ; sans connector 1 253 (+12 %). v1nc : 48,3 % en cœur contre cœur ; ses 4 duels longs à temps égal (2 160 contre 2 000) sont en file."
+  },
+  {
+   "family": "oracle",
+   "bench": "arbre2000",
+   "name": "Tri : 10 candidats, 4 réponses par nœud",
+   "score": 52.8,
+   "lo": 48.3,
+   "hi": 57.2,
+   "verdict": "tendance",
+   "when": "05/10 11:53",
+   "note": "À 2 000 itérations, un peu plus large que le 1.0 (8 et 3) et 4 % moins cher par itération. En second : 56,5 %. Candidat, avec dist1 à la racine."
+  },
+  {
+   "family": "oracle",
+   "bench": "arbre2000",
+   "name": "Tri : 12 candidats, 4 réponses par nœud",
+   "score": 48.3,
+   "lo": 43.9,
+   "hi": 52.6,
+   "verdict": "neutre",
+   "when": "05/10 12:39",
+   "note": "Plus large encore : neutre. 10 est la bonne largeur à ce budget."
+  },
+  {
+   "family": "oracle",
+   "bench": "arbre2000",
+   "name": "Tri : infer v2, les 3 derniers coups adverses",
+   "score": 46.3,
+   "lo": 41.8,
+   "hi": 50.7,
+   "verdict": "perd",
+   "when": "05/10 13:26",
+   "note": "48 mains pondérées par leurs 3 derniers coups : plutôt perdant (le dernier coup seul : 49,5 %). Les mains devinées appauvrissent les tirages."
   }
  ],
  "commitLabels": {
@@ -475,33 +508,32 @@
   "299319d": [
    "vitesse",
    "npm run features : le coût du cœur, feature par feature"
+  ],
+  "3fd9449": [
+   "vitesse",
+   "Le coût du cœur mesuré au repos"
   ]
  },
  "next": [
   {
-   "when": "En cours",
-   "title": "Les derniers tris",
-   "text": "Le budget au début (3 000 / 1 400), la largeur à 2 000 (10 et 12 candidats) et infer v2 (les 3 derniers coups adverses) : fin vers 14 h 15."
+   "when": "En file",
+   "title": "v1nc à temps égal",
+   "text": "Le 1.0 sans connector, 12 % plus rapide, 48,3 % en cœur contre cœur : 4 duels longs à 2 160 itérations contre 2 000 (environ 2 h)."
   },
   {
-   "when": "Ensuite",
-   "title": "Combiner avec dist1 à la racine",
-   "text": "51,6 % (49,0 – 54,2) en duels longs : un petit gain, pas décidé. Il servira de base si un autre tri tient, les deux combinés en 4 duels longs."
+   "when": "Prochain essai",
+   "title": "Combiner les deux candidats",
+   "text": "dist1 à la racine (51,6 % en duels longs) et 10 candidats, 4 réponses (52,8 % en tri) : indépendants, donc à essayer ensemble, en tri puis en 4 duels longs."
   },
   {
    "when": "Vitesse",
-   "title": "Ne plus appeler les idées éteintes",
-   "text": "7 % du temps du cœur passe dans des idées éteintes, appelées à chaque coup pour rendre 0 ; les sauter ne change aucun coup. Puis un 1.0 sans connector (4,4 % du temps, 1,7 % de favoris changés), à temps égal."
+   "title": "Le potentiel d'un côté, plus vite",
+   "text": "46 % du temps : une mémoire des paires en tableau typé, upsideOf en table, borderFactors sauté, un aiguillage sans objet recréé — 15 à 25 % de vitesse à coups identiques, vérifiés par l'empreinte."
   },
   {
    "when": "Plus tard",
-   "title": "Un distill pour la racine",
-   "text": "Régler un cœur pour la racine seulement, sur plus de positions de l'oracle (un job de nuit pour en lire d'autres), et garder le 1.0 pour les simulations."
-  },
-  {
-   "when": "Plus tard",
-   "title": "Oracle contre Oracle",
-   "text": "En attente : avant le tour 10, ses recherches ne s'accordent pas. Ses parties ne seraient une référence qu'à partir du tour 12."
+   "title": "Un potentiel allégé dans les simulations",
+   "text": "Un côté à une carte jugé seul dans les simulations (la racine garde tout) : environ 25 % de temps en moins, à trier à temps égal."
   }
  ],
  "banc": {

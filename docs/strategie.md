@@ -2163,3 +2163,23 @@ de 40 parties du cœur contre lui-même, 181 recherches à 300 itérations) mesu
 - Le détail par fonction du potentiel : `drawPotential` 18,8 % (surtout la mémoire des paires,
   une `Map` vidée à chaque évaluation), `singlePotential` 9,7 %, `drawPotentialOf` 6,8 %,
   `sidePotential` 4,5 %, `upsideOf` 3,7 % (une puissance par figure à chaque calcul).
+
+**Les tris de la journée du 05/10** (400 parties contre le V1 à 2 000, `--threads 18`, sans pauses) :
+
+| Tri | Score | Fourchette par paires | Verdict |
+| --- | --- | --- | --- |
+| budget au début, 3 000 / 1 400 (relancé en entier) | 50,2 % | 46,1 – 54,4 % | neutre |
+| **10 candidats, 4 réponses** (`candidates=10+widen=4`) | **52,8 %** | 48,3 – 57,2 % | candidat (en second : 56,5 %) |
+| 12 candidats, 4 réponses | 48,3 % | 43,9 – 52,6 % | neutre |
+| `infer` v2 : les 3 derniers coups adverses (`infer=48+memory=3`) | 46,3 % | 41,8 – 50,7 % | plutôt perdant |
+
+- **Le bilan des tris du plan des 55 %** : deux candidats seulement, `dist1` à la racine (52,8 %
+  en tri, 51,6 % en 4 duels longs, pas décidé) et la largeur à 10 candidats (52,8 % en tri, un
+  peu moins chère par itération). Le budget au début est neutre (49,4 – 50,2 %), l'oracle allégé
+  et `dist1` partout perdent, et deviner la main adverse ne rapporte rien, que ce soit d'après
+  le dernier coup (49,5 %) ou les trois derniers (46,3 %) : les mains devinées, trop sûres
+  d'elles, appauvrissent les tirages.
+- Aucune piste seule n'approche 55 %. Ce qui reste : les **combiner** (`dist1` à la racine et
+  10 candidats sont indépendants : l'un choisit les candidats, l'autre en prend deux de plus),
+  et **gagner en vitesse** sans changer les coups (le 1.0 gagne 55,2 % avec 2,5 fois plus
+  d'itérations).
