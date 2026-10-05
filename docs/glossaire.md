@@ -13,26 +13,54 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   s'appelle `stfig6`.
 - **L'arbre** (ISMCTS) : la recherche qui s'appuie sur le cœur. **« 2 000 simulations par coup »
   (`@2000`) veut dire 2 000 itérations pour choisir UN coup**, pas une partie de 2 000 coups.
-  Une itération :
-  1. **le tirage** : les cartes qu'on ne voit pas (main adverse, pioche) sont distribuées au
-     hasard ;
-  2. **la descente** : on part de la position réelle et on descend dans l'arbre de coups —
-     à la racine parmi les 8 meilleurs coups selon le cœur (les *candidats*), puis à chaque
-     étage parmi ses 3 meilleures réponses (`widen`), sur 5 coups au plus (`depth`) ;
-  3. **la simulation** : de là, la partie est jouée jusqu'au bout, vite, le cœur choisissant
-     chaque coup des deux joueurs ;
-  4. **le retour** : qui a gagné cette simulation est compté sur chaque coup de la descente.
+  Les réglages du V1 : 8 candidats à la racine (`candidates`), 3 réponses par étage (`widen`),
+  5 coups de profondeur au plus (`depth`), une exploration de 0,7 (`exploration`).
 
-  Après 2 000 itérations, le robot joue le coup de la racine le plus visité. Il a donc joué
-  2 000 fins de partie différentes, chacune d'une trentaine de coups.
-- **Où sert le cœur dans l'arbre** :
-  - **la racine** : une fois par coup, le cœur complet (avec les certitudes) choisit les 8
-    candidats ;
-  - **les nœuds de l'arbre** : à chaque étage de la descente, il choisit les 3 réponses
-    regardées ;
-  - **les simulations** : à chaque coup de chaque simulation, soit des dizaines de milliers de
-    fois par coup. C'est là que part presque tout le temps, et pourquoi un cœur plus rapide rend
-    le robot plus fort (`npm run features`).
+  **Avant la première itération**, le cœur complet (avec les certitudes) note tous les coups de la
+  position réelle et garde les 8 meilleurs : ce sont les seuls que l'arbre regardera à la racine.
+
+  **Une itération** (répétée 2 000 fois) :
+  1. **le tirage** : les cartes qu'on ne voit pas (main adverse, pioche) sont distribuées au
+     hasard — chaque itération imagine une autre main adverse ;
+  2. **la descente, sur UN seul chemin** : à la racine, l'arbre choisit **un** des 8 candidats ;
+     dans la position qui en résulte, le cœur note les coups de l'adversaire et en garde 3, parmi
+     lesquels l'arbre en choisit **un** ; et ainsi de suite, en alternant les joueurs, 5 coups au
+     plus. À chaque étage, le choix va d'abord à un coup jamais essayé, sinon à celui qui équilibre
+     le mieux « il a souvent gagné » et « il a été peu essayé » (la formule UCB1). La descente
+     s'arrête dès qu'elle arrive sur un coup jamais essayé : l'arbre grandit d'un nœud par itération ;
+  3. **la simulation** : de là, la partie est jouée jusqu'au bout, vite (une trentaine de coups),
+     le cœur des simulations choisissant chaque coup des deux joueurs ;
+  4. **le retour** : qui a gagné cette simulation est compté sur chaque coup du chemin descendu
+     (une visite de plus, une victoire de plus ou non).
+
+  Il n'y a donc pas d'étape « valider un nœud puis revenir aux 3 fils » : chaque itération repart
+  de la racine et descend un seul chemin. C'est la répétition qui fait le travail : les chemins qui
+  gagnent sont redescendus plus souvent, donc creusés plus profond, et les autres restent courts.
+  **Après 2 000 itérations, le robot joue le candidat de la racine le plus visité** (pas celui au
+  meilleur taux de victoire : un coup peu visité a un taux trop incertain). Il a joué 2 000 fins de
+  partie différentes, chacune sur une main adverse imaginée différente.
+
+  ```
+  racine (position réelle)                         itération 1 : A → a2 → (nouveau) → simulation
+   ├─ A  ← 8 candidats, choisis une fois           itération 2 : B → (nouveau) → simulation
+   │   ├─ a1  ← 3 réponses, notées par le cœur     itération 3 : A → a1 → (nouveau) → simulation
+   │   ├─ a2      dans chaque position imaginée    …
+   │   │   ├─ …  ← 3 réponses, 5 coups au plus     itération 2 000 : le candidat le plus visité
+   │   └─ a3                                        est joué
+   ├─ B
+   └─ … (8 en tout)
+  ```
+- **Où sert le cœur, et combien de fois par coup** (V1 à 2 000 itérations) :
+
+  | Où | Quel cœur | Combien de fois |
+  | --- | --- | --- |
+  | **la racine** | le cœur complet, avec les certitudes | **1 fois** : il choisit les 8 candidats |
+  | **les nœuds de l'arbre** | le cœur des simulations (sans les certitudes) | **à chaque étage de chaque descente**, quelques milliers de fois : il choisit les 3 réponses regardées |
+  | **les simulations** | le cœur des simulations, qui joue chaque fois son meilleur coup | **à chaque coup de chaque simulation** : environ 2 000 × 30 = 60 000 fois |
+
+  C'est dans les simulations que part presque tout le temps (`npm run features`) : un cœur plus
+  rapide y donne plus d'itérations, donc un robot plus fort. `B1Lite1` allège le cœur là
+  seulement ; `DistOracle1Root` change seulement celui de la racine.
 - **Itération, simulation** : ici, les deux mots désignent la même chose (une descente et une fin
   de partie jouée). **Coup** : une carte posée. **Tour** : le numéro du coup dans la partie (une
   partie en compte environ 35). **Partie** : une partie entière, du premier coup à la fin.
