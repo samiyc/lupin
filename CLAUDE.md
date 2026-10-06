@@ -306,7 +306,10 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   favourites by id. Add puzzles with `--add` (both generators): new ones are
   numbered after the highest id, never renumbering the old (endgames #1-50
   from self-play, #221-270 from duels/ at the claim rule; immediate #201-220,
-  #271-290).
+  #271-290). **On 06/10 Sami kept only his 45 favourites** (`--keep`) and got
+  100 endgames like them, #291-390: his favourites have twice the legal
+  moves and a strategist move that loses, hence `--min-moves 12 --core-fails`.
+  A dropped id is never reused: the browser still counts it as solved.
 - **Anything that runs a look-ahead bot in the page yields between moves**
   (`generateBotGame` is async): a whole observer game computed in one go
   froze the page for several seconds.

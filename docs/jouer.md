@@ -137,12 +137,17 @@ la main adverse, ce sont les cartes vues nulle part.
   n'as pas encore résolus passent d'abord.
 - **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
   navigateur.
-- **Source** : 100 puzzles de fin de partie. Les 50 premiers (#1 à #50)
-  viennent de l'auto-jeu de l'Expérimental ; les 50 suivants (#221 à #270),
-  des parties gardées entre robots, à la règle de la page. Pour en ajouter
-  sans changer les numéros des anciens : `npm run puzzles -- --add`
-  (`--source duels` pour les parties gardées).
-- **Gain immédiat** (40 puzzles, `npm run puzzles:immediate`, `-- --add` pour
+- **Source** (06/10) : 145 puzzles. Les 45 favoris de Sami sont gardés sous
+  leurs numéros (37 fins de partie, 8 gains immédiats) ; les 95 autres, résolus
+  en un coup sans réfléchir, sont retirés. 100 fins de partie nouvelles (#291 à
+  #390) leur ressemblent : tirées des parties gardées entre robots, à la règle
+  de la page, **au moins 12 coups possibles et le coup du Stratège perd**
+  (18 coups possibles en moyenne, 7 à 12 cartes à jouer, 27 à solution unique).
+  `npm run puzzles -- --add --source duels --count 100 --min-moves 12
+  --core-fails --keep <favoris>` ; un numéro retiré n'est jamais réutilisé.
+  L'adversaire répond en quelques dizaines de millisecondes en général, jusqu'à
+  7 s dans le pire des 100.
+- **Gain immédiat** (8 gardés, `npm run puzzles:immediate`, `-- --add` pour
   en ajouter) : il reste une
   pioche, et la main adverse est cachée. Un seul coup, parfois deux ou trois, te
   fait revendiquer la victoire tout de suite, quoi que tienne l'adversaire : la

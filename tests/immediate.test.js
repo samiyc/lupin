@@ -17,7 +17,8 @@ describe("gain immédiat puzzles", () => {
   const immediate = puzzles.filter((puzzle) => puzzle.kind === "immediate");
 
   it("exist, under the claim rule, with a pile left", () => {
-    assert.ok(immediate.length >= 10);
+    // 8 since 06/10: Sami kept only his favourites (40 before).
+    assert.ok(immediate.length >= 5);
     for (const puzzle of immediate) {
       assert.equal(puzzle.log.rules.endMode, "claim-end");
       assert.ok(stateAt(puzzle.log, puzzle.turn).pile.length > 0, `puzzle ${puzzle.id}`);
@@ -53,6 +54,7 @@ describe("the experimental bot's exact endgame", () => {
       assert.ok(puzzle.solutions.includes(text(state, move)), `puzzle ${puzzle.id}: ${text(state, move)}`);
       checked += 1;
     }
-    assert.ok(checked >= 40, `only ${checked} puzzles`);
+    // 22 since 06/10: the new puzzles are deeper (7 to 12 cards), the shallow ones were not favourites.
+    assert.ok(checked >= 20, `only ${checked} puzzles`);
   });
 });

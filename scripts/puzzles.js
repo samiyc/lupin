@@ -21,6 +21,13 @@ import { runPool, workerCount } from "./lib/pool.js";
  * `--add` they join them, numbered after the highest id of the file, and a
  * position already there is not taken twice: the solved ones and the
  * favourites, kept in the browser by id, stay right. 10 minutes at most.
+ *
+ * Shaping the set (Sami, 06/10: his favourites have twice the moves, and the
+ * strategist's move loses in most of them): `--min-moves N` keeps positions
+ * with at least N legal moves, `--core-fails` those where the strategist's
+ * move does not win, `--unique` those with one winning move. `--keep 2,3,…`
+ * keeps only those ids of the file (the others are dropped); new ids still
+ * start after the highest id the file had, so a dropped id is never reused.
  */
 const SHARE = 0.5;
 const PER_GAME = 2;
@@ -30,6 +37,12 @@ const minutes = Math.min(20, Number(option("--minutes", 10)) || 10);
 const count = Number(option("--count", 50));
 const fromDuels = option("--source", "selfplay") === "duels";
 const adding = args.includes("--add");
+const minMoves = Number(option("--min-moves", 0));
+const coreFailsOnly = args.includes("--core-fails");
+const uniqueOnly = args.includes("--unique");
+const keepIds = args.includes("--keep") ? new Set(option("--keep", "").split(",").map(Number)) : null;
+/** Does a found puzzle pass the shaping options? */
+const wanted = (p) => p.moves >= minMoves && (!coreFailsOnly || p.coreFails) && (!uniqueOnly || p.solutions.length === 1);
 // Under the claim rule the pile runs out after move 30; under the final rule a little later in these games.
 const TURNS = fromDuels ? [31, 32, 33, 34, 35, 36, 37] : [33, 34, 35, 36, 37];
 const DIR = fileURLToPath(new URL("../web/data/", import.meta.url));
@@ -60,14 +73,16 @@ function choose(found) {
 
 const started = Date.now();
 const previous = await readFile(`${DIR}puzzles.json`, "utf8").then((text) => JSON.parse(text).puzzles, () => []);
-const kept = adding ? previous : previous.filter((puzzle) => puzzle.kind === "immediate");
-const taken = new Set(kept.map((puzzle) => keyOf(puzzle.log, puzzle.turn)));
+const carried = adding ? previous : previous.filter((puzzle) => puzzle.kind === "immediate");
+const kept = keepIds ? carried.filter((puzzle) => keepIds.has(puzzle.id)) : carried;
+// Every position the file had, dropped ones included: a puzzle taken out is not brought back.
+const taken = new Set(previous.map((puzzle) => keyOf(puzzle.log, puzzle.turn)));
 const logs = await sourceLogs();
 const items = logs.flatMap((log, index) => TURNS.filter((turn) => turn <= log.turns.length && !taken.has(keyOf(log, turn))).map((turn) => ({ index, log, turn })));
 const threads = workerCount();
 const tasks = Array.from({ length: threads }, (_, t) => ({ items: items.filter((_, i) => i % threads === t), share: SHARE, seconds: minutes * 60 }));
 const found = (await runPool(new URL("./lib/puzzle-worker.js", import.meta.url), tasks)).flat();
-const chosen = choose(found);
+const chosen = choose(found.filter(wanted));
 
 const strip = (log, turn) => ({ format: log.format, rules: log.rules, deck: log.deck, turns: log.turns.slice(0, turn - 1).map(({ turn: t, player, move, pass, drew }) => ({ turn: t, player, move, pass, drew })) });
 const firstId = adding ? Math.max(0, ...previous.map((puzzle) => puzzle.id)) + 1 : 1;
