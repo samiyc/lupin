@@ -843,7 +843,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 1 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T14:04",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-06-13-40_VALIDATE_LONG_1_FirstExplo6-Tree-7w.txt"
     },
     {
       "id": "VALIDATE_LONG_2_FirstExplo6-Tree-7w",
@@ -851,23 +854,62 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 2 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T14:28",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-06-14-04_VALIDATE_LONG_2_FirstExplo6-Tree-7w.txt"
     },
     {
       "id": "VALIDATE_LONG_3_FirstExplo6-Tree-7w",
       "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
       "estimate": "27 min",
       "limit": 50,
-      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 3 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 3 sur 4, sans règle d'arrêt. Règle d'arrêt ajoutée après le duel 1 (48,4 %, Sami).",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo6-Tree-7w"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo6-Tree-7w",
+            "VALIDATE_LONG_2_FirstExplo6-Tree-7w"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-06T14:28",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_FirstExplo6-Tree-7w + VALIDATE_LONG_2_FirstExplo6-Tree-7w : 48.2 % réunis, sous 50 %"
     },
     {
       "id": "VALIDATE_LONG_4_FirstExplo6-Tree-7w",
       "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
       "estimate": "27 min",
       "limit": 50,
-      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 4 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 4 sur 4, sans règle d'arrêt. Règle d'arrêt ajoutée après le duel 1 (48,4 %, Sami).",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo6-Tree-7w"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo6-Tree-7w",
+            "VALIDATE_LONG_2_FirstExplo6-Tree-7w"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-06T14:28",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_FirstExplo6-Tree-7w + VALIDATE_LONG_2_FirstExplo6-Tree-7w : 48.2 % réunis, sous 50 %"
     }
   ]
 }

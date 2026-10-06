@@ -127,6 +127,8 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   - **`firstExploration`** (`FirstExplo6-Tree-7w`, 06/10) : c = 0,6 partout où joue le
     premier joueur, racine comprise. À la racine de Tree-7w, ses deux finalistes reçoivent 52,5 %
     des visites au lieu de 47,4 % (+11 %) ; 57,3 % à 0,5, 62,8 % à 0,4 (le banc des finalistes).
+    En duel : 48,2 % contre le V1, -6,2 ± 5,2 points contre Tree-7w sur les mêmes donnes,
+    dans les deux sièges ; écarté. Ici, vérifier plus paie, se concentrer plus non.
 - **Le bruit du coup joué** : à 2 000 itérations, deux recherches de Tree-7w avec deux graines
   différentes ne jouent le même coup que dans 19 positions sur 50 (tours 12 à 21). Les bons
   candidats sont très proches : c'est pourquoi un réglage de la racine se juge en duels, jamais

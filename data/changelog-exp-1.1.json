@@ -582,6 +582,17 @@
    "verdict": "gagne",
    "when": "06/10 13:40",
    "note": "1 500 parties en tout (6 duels). Les donnes nouvelles (décalages 5 et 6) font 54,0 % : le score ne retombe pas. La candidate à l'Expérimental 1.1."
+  },
+  {
+   "name": "FirstExplo6-Tree-7w : exploration 0,6 pour le premier joueur, racine comprise",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 48.2,
+   "lo": 44.5,
+   "hi": 51.9,
+   "verdict": "perd",
+   "when": "06/10 14:28",
+   "note": "48,4 puis 48,0 % ; la règle d'arrêt a annulé les duels 3 et 4. -6,2 ± 5,2 points contre Tree-7w sur les mêmes 500 parties, dans les deux sièges : vérifier plus paie, se concentrer plus non."
   }
  ],
  "commitLabels": {
@@ -796,13 +807,25 @@
   "fb5c521": [
    "oracle",
    "La courbe de largeur : un plateau de 5 à 7 réponses"
+  ],
+  "8bad42d": [
+   "oracle",
+   "FirstExplo : l'option et le banc des finalistes"
+  ],
+  "198dd51": [
+   "oracle",
+   "Tree-7w confirmé sur 1 500 parties"
+  ],
+  "6a3075b": [
+   "outils",
+   "Docs : les sièges, UCB et l'exploration"
   ]
  },
  "next": [
   {
    "when": "Prochain",
-   "title": "FirstExplo6-Tree-7w, puis l'Expérimental 1.1",
-   "text": "Tree-7w tient sur 1 500 parties (54,4 %, 52,1 – 56,7). Avant de le promouvoir : une exploration de 0,6 au lieu de 0,7 partout où joue le premier joueur, racine comprise (le « tour critique » : ses erreurs coûtent le plus). Le banc des finalistes choisit c, puis 4 duels sur les donnes 1 à 4, comparés partie par partie à Tree-7w."
+   "title": "L'Expérimental 1.1 : Tree-7w",
+   "text": "7 réponses par étage au lieu de 3, même coût : 54,4 % (52,1 – 56,7) contre le V1 sur 1 500 parties. FirstExplo (moins d'exploration pour le premier joueur) perd 6 points contre lui. À décider avec Sami."
   },
   {
    "when": "Piste",

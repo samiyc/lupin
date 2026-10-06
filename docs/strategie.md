@@ -2569,3 +2569,26 @@ toucher qu'un joueur.
 **La validation** : c = 0,6 (le choix de Sami, +11 % de visites aux finalistes), 4 duels contre
 le V1 sur les donnes 1 à 4 de Tree-7w (`VALIDATE_LONG_1..4_FirstExplo6-Tree-7w`), comparés partie
 par partie à Tree-7w.
+
+**Le verdict de FirstExplo6-Tree-7w** (14 h 04 – 14 h 28 ; la règle d'arrêt, ajoutée à la demande
+de Sami après le duel 1, a annulé les duels 3 et 4) : 48,4 puis 48,0 %, **48,2 % (44,5 – 51,9)**
+contre le V1. Sur les mêmes 500 parties, contre Tree-7w :
+
+| | FirstExplo6-Tree-7w | Tree-7w | Écart partie par partie |
+| --- | --- | --- | --- |
+| Total | 48,2 % | 54,4 % | **-6,2 ± 5,2** |
+| En commençant | 47,6 % | 54,8 % | -7,2 ± 7,1 |
+| En second | 48,8 % | 54,0 % | -5,2 ± 7,5 |
+
+**Écarté.** Moins d'exploration pour le premier joueur coûte dans les deux sièges :
+- **en commençant** (sa racine à 0,6) : concentrer les visites sur deux finalistes, quand les
+  bons candidats sont si proches que la graine change le coup joué une fois sur deux, ne choisit
+  pas mieux ; les autres candidats sont moins vérifiés ;
+- **en second** (les réponses attendues du premier joueur à 0,6) : le robot regarde moins de
+  réponses adverses, c'est-à-dire l'inverse de ce qui fait gagner Tree-7w (voir plus de réponses
+  au premier étage).
+
+La leçon rejoint la courbe de largeur : ici, ce qui paie, c'est de vérifier plus, pas de se
+concentrer plus. Le tour critique dit que les erreurs du premier joueur coûtent le plus, mais
+moins explorer ne les évite pas. Une piste dans l'autre sens, non testée : plus d'exploration aux
+nœuds de l'adversaire (c = 0,8 à 1,0 au premier étage), comme une largeur de plus.
