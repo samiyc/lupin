@@ -176,6 +176,50 @@
     "differ": 780
    },
    "verdict": "neutre"
+  },
+  "ismcts+widen=7+depth=5+core=stfig6@2000": {
+   "built": "2026-10-06",
+   "oracle": 1,
+   "against": "ismcts+widen=3+depth=5+core=stfig6@2000",
+   "positions": 3721,
+   "value": 0.5133006617370626,
+   "agrees": 0.27379830348727613,
+   "stable": 2122,
+   "top8": 0.5291588282719699,
+   "phases": [
+    {
+     "name": "tours 4-10",
+     "positions": 968,
+     "value": 0.3733791028430219,
+     "agrees": 0.14049586776859505,
+     "stable": 363,
+     "top8": 0.3925619834710744
+    },
+    {
+     "name": "tours 11-20",
+     "positions": 1345,
+     "value": 0.4869367864963229,
+     "agrees": 0.2730414746543779,
+     "stable": 868,
+     "top8": 0.562081784386617
+    },
+    {
+     "name": "tours 21-30",
+     "positions": 1408,
+     "value": 0.634680975095179,
+     "agrees": 0.3288439955106622,
+     "stable": 891,
+     "top8": 0.5916193181818182
+    }
+   ],
+   "gap": {
+    "mean": 0.017625395844124203,
+    "low": 0.0062534997016006795,
+    "high": 0.028997291986647727,
+    "n": 3721,
+    "differ": 2306
+   },
+   "verdict": "à pousser"
   }
  },
  "calibration": {

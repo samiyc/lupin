@@ -627,6 +627,17 @@
    "verdict": "gagne",
    "when": "06/10 16:10",
    "note": "300 parties. Le 1.0 en gagnait 90,3 %."
+  },
+  {
+   "name": "Le 1.1 au banc de similitude, contre le 1.0 à 2 000",
+   "family": "sortie",
+   "bench": "banc",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "gagne",
+   "when": "06/10 16:35",
+   "note": "Valeur oracle 51,3 % contre 49,6 % (+1,76, de +0,63 à +2,90), 3 721 positions. Tout le gain est aux tours 21-30 (63,5 % contre 58,4 %) ; rien avant le tour 20."
   }
  ],
  "commitLabels": {

@@ -2618,3 +2618,11 @@ la base de l'oracle et du banc, que la sortie ne déplace pas).
 - **Ce qui a été essayé autour et écarté** : la largeur 5 et 6 (un plateau, 5 à 7 se valent),
   l'élimination par moitiés à la racine, une exploration différente pour le premier joueur (0,6
   et 0,8).
+
+**Le 1.1 au banc de similitude** (`npm run banc`, 3 721 positions, contre le 1.0 à 2 000 itérations
+lui aussi, 21 min) : valeur oracle **51,3 % contre 49,6 %**, soit +1,76 point (+0,63 – +2,90) sur les
+2 306 positions où les deux jouent autrement : « à pousser », le premier verdict positif du banc
+pour une version qui a aussi gagné ses duels. Le gain est tout en fin de partie : tours 4-10,
+37,3 % contre 37,9 % ; tours 11-20, 48,7 % contre 48,8 % ; **tours 21-30, 63,5 % contre 58,4 %**
+(même coup que l'oracle 32,9 % contre 26,3 %). C'est là que les réponses adverses se lisent : plus
+de cartes connues, moins de réponses différentes d'un monde tiré à l'autre, et UCB qui en voit 7.
