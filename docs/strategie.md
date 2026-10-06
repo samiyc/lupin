@@ -2437,3 +2437,49 @@ parades que le V1 ne regardait pas.
 moteur, `widen=6` et `widen=7`, 4 × 250 parties chacun) tournent jusque vers 12 h 40 et donnent la
 courbe de largeur au même budget. La version du robot ne change pas avant cette courbe et l'accord
 de Sami.
+
+### La courbe de largeur : Tree-6w et Tree-7w (06/10, matin)
+
+Même protocole (contre le V1 à 2 000 itérations, décalages 1 à 4, 4 × 250 parties, sans règle
+d'arrêt, 8 h 44 – 11 h 57) :
+
+| Réponses par étage | Version | Score | Fourchette à 95 % | Par duel | Contre Tree-5w, mêmes donnes |
+| --- | --- | --- | --- | --- | --- |
+| 3 | V1 | 50 % | — | — | — |
+| 5 | **Tree-5w** | **53,4 %** | **50,6 – 56,2** | 53,2 / 52,8 / 56,0 / 51,6 | — |
+| 6 | Tree-6w | 52,5 % | 49,9 – 55,1 | 55,2 / 52,0 / 46,4 / 56,4 | -0,9 ± 3,7 |
+| 7 | **Tree-7w** | **54,6 %** | **51,9 – 57,3** | 54,0 / 54,8 / 53,6 / 56,0 | +1,2 ± 3,8 |
+
+Le coût par itération ne bouge pas avec la largeur (au repos, 3 passes : 749 – 756 µs à 3
+réponses, 740 – 749 à 5, 748 – 750 à 6, 745 – 748 à 7) : le cœur note tous les coups d'un nœud
+quelle que soit la largeur, en garder 7 au lieu de 3 ne coûte rien. Les duels de Tree-7w ont
+pourtant duré 25 min contre 22 pour Tree-5w : la machine servait aussi en journée.
+
+**La lecture** : le saut est entre 3 et 5 réponses (+3,4 points) ; au-delà, un plateau. Tree-5w
+et Tree-7w sont validés, Tree-6w les frôle, et les trois se valent à la précision de 1 000
+parties (± 3,7 points d'écart sur les mêmes donnes). Le creux de Tree-6w tient à un duel
+(46,4 %, décalage 3) : du bruit, pas une forme. `npm run versus`, label `tree7w` : 2,89 bornes
+gagnées par partie contre 2,69, côtés sans figure 1,77 contre 1,88 — la même forme que Tree-5w.
+
+**Le biais de siège des donnes, et l'option par siège** (la question de Sami : 5 réponses en
+commençant, 6 ou 7 en second). Entre deux robots proches du V1 à 2 000, le premier joueur gagne
+48,1 % (12 200 parties ; 44,9 % au 1.0 contre lui-même à 800) : jouer second est un léger
+avantage. Mais le score d'un siège dans un duel est dominé par les donnes : chacune est jouée
+dans les deux sièges, une donne qui favorise le premier joueur gonfle le « en commençant » et
+creuse le « en second » du même duel. Au décalage 1, les trois largeurs font 58 à 61 % en
+commençant et 48 à 50 % en second ; aux décalages 3 et 4, l'inverse. Le score total annule ce
+biais, pas le partage par siège (125 parties par case : ± 8,8 points). La seule mesure propre
+compare deux largeurs dans le même siège sur les mêmes donnes :
+
+| Écart sur les mêmes donnes | En commençant | En second |
+| --- | --- | --- |
+| Tree-6w − Tree-5w | -3,4 ± 5,1 | +1,6 ± 5,3 |
+| Tree-7w − Tree-5w | 0,0 ± 5,5 | +2,4 ± 5,3 |
+| RootHalving-Tree-5w − Tree-5w | -5,0 ± 5,4 | +4,0 ± 5,0 |
+
+Tree-7w ne perd rien en commençant : l'hypothèse « plus large coûte au premier joueur » ne tient
+pas, et rien n'est significatif. Pas d'option par siège.
+
+**La suite** : la largeur à retenir est entre 5 et 7, à coût égal ; 7 a le meilleur score et la
+meilleure fourchette basse. Pour l'Expérimental 1.1 (`ismcts+widen=7+depth=5+core=stfig6`), à
+décider avec Sami ; la version du robot n'a pas changé.

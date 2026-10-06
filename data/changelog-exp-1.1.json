@@ -549,6 +549,28 @@
    "verdict": "gagne",
    "when": "06/10 08:44",
    "note": "1 000 parties (4 duels, jobs …Tree-5r). Bat le V1 avec un seul réglage changé (widen=3 → 5). Partie par partie sur les mêmes donnes : +0,5 ± 3,7 points sur RootHalving-Tree-5w. Le gain vient de la largeur ; l'élimination à la racine est écartée."
+  },
+  {
+   "name": "Tree-6w en validation longue : 6 réponses par étage, à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 52.5,
+   "lo": 49.9,
+   "hi": 55.1,
+   "verdict": "tendance",
+   "when": "06/10 10:16",
+   "note": "1 000 parties. Frôle la validation ; -0,9 ± 3,7 points contre Tree-5w sur les mêmes donnes. Son creux tient à un duel (46,4 %)."
+  },
+  {
+   "name": "Tree-7w en validation longue : 7 réponses par étage, à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 54.6,
+   "lo": 51.9,
+   "hi": 57.3,
+   "verdict": "gagne",
+   "when": "06/10 11:57",
+   "note": "1 000 parties, au même coût par itération que le V1. +1,2 ± 3,8 points contre Tree-5w sur les mêmes donnes : un plateau de 5 à 7 réponses. Rien ne perd en commençant : pas d'option par siège."
   }
  ],
  "commitLabels": {
@@ -755,13 +777,17 @@
   "5e1c7ff": [
    "outils",
    "Glossaire : w pour widen"
+  ],
+  "4978e1f": [
+   "oracle",
+   "Tree-5w bat le V1 : 53,4 %"
   ]
  },
  "next": [
   {
    "when": "Prochain",
-   "title": "La courbe de largeur : Tree-6w et Tree-7w",
-   "text": "Tree-5w bat le V1 (53,4 %, 50,6 – 56,2). widen=6 et widen=7 en 4 duels de 250 parties à 2 000, jusque vers 12 h 40 : la largeur à retenir pour l'Expérimental 1.1, décidée avec Sami."
+   "title": "L'Expérimental 1.1 : 5 à 7 réponses par étage",
+   "text": "La largeur paie de 3 à 5 réponses (+3,4 points), puis plafonne : Tree-5w 53,4 %, Tree-6w 52,5 %, Tree-7w 54,6 %, au même coût. Tree-7w a le meilleur score et la meilleure fourchette basse (51,9 %) ; à décider avec Sami."
   },
   {
    "when": "Piste",

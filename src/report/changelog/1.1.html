@@ -435,6 +435,13 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       </div>
       <ul class="facts" id="ucb-facts"></ul>
     </div>
+    <div class="panel">
+      <h3 class="small-title">La largeur de l'arbre : combien de réponses par étage</h3>
+      <p class="small">À chaque étage sous la racine, l'arbre ne regarde que les meilleures réponses du cœur : 3 pour le V1 (<code>widen=3</code>). Les validations longues du 06/10 en ont essayé 5, 6 et 7, toutes à 2 000 itérations contre le V1, sur les mêmes donnes. Garder 7 réponses au lieu de 3 ne coûte rien : le cœur note tous les coups de toute façon (745 à 756 µs par itération pour les quatre largeurs, au repos).</p>
+      <div class="scroll"><svg class="chart" id="width-curve" viewBox="0 0 640 300" role="img" aria-label="Score contre le V1 selon le nombre de réponses par étage, avec les fourchettes à 95 %"></svg></div>
+      <div class="legend" id="width-legend"></div>
+      <ul class="facts" id="width-facts"></ul>
+    </div>
     <div class="grid2">
       <div class="panel">
         <h3 class="small-title">Où sert le cœur, par coup</h3>
@@ -1182,6 +1189,45 @@ function drawUcbRace() {
   );
 }
 
+/* ── VI bis · The width of the tree ─────────────────────────── */
+const WIDTHS = [
+  { widen: 3, name: "V1", score: 50, lo: 50, hi: 50, games: 0 },
+  { widen: 5, name: "Tree-5w", score: 53.4, lo: 50.6, hi: 56.2, games: 1000 },
+  { widen: 6, name: "Tree-6w", score: 52.5, lo: 49.9, hi: 55.1, games: 1000 },
+  { widen: 7, name: "Tree-7w", score: 54.6, lo: 51.9, hi: 57.3, games: 1000 },
+];
+const HALVING_5W = { widen: 5, name: "RootHalving-Tree-5w", score: 52.0, lo: 50.5, hi: 53.5, games: 3000 };
+
+function drawWidth() {
+  const svg = $("width-curve");
+  const [left, right, top, bottom] = [56, 540, 20, 250];
+  const X = (w) => left + ((w - 2.5) / 5) * (right - left);
+  const Y = (v) => bottom - ((v - 46) / 14) * (bottom - top);
+  for (let v = 46; v <= 60; v += 2) {
+    svg.append(make("line", { x1: left, x2: right, y1: Y(v), y2: Y(v), stroke: css(v === 50 ? "ink-3" : "line"), ...(v === 50 ? { "stroke-dasharray": "4 4" } : {}) }));
+    svg.append(make("text", { x: left - 8, y: Y(v) + 4, "text-anchor": "end" }, `${v} %`));
+  }
+  for (const w of [3, 4, 5, 6, 7]) svg.append(make("text", { x: X(w), y: bottom + 18, "text-anchor": "middle" }, String(w)));
+  svg.append(make("polyline", { points: WIDTHS.map((p) => `${X(p.widen)},${Y(p.score)}`).join(" "), fill: "none", stroke: css("sky"), "stroke-width": 2 }));
+  const point = (p, x, tone, [dx, dy] = [9, -10]) => {
+    const tip = p.games ? `${p.name} : ${fr(p.score)} % (${fr(p.lo)} – ${fr(p.hi)}) sur ${thousands(p.games)} parties` : "le V1 contre lui-même : 50 % par définition";
+    if (p.games) svg.append(make("line", { x1: x, x2: x, y1: Y(p.lo), y2: Y(p.hi), stroke: css(tone), "stroke-width": 2, "data-tip": tip }));
+    svg.append(make("circle", { cx: x, cy: Y(p.score), r: 5.5, fill: css(tone), "data-tip": tip }));
+    svg.append(make("text", { x: x + dx, y: Y(p.score) + dy, fill: css(tone), "text-anchor": dx > 0 ? "start" : "end" }, p.games ? `${p.name} ${fr(p.score)} %` : "V1"));
+  };
+  const LABEL_AT = { 3: [-10, -8], 5: [-9, -12], 6: [9, 20], 7: [9, -10] };
+  WIDTHS.forEach((p) => point(p, X(p.widen), p.lo > 50 ? "mark" : "sky", LABEL_AT[p.widen]));
+  point(HALVING_5W, X(5) - 16, "off-ink", [-9, 56]);
+  svg.append(make("text", { x: (left + right) / 2, y: bottom + 40, "text-anchor": "middle", class: "label" }, "réponses par étage (widen), 2 000 itérations des deux côtés"));
+  svg.append(make("text", { x: 8, y: 12, class: "label" }, "score contre le V1"));
+  $("width-legend").replaceChildren(html("span", { class: "muted small" }, "barres : fourchette à 95 % ; en vert, validé (bas de fourchette au-dessus de 50 %) ; en gris, la même largeur 5 avec l'élimination à la racine (RootHalving)"));
+  $("width-facts").replaceChildren(
+    html("li", {}, html("b", {}, "Le saut de 3 à 5 : "), "+3,4 points. Au-delà, un plateau : sur les mêmes 1 000 donnes, Tree-6w fait -0,9 ± 3,7 points contre Tree-5w, Tree-7w +1,2 ± 3,8. Les trois largeurs se valent, à la précision de 1 000 parties."),
+    html("li", {}, html("b", {}, "Pourquoi ça paie : "), "avec 3 réponses, l'arbre ne voit pas les parades que le cœur classe 4e ou 5e. Avec 5 à 7, il les trouve : plus de brelans, moins de côtés sans figure, 2,9 bornes gagnées par partie contre 2,7."),
+    html("li", {}, html("b", {}, "Par siège : "), "le premier joueur gagne environ 48 % entre deux robots proches du V1. Le score d'un siège dans un duel dépend surtout des donnes (chacune jouée dans les deux sièges) ; comparées sur les mêmes donnes, les largeurs 6 et 7 ne perdent pas nettement en commençant (-3,4 et 0,0 point contre Tree-5w) : pas de largeur à choisir selon le siège."),
+  );
+}
+
 function drawUcb() {
   drawUcbBonus();
   drawUcbRace();
@@ -1299,6 +1345,7 @@ drawBench();
 drawBanc();
 drawCompare();
 drawUcb();
+drawWidth();
 drawCost();
 drawNext();
 </script>

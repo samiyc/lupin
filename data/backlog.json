@@ -557,7 +557,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 1 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T03:13",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-02-51_VALIDATE_LONG_01_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_02_RootHalving-Tree-5r",
@@ -565,7 +568,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 2 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T03:35",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-03-13_VALIDATE_LONG_02_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_03_RootHalving-Tree-5r",
@@ -573,7 +579,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 3 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T03:57",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-03-35_VALIDATE_LONG_03_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_04_RootHalving-Tree-5r",
@@ -581,7 +590,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 4 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T04:19",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-03-57_VALIDATE_LONG_04_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_05_RootHalving-Tree-5r",
@@ -589,7 +601,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 5 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T04:41",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-04-19_VALIDATE_LONG_05_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_06_RootHalving-Tree-5r",
@@ -597,7 +612,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 6 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T05:03",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-04-41_VALIDATE_LONG_06_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_07_RootHalving-Tree-5r",
@@ -605,7 +623,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 7 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T05:26",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-05-03_VALIDATE_LONG_07_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_08_RootHalving-Tree-5r",
@@ -613,7 +634,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 8 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T05:48",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-05-26_VALIDATE_LONG_08_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_09_RootHalving-Tree-5r",
@@ -621,7 +645,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 9 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T06:10",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-05-48_VALIDATE_LONG_09_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_10_RootHalving-Tree-5r",
@@ -629,7 +656,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 10 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T06:31",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-06-10_VALIDATE_LONG_10_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_11_RootHalving-Tree-5r",
@@ -637,7 +667,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 11 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T06:53",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-06-31_VALIDATE_LONG_11_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_12_RootHalving-Tree-5r",
@@ -645,7 +678,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "RootHalving-Tree-5r (54,3 % sur 300 parties à 1 500) en validation longue de 3 000 parties (Sami, 06/10, sans règle d'arrêt) : 5 réponses par étage, l'élimination à la racine en 1000-500-500, contre le V1 à 2 000. Même coût par itération (743 contre 752 µs au repos). Jeu de donnes 12 sur 12.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T07:15",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-06-53_VALIDATE_LONG_12_RootHalving-Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_1_Tree-5r",
@@ -653,7 +689,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "Tree-5r seul (5 réponses par étage, UCB à la racine comme le V1), pour savoir si le gain de RootHalving-Tree-5r vient de la largeur ou de l'élimination à la racine. Validation longue, jeu de donnes 1 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T07:37",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-07-15_VALIDATE_LONG_1_Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_2_Tree-5r",
@@ -661,7 +700,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "Tree-5r seul (5 réponses par étage, UCB à la racine comme le V1), pour savoir si le gain de RootHalving-Tree-5r vient de la largeur ou de l'élimination à la racine. Validation longue, jeu de donnes 2 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T07:59",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-07-37_VALIDATE_LONG_2_Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_3_Tree-5r",
@@ -669,7 +711,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "Tree-5r seul (5 réponses par étage, UCB à la racine comme le V1), pour savoir si le gain de RootHalving-Tree-5r vient de la largeur ou de l'élimination à la racine. Validation longue, jeu de donnes 3 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T08:21",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-07-59_VALIDATE_LONG_3_Tree-5r.txt"
     },
     {
       "id": "VALIDATE_LONG_4_Tree-5r",
@@ -677,7 +722,98 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "Tree-5r seul (5 réponses par étage, UCB à la racine comme le V1), pour savoir si le gain de RootHalving-Tree-5r vient de la largeur ou de l'élimination à la racine. Validation longue, jeu de donnes 4 sur 4, sans règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-06T08:44",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-06-08-21_VALIDATE_LONG_4_Tree-5r.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_Tree-6w",
+      "command": "npm run duel -- \"ismcts+widen=6+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-6w : 6 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 1 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T09:06",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-06-08-44_VALIDATE_LONG_1_Tree-6w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_Tree-6w",
+      "command": "npm run duel -- \"ismcts+widen=6+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-6w : 6 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 2 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T09:30",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-06-09-06_VALIDATE_LONG_2_Tree-6w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_Tree-6w",
+      "command": "npm run duel -- \"ismcts+widen=6+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-6w : 6 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 3 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T09:53",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-06-09-30_VALIDATE_LONG_3_Tree-6w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_Tree-6w",
+      "command": "npm run duel -- \"ismcts+widen=6+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-6w : 6 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 4 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T10:16",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-06-09-53_VALIDATE_LONG_4_Tree-6w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 7 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 1 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T10:42",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-06-10-16_VALIDATE_LONG_1_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 7 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 2 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T11:07",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-06-10-42_VALIDATE_LONG_2_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 7 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 3 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T11:33",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-06-11-07_VALIDATE_LONG_3_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 7 réponses par étage au lieu de 3 (profondeur 5, UCB à la racine), contre le V1 à 2 000 ; même coût par itération. Un point de la courbe de largeur de l'arbre (3, 5, 6, 7) au même budget (Sami, 06/10). Jeu de donnes 4 sur 4, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T11:57",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-06-11-33_VALIDATE_LONG_4_Tree-7w.txt"
     }
   ]
 }
