@@ -516,6 +516,17 @@
    "verdict": "neutre",
    "when": "06/10 01:23",
    "note": "300 parties, 1 500 itérations des deux côtés : une égalité parfaite. L'élimination à la racine avec un arbre plus étroit et plus profond joue aussi bien que le V1."
+  },
+  {
+   "name": "RootHalving-Tree-5r : 5 réponses par étage et l'élimination à la racine, à 1 500",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 54.3,
+   "lo": 49.3,
+   "hi": 59.4,
+   "verdict": "tendance",
+   "when": "06/10 02:34",
+   "note": "300 parties, lancé à la main par Sami. Même coût par itération que le V1 (743 contre 752 µs) : à temps égal. Le meilleur résultat du plan des 55 %, pas encore décidé."
   }
  ],
  "commitLabels": {
@@ -706,13 +717,17 @@
   "e2cc4fc": [
    "oracle",
    "Le duel pour l'honneur en file"
+  ],
+  "3ceefed": [
+   "oracle",
+   "Le duel pour l'honneur : 50,0 %"
   ]
  },
  "next": [
   {
-   "when": "Bilan",
-   "title": "Aucune version ne bat le V1",
-   "text": "DistOracle1Root 50,5 % (2 000 parties), RootHalving 49,5 % (validation courte), Tree-10c-4r 49,4 %, NoConnector 48,6 %, B1Lite1 47,0 %. La racine n'est pas le point faible : la piste C1 (les réponses adverses regroupées) vise l'arbre sous les candidats."
+   "when": "Prochain",
+   "title": "RootHalving-Tree-5r en validation longue",
+   "text": "54,3 % sur 300 parties à 1 500 : la largeur (5 réponses) avec l'élimination à la racine. 4 duels de 250 parties à 2 000 (1000-500-500), avec la règle d'arrêt ; et une validation courte de Tree-5r seul (sans RootHalving) pour savoir laquelle des deux paie."
   },
   {
    "when": "Piste",
@@ -853,6 +868,12 @@
    "label": "npm run distill -- --keys pairDiscount --name pair (6 fils)",
    "doneAt": "2026-10-05T19:35",
    "minutes": 15
+  },
+  {
+   "id": "duel-rh-tree5r",
+   "label": "RootHalving-Tree-5r contre le V1 à 1 500, 300 parties (lancé à la main, 23 fils)",
+   "doneAt": "2026-10-06T02:34",
+   "minutes": 26
   }
  ]
 }

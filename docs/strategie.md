@@ -2395,3 +2395,12 @@ longue.
 côtés, 300 parties, 0 h 58 – 1 h 23) : **50,0 % (45,0 – 55,0)**, 48,0 % en commençant, 52,0 % en
 second. Une égalité parfaite : un arbre plus étroit et plus profond, avec l'élimination à la racine,
 joue aussi bien que le V1, ni mieux ni moins bien.
+
+**Plus large dans l'arbre : `RootHalving-Tree-5r`** (Sami, 06/10, lancé à la main : à chaque étage, le
+cœur propose 5 réponses au lieu de 3 ; l'élimination à la racine en 750 / 375 / 375 ; 1 500
+itérations des deux côtés, 300 parties, 2 h 08 – 2 h 34) : **54,3 % (49,3 – 59,4)**, 52,0 % en
+commençant, 56,7 % en second. Le meilleur résultat contre le V1 du plan des 55 %, pas encore décidé
+(la fourchette basse touche 50 %). Le coût par itération est le même (au repos, 743 et 748 µs contre
+752 : le cœur note tous les coups à chaque étage, en garder 5 au lieu de 3 ne coûte rien) : le duel
+était bien à temps égal. C'est la première largeur qui ne perd pas à ce budget : `Tree-10c-4r`
+élargissait aussi la racine (10 candidats) et faisait 49,4 %.
