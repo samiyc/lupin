@@ -213,6 +213,7 @@ version :
 | `NoConnector` | le V1 sans l'idée `connector` | `…+core=v1nc` |
 | `Tree-10c-4r` | l'arbre à 10 candidats et 4 réponses par étage | `ismcts+candidates=10+widen=4…` |
 | `Tree-5r` | le V1 avec 5 réponses par étage au lieu de 3 (même profondeur, UCB à la racine) | `ismcts+widen=5+depth=5+…` |
+| `Tree-6r`, `Tree-7r` | le V1 avec 6 ou 7 réponses par étage (profondeur 5, UCB à la racine) | `ismcts+widen=6+depth=5+…` |
 | `RootHalving-Tree-5r` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
 | `RootHalving-Tree-2r-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |
