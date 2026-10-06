@@ -211,11 +211,11 @@ version :
 | `DistOracle1` | le même, partout | `…+core=dist1` |
 | `DistOraclePair` | la remise sur une paire réglée sur l'oracle (B3) | `…+core=distpair` |
 | `NoConnector` | le V1 sans l'idée `connector` | `…+core=v1nc` |
-| `Tree-10c-4r` | l'arbre à 10 candidats et 4 réponses par étage | `ismcts+candidates=10+widen=4…` |
-| `Tree-5r` | le V1 avec 5 réponses par étage au lieu de 3 (même profondeur, UCB à la racine) | `ismcts+widen=5+depth=5+…` |
-| `Tree-6r`, `Tree-7r` | le V1 avec 6 ou 7 réponses par étage (profondeur 5, UCB à la racine) | `ismcts+widen=6+depth=5+…` |
-| `RootHalving-Tree-5r` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
-| `RootHalving-Tree-2r-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
+| `Tree-10c-4w` | l'arbre à 10 candidats et 4 réponses par étage (`widen`) | `ismcts+candidates=10+widen=4…` |
+| `Tree-5w` | le V1 avec 5 réponses par étage (`widen=5`) au lieu de 3 (même profondeur, UCB à la racine) | `ismcts+widen=5+depth=5+…` |
+| `Tree-6w`, `Tree-7w` | le V1 avec 6 ou 7 réponses par étage (profondeur 5, UCB à la racine) | `ismcts+widen=6+depth=5+…` |
+| `RootHalving-Tree-5w` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
+| `RootHalving-Tree-2w-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |
 | `EarlyBudget-4000-750` | plus d'itérations aux tours 1-12, moins ensuite, même total | `phase:13:…@4000/…@750` |
 | `InferLast3` | la main adverse devinée d'après ses 3 derniers coups | `…+infer=48+memory=3` |
@@ -236,6 +236,11 @@ VALIDATE_CORE_@_NoConnector       cœur contre cœur
 
 Une série de plus de 9 duels numérote sur deux chiffres, pour garder la colonne fixe :
 `VALIDATE_LONG_01_RootHalving-Tree-5r` à `VALIDATE_LONG_12_RootHalving-Tree-5r`.
+
+**Les lettres des noms d'arbre** (Sami, 06/10) : `c` les candidats à la racine (`candidates`),
+`w` les réponses par étage (`widen`), `d` la profondeur (`depth`) : `Tree-10c-4w`, `Tree-5w`,
+`RootHalving-Tree-2w-6d`. Les jobs lancés avant le 06/10 au matin gardent l'ancien `r` (pour
+réponses) : `VALIDATE_LONG_01_RootHalving-Tree-5r`, `VALIDATE_LONG_1_Tree-5r`.
 
 Les autres jobs (construire des positions de l'oracle, mesurer, régler) n'ont pas à suivre ces
 largeurs ; seuls les jobs lancés en groupe gardent le même gabarit.
