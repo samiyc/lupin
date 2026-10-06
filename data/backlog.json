@@ -910,6 +910,76 @@
       "doneAt": "2026-10-06T14:28",
       "minutes": 0,
       "reason": "VALIDATE_LONG_1_FirstExplo6-Tree-7w + VALIDATE_LONG_2_FirstExplo6-Tree-7w : 48.2 % réunis, sous 50 %"
+    },
+    {
+      "id": "VALIDATE_LONG_1_FirstExplo8-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.8@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo8-Tree-7w : Tree-7w avec une exploration de 0,8 au lieu de 0,7 partout où joue le premier joueur, racine comprise (Sami, 06/10 : l'inverse de FirstExplo6, qui perd 6 points contre Tree-7w). Contre le V1 à 2 000, sur les donnes de Tree-7w. Jeu de donnes 1 sur 4, avec la règle d'arrêt.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_2_FirstExplo8-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.8@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo8-Tree-7w : Tree-7w avec une exploration de 0,8 au lieu de 0,7 partout où joue le premier joueur, racine comprise (Sami, 06/10 : l'inverse de FirstExplo6, qui perd 6 points contre Tree-7w). Contre le V1 à 2 000, sur les donnes de Tree-7w. Jeu de donnes 2 sur 4, avec la règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo8-Tree-7w"
+          ],
+          "below": 0.47
+        }
+      ]
+    },
+    {
+      "id": "VALIDATE_LONG_3_FirstExplo8-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.8@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo8-Tree-7w : Tree-7w avec une exploration de 0,8 au lieu de 0,7 partout où joue le premier joueur, racine comprise (Sami, 06/10 : l'inverse de FirstExplo6, qui perd 6 points contre Tree-7w). Contre le V1 à 2 000, sur les donnes de Tree-7w. Jeu de donnes 3 sur 4, avec la règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo8-Tree-7w"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo8-Tree-7w",
+            "VALIDATE_LONG_2_FirstExplo8-Tree-7w"
+          ],
+          "below": 0.5
+        }
+      ]
+    },
+    {
+      "id": "VALIDATE_LONG_4_FirstExplo8-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.8@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo8-Tree-7w : Tree-7w avec une exploration de 0,8 au lieu de 0,7 partout où joue le premier joueur, racine comprise (Sami, 06/10 : l'inverse de FirstExplo6, qui perd 6 points contre Tree-7w). Contre le V1 à 2 000, sur les donnes de Tree-7w. Jeu de donnes 4 sur 4, avec la règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo8-Tree-7w"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_FirstExplo8-Tree-7w",
+            "VALIDATE_LONG_2_FirstExplo8-Tree-7w"
+          ],
+          "below": 0.5
+        }
+      ]
     }
   ]
 }
