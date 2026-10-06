@@ -2502,3 +2502,43 @@ avant, il prend la première jamais jouée. Part des choix faits par UCB, étage
 Avec 7 réponses, l'arbre n'apprend vraiment que sur deux étages : ses propres candidats et les
 réponses adverses ; la profondeur 5 ne sert presque plus. Ce qui paie dans la largeur, c'est de
 voir plus de réponses adverses au premier étage, pas de voir plus loin.
+
+## FirstExplo : moins d'exploration pour le premier joueur (06/10, après-midi)
+
+**L'idée** (Sami) : les erreurs du premier joueur coûtent le plus. Au tour critique, aux tours
+impairs 13 à 21, celles du premier joueur coûtent ≈ 24 points en moyenne, contre ≈ 10,5 pour
+celles du second, aux tours pairs 14 à 20. Une exploration plus basse sur ses coups
+concentrerait les itérations sur ses finalistes.
+
+**`+firstExploration=0.6`** (`src/sim/ismcts.js`, `explorationAt`) : UCB prend c = 0,6 partout
+où joue le premier joueur (toujours le joueur 0), racine comprise, dans l'arbre des deux sièges ;
+les nœuds du second gardent 0,7. Avec 7 réponses par étage, UCB ne choisit vraiment qu'à la
+racine et au premier étage (voir plus haut) : en pratique, l'option règle la racine quand le
+robot commence, et les réponses qu'il attend du premier joueur quand il est second. Sans la clé,
+rien ne change (empreintes du 1.0 et du 0.9 identiques).
+
+**Le banc des finalistes** (`$CLAUDE_JOB_DIR/tmp/finalists.mjs`, Tree-7w à 2 000, 100 positions
+des tours 12 à 21 de 10 parties du cœur, deux graines chacune) :
+
+| c du premier joueur | Racine : part du 1er candidat | des 2 premiers | Étage 1 : part de la 1re réponse | Coup joué identique avec 2 graines (racine du 1er joueur) |
+| --- | --- | --- | --- | --- |
+| 0,4 | 40,4 % | 62,8 % | 12,0 % | 19 / 50 |
+| 0,5 | 37,3 % | 57,3 % | 10,8 % | 15 / 50 |
+| **0,6** | **31,7 %** | **52,5 %** | 9,6 % | 17 / 50 |
+| 0,7 (Tree-7w) | 28,5 % | 47,4 % | 8,7 % | 19 / 50 |
+| 0,8 | 26,2 % | 45,0 % | 7,9 % | 15 / 50 |
+
+- **Le gain en visites** : à 0,6, les deux finalistes reçoivent 1 051 visites sur 2 000 au lieu de
+  948 (+11 %) ; à 0,5, 1 145 (+21 %) ; à 0,4, 1 256 (+32 %).
+- **L'étage 1** : une réponse adverse n'y reçoit jamais beaucoup (la première, 9 % des
+  visites) : les 7 meilleures du cœur changent d'un monde tiré à l'autre, un nœud en accumule
+  bien plus que 7.
+- **Le bruit du coup joué** : à 2 000 itérations, avec deux graines différentes, Tree-7w ne
+  joue le même coup que dans 19 positions sur 50 ; la racine départage des candidats très
+  proches. Changer c change le coup dans 27 positions sur 50, autant que changer la graine, et
+  aucun c ne rend le choix plus stable. Le banc ne dit donc pas quel c joue le mieux : il dit
+  combien chacun concentre. Seuls les duels le disent.
+
+**La validation** : c = 0,6 (le choix de Sami, +11 % de visites aux finalistes), 4 duels contre
+le V1 sur les donnes 1 à 4 de Tree-7w (`VALIDATE_LONG_1..4_FirstExplo6-Tree-7w`), comparés partie
+par partie à Tree-7w.

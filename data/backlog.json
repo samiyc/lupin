@@ -836,6 +836,38 @@
       "doneAt": "2026-10-06T13:31",
       "minutes": 26,
       "output": "backlog-runs/2026-10-06-13-05_VALIDATE_LONG_6_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_FirstExplo6-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 1 sur 4, sans règle d'arrêt.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_2_FirstExplo6-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 2 sur 4, sans règle d'arrêt.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_3_FirstExplo6-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 3 sur 4, sans règle d'arrêt.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_4_FirstExplo6-Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+firstExploration=0.6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "FirstExplo6-Tree-7w : Tree-7w avec une exploration de 0,6 partout où joue le premier joueur, racine comprise (Sami, 06/10, le « tour critique »). Contre le V1 à 2 000, sur les donnes de Tree-7w pour la comparer partie par partie. Jeu de donnes 4 sur 4, sans règle d'arrêt.",
+      "status": "todo"
     }
   ]
 }

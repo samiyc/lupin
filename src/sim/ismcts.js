@@ -131,11 +131,21 @@ function creditShared(amaf, played, winner) {
   }
 }
 
+/**
+ * UCB's exploration at a node: `firstExploration` wherever the first player
+ * moves (player 0 always starts), the root included, whoever searches; the
+ * second player's nodes keep `exploration` (Sami, 06/10: the first player's
+ * mistakes cost the most, the « tour critique »). With 7 replies a node, UCB
+ * chooses at the root and the first ply, hardly further: in practice, the
+ * first player's own candidates, or the replies a second player expects.
+ */
+const explorationAt = (game, ctx) => (game.current === 0 ? (ctx.firstExploration ?? ctx.exploration) : ctx.exploration);
+
 /** The move taken at this ply: the root's halving, or UCB among the root's candidates or the core's shortlist. */
 function choiceAt(node, ply, game, ctx) {
   if (ply === 0 && ctx.halving) return rootChoice(node, ctx);
   const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx));
-  return select(node, moves, ctx, game.current);
+  return select(node, moves, { exploration: explorationAt(game, ctx), amaf: ctx.amaf, rave: ctx.rave }, game.current);
 }
 
 /** The walk down the tree: the path taken, and the moves made on it (`rave`). */
@@ -212,6 +222,7 @@ export function createIsmcts(state, scored, { policy, treePolicy, seed, ...setti
     .slice(0, candidates)
     .map(({ move }) => move);
   const ctx = { state, player: state.current, deals, rootMoves, judge: (treePolicy ?? policy)(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
+  ctx.firstExploration = settings.firstExploration;
   ctx.hands = guessedHands(state, ctx.judge, seed, settings);
   // `halving` (halving.js): the root's candidates in turn, the worse half dropped at each phase's end.
   const phases = parseHalving(settings.halving);
@@ -228,6 +239,8 @@ export function createIsmcts(state, scored, { policy, treePolicy, seed, ...setti
     rollouts: () => ctx.iterations,
     scored: rated,
     best: () => rated().reduce((a, b) => (b.gain > a.gain ? b : a)).move,
+    /** The tree itself, read by the finalists bench (scripts, not the game). */
+    tree: () => root,
   };
 }
 
@@ -293,7 +306,7 @@ export function ismctsBot(rng, { base, policy, name = "ismcts", budget = ISMCTS.
  * The settings an `ismcts` engine id names — `ismcts`, then `+depth=2`,
  * `+widen=6`, `+exploration=1`, `+sample=0.05` (sampled rollouts), `+exact=12`,
  * `+pivot=4`, `+hope=1` (`ismctsBot`), `+late=2+early=0.5`, `+smart=1` (`budget.js`),
- * `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+lite=1|2` (B1, bots.js), `+halving=1000-500-500` (halving.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
+ * `+firstExploration=0.6` (the first player's nodes, root included), `+pw=1`, `+rave=300`, `+infer=48` (`createIsmcts`, infer.js), `+memory=3` (`ismctsBot`), `+lite=1|2` (B1, bots.js), `+halving=1000-500-500` (halving.js), `+core=nb1`, `+shortlist=plain`, `+rollout=plain`
  * (named cores, experimental.js) — or null.
  */
 export function ismctsSettings(name) {
@@ -304,7 +317,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );
