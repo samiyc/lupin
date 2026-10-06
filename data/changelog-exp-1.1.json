@@ -571,6 +571,17 @@
    "verdict": "gagne",
    "when": "06/10 11:57",
    "note": "1 000 parties, au même coût par itération que le V1. +1,2 ± 3,8 points contre Tree-5w sur les mêmes donnes : un plateau de 5 à 7 réponses. Rien ne perd en commençant : pas d'option par siège."
+  },
+  {
+   "name": "Tree-7w confirmé : 500 parties de plus, sur des donnes nouvelles",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 54.4,
+   "lo": 52.1,
+   "hi": 56.7,
+   "verdict": "gagne",
+   "when": "06/10 13:40",
+   "note": "1 500 parties en tout (6 duels). Les donnes nouvelles (décalages 5 et 6) font 54,0 % : le score ne retombe pas. La candidate à l'Expérimental 1.1."
   }
  ],
  "commitLabels": {
@@ -781,13 +792,17 @@
   "4978e1f": [
    "oracle",
    "Tree-5w bat le V1 : 53,4 %"
+  ],
+  "fb5c521": [
+   "oracle",
+   "La courbe de largeur : un plateau de 5 à 7 réponses"
   ]
  },
  "next": [
   {
    "when": "Prochain",
-   "title": "L'Expérimental 1.1 : 5 à 7 réponses par étage",
-   "text": "La largeur paie de 3 à 5 réponses (+3,4 points), puis plafonne : Tree-5w 53,4 %, Tree-6w 52,5 %, Tree-7w 54,6 %, au même coût. Tree-7w a le meilleur score et la meilleure fourchette basse (51,9 %) ; à décider avec Sami."
+   "title": "FirstExplo6-Tree-7w, puis l'Expérimental 1.1",
+   "text": "Tree-7w tient sur 1 500 parties (54,4 %, 52,1 – 56,7). Avant de le promouvoir : une exploration de 0,6 au lieu de 0,7 partout où joue le premier joueur, racine comprise (le « tour critique » : ses erreurs coûtent le plus). Le banc des finalistes choisit c, puis 4 duels sur les donnes 1 à 4, comparés partie par partie à Tree-7w."
   },
   {
    "when": "Piste",

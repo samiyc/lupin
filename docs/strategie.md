@@ -2483,3 +2483,22 @@ pas, et rien n'est significatif. Pas d'option par siège.
 **La suite** : la largeur à retenir est entre 5 et 7, à coût égal ; 7 a le meilleur score et la
 meilleure fourchette basse. Pour l'Expérimental 1.1 (`ismcts+widen=7+depth=5+core=stfig6`), à
 décider avec Sami ; la version du robot n'a pas changé.
+
+**Tree-7w confirmé sur 1 500 parties** (Sami, 06/10 : 500 parties de plus avant d'en faire
+l'Expérimental 1.1 ; `VALIDATE_LONG_5` et `_6_Tree-7w`, donnes nouvelles, 12 h 39 – 13 h 40) :
+54,4 et 53,6 % sur les décalages 5 et 6, 54,0 % (49,9 – 58,1) à eux deux. Les six duels réunis :
+**54,4 % (52,1 – 56,7)**, 51,3 % en commençant, 57,5 % en second. Le score ne retombe pas sur
+d'autres donnes : la largeur 7 est la candidate à l'Expérimental 1.1.
+
+**Ce que la largeur fait à la profondeur** (06/10, 36 positions des tours 12 à 21, 2 000
+itérations) : un nœud ne choisit par UCB qu'une fois toutes ses réponses visitées une fois ;
+avant, il prend la première jamais jouée. Part des choix faits par UCB, étage par étage :
+
+| Étage | 0 (racine) | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- | --- |
+| 7 réponses par étage | 100 % | 82 % | 7 % | ~0 (173 passages sur 2 000) | ~0 (2) |
+| 3 réponses (V1) | 100 % | 88 % | 42 % | 7 % (811 passages) | 3 % (85) |
+
+Avec 7 réponses, l'arbre n'apprend vraiment que sur deux étages : ses propres candidats et les
+réponses adverses ; la profondeur 5 ne sert presque plus. Ce qui paie dans la largeur, c'est de
+voir plus de réponses adverses au premier étage, pas de voir plus loin.

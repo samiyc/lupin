@@ -814,6 +814,28 @@
       "doneAt": "2026-10-06T11:57",
       "minutes": 25,
       "output": "backlog-runs/2026-10-06-11-33_VALIDATE_LONG_4_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_5_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 5",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 500 parties de plus avant d'en faire l'Expérimental 1.1 (Sami, 06/10) — 54,6 % (51,9 – 57,3) sur les décalages 1 à 4. Jeu de donnes 5, nouveau, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T13:05",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-06-12-39_VALIDATE_LONG_5_Tree-7w.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_6_Tree-7w",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6@2000\" \"ismcts+widen=3+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 6",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "Tree-7w : 500 parties de plus avant d'en faire l'Expérimental 1.1 (Sami, 06/10) — 54,6 % (51,9 – 57,3) sur les décalages 1 à 4. Jeu de donnes 6, nouveau, sans règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-06T13:31",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-06-13-05_VALIDATE_LONG_6_Tree-7w.txt"
     }
   ]
 }

@@ -1194,7 +1194,7 @@ const WIDTHS = [
   { widen: 3, name: "V1", score: 50, lo: 50, hi: 50, games: 0 },
   { widen: 5, name: "Tree-5w", score: 53.4, lo: 50.6, hi: 56.2, games: 1000 },
   { widen: 6, name: "Tree-6w", score: 52.5, lo: 49.9, hi: 55.1, games: 1000 },
-  { widen: 7, name: "Tree-7w", score: 54.6, lo: 51.9, hi: 57.3, games: 1000 },
+  { widen: 7, name: "Tree-7w", score: 54.4, lo: 52.1, hi: 56.7, games: 1500 },
 ];
 const HALVING_5W = { widen: 5, name: "RootHalving-Tree-5w", score: 52.0, lo: 50.5, hi: 53.5, games: 3000 };
 
@@ -1222,7 +1222,7 @@ function drawWidth() {
   svg.append(make("text", { x: 8, y: 12, class: "label" }, "score contre le V1"));
   $("width-legend").replaceChildren(html("span", { class: "muted small" }, "barres : fourchette à 95 % ; en vert, validé (bas de fourchette au-dessus de 50 %) ; en gris, la même largeur 5 avec l'élimination à la racine (RootHalving)"));
   $("width-facts").replaceChildren(
-    html("li", {}, html("b", {}, "Le saut de 3 à 5 : "), "+3,4 points. Au-delà, un plateau : sur les mêmes 1 000 donnes, Tree-6w fait -0,9 ± 3,7 points contre Tree-5w, Tree-7w +1,2 ± 3,8. Les trois largeurs se valent, à la précision de 1 000 parties."),
+    html("li", {}, html("b", {}, "Le saut de 3 à 5 : "), "+3,4 points. Au-delà, un plateau : sur les mêmes 1 000 donnes, Tree-6w fait -0,9 ± 3,7 points contre Tree-5w, Tree-7w +1,2 ± 3,8. Les trois largeurs se valent, à la précision de 1 000 parties ; Tree-7w tient sur 500 parties de plus, sur des donnes nouvelles (54,4 % sur 1 500)."),
     html("li", {}, html("b", {}, "Pourquoi ça paie : "), "avec 3 réponses, l'arbre ne voit pas les parades que le cœur classe 4e ou 5e. Avec 5 à 7, il les trouve : plus de brelans, moins de côtés sans figure, 2,9 bornes gagnées par partie contre 2,7."),
     html("li", {}, html("b", {}, "Par siège : "), "le premier joueur gagne environ 48 % entre deux robots proches du V1. Le score d'un siège dans un duel dépend surtout des donnes (chacune jouée dans les deux sièges) ; comparées sur les mêmes donnes, les largeurs 6 et 7 ne perdent pas nettement en commençant (-3,4 et 0,0 point contre Tree-5w) : pas de largeur à choisir selon le siège."),
   );
