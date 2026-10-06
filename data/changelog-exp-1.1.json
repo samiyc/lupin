@@ -527,6 +527,28 @@
    "verdict": "tendance",
    "when": "06/10 02:34",
    "note": "300 parties, lancé à la main par Sami. Même coût par itération que le V1 (743 contre 752 µs) : à temps égal. Le meilleur résultat du plan des 55 %, pas encore décidé."
+  },
+  {
+   "name": "RootHalving-Tree-5w en validation longue : 5 réponses par étage et l'élimination à la racine, à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 52,
+   "lo": 50.5,
+   "hi": 53.5,
+   "verdict": "gagne",
+   "when": "06/10 07:15",
+   "note": "3 000 parties (12 duels, jobs …RootHalving-Tree-5r). Bat le V1, mais 48,3 % en commençant contre 55,7 % en second, et rien de plus que la largeur seule sur les mêmes donnes."
+  },
+  {
+   "name": "Tree-5w en validation longue : 5 réponses par étage, à 2 000",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 53.4,
+   "lo": 50.6,
+   "hi": 56.2,
+   "verdict": "gagne",
+   "when": "06/10 08:44",
+   "note": "1 000 parties (4 duels, jobs …Tree-5r). Bat le V1 avec un seul réglage changé (widen=3 → 5). Partie par partie sur les mêmes donnes : +0,5 ± 3,7 points sur RootHalving-Tree-5w. Le gain vient de la largeur ; l'élimination à la racine est écartée."
   }
  ],
  "commitLabels": {
@@ -721,13 +743,25 @@
   "3ceefed": [
    "oracle",
    "Le duel pour l'honneur : 50,0 %"
+  ],
+  "a0fcaa7": [
+   "oracle",
+   "La file de nuit : RootHalving-Tree-5w sur 3 000 parties, Tree-5w sur 1 000"
+  ],
+  "c39618b": [
+   "oracle",
+   "Tree-6w et Tree-7w en file"
+  ],
+  "5e1c7ff": [
+   "outils",
+   "Glossaire : w pour widen"
   ]
  },
  "next": [
   {
    "when": "Prochain",
-   "title": "RootHalving-Tree-5r en validation longue",
-   "text": "54,3 % sur 300 parties à 1 500 : la largeur (5 réponses) avec l'élimination à la racine. 4 duels de 250 parties à 2 000 (1000-500-500), avec la règle d'arrêt ; et une validation courte de Tree-5r seul (sans RootHalving) pour savoir laquelle des deux paie."
+   "title": "La courbe de largeur : Tree-6w et Tree-7w",
+   "text": "Tree-5w bat le V1 (53,4 %, 50,6 – 56,2). widen=6 et widen=7 en 4 duels de 250 parties à 2 000, jusque vers 12 h 40 : la largeur à retenir pour l'Expérimental 1.1, décidée avec Sami."
   },
   {
    "when": "Piste",

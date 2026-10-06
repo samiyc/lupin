@@ -2404,3 +2404,36 @@ commençant, 56,7 % en second. Le meilleur résultat contre le V1 du plan des 55
 752 : le cœur note tous les coups à chaque étage, en garder 5 au lieu de 3 ne coûte rien) : le duel
 était bien à temps égal. C'est la première largeur qui ne perd pas à ce budget : `Tree-10c-4r`
 élargissait aussi la racine (10 candidats) et faisait 49,4 %.
+
+### Les validations longues de la largeur : Tree-5w et RootHalving-Tree-5w (06/10, nuit)
+
+Les noms en `w` (widen) du glossaire ; les jobs, lancés avant le renommage, gardent leur `r`
+(`VALIDATE_LONG_01…12_RootHalving-Tree-5r`, `VALIDATE_LONG_1…4_Tree-5r`). Contre le V1
+(`ismcts+widen=3+depth=5+core=stfig6@2000`), 2 000 itérations des deux côtés, 18 fils, sans règle
+d'arrêt, 2 h 51 – 8 h 44 :
+
+| Version | Moteur | Parties | Score | Fourchette à 95 % | En commençant / en second |
+| --- | --- | --- | --- | --- | --- |
+| **Tree-5w** | `ismcts+widen=5+depth=5+core=stfig6@2000` | 1 000 (4 × 250) | **53,4 %** | **50,6 – 56,2** | 53,2 / 53,6 % |
+| RootHalving-Tree-5w | `…widen=5…+halving=1000-500-500@2000` | 3 000 (12 × 250) | 52,0 % | 50,5 – 53,5 | 48,3 / 55,7 % |
+
+Par duel : Tree-5w 53,2 / 52,8 / 56,0 / 51,6 % ; RootHalving-Tree-5w 56,4 / 50,4 / 53,6 / 51,2 /
+51,6 / 52,8 / 50,8 / 47,2 / 52,8 / 55,6 / 50,0 / 51,6 %.
+
+**Les deux battent le V1** (fourchette basse au-dessus de 50 %) : ce sont les deux premières
+versions validées du plan des 55 %. **Le gain vient de la largeur seule.** Sur les mêmes donnes
+(décalages 1 à 4, 1 000 parties appariées une à une), Tree-5w fait +0,5 point de plus que
+RootHalving-Tree-5w (± 3,7) ; 64 % des parties finissent pareil. L'élimination à la racine n'ajoute
+rien, comme sa validation courte à 3 réponses (49,5 %) le laissait prévoir : à 2 000 itérations,
+la façon de départager les candidats ne compte pas, ce que voit l'arbre sous eux, si.
+
+Ce qui change dans le jeu (`npm run versus`, labels `tree5w` et `rhtree5w`) : peu de choses au
+début ; au milieu et en fin de partie, plus de brelans (+1,3 à +2,6 points pour Tree-5w), moins
+de côtés sans figure (-1,4 à -1,6), moins de cartes posées à côté d'une borne perdue (-3,0) ;
+2,90 bornes gagnées par partie contre 2,71 (RootHalving-Tree-5w : 2,92 contre 2,69, la même forme). Voir 5 réponses adverses au lieu de 3 trouve les
+parades que le V1 ne regardait pas.
+
+**La suite** : RootHalving est écarté (du code en plus, sans gain). Tree-6w et Tree-7w (même
+moteur, `widen=6` et `widen=7`, 4 × 250 parties chacun) tournent jusque vers 12 h 40 et donnent la
+courbe de largeur au même budget. La version du robot ne change pas avant cette courbe et l'accord
+de Sami.
