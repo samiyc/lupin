@@ -81,3 +81,10 @@ export const favoritesOnly = (order, list, favorites) => keptOr(order, (index) =
 
 /** The order kept to the puzzles not yet solved — or left whole once every one is. */
 export const unsolvedOnly = (order, list, solved) => keptOr(order, (index) => !solved.has(list[index].id));
+
+/**
+ * How many of `ids` (solved, favourites: kept in the browser) are puzzles of
+ * `list`: an id whose puzzle left the file still sits in the browser, and must
+ * not count (06/10: 140 solved shown out of 145, 95 of them gone).
+ */
+export const countIn = (list, ids) => list.filter((puzzle) => ids.has(puzzle.id)).length;
