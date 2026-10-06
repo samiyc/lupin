@@ -89,7 +89,7 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   - **ce qui est coupé** : les coups hors des 8 et des 3, par le filtre du cœur, jamais regardés ;
     la profondeur, par le budget — 250 visites par candidat en moyenne, seuls les chemins qui
     gagnent atteignent le 4e ou 5e coup. L'oracle regarde tous les coups à la racine et 6
-    réponses : il lui faut 20 000 itérations, à 2 000 cela dilue les visites (`Tree-12c-4r`).
+    réponses : il lui faut 20 000 itérations, à 2 000 cela dilue les visites (`Tree-12c-4w`).
 - **Le candidat le plus visité** : chacun des 8 est d'abord essayé une fois (une sorte
   d'initialisation), puis les 1 992 itérations restantes se répartissent selon UCB : le taux de
   victoire du candidat, plus un bonus qui grandit pour ceux qu'on visite peu (0,7 × √(ln N / n),
@@ -103,6 +103,34 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   une part des visites. Sur 2 000 essais, deux candidats à 2 ou 3 points l'un de l'autre ne se
   distinguent pas du hasard des fins de partie (une simulation dans le changelog 1.1 : le
   candidat à 58 % reçoit 391 visites, celui à 56 % 504) ; le 0,7 dose cette exploration.
+- **Quand UCB choisit vraiment** : à un nœud, une réponse jamais essayée passe toujours avant
+  les autres ; UCB ne départage qu'une fois toutes les réponses du nœud essayées une fois. Comme
+  les réponses changent d'un monde tiré à l'autre, un nœud profond n'y arrive presque jamais.
+  Part des choix faits par UCB, mesurée à 2 000 itérations (36 positions des tours 12 à 21) :
+
+  | Étage | 0 (racine) | 1 | 2 | 3 | 4 |
+  | --- | --- | --- | --- | --- | --- |
+  | 3 réponses (V1) | 100 % | 88 % | 42 % | 7 % | 3 % |
+  | 7 réponses (`Tree-7w`) | 100 % | 82 % | 7 % | ~0 | ~0 |
+
+  Au-delà, l'arbre ne fait qu'essayer chaque réponse une fois : c'est un tour de rôle, pas un
+  choix.
+- **L'exploration** (`exploration`, c = 0,7 dans le V1) : le poids du bonus de curiosité d'UCB.
+  Plus grand, les visites s'étalent ; plus petit, elles se concentrent sur les finalistes.
+  Ce qui a été mesuré :
+  - **une autre valeur fixe** : 0,5 sur le 0.9, 56,9 % au tri puis 49,0 % en duel long ; 1,0,
+    52,8 % au tri (02/10). Le score bouge peu avec c ;
+  - **une exploration qui baisse au fil des itérations** (`ExploreDecay`, l'idée de Sami du
+    05/10, une sigmoïde de 0,9 à 0,4) : pas écrite. Le coup joué étant le plus visité, une
+    exploration qui s'effondre après 1 000 itérations entérine le favori du moment au lieu de le
+    vérifier ; c'est l'élimination par moitiés (`RootHalving`) qui a été essayée à la place ;
+  - **`firstExploration`** (`FirstExplo6-Tree-7w`, 06/10) : c = 0,6 partout où joue le
+    premier joueur, racine comprise. À la racine de Tree-7w, ses deux finalistes reçoivent 52,5 %
+    des visites au lieu de 47,4 % (+11 %) ; 57,3 % à 0,5, 62,8 % à 0,4 (le banc des finalistes).
+- **Le bruit du coup joué** : à 2 000 itérations, deux recherches de Tree-7w avec deux graines
+  différentes ne jouent le même coup que dans 19 positions sur 50 (tours 12 à 21). Les bons
+  candidats sont très proches : c'est pourquoi un réglage de la racine se juge en duels, jamais
+  sur le coup qu'il change.
 - **Une réponse** (un nœud) : **une carte précise sur une borne précise** (`7♠@4`) ; deux
   réponses ne se confondent que si c'est la même carte, couleur comprise, sur la même borne. Le
   paquet a 41 cartes différentes (les 2 jokers sont identiques), soit 287 coups possibles en
@@ -126,6 +154,10 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
     l'arbre ne voit pas les ripostes ; 5 couvre mon coup, sa réponse, mon coup, sa réponse, mon
     coup. Le 0.9 a pris 3 réponses sur 5 coups plutôt que 4 réponses sur 3 : un arbre plus
     étroit va plus loin pour le même nombre d'itérations.
+  - **Avec 7 réponses** (`Tree-7w`, 06/10), l'arbre ne va plus aussi loin : à 2 000 itérations,
+    3e étage atteint 173 fois sur 2 000, 4e étage 2 fois. La profondeur 5 ne sert presque plus ;
+    ce qui paie, c'est de voir plus de réponses adverses au 1er étage (voir « Quand UCB choisit
+    vraiment »).
   - D'où `B1Lite1` : un cœur moins juste dans la simulation n'ajoute que du bruit au résultat,
     qui se moyenne sur 2 000 itérations ; dans l'arbre (`B1Lite2`, 47,3 %), ce sont les choix
     eux-mêmes qui se dégradent.
@@ -155,9 +187,12 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   jusqu'à 10 s par coup (environ 13 000 itérations).
 - **Une paire** : une même donne jouée deux fois, chaque version commençant une fois. La chance
   des cartes s'y annule en grande partie ; le score d'une paire va de 0 à 1.
-- **Un jeu de donnes** (`--offset N`) : une série de donnes tirées d'une graine ; l'offset 0 est
-  celui des tris, les offsets 1 à 4 ceux des validations longues (jamais les donnes qui ont fait
-  choisir une version).
+- **Un jeu de donnes** (`--offset N`) : une série de donnes tirées d'une graine
+  (`SEED + 1 000 003 × N`) ; l'offset 0 est celui des tris, les offsets 1 à 4 ceux des
+  validations longues (jamais les donnes qui ont fait choisir une version), 5 et au-delà les
+  séries de confirmation (Tree-7w, 06/10). **Un même offset donne les mêmes donnes, dans le même
+  ordre et aux mêmes sièges, quelle que soit la version** : deux versions validées sur les
+  offsets 1 à 4 se comparent partie par partie (voir « Les sièges »).
 - **La fourchette à 95 %** : l'intervalle où se trouve très probablement le vrai score. Environ
   ±5,5 points sur 250 parties, ±4,5 sur 400, ±2,7 sur 1 000. **Une version est meilleure quand
   la fourchette basse dépasse 50 %**, sur 1 000 parties.
@@ -169,6 +204,31 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
   coup ; `1k@2k` : 1 000 parties à 2 000 itérations par coup.
 - **L'empreinte** (`npm run fingerprint`) : une signature de tous les coups de parties fixes. Une
   optimisation qui la laisse identique ne change aucun coup : pas besoin de la valider en parties.
+
+## Les sièges
+
+- **Le premier joueur** : toujours le joueur 0 (une partie commence avec `current: 0`) ; dans un
+  duel, chaque donne est jouée deux fois, chaque version commençant une fois (une paire).
+- **L'avantage du second** : entre deux robots proches du V1 à 2 000 itérations, le premier
+  joueur gagne **48,1 %** des parties (12 200 parties) ; 44,9 % au 1.0 contre lui-même à 800.
+  « 51,3 % en commençant, 57,5 % en second » (Tree-7w) se lit donc contre ≈ 48 et ≈ 52, pas
+  contre 50.
+- **Le tour critique** (`npm run error-impact`, 02/10, le 0.9 contre lui-même) : une erreur au
+  hasard coûte, aux tours impairs 13 à 21 (le premier joueur), ≈ 24 points de chances de gagner
+  en moyenne ; aux tours pairs 14 à 20 (le second), ≈ 10,5. Le premier joueur a moins droit à
+  l'erreur : c'est l'idée de `FirstExplo`.
+- **Le biais de siège des donnes** : une donne peut favoriser le premier joueur ; jouée dans les
+  deux sièges, elle gonfle le « en commençant » d'une version et creuse son « en second » dans le
+  même duel. Le score total annule ce biais (c'est le but des paires), pas le partage par siège :
+  125 parties par siège et par duel, c'est **± 8,8 points**. Au décalage 1, Tree-5w, 6w et 7w
+  font tous 58 à 61 % en commençant et 48 à 50 % en second ; aux décalages 3 et 4, l'inverse.
+- **Comparer sur les mêmes donnes** : deux versions jouées sur le même offset se comparent partie
+  par partie (même fichier de duel trié, même numéro de partie, `duels/index.json`) : leurs
+  graines de recherche diffèrent, mais pas les mains. Deux largeurs de l'arbre finissent une
+  même partie de la même façon 64 % du temps ; l'écart garde ± 3,7 points sur 1 000 parties
+  (au lieu de ± 2,7 contre le V1 pour chacune, mais sans le bruit des donnes). Par siège, sur les
+  mêmes donnes : ± 5 points. C'est la seule façon propre de dire qu'une version fait mieux en
+  commençant qu'une autre.
 
 ## Les étapes d'une validation
 

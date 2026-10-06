@@ -2388,7 +2388,9 @@ départager les candidats ne change rien de visible. Avec ce qu'on sait de l'arb
 partie (il ne fait que comparer ses 8 candidats) et de `DistOracle1Root` (mieux les choisir ne
 paie pas), la racine du V1 n'est pas son point faible : les écarts entre ses bons candidats sont
 trop petits pour que la façon de les départager compte, à 2 000 itérations. Pas de validation
-longue.
+longue. Avec 5 réponses par étage, `RootHalving-Tree-5w` a eu ses validations longues (52,0 % sur
+3 000 parties) : rien de plus que la largeur seule, écarté (voir « Les validations longues de la
+largeur »).
 
 **Le duel pour l'honneur** (Sami, 06/10 : `RootHalving-Tree-2r-6d`, l'élimination à la racine en
 750 / 375 / 375 avec un arbre de 2 réponses sur 6 coups, contre le V1, 1 500 itérations des deux
@@ -2477,6 +2479,23 @@ compare deux largeurs dans le même siège sur les mêmes donnes :
 | Tree-7w − Tree-5w | 0,0 ± 5,5 | +2,4 ± 5,3 |
 | RootHalving-Tree-5w − Tree-5w | -5,0 ± 5,4 | +4,0 ± 5,0 |
 
+Le partage par siège, duel par duel (en commençant / en second, 125 parties par case, ± 8,8
+points) : la forme de chaque ligne vient des donnes, pas de la largeur.
+
+| Donnes | Tree-5w | Tree-6w | Tree-7w |
+| --- | --- | --- | --- |
+| décalage 1 | 58,4 / 48,0 | 60,8 / 49,6 | 57,6 / 50,4 |
+| décalage 2 | 55,2 / 50,4 | 50,4 / 53,6 | 52,0 / 57,6 |
+| décalage 3 | 49,6 / 62,4 | 40,0 / 52,8 | 48,8 / 58,4 |
+| décalage 4 | 49,6 / 53,6 | 48,0 / 64,8 | 54,4 / 57,6 |
+| décalage 5 | — | — | 49,6 / 59,2 |
+| décalage 6 | — | — | 45,6 / 61,6 |
+
+Les donnes sont bien les mêmes d'une version à l'autre pour un même décalage (graine
+`SEED + 1 000 003 × décalage`, `scripts/duel.js`) : les 250 parties du décalage 1 concordent
+une à une entre les quatre versions (force des mains, jokers de départ, qui commence). Seul le
+hasard des recherches diffère.
+
 Tree-7w ne perd rien en commençant : l'hypothèse « plus large coûte au premier joueur » ne tient
 pas, et rien n'est significatif. Pas d'option par siège.
 
@@ -2538,6 +2557,14 @@ des tours 12 à 21 de 10 parties du cœur, deux graines chacune) :
   proches. Changer c change le coup dans 27 positions sur 50, autant que changer la graine, et
   aucun c ne rend le choix plus stable. Le banc ne dit donc pas quel c joue le mieux : il dit
   combien chacun concentre. Seuls les duels le disent.
+
+**L'exploration avant FirstExplo** : une valeur fixe a déjà été essayée sur le 0.9 (0,5 : 56,9 %
+au tri, 49,0 % en duel long ; 1,0 : 52,8 % au tri, 02/10) ; le score bouge peu avec c. Une
+exploration qui baisse au fil des itérations (`ExploreDecay`, Sami, 05/10 : 0,9 puis 0,4, ou une
+sigmoïde) n'a pas été écrite : le coup joué étant le plus visité, une exploration qui s'effondre
+après 1 000 itérations entérine le favori du moment au lieu de le vérifier. L'élimination par
+moitiés à la racine (`RootHalving`) l'a remplacée, neutre. `FirstExplo` est la première à ne
+toucher qu'un joueur.
 
 **La validation** : c = 0,6 (le choix de Sami, +11 % de visites aux finalistes), 4 duels contre
 le V1 sur les donnes 1 à 4 de Tree-7w (`VALIDATE_LONG_1..4_FirstExplo6-Tree-7w`), comparés partie

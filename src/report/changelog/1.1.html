@@ -442,6 +442,27 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       <div class="legend" id="width-legend"></div>
       <ul class="facts" id="width-facts"></ul>
     </div>
+    <div class="panel">
+      <h3 class="small-title">Les sièges : qui commence, et comment comparer</h3>
+      <div class="grid2">
+        <ul class="facts">
+          <li><b>Le premier joueur</b> est toujours le joueur 0 ; dans un duel, chaque donne est jouée deux fois, chaque version commençant une fois (une paire).</li>
+          <li><b>Jouer second est un léger avantage</b> : entre deux robots proches du V1 à 2 000, le premier joueur gagne 48,1 % des parties (12 200 parties ; 44,9 % au 1.0 contre lui-même à 800). « 51,3 % en commençant, 57,5 % en second » (Tree-7w) se lit contre ≈ 48 et ≈ 52.</li>
+          <li><b>Le biais de siège des donnes</b> : une donne qui favorise le premier joueur gonfle le « en commençant » d'une version et creuse son « en second » dans le même duel. Le score total l'annule, pas le partage par siège : 125 parties par siège et par duel, c'est ± 8,8 points. Au décalage 1, Tree-5w, 6w et 7w font tous 58 à 61 % en commençant.</li>
+          <li><b>Comparer sur les mêmes donnes</b> : un même décalage donne les mêmes donnes à toutes les versions (graine + 1 000 003 × décalage). Deux versions se comparent alors partie par partie : ± 3,7 points sur 1 000 parties, ± 5 par siège, sans le bruit des donnes.</li>
+        </ul>
+        <div>
+          <div class="scroll"><table>
+            <thead><tr><th>Une erreur au hasard au tour…</th><th>Qui joue</th><th class="num">Ce qu'elle coûte</th></tr></thead>
+            <tbody>
+              <tr><td>13, 15, 17, 19, 21</td><td>le premier joueur</td><td class="num">≈ 24 points</td></tr>
+              <tr><td>14, 16, 18, 20</td><td>le second</td><td class="num">≈ 10,5 points</td></tr>
+            </tbody>
+          </table></div>
+          <p class="small">Le tour critique (<code>npm run error-impact</code>, 02/10, le 0.9 contre lui-même) : en milieu de partie, les erreurs du premier joueur coûtent deux fois plus. C'est l'idée de FirstExplo : moins d'exploration, donc plus de visites pour ses finalistes. En comparant les largeurs sur les mêmes donnes, rien ne perd nettement en commençant (Tree-7w : 0,0 point contre Tree-5w) : la largeur ne se choisit pas selon le siège.</p>
+        </div>
+      </div>
+    </div>
     <div class="grid2">
       <div class="panel">
         <h3 class="small-title">Où sert le cœur, par coup</h3>
@@ -463,7 +484,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
           <li><b>648 chemins</b> de 5 coups au plus dans l'arbre (8 × 3⁴), un peu plus en pratique : les 3 réponses changent avec la main adverse imaginée.</li>
           <li><b>2 000 fins de partie</b>, toutes différentes : un tirage et une fin par itération.</li>
           <li><b>≈ 10⁵⁰ parties possibles</b> en tout (35 coups, 20 à 40 choix chacun) : d'où les deux filtres, le cœur (8, puis 3) et le tirage (2 000 mondes).</li>
-          <li><b>La profondeur 5</b> : l'arbre apprend sur 5 coups (au-delà, trop peu de visites, du bruit) ; la fin de partie, jouée sans rien retenir, sert seulement à dire qui gagne.</li>
+          <li><b>La profondeur 5</b> : l'arbre apprend sur 5 coups au plus (au-delà, trop peu de visites, du bruit) ; la fin de partie, jouée sans rien retenir, sert seulement à dire qui gagne. Avec 7 réponses par étage, il n'en apprend plus que 2 : le 3e étage n'est atteint que 173 fois sur 2 000.</li>
         </ul>
       </div>
     </div>
@@ -1185,7 +1206,10 @@ function drawUcbRace() {
     html("li", {}, html("b", {}, "À N = 2 000 : "), `le bonus vaut ${at(500)} pour un candidat visité 500 fois, ${at(100)} pour 100 visites, ${at(25)} pour 25. Un candidat à 50 % visité 100 fois note donc 0,50 + ${at(100)} ≈ ${fr(0.5 + bonusOf(2000, 100), 2)}, autant qu'un candidat à 60 % visité 500 fois (0,60 + ${at(500)} ≈ ${fr(0.6 + bonusOf(2000, 500), 2)}) : le moins bon garde une part des visites, pour vérifier qu'on ne l'a pas sous-estimé.`),
     html("li", {}, html("b", {}, "Le résultat : "), `dans cette simulation, le candidat à ${pctText(chances[best])} reçoit ${visits[best]} visites sur 2 000, le moins bon ${Math.min(...visits)} ; les candidats proches (52 à 58 %) se partagent l'essentiel. C'est la forme mesurée sur une vraie recherche au tour 1 : 503, 371, 287, 222, 220, 165, 134, 98.`),
     html("li", {}, html("b", {}, "Les candidats proches : "), `le meilleur réel (${pctText(chances[0])}) reçoit ${visits[0]} visites, pas forcément le plus : sur 2 000 essais, 2 ou 3 points d'écart ne se distinguent pas du hasard des fins de partie. Le coup joué est alors l'un des bons, rarement le meilleur à coup sûr — une raison pour laquelle plus d'itérations rendent le robot plus fort.`),
-    html("li", {}, html("b", {}, "Le 0,7 : "), "il dose l'exploration. Plus grand, les visites s'étalent (plus de vérifications, moins de précision sur le meilleur) ; plus petit, l'arbre s'enferme plus vite sur son premier favori, au risque de rater un meilleur coup mal parti."),
+    html("li", {}, html("b", {}, "Le 0,7 : "), "il dose l'exploration. Plus grand, les visites s'étalent (plus de vérifications, moins de précision sur le meilleur) ; plus petit, l'arbre s'enferme plus vite sur son premier favori, au risque de rater un meilleur coup mal parti. Essayé : 0,5 sur le 0.9 (49,0 % en duel long), 1,0 (52,8 % au tri) — le score bouge peu avec c. Une exploration qui baisse au fil des itérations n'a pas été écrite : le coup joué étant le plus visité, elle entérinerait le favori du moment au lieu de le vérifier."),
+    html("li", {}, html("b", {}, "0,6 pour le premier joueur (FirstExplo, en validation) : "), "partout où joue le premier joueur, racine comprise. À la racine de Tree-7w, les deux finalistes reçoivent 52,5 % des visites au lieu de 47,4 % (+11 %) ; 57,3 % à 0,5, 62,8 % à 0,4."),
+    html("li", {}, html("b", {}, "Sous la racine : "), "un nœud prend toujours d'abord une réponse jamais essayée ; UCB ne départage qu'une fois toutes essayées. Part des choix faits par UCB à 2 000 itérations, étages 0 à 4 : 100, 88, 42, 7, 3 % avec 3 réponses ; 100, 82, 7, ~0, ~0 % avec 7. Au-delà, c'est un tour de rôle."),
+    html("li", {}, html("b", {}, "Le bruit du coup joué : "), "deux recherches de Tree-7w avec deux graines différentes jouent le même coup dans 19 positions sur 50 (tours 12 à 21). Les bons candidats sont si proches qu'un réglage de la racine se juge en duels, pas sur le coup qu'il change."),
   );
 }
 
