@@ -17,6 +17,7 @@ const RERUN = [
   { a: "experimental@0.8", b: "experimental@0.7", engines: ["ismcts@800", "experimental@800"] },
   { a: "experimental@0.9", b: "experimental@0.8", engines: ["ismcts+widen=3+depth=5@800", "ismcts@800"] },
   { a: "experimental@1.0", b: "experimental@0.9", engines: ["ismcts+widen=3+depth=5+core=stfig6@800", "ismcts+widen=3+depth=5@800"] },
+  { a: "experimental@1.1", b: "experimental@1.0", engines: ["ismcts+widen=7+depth=5+core=stfig6@2000", "ismcts+widen=3+depth=5+core=stfig6@2000"] },
 ];
 
 function duel([a, b]) {

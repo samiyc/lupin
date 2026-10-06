@@ -171,7 +171,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   (`--long --games 125 --page --offset 0` to `3`, 1 000 games), pooled over
   the deck pairs with `npm run versus`, the lower bound above 50 %. **Since
   04/10 the lab plays at 2 000 iterations** (Sami: the core got faster), both
-  sides: `…stfig6@2000` is the V1 to beat; the 1.0's own figures stay at 800. Before spending those, ask the
+  sides: `…stfig6@2000` was the V1 to beat; the 1.0's own figures stay at 800. **Since 06/10
+  the Expérimental 1.1 (`ismcts+widen=7+depth=5+core=stfig6@2000`, Tree-7w) is the version to beat**
+  (« V1.1 »); the 1.0 stays the reference of the oracle base and the banc (`V1_ENGINE`). Before spending those, ask the
   oracle: `npm run oracle -- --disagree <core>` says which of the two cores'
   favourites it plays where they differ, `--summary --core <core>` whether the
   oracle's move entered the core's top 8 (stfig6: 54 % → 66 %).

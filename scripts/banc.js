@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { BOT_LINEUP } from "../src/config/bots.js";
+import { V1_ENGINE } from "../src/config/bots.js";
 import { againstBase, bancVerdict, judge, pairedDiff, rankCorrelation, summarizeBanc } from "../src/replay/banc.js";
 import { ORACLE } from "../src/replay/oracle.js";
 import { loadGame, readIndex } from "./lib/game-index.js";
@@ -34,7 +34,7 @@ import { runPool } from "./lib/pool.js";
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 const ROOT = new URL("../", import.meta.url);
-const V1 = BOT_LINEUP.experimental.engine;
+const V1 = V1_ENGINE;
 const tested = args.find((arg, i) => !arg.startsWith("--") && !args[i - 1]?.startsWith("--")) ?? V1;
 const against = option("--against", V1);
 const positionsName = option("--positions", "banc");

@@ -182,7 +182,9 @@ un terme ne parle pas, on le change ici d'abord. Les commandes, elles, sont dans
 
 ## Mesurer une version
 
-- **V1** : la version à battre, l'Expérimental 1.0 (`ismcts+widen=3+depth=5+core=stfig6`), dans
+- **V1.1** : l'Expérimental 1.1 (`ismcts+widen=7+depth=5+core=stfig6@2000`, Tree-7w), sorti le 06/10 :
+  la version à battre depuis. Les mesures du 04/10 au 06/10 disent « contre le V1 » : c'est le 1.0.
+- **V1** : l'Expérimental 1.0 (`ismcts+widen=3+depth=5+core=stfig6`), dans
   le labo à 2 000 itérations par coup depuis le 04/10. On travaille toujours sur la dernière
   version : les nouvelles se nomment par ce qu'elles changent, sans numéro.
 - **Le labo** : les parties robot contre robot, hors du jeu. Dans le jeu, le robot réfléchit

@@ -1,6 +1,6 @@
 {
  "note": "Le carnet du 1.1 : les essais depuis la sortie du 1.0 (03/10 au soir). Lu par npm run changelog -- 1.1 (scripts/changelog.js, page src/report/changelog/1.1.html).",
- "period": "depuis le 03/10 au soir",
+ "period": "du 03/10 au soir au 06/10",
  "since": "2026-10-03 23:00",
  "lead": "Ce qui se cherche après le 1.0 : une base de référence où l'oracle sert d'étalon — ses parties entières contre le V1 et contre lui-même, les parties du V1 relues par l'oracle et inversement — pour juger une idée en minutes avant de lui donner des duels longs.",
  "families": {
@@ -19,7 +19,8 @@
   "temps": "arbre, à temps égal",
   "coeur": "cœur contre cœur",
   "banc": "banc de similitude",
-  "arbre2000": "arbre @2000, 400 parties"
+  "arbre2000": "arbre @2000, 400 parties",
+  "lineup": "contre le line-up, 300 parties"
  },
  "attempts": [
   {
@@ -593,9 +594,46 @@
    "verdict": "perd",
    "when": "06/10 14:28",
    "note": "48,4 puis 48,0 % ; la règle d'arrêt a annulé les duels 3 et 4. -6,2 ± 5,2 points contre Tree-7w sur les mêmes 500 parties, dans les deux sièges : vérifier plus paie, se concentrer plus non."
+  },
+  {
+   "name": "FirstExplo8-Tree-7w : exploration 0,8 pour le premier joueur, racine comprise",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 50,
+   "lo": 46.3,
+   "hi": 53.7,
+   "verdict": "neutre",
+   "when": "06/10 15:23",
+   "note": "49,2 puis 50,8 % ; arrêté à la main au duel 3. -4,4 ± 5,3 points contre Tree-7w sur les mêmes donnes, -8,0 en commençant : 0,6 et 0,8 font moins bien que 0,7, qui reste."
+  },
+  {
+   "name": "Expérimental 1.1 contre le Stratège 2.1",
+   "family": "sortie",
+   "bench": "lineup",
+   "score": 75.7,
+   "lo": 71.1,
+   "hi": 80.3,
+   "verdict": "gagne",
+   "when": "06/10 15:54",
+   "note": "300 parties, 2 000 itérations, règle de la page. Le 1.0 en gagnait 70,0 %. Elo du 1.1 : 985 ± 16 (le 1.0 : 954 ± 13)."
+  },
+  {
+   "name": "Expérimental 1.1 contre le Basique",
+   "family": "sortie",
+   "bench": "lineup",
+   "score": 93.3,
+   "lo": 90.6,
+   "hi": 96.1,
+   "verdict": "gagne",
+   "when": "06/10 16:10",
+   "note": "300 parties. Le 1.0 en gagnait 90,3 %."
   }
  ],
  "commitLabels": {
+  "1281651": [
+   "oracle",
+   "FirstExplo8 en file"
+  ],
   "e3c5fcc": [
    "reference",
    "Les outils de la base de référence : l'oracle sur n'importe quel corpus, le banc des cœurs, le V1 dans l'ombre de l'oracle"
@@ -819,13 +857,17 @@
   "6a3075b": [
    "outils",
    "Docs : les sièges, UCB et l'exploration"
+  ],
+  "50420be": [
+   "oracle",
+   "FirstExplo6 écarté"
   ]
  },
  "next": [
   {
-   "when": "Prochain",
-   "title": "L'Expérimental 1.1 : Tree-7w",
-   "text": "7 réponses par étage au lieu de 3, même coût : 54,4 % (52,1 – 56,7) contre le V1 sur 1 500 parties. FirstExplo (moins d'exploration pour le premier joueur) perd 6 points contre lui. À décider avec Sami."
+   "when": "Sorti",
+   "title": "L'Expérimental 1.1 : 7 réponses par étage",
+   "text": "Tree-7w devient l'Expérimental 1.1 (ismcts+widen=7+depth=5+core=stfig6@2000) : 54,4 % contre le 1.0 sur 1 500 parties, 75,7 % contre le Stratège 2.1, 93,3 % contre le Basique, Elo 985 ± 16. Le carnet du 1.2 reprendra d'ici."
   },
   {
    "when": "Piste",
@@ -973,5 +1015,6 @@
    "doneAt": "2026-10-06T02:34",
    "minutes": 26
   }
- ]
+ ],
+ "until": "2026-10-06 23:59"
 }

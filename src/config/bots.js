@@ -28,11 +28,11 @@ export const BOT_LINEUP = Object.freeze({
     pace: "≈ 0,5 s par coup",
   }),
   experimental: Object.freeze({
-    // 1.0: the 0.9's tree with the stfig core (oracle-ideas.js): it stays on its started sides while they
-    // can still become trips or a suited run — the oracle's habit, 56.1 % (53.2-59.1) over 480 deck pairs.
-    // The 0.9 is `ismcts+widen=3+depth=5@800`, the 0.8 `ismcts@800`.
-    engine: "ismcts+widen=3+depth=5+core=stfig6@800",
-    version: "1.0",
+    // 1.1 (Tree-7w, 06/10): the 1.0 with 7 replies a ply instead of 3, at the same cost per iteration —
+    // 54.4 % (52.1-56.7) over 1 500 games against the 1.0, both at 2 000 iterations, the lab's budget
+    // since 04/10. The 1.0 is `V1_ENGINE` below, the 0.9 `ismcts+widen=3+depth=5@800`.
+    engine: "ismcts+widen=7+depth=5+core=stfig6@2000",
+    version: "1.1",
     label: "Expérimental",
     description: "Il cherche en arbre",
     examines: "5 coups d'avance, la fin de partie calculée exactement",
@@ -45,6 +45,13 @@ export const BOT_LINEUP = Object.freeze({
 export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 
 /**
+ * The Expérimental 1.0, the « V1 »: the reference of the oracle base (`npm run
+ * shadow`) and of the similarity bench (`npm run banc`, its cache), which a
+ * new line-up version does not move. Its own figures were taken at 800.
+ */
+export const V1_ENGINE = "ismcts+widen=3+depth=5+core=stfig6@800";
+
+/**
  * The versions still shown — in the Elo table and the Stats tab — three at
  * most per bot (Sami, merlin-is-dead): with the human players, ten rows at
  * most. Older versions' games still count in the Elo fit; their engines are
@@ -53,7 +60,7 @@ export const BOT_IDS = Object.freeze(Object.keys(BOT_LINEUP));
 export const KEPT_VERSIONS = Object.freeze({
   basique: Object.freeze(["1.0"]),
   stratege: Object.freeze(["2.1", "2.0", "1.1"]),
-  experimental: Object.freeze(["1.0", "0.9", "0.8"]),
+  experimental: Object.freeze(["1.1", "1.0", "0.9"]),
 });
 
 /** "2.1.0" → "2.1": the version a game saved with three numbers stands for. */

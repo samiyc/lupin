@@ -2592,3 +2592,29 @@ La leçon rejoint la courbe de largeur : ici, ce qui paie, c'est de vérifier pl
 concentrer plus. Le tour critique dit que les erreurs du premier joueur coûtent le plus, mais
 moins explorer ne les évite pas. Une piste dans l'autre sens, non testée : plus d'exploration aux
 nœuds de l'adversaire (c = 0,8 à 1,0 au premier étage), comme une largeur de plus.
+
+**FirstExplo8-Tree-7w, l'autre sens** (Sami, 06/10 : 0,8 au lieu de 0,6, plus d'exploration pour le
+premier joueur ; 14 h 37 – 15 h 23) : 49,2 puis 50,8 %, **50,0 % (46,3 – 53,7)** sur 500 parties.
+Contre Tree-7w sur les mêmes donnes : **-4,4 ± 5,3** points, -8,0 ± 8,0 en commençant, -0,8 ± 7,0 en
+second. Arrêté à la main au duel 3 (Sami) : 0,6 et 0,8 font tous deux moins bien que 0,7, et
+surtout quand le robot commence. Rien ne dit qu'on gagne à toucher c ; 0,7 reste partout.
+
+## Expérimental 1.1 : 7 réponses par étage (06/10)
+
+Moteur : `ismcts+widen=7+depth=5+core=stfig6@2000` (Tree-7w). Le 1.0 reste
+`ismcts+widen=3+depth=5+core=stfig6@800` (`V1_ENGINE` dans `src/config/bots.js`, la référence de
+la base de l'oracle et du banc, que la sortie ne déplace pas).
+
+- **Ce qui change** : à chaque étage de l'arbre sous la racine, les 7 meilleures réponses du cœur
+  au lieu de 3. Même coût par itération (740 à 756 µs au repos pour les largeurs 3 à 7) : le
+  cœur note tous les coups d'un nœud de toute façon.
+- **La mesure** : 54,4 % (52,1 – 56,7) contre le 1.0 sur 1 500 parties, six jeux de donnes, 2 000
+  itérations des deux côtés (dont 54,0 % sur deux jeux de donnes nouveaux). Plus de brelans, moins
+  de côtés sans figure, 2,89 bornes gagnées par partie contre 2,69.
+- **Le budget de la gamme passe de 800 à 2 000 itérations** pour les duels hors de la page : c'est
+  le budget du labo depuis le 04/10, celui où la largeur a été validée (à 800, une largeur de 7
+  n'a pas été mesurée). Dans la page, rien ne change : jusqu'à 10 s par coup, environ 13 000
+  itérations.
+- **Ce qui a été essayé autour et écarté** : la largeur 5 et 6 (un plateau, 5 à 7 se valent),
+  l'élimination par moitiés à la racine, une exploration différente pour le premier joueur (0,6
+  et 0,8).

@@ -98,6 +98,27 @@
       "wins": 271,
       "games": 300,
       "source": "duel de 300 parties du 03/10, règle de la page, gardé dans duels/ : 90,3 % (87,2 – 93,5 par paires)"
+    },
+    {
+      "a": "experimental@1.1",
+      "b": "experimental@1.0",
+      "wins": 816,
+      "games": 1500,
+      "source": "six duels longs du 06/10, 2 000 itérations des deux côtés, règle de la page, donnes 1 à 6 : 7 réponses par étage au lieu de 3 (Tree-7w, npm run versus, 54,4 %, 52,1 – 56,7 par paires)"
+    },
+    {
+      "a": "experimental@1.1",
+      "b": "stratege@2.1",
+      "wins": 227,
+      "games": 300,
+      "source": "duel de 300 parties du 06/10, 2 000 itérations, règle de la page, gardé dans duels/ : 75,7 % (71,1 – 80,3 par paires)"
+    },
+    {
+      "a": "experimental@1.1",
+      "b": "basique@1.0",
+      "wins": 280,
+      "games": 300,
+      "source": "duel de 300 parties du 06/10, 2 000 itérations, règle de la page, gardé dans duels/ : 93,3 % (90,6 – 96,1 par paires)"
     }
   ]
 }

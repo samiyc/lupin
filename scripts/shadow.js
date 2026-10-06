@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import { BOT_LINEUP } from "../src/config/bots.js";
+import { V1_ENGINE } from "../src/config/bots.js";
 import { ORACLE } from "../src/replay/oracle.js";
 import { summarizeShadow } from "../src/replay/shadow.js";
 import { readIndex } from "./lib/game-index.js";
@@ -20,7 +20,7 @@ import { runPool } from "./lib/pool.js";
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 const oracle = args.find((arg, i) => !arg.startsWith("--") && !args[i - 1]?.startsWith("--")) ?? `${ORACLE.engine}@${ORACLE.budget}`;
-const engine = option("--engine", BOT_LINEUP.experimental.engine);
+const engine = option("--engine", V1_ENGINE);
 const minutes = Number(option("--minutes", Infinity));
 const ROOT = new URL("../", import.meta.url);
 const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
