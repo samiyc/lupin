@@ -1,5 +1,6 @@
 import { FORMATION_LABELS } from "../../src/config/formations.js";
 import { colorOf, isJoker, valueOf } from "../../src/core/cards.js";
+import { figureOf, isFigure } from "../../src/core/figures.js";
 import { formatCard } from "../../src/core/notation.js";
 import { formatMinutes } from "./clock.js";
 
@@ -52,9 +53,19 @@ export function suitCounts(spec, snap, { bottom, reveal }) {
 
 export function cardView(spec, card) {
   if (isJoker(card)) return { id: card, text: "JK", value: "JK", suit: "★", red: false, joker: true };
+  if (isFigure(card)) return figureView(card);
   const suit = spec.suits[colorOf(spec, card)];
   return { id: card, text: formatCard(spec, card), value: String(valueOf(spec, card)), suit, red: RED_SUITS.has(suit), joker: false };
 }
+
+/** An extension figure (figures.js): « V♣ » shown as a court card, its rule as a title. */
+function figureView(card) {
+  const figure = figureOf(card);
+  const suit = figure.text.slice(-1);
+  return { id: card, text: figure.text, value: figure.text.slice(0, -1), suit, red: RED_SUITS.has(suit), joker: false, figure: true, title: `${figure.name} : ${figure.rule}` };
+}
+
+const figureOn = (border, seat) => (border.figures?.[seat] ? figureView(border.figures[seat]) : null);
 
 function stoneOf(resolved, bottom) {
   if (!resolved) return { state: "neutral", toward: null };
@@ -72,6 +83,8 @@ function borderView(spec, snap, index, context) {
     number: index + 1,
     top: border.sides[top].map((card) => cardView(spec, card)),
     bottom: border.sides[bottom].map((card) => cardView(spec, card)),
+    // The figures laid beside each side (the extension), null for none.
+    figures: { top: figureOn(border, top), bottom: figureOn(border, bottom) },
     stone: stoneOf(resolved, bottom),
     animate: resolved !== null && resolved === justRevealed,
     formations: resolved

@@ -4,6 +4,7 @@ import { createRng } from "../../src/core/random.js";
 import { finishLog, playLogged, rulesOf, startLog } from "../../src/replay/log.js";
 import { engineFor, pickBest } from "../../src/sim/bots.js";
 import { createGame, legalMoves } from "../../src/sim/game.js";
+import { figuresFor } from "./figure-input.js";
 
 /**
  * Games as the page plays them: the official rules, borders settled at the
@@ -13,9 +14,10 @@ import { createGame, legalMoves } from "../../src/sim/game.js";
 export const RULES = OFFICIAL_RULES;
 export const SPEC = rulesOf(RULES).spec;
 
-export function newGame(seed) {
+/** A new game; `bonus` figures of the extension (0 to 6) join its pile. */
+export function newGame(seed, bonus = 0) {
   const { spec, order, jokerRule, endMode } = rulesOf(RULES);
-  return createGame(spec, { order, jokerRule, endMode, rng: createRng(seed) });
+  return createGame(spec, { order, jokerRule, endMode, rng: createRng(seed), figures: figuresFor(seed, bonus) });
 }
 
 export function botPlayer(id, seed) {

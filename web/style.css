@@ -112,6 +112,12 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .card .j { place-self: center; font: 700 0.7rem var(--body); letter-spacing: 0.05em; }
 .card.back { background: repeating-linear-gradient(45deg, var(--felt) 0 5px, var(--felt-2) 5px 10px); border-color: var(--felt); }
 .card.small { --card-w: 34px; --card-h: 48px; }
+/* The extension: a figure laid beside a side sits small on its right; a figure card wears its letter large. */
+.side-row { display: flex; align-items: flex-start; gap: 3px; width: 100%; min-width: 0; }
+.side-row .side { flex: 1 1 auto; min-width: 0; }
+.side-row > .card.small { flex: none; margin-top: 2px; }
+.side.top + .card.small { align-self: flex-end; }
+.card.figure { background: color-mix(in oklab, var(--paper) 86%, #c9a227); }
 .hand .card[draggable="true"] { cursor: grab; }
 .card.selected { outline: 3px solid var(--focus); transform: translateY(-6px); }
 .card.dragging { opacity: 0.4; }

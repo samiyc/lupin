@@ -15,14 +15,23 @@ const SUIT_NAMES = { "♠": "pique", "♥": "cœur", "♦": "carreau", "♣": "t
  * other corner. Hovering a stacked card lifts it whole (CSS).
  */
 function cardFace(card) {
+  if (card.figure) return [el("span", { class: "corner" }, el("span", { class: "v" }, card.value), el("span", { class: "cs" }, card.suit)), el("span", { class: "s" }, card.value)];
   if (card.joker) return [el("span", { class: "corner" }, el("span", { class: "v" }, "JK")), el("span", { class: "j" }, "JOKER")];
   const corner = el("span", { class: "corner" }, el("span", { class: "v" }, card.value), el("span", { class: "cs" }, card.suit));
   return [corner, el("span", { class: "s" }, card.suit)];
 }
 
+/** What a screen reader says of a card: its rule for a figure (the extension). */
+function labelOf(card) {
+  if (card.figure) return card.title;
+  return card.joker ? "joker" : `${card.value} de ${SUIT_NAMES[card.suit]}`;
+}
+
+const KINDS = ["red", "joker", "figure"];
+
 export function cardElement(card, attrs = {}) {
-  const label = card.joker ? "joker" : `${card.value} de ${SUIT_NAMES[card.suit]}`;
-  const classes = ["card", card.red ? "red" : "", card.joker ? "joker" : "", attrs.class ?? ""].filter(Boolean).join(" ");
+  const label = labelOf(card);
+  const classes = ["card", ...KINDS.filter((kind) => card[kind]), attrs.class ?? ""].filter(Boolean).join(" ");
   const dataset = { ...attrs.dataset, suit: card.joker ? "joker" : card.suit };
   return el("div", { ...attrs, dataset, class: classes, "aria-label": label }, ...cardFace(card));
 }
@@ -59,6 +68,12 @@ function stoneElement(border) {
   return el("div", { class: classes, title: titles[border.stone.state] }, String(border.number));
 }
 
+/** A side with, to its right, the figure laid beside it (the extension), small. */
+function sideRow(side, figure) {
+  if (!figure) return side;
+  return el("div", { class: "side-row" }, side, cardElement(figure, { class: "small", title: figure.title }));
+}
+
 function borderElement(border, { legalBorders, lastMove, premove }) {
   const legal = legalBorders.has(border.index);
   const lastSide = border.lastMove ? lastMove.side : null;
@@ -66,9 +81,9 @@ function borderElement(border, { legalBorders, lastMove, premove }) {
     "div",
     { class: "border", dataset: { border: border.index } },
     el("p", { class: "formation" }, border.formations?.top ?? ""),
-    sideElement(border.top, "top", border, { legal: false, lastMove: lastSide }),
+    sideRow(sideElement(border.top, "top", border, { legal: false, lastMove: lastSide }), border.figures?.top),
     stoneElement(border),
-    sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide, premove: premove === border.index }),
+    sideRow(sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide, premove: premove === border.index }), border.figures?.bottom),
     el("p", { class: "formation" }, border.formations?.bottom ?? ""),
   );
 }

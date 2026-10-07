@@ -131,6 +131,17 @@
     <fieldset id="opponents">
       <legend>Adversaire</legend>
     </fieldset>
+    <fieldset>
+      <legend>L'extension</legend>
+      <label>Cartes bonus dans la pioche
+        <select name="bonus" id="bonus-count">
+          <option value="0">0 : le jeu de base</option>
+          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+          <option value="4">4</option><option value="5">5</option><option value="6">6 : toutes</option>
+        </select>
+      </label>
+      <small class="facts">Valet ♣, Valet ♦, Dame ♥, Dame ♠, Roi ♠, Roi ♦, tirées au hasard. Les règles : menu Versions, « L'extension ».</small>
+    </fieldset>
     <label>Ton prénom <input name="name" id="player-name" autocomplete="given-name" maxlength="24"></label>
     <div class="actions">
       <button value="cancel" class="quiet" formnovalidate>Annuler</button>

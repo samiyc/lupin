@@ -10,6 +10,8 @@ import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playerName } fro
 import { wireGameDialogs } from "./play-dialogs.js";
 import { keepSelection, planPremove, resolvePremove } from "./premove.js";
 import { createThinker } from "./thinker.js";
+import { bordersFor, stepOf } from "./figure-input.js";
+import { statusLine } from "./play-status.js";
 import { clearTable, renderTable } from "./table.js";
 import { settledAtEnd, tableView } from "./view.js";
 
@@ -33,18 +35,12 @@ const alive = (id) => play.game !== null && id === play.generation;
 const active = () => play.game !== null && !play.game.state.over;
 const humanTurn = () => active() && play.game.state.current === play.game.human;
 
-function status() {
-  const { game } = play;
-  if (game.revealing) return "Les bornes se règlent…";
-  if (game.state.over) return game.saved ?? "Partie terminée.";
-  if (humanTurn()) return "À toi de jouer.";
-  return game.premove ? `${game.opponentName} réfléchit… Ton coup est prêt (Échap l'annule).` : `${game.opponentName} réfléchit…`;
-}
+const status = () => statusLine(play.game, humanTurn());
 
 export function legalFor(index) {
   if (!humanTurn()) return new Set();
-  const card = play.game.order[index];
-  return new Set(legalMoves(play.game.state).filter((move) => move.card === card).map((move) => move.border));
+  // The extension: a figure's borders, or the Dame de Cœur's second border (figure-input.js).
+  return bordersFor(legalMoves(play.game.state), play.game.order[index], play.game.pending);
 }
 
 function renderClock() {
@@ -170,19 +166,22 @@ export function playCard(grip, border) {
   if (!humanTurn()) return programMove(index, border);
   if (index === null || !legalFor(index).has(border)) return;
   const { game } = play;
+  const step = stepOf(game.order[index], border, game.pending);
+  game.pending = step.pending ?? null;
+  if (step.pending) return render();
   const thinkMs = Math.round(game.clock.mark());
-  const entry = playLogged(game.log, game.state, { card: game.order[index], border });
+  const entry = playLogged(game.log, game.state, step.move);
   entry.thinkMs = thinkMs;
   afterMove(game.human, entry);
   botTurns(play.generation);
 }
 
-export function start({ first, opponent, name }) {
+export function start({ first, opponent, name, bonus = 0 }) {
   play.generation += 1;
   clearDrag();
   play.game?.thinker.stop();
   const seed = freshSeed();
-  const state = newGame(seed);
+  const state = newGame(seed, bonus);
   const human = first === "me" ? 0 : 1;
   const players = [humanEntry(human, name), botEntry(1 - human, opponent)].sort((a, b) => a.seat - b.seat);
   play.game = {
@@ -192,9 +191,11 @@ export function start({ first, opponent, name }) {
     opponentName: playerName(botEntry(1 - human, opponent)),
     bot: botPlayer(opponent, seed + 1),
     thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
-    log: startLog(state, { rules: RULES, players, seed }),
+    log: startLog(state, { rules: bonus > 0 ? { ...RULES, bonus } : RULES, players, seed }),
     order: sortBySuit(SPEC, state.hands[human]),
     selected: null,
+    // The Dame de Cœur's first border, while the second is chosen.
+    pending: null,
     premove: null,
     shown: 0,
     lastMove: null,
@@ -258,6 +259,7 @@ export const playInput = {
   selected: () => play.game?.selected ?? null,
   select(index) {
     play.game.selected = index;
+    play.game.pending = null;
     if (index === null) play.game.premove = null;
     render();
   },

@@ -1,4 +1,5 @@
 import { colorOf, isJoker, valueOf } from "../../src/core/cards.js";
+import { isFigure } from "../../src/core/figures.js";
 import { suitOrder } from "./view.js";
 
 /**
@@ -37,7 +38,11 @@ export function moveCard(order, from, to) {
   return next;
 }
 
-const jokerLast = (spec, key) => (card) => (isJoker(card) ? Infinity : key(card));
+/** Jokers after the cards, the extension's figures after the jokers. */
+const jokerLast = (spec, key) => (card) => {
+  if (isFigure(card)) return 2e6 + card;
+  return isJoker(card) ? 1e6 : key(card);
+};
 
 /** ♠ ♥ ♣ ♦ (black and red alternating), low to high inside a suit, jokers at the end. */
 export function sortBySuit(spec, order) {

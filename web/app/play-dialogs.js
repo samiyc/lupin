@@ -26,13 +26,15 @@ export function wireGameDialogs(game) {
   $("opponents").append(...BOT_IDS.map(opponentChoice));
   showElo();
   $("player-name").value = recall("lopin.name", "Joueur");
+  $("bonus-count").value = recall("lopin.bonus", "0");
   const dialog = $("dialog-new");
   dialog.addEventListener("close", () => {
     if (dialog.returnValue !== "start") return;
     const form = new FormData($("form-new"));
     const name = String(form.get("name") ?? "").trim() || "Joueur";
     remember("lopin.name", name);
-    game.start({ first: form.get("first"), opponent: form.get("opponent"), name });
+    remember("lopin.bonus", String(form.get("bonus") ?? "0"));
+    game.start({ first: form.get("first"), opponent: form.get("opponent"), name, bonus: Number(form.get("bonus") ?? 0) });
   });
   $("btn-new").addEventListener("click", () => openDialog(dialog));
   const confirm = $("dialog-reset");
