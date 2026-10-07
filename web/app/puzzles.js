@@ -5,6 +5,7 @@ import { createRng } from "../../src/core/random.js";
 import { $, freshSeed, recall, remember } from "./dom.js";
 import { sortBySuit, syncOrder } from "./hand.js";
 import { copyId, favoriteIds, flipFavorite, renderStatus } from "./puzzle-controls.js";
+import { attemptLine, attemptMove, attemptReveal, beginAttempt, endAttempt, loadAttempts, timeNote } from "./puzzle-tracker.js";
 import { countIn, favoritesOnly, unsolvedOnly, hintOf, immediateMessage, isImmediate, namesOf, openingMessage, puzzleStatus, randomOrder, solutionOf } from "./puzzle-kinds.js";
 import { SPEC } from "./runner.js";
 import { clearTable, renderTable } from "./table.js";
@@ -82,7 +83,7 @@ export function render() {
   });
   const kind = isImmediate(current) ? `gain immédiat, pioche ${current.cardsLeft}` : `tour ${current.turn}`;
   $("puzzle-kind").textContent = hintOf(current);
-  $("puzzle-title").textContent = `Puzzle #${current.id} · ${kind} · ${current.moves} coups possibles`;
+  $("puzzle-title").textContent = `Puzzle #${current.id} · ${kind} · ${current.moves} coups possibles${attemptLine(current.id)}`;
   $("puzzle-solved").textContent = `Résolus : ${countIn(puzzle.list, solvedIds())} / ${puzzle.list.length} · favoris : ${countIn(puzzle.list, favoriteIds())}`;
   renderStatus(current, puzzleStatus(game.result));
 }
@@ -112,18 +113,19 @@ function settleImmediate(slip) {
   const { game } = puzzle;
   if (!slip && !game.revealed) markSolved();
   game.result = { won: !slip, helped: game.revealed };
-  game.message = immediateMessage(slip, game.revealed);
+  game.message = immediateMessage(slip, game.revealed) + timeNote(endAttempt(!slip));
   render();
 }
 
 function finish() {
   const { game } = puzzle;
   const won = game.state.winner === game.mover;
+  const closed = endAttempt(won);
   if (won && !game.slipped && !game.revealed) markSolved();
   const helped = game.slipped || game.revealed;
   game.result = { won, helped };
   if (!won) game.message = "Perdu. Recommence ce puzzle, ou révèle le coup gagnant.";
-  else game.message = helped ? "Gagné, mais avec de l'aide." : "Résolu ! Puzzle suivant ?";
+  else game.message = (helped ? "Gagné, mais avec de l'aide." : "Résolu ! Puzzle suivant ?") + timeNote(closed);
   render();
 }
 
@@ -163,9 +165,11 @@ function judge(move) {
   if (mine && mine.value < best) {
     game.slipped = true;
     const winners = game.solution.filter((entry) => entry.value === best).map((entry) => `${entry.card}→${entry.border}`);
+    attemptMove(text(move), false, winners);
     const verdict = isImmediate(puzzle.list[puzzle.index]) ? "ne gagne pas à coup sûr" : "ne gagne plus";
     return `Faux pas : ${text(move)} ${verdict}. Il fallait ${winners.join(" ou ")}.`;
   }
+  attemptMove(text(move), true);
   return null;
 }
 
@@ -199,6 +203,7 @@ export function start(index) {
   const current = puzzle.list[index];
   const state = stateAt(current.log, current.turn);
   puzzle.index = index;
+  beginAttempt(current);
   puzzle.game = { state, log: current.log, mover: state.current, played: [], order: sortBySuit(SPEC, state.hands[state.current]), selected: null, lastMove: null, thinking: false, slipped: false, revealed: false };
   puzzle.game.solution = solutionOf(current, legalMoves(state), text);
   puzzle.game.message = openingMessage(current);
@@ -216,6 +221,7 @@ function reveal() {
   if (!game || !humanTurn()) return;
   const best = Math.max(...game.solution.map((entry) => entry.value));
   game.revealed = true;
+  attemptReveal();
   const winners = game.solution.filter((entry) => entry.value === best).map((entry) => entry.card + " → borne " + entry.border);
   game.message = `Coup gagnant : ${winners.join(", ou ")}.`;
   render();
@@ -227,6 +233,7 @@ export async function showPuzzles(visible) {
   if (puzzle.list.length === 0) {
     const response = await fetch("/web/data/puzzles.json").catch(() => null);
     puzzle.list = response?.ok ? (await response.json()).puzzles : [];
+    await loadAttempts();
   }
   if (puzzle.list.length === 0) return clearTable("Aucun puzzle : lance npm run puzzles.");
   if (!puzzle.game) {

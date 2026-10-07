@@ -305,6 +305,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   hides that hand and ends the puzzle on the first move (`puzzle-kinds.js`);
   the bench skips them (the solver cannot see through a pile), and
   `npm run puzzles` keeps them when it rewrites the file.
+- **Puzzle attempts are tracked** (Sami, 07/10, `src/replay/puzzle-attempts.js`):
+  `web/app/puzzle-tracker.js` times each attempt with the focus-aware clock and
+  POSTs it on close to `/api/puzzles/attempts`, which appends one line to
+  `data/puzzle-attempts.jsonl` (in git); `npm run puzzle-stats` reads it back.
+  `LOPIN_ATTEMPTS_FILE` points the server elsewhere to try the page without
+  touching Sami's data (`PORT=4743` beside his own server).
 - **Puzzle ids are stable**: the browser keeps the solved ones and the
   favourites by id. Add puzzles with `--add` (both generators): new ones are
   numbered after the highest id, never renumbering the old (endgames #1-50

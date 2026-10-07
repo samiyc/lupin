@@ -85,6 +85,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | Commande | Ce qu'elle fait | Écrit |
 | --- | --- | --- |
 | `npm run puzzles -- [--minutes N] [--count 50] [--add] [--source duels] [--min-moves N] [--core-fails] [--unique] [--keep 2,3,…]` | des fins de partie résolues exactement, gagnées par peu de coups ; `--min-moves`, `--core-fails`, `--unique` choisissent le genre (les favoris de Sami : beaucoup de coups, le coup du cœur perd), `--keep` ne garde que ces numéros | `web/data/puzzles.json` |
+| `npm run puzzle-stats` | tes tentatives de puzzles, puzzle par puzzle, les plus durs d'abord : résolu du premier coup ou non, le temps, les faux pas (et s'ils tombent dans le piège du cœur), « Révéler » | `data/puzzle-stats.json` (lit `data/puzzle-attempts.jsonl`) |
 | `npm run puzzles:immediate` | des puzzles de milieu de partie, gagnés tout de suite par revendication | `web/data/puzzles.json` |
 
 ## La nuit

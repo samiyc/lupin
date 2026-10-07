@@ -1,8 +1,10 @@
 import { createServer } from "node:http";
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { appendFile, copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { REPLAY_FORMAT } from "../src/replay/log.js";
+import { isAttempt, summarize } from "../src/replay/puzzle-attempts.js";
+import { ATTEMPTS_FILE, readAttempts } from "./lib/puzzle-attempts-file.js";
 import { eloTable, statsPage } from "./lib/elo-data.js";
 import { REPLAY_DIRS, isReplayDir, isSafeName, replayFileName, replayHeader } from "./lib/replay-files.js";
 
@@ -92,6 +94,16 @@ async function item(req, res, [dir, name, action]) {
   return send(res, 404, { error: "introuvable" });
 }
 
+/** `/api/puzzles/attempts`: one more attempt (POST), or the summary per puzzle (GET). */
+async function attempts(req, res) {
+  if (req.method === "GET") return send(res, 200, { summary: summarize(await readAttempts()) });
+  if (req.method !== "POST") return send(res, 405, { error: "méthode non prise en charge" });
+  const attempt = JSON.parse(await readBody(req));
+  if (!isAttempt(attempt)) return send(res, 400, { error: "tentative invalide" });
+  await appendFile(ATTEMPTS_FILE, `${JSON.stringify(attempt)}\n`);
+  return send(res, 201, { stored: true });
+}
+
 const api = (req, res, parts) => (parts.length === 0 ? collection(req, res) : item(req, res, parts));
 
 async function serveStatic(res, path) {
@@ -111,6 +123,8 @@ const server = createServer(async (req, res) => {
       send(res, 200, await eloTable());
     } else if (pathname === "/api/stats") {
       send(res, 200, await statsPage());
+    } else if (pathname === "/api/puzzles/attempts") {
+      await attempts(req, res);
     } else if (pathname.startsWith("/api/replays")) {
       const parts = pathname.split("/").slice(3).filter(Boolean).map(decodeURIComponent);
       await api(req, res, parts);

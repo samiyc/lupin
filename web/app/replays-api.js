@@ -25,3 +25,10 @@ export const fetchElo = () => call("/api/elo");
 
 /** The "Stats" tab (`/api/stats`): `{ lines, formations, elo }`. */
 export const fetchStats = () => call("/api/stats");
+
+/** A closed puzzle attempt (src/replay/puzzle-attempts.js), one line of data/puzzle-attempts.jsonl. */
+export const savePuzzleAttempt = (attempt) =>
+  call("/api/puzzles/attempts", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(attempt) });
+
+/** The attempts stored, summed up per puzzle: `{ summary: { [id]: { attempts, solved, bestMs, lastSlips } } }`. */
+export const fetchPuzzleAttempts = () => call("/api/puzzles/attempts");

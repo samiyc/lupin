@@ -137,6 +137,15 @@ la main adverse, ce sont les cartes vues nulle part.
   n'as pas encore résolus passent d'abord.
 - **Suivi** : les puzzles résolus sans aide sont comptés, et gardés dans ton
   navigateur.
+- **Tes tentatives** (07/10) : chaque puzzle tenté est enregistré par le serveur
+  de `npm run play`, une ligne par tentative dans `data/puzzle-attempts.jsonl` :
+  le temps actif (l'horloge s'arrête quand la page n'est plus au premier plan),
+  chaque coup et son temps, les faux pas et les coups qui gagnaient, « Révéler »,
+  et la fin (résolu seul, avec de l'aide, perdu, abandonné, passé sans jouer).
+  Le titre du puzzle dit ton meilleur temps et ton nombre d'essais ; un puzzle
+  gagné dit en combien de temps. `npm run puzzle-stats` en tire une difficulté
+  mesurée, et compte les faux pas qui sont le coup favori du cœur (le même piège).
+  Si le serveur ne répond pas, la tentative attend dans le navigateur.
 - **Source** (06/10) : 145 puzzles. Les 45 favoris de Sami sont gardés sous
   leurs numéros (37 fins de partie, 8 gains immédiats) ; les 95 autres, résolus
   en un coup sans réfléchir, sont retirés. 100 fins de partie nouvelles (#291 à
