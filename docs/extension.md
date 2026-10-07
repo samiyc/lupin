@@ -95,15 +95,16 @@ la plus forte du lot (Sami) : à surveiller dans les mesures.
   Ce sont ses habitudes qu'on mesure. La prochaine mesure se fait avec l'arbre, qui joue les
   figures dans ses simulations.
 
-## La suite
+## Où en est l'extension (07/10)
 
-1. Le moteur : les figures comme cartes en plus du paquet, `border.figures`, un seul point de
-   jugement par borne et par côté (`evaluatorFor`). Avec 0 carte bonus, les empreintes du jeu de
-   base ne bougent pas.
-2. L'équilibre : `npm run extension`, des parties robot contre robot avec 0, 1, 3 et 6 cartes
-   bonus. Pour chaque carte : le taux de victoire de qui la pose, quand elle se pose. Une carte
-   au-dessus de 60 % est trop forte. Les chiffres vont sur une page « Extension », qui remplace
-   « Lore Exploration » dans le menu Versions.
-3. La page : le choix du nombre de cartes bonus (0 à 6), la figure dessinée en petit à droite des
-   cartes.
-4. La règle imprimée : une page de plus, « L'extension ».
+- **Le moteur** : fait (`src/core/figures.js`, `src/sim/border-rules.js`, `figure-moves.js`,
+  `figure-gains.js`), le jeu de base inchangé au bit près (empreintes identiques).
+- **L'équilibre** : mesuré avec le cœur (ci-dessus) ; la mesure avec l'arbre du 1.1 est en file
+  (`extension-tree`).
+- **La page** : le choix de 0 à 6 cartes bonus dans « Nouvelle partie », la figure dessinée en
+  petit à droite de son côté, la Dame de Cœur en deux clics.
+- **La règle imprimée** : une 3e page « L'extension » (`regles/regles.pdf`, 3 pages).
+
+**Plus tard** : affiner l'estimation des figures par le cœur (`figure-gains.js`), qui les juge
+grossièrement ; le Rappel d'une carte plus ancienne (une idée de Sami) ; la règle imprimée relue
+sur papier.

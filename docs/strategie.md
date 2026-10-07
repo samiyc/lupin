@@ -2671,3 +2671,35 @@ le 1.1) :
 
 `data/traps.json` (les familles), `data/traps-list.json` (chaque piège, avec son duel, sa partie
 et son tour : de quoi en faire des puzzles).
+
+## EndJoker : le joker en fin de partie (07/10, cœur 1.2 en essai)
+
+**Le piège visé** : 31 % des erreurs du cœur en fin de partie sont un joker posé ou gardé à tort
+(`npm run traps`). Le cœur juge un joker par un prix fixe (`jokerCost` 0,08) ; une fois la pioche
+vide, tout est connu, et garder le joker ne vaut que ce qu'il gagnerait ailleurs.
+
+**Le réglage** (`endJoker`, `src/sim/end-joker.js`, cœur `stfig6ej`) : pioche vide, le joker posé
+sur la borne b gagne ce qu'il y gagne, moins le plus qu'il gagnerait sur une autre borne (rien si
+aucune n'est meilleure). Les autres cartes ne changent pas. Éteint par défaut : l'empreinte du
+1.0 reste `152e2a9c9d66170c` ; le nouveau cœur a la sienne (`900b9e3dcf68083d`), à la même vitesse.
+
+**Cœur contre cœur** (4 000 parties, règle de la page) : `stfig6ej` contre `stfig6`, **50,3 %
+(49,2 – 51,4)**. Neutre, comme attendu : le changement ne touche que les coups pioche vide. C'est
+dans l'arbre qu'il doit compter, puisque chaque simulation joue sa fin de partie avec le cœur.
+
+**En file** : les pièges des deux cœurs sur les mêmes 1 500 parties (`npm run traps -- --games
+1500 --core stfig6ej`), puis 4 duels longs `VALIDATE_LONG_n_EndJoker` contre le V1.1 à 2 000, avec
+la règle d'arrêt.
+
+## Ce qui reste à traiter (feuille de route 1.2, 07/10)
+
+- **Le verdict d'EndJoker** (duels longs en file) ; s'il gagne, il devient le cœur du 1.2.
+- **Un second regard sur les deux premiers coups** du cœur pioche vide : le bon coup est son 2e
+  choix dans 62 % des pièges ; une résolution bornée entre les deux, à mesurer en coût d'abord.
+- **Les erreurs de placement** (60 % des pièges) : des traits plus fins à écrire dans
+  `src/sim/traps.js` (l'ordre dans lequel les côtés se complètent, ce que la carte donne à
+  l'adversaire), avant d'en tirer une règle.
+- **5 000 pièges** : le corpus des duels n'en donne qu'environ 3 000 ; il faut plus de parties
+  (auto-jeu du 1.1) pour lire les petites familles.
+- **Les puzzles de Sami** : `npm run puzzle-stats` une fois ses tentatives assez nombreuses, pour
+  croiser ses faux pas avec les familles de pièges.

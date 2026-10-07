@@ -1003,6 +1003,84 @@
       "doneAt": "2026-10-07T18:16",
       "minutes": 101,
       "output": "backlog-runs/2026-10-07-16-36_traps-full.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 1 sur 4, règle d'arrêt.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_2_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 2 sur 4, règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_EndJoker"
+          ],
+          "below": 0.47
+        }
+      ]
+    },
+    {
+      "id": "VALIDATE_LONG_3_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 3 sur 4, règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_EndJoker"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_EndJoker",
+            "VALIDATE_LONG_2_EndJoker"
+          ],
+          "below": 0.5
+        }
+      ]
+    },
+    {
+      "id": "VALIDATE_LONG_4_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 4 sur 4, règle d'arrêt.",
+      "status": "todo",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_EndJoker"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_EndJoker",
+            "VALIDATE_LONG_2_EndJoker"
+          ],
+          "below": 0.5
+        }
+      ]
+    },
+    {
+      "id": "extension-tree",
+      "command": "npm run extension -- --engine \"ismcts+widen=7+depth=5+core=stfig6@200\" --games 60",
+      "estimate": "20 min",
+      "limit": 60,
+      "why": "L'équilibre de l'extension avec l'arbre du 1.1 (200 itérations), qui joue les figures dans ses simulations : la mesure du cœur seul ne fait qu'estimer grossièrement les figures.",
+      "status": "todo"
     }
   ]
 }

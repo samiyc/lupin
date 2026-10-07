@@ -296,6 +296,7 @@ version :
 | `Tree-6w`, `Tree-7w` | le V1 avec 6 ou 7 réponses par étage (profondeur 5, UCB à la racine) | `ismcts+widen=6+depth=5+…` |
 | `FirstExplo6-Tree-7w` | Tree-7w, avec une exploration de 0,6 au lieu de 0,7 partout où joue le premier joueur (toujours le joueur 0), racine comprise, dans l'arbre des deux sièges ; les nœuds du second gardent 0,7. En pratique : la racine quand le robot commence, les réponses adverses attendues quand il est second. Le chiffre est c × 10 | `ismcts+widen=7+depth=5+…+firstExploration=0.6` |
 | `FirstExplo8-Tree-7w` | le même, avec 0,8 au lieu de 0,6 : plus d'exploration pour le premier joueur | `ismcts+widen=7+depth=5+…+firstExploration=0.8` |
+| `EndJoker` | le cœur du 1.2 en essai (`stfig6ej`) : une fois la pioche vide, le joker jugé par ce qu'il gagne de plus que sur sa meilleure autre borne, au lieu de son prix fixe (`src/sim/end-joker.js`). Comparé au V1.1 | `ismcts+widen=7+depth=5+core=stfig6ej@2000` |
 | `RootHalving-Tree-5w` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
 | `RootHalving-Tree-2w-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |

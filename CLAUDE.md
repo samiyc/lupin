@@ -305,6 +305,16 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   hides that hand and ends the puzzle on the first move (`puzzle-kinds.js`);
   the bench skips them (the solver cannot see through a pile), and
   `npm run puzzles` keeps them when it rewrites the file.
+- **The extension** (Sami, 07/10, `docs/extension.md`): six figures (ids from 100,
+  `src/core/figures.js`) join the pile with `createGame`'s `figures`; laying one is
+  the turn's move (`figure-moves.js`). **`evaluatorFor(state, border, player)`**
+  (`border-rules.js`) is the one place a side is judged under figures; it returns
+  `state.evaluator` itself when none is laid, so **the base game must not change by
+  a move** — check the 1.0 fingerprint after any change there. Hands, pools and the
+  core leave figures out (`handOf`, `withoutFigures`, `unseenCards`). Balance:
+  `npm run extension`; the page: `web/app/figure-input.js`.
+- **The 1.2 core under test is `stfig6ej`** (`endJoker`, `src/sim/end-joker.js`): pile
+  empty, a joker priced by its best use elsewhere — the endgame traps' biggest family.
 - **Puzzle attempts are tracked** (Sami, 07/10, `src/replay/puzzle-attempts.js`):
   `web/app/puzzle-tracker.js` times each attempt with the focus-aware clock and
   POSTs it on close to `/api/puzzles/attempts`, which appends one line to

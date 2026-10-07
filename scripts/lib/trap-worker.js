@@ -13,7 +13,8 @@ import { trapOf } from "../../src/sim/traps.js";
  * position where the core's favourite loses is a trap; the others are only
  * counted, to give the core's error rate.
  */
-const core = strategistBot(createRng(1), coreOf("stfig6"));
+// The core judged: the 1.1's by default, another to compare (`--core`), set by the first task.
+let core = null;
 // A solve's memory grows with its positions: past this many, the endgame is left out as too deep
 // (07/10: unbounded, 18 threads of 12-card solves took 11 GB).
 const MAX_NODES = 400_000;
@@ -40,7 +41,8 @@ function examineGame({ ref, log, turns }, result) {
   }
 }
 
-parentPort.on("message", ({ items, until }) => {
+parentPort.on("message", ({ items, until, coreName }) => {
+  core ??= strategistBot(createRng(1), coreOf(coreName));
   const result = { examined: 0, won: 0, tooDeep: 0, traps: [] };
   for (const item of items) {
     if (Date.now() > until) break;

@@ -46,24 +46,56 @@
    "verdict": "neutre",
    "when": "07/10 18:17",
    "note": "82 403 fins de partie résolues : le cœur se trompe dans 3,6 % des gagnées (1 507 pièges). Le joker dans 31 % des cas (posé ou gardé à tort) ; le bon coup est son 2e choix dans 62 %. Pistes 1.2 : le joker en fin de partie, un second regard sur ses deux premiers coups."
+  },
+  {
+   "name": "EndJoker en cœur contre cœur : le joker jugé par son meilleur usage ailleurs, pioche vide",
+   "family": "oracle",
+   "bench": "coeur",
+   "score": 50.3,
+   "lo": 49.2,
+   "hi": 51.4,
+   "verdict": "neutre",
+   "when": "07/10 19:15",
+   "note": "4 000 parties à la règle de la page. Neutre, comme attendu : seuls les coups pioche vide changent. Le vrai test est dans l'arbre (duels longs contre le V1.1 en file)."
+  },
+  {
+   "name": "L'extension : premier équilibre, cœur contre cœur (1 000 parties par pioche)",
+   "family": "extension",
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "07/10 17:45",
+   "note": "Aucune figure au-dessus de 60 % : les deux Valets à 56,6 et 56,9 %, posés tôt ; les autres (Rappel, Échange, Rois) se posent tard, par le joueur qui perd. Le premier joueur passe de 49,7 à 51-57 %. Le cœur ne fait qu'estimer les figures : mesure avec l'arbre en file."
   }
  ],
  "commitLabels": {},
  "next": [
   {
-   "when": "Prochain",
-   "title": "Le cœur 1.2 : le joker en fin de partie",
-   "text": "Le joker fait 31 % des pièges (1 507 sur 42 074 fins gagnées). Pioche vide, juger le joker par ce qu'il gagne vraiment sur la borne, puis un second regard borné sur les deux premiers coups du cœur."
+   "when": "En file",
+   "title": "EndJoker contre le V1.1",
+   "text": "4 duels longs à 2 000, avec la règle d'arrêt ; puis l'équilibre de l'extension avec l'arbre du 1.1."
   },
   {
-   "when": "Ensuite",
-   "title": "Les pièges du cœur en fin de partie",
-   "text": "npm run traps : environ 5 000 erreurs du cœur classées par famille, pour une ou deux règles du cœur 1.2, validées contre le 1.1."
+   "when": "Piste",
+   "title": "Un second regard sur les deux premiers coups",
+   "text": "Pioche vide, le bon coup est le 2e choix du cœur dans 62 % des pièges : une résolution bornée entre les deux, à mesurer en coût d'abord."
   },
   {
-   "when": "Puis",
-   "title": "L'extension : six cartes bonus",
-   "text": "Valet ♣ (la plus faible gagne), Valet ♦ (la Somme), Dame ♥ (l'échange), Dame ♠ (le Rappel), Roi ♠ (la suite impaire), Roi ♦ (+10) : la règle, le moteur, l'équilibre mesuré, puis la page et la règle imprimée."
+   "when": "Plus tard",
+   "title": "Les pièges de placement",
+   "text": "60 % des pièges ne se lisent pas encore sur le plateau : l'ordre où les côtés se complètent, ce que la carte donne à l'adversaire. Et 5 000 pièges demandent plus de parties (auto-jeu)."
+  },
+  {
+   "when": "Plus tard",
+   "title": "L'extension",
+   "text": "Affiner l'estimation des figures par le cœur (figure-gains.js), le Rappel d'une carte plus ancienne (idée de Sami), et la règle imprimée relue sur papier."
+  },
+  {
+   "when": "Avec Sami",
+   "title": "Ses puzzles",
+   "text": "npm run puzzle-stats une fois ses tentatives nombreuses : ses faux pas croisés avec les familles de pièges."
   }
  ],
  "banc": {
