@@ -47,6 +47,7 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 | `web/` | le jeu dans le navigateur (`npm run play`) |
 | `out/deck-options.html` | « Deck options » : le rapport complet, interactif (s'ouvre d'un double-clic) |
 | `out/deck-options.md` | le même rapport en ASCII art |
+| `out/changelog-exp-1.2.html` | « Changelog Exp v1.2 », en cours : les pièges de fin de partie du cœur, le suivi des puzzles, l'extension (`npm run changelog -- 1.2`) |
 | `out/changelog-exp-1.1.html` | « Changelog Exp v1.1 » : la base de référence V1 + Oracle et tout ce qui a été tenté du 1.0 au 1.1 (sorti le 06/10 : 7 réponses par étage) (`npm run changelog -- 1.1`) |
 | `out/changelog-exp-1.0.html` | « Changelog Exp v1.0 » : tout ce qui a été tenté du 0.9 au 1.0 (`npm run changelog -- 1.0`) ; aussi `changelog-exp-0.8.html` et `changelog-exp-0.6.html` |
 | `out/lore-exploration.html` | « Lore Exploration » : les 7 Menhirs, une proposition d'univers |

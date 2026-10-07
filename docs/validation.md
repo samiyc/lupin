@@ -251,7 +251,7 @@ lieu de rejouer des parties entières (`src/replay/bot-games.js`,
 | envoyer les calculs sur un serveur loué | voir docs/cloud.md |
 | la file du portable (git pull, lancer, git push) | `npm run backlog -- --queue laptop` : 5 fils sur 8 par défaut, `LOPIN_THREADS=4` pour garder plus de marge (docs/cloud.md) |
 | refaire la rétrospective du robot (Elo, versions, cœur, prix des erreurs ; archivée) | `npm run retrospective` → `out/OLD/retrospective.html` |
-| le changelog d'une version de l'Expérimental : chaque essai, la frise, l'oracle, la vitesse, les jobs | `npm run changelog -- 1.1` → `out/changelog-exp-1.1.html`, depuis `data/changelog-exp-1.1.json` et la page `src/report/changelog/1.1.html` ; une version sortie s'arrête à son `until` |
+| le changelog d'une version de l'Expérimental : chaque essai, la frise, l'oracle, la vitesse, les jobs | `npm run changelog -- 1.2` → `out/changelog-exp-1.2.html`, depuis `data/changelog-exp-1.2.json` et la page `src/report/changelog/1.2.html` ; une version sortie s'arrête à son `until` |
 | ouvrir le changelog d'une nouvelle version | copier la page de la précédente en `src/report/changelog/<version>.html`, n'y garder que les sections qui valent encore, commencer `data/changelog-exp-<version>.json`, poser `until` sur la précédente, ajouter le lien au menu Versions (`web/index.html`) |
 | remesurer ce que coûte le cœur, pour la rétrospective (machine au repos seulement) | `npm run retrospective -- --measure` → `data/core-timings.json` |
 | savoir à quel tour une erreur coûte le plus | `npm run error-impact -- --turns 18-29 --games 120 --explain` (`--points` : les tours charnières) |

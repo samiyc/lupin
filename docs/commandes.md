@@ -99,7 +99,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | --- | --- | --- |
 | `npm run build` | toutes les statistiques des rapports, à partir de zéro (environ 3 min) ; `--reports-only` refait seulement les pages | `out/data.json`, `out/deck-options.html` |
 | `npm run build:quick` | le même, sur de petits échantillons, pour travailler la mise en page | `out/` |
-| `npm run changelog -- [1.1]` | le changelog d'une version de l'Expérimental (la page `src/report/changelog/<version>.html`) | `out/changelog-exp-<version>.html` et `out/artifact/` |
+| `npm run changelog -- [1.2]` | le changelog d'une version de l'Expérimental (la page `src/report/changelog/<version>.html`) | `out/changelog-exp-<version>.html` et `out/artifact/` |
 | `npm run retrospective` | la rétrospective du robot, archivée | `out/OLD/retrospective.html` |
 | `npm run pdf` | les règles en PDF, avec Edge ou Chrome sans fenêtre | `regles/regles.pdf` |
 | `npm run bretagne` | une proposition de paquet (« Les 7 Menhirs ») : ses combinaisons énumérées | `out/lore-exploration.json` |
