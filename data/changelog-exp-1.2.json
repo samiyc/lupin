@@ -35,14 +35,25 @@
    "verdict": "neutre",
    "when": "06/10 16:52",
    "note": "Fins de partie tirées des duels gardés (143 018 examinées en 23,8 min, 1 667 candidates) : au moins 12 coups possibles et le coup du Stratège perd. Pas de nul dans ce jeu : ne pas gagner, c'est perdre ; 84 % des coups d'un puzzle perdent en moyenne."
+  },
+  {
+   "name": "Les pièges de fin de partie du cœur du 1.1 (npm run traps)",
+   "family": "reference",
+   "bench": "puzzles",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "07/10 18:17",
+   "note": "82 403 fins de partie résolues : le cœur se trompe dans 3,6 % des gagnées (1 507 pièges). Le joker dans 31 % des cas (posé ou gardé à tort) ; le bon coup est son 2e choix dans 62 %. Pistes 1.2 : le joker en fin de partie, un second regard sur ses deux premiers coups."
   }
  ],
  "commitLabels": {},
  "next": [
   {
    "when": "Prochain",
-   "title": "Le suivi des puzzles",
-   "text": "Chaque tentative de Sami enregistrée : temps, erreurs, « Révéler », abandon ; une difficulté mesurée par puzzle (npm run puzzle-stats)."
+   "title": "Le cœur 1.2 : le joker en fin de partie",
+   "text": "Le joker fait 31 % des pièges (1 507 sur 42 074 fins gagnées). Pioche vide, juger le joker par ce qu'il gagne vraiment sur la borne, puis un second regard borné sur les deux premiers coups du cœur."
   },
   {
    "when": "Ensuite",

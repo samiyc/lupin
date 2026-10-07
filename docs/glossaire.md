@@ -262,8 +262,9 @@ Du plus rapide au plus sûr. Aucune étape rapide ne suffit à adopter une versi
   vierge ouverte ; sinon par placement : bonne carte et mauvaise borne, bonne borne et mauvaise
   carte, ou ni l'une ni l'autre.
 - **Combien en faut-il** : environ 5 000 erreurs pour classer une dizaine de familles à ± 1,5
-  point chacune. Le cœur se trompe dans environ 4,5 % des fins de partie gagnées : les ~145 700
-  fins de partie des duels gardés en donnent environ 3 300 (± 1,7 point).
+  point chacune. Le passage du 07/10 : le cœur se trompe dans 3,6 % des fins de partie gagnées,
+  1 507 pièges sur 82 403 fins de partie examinées (± 2,4 points par famille). Le joker y est pour
+  31 %, et le bon coup est le 2e choix du cœur dans 62 % des cas.
 - **Pourquoi ça compte** : sous 9 cartes, le robot calcule la fin exactement ; mais le cœur joue
   toutes les fins de partie simulées de l'arbre, et chacun de ses pièges y fausse un résultat.
 

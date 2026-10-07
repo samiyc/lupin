@@ -992,6 +992,17 @@
       "doneAt": "2026-10-06T15:36",
       "minutes": 0,
       "reason": "arrêté à la main (Sami) : 50,0 % sur les duels 1 et 2, -4,4 ± 5,3 points contre Tree-7w ; le 1.1 part avec Tree-7w"
+    },
+    {
+      "id": "traps-full",
+      "command": "npm run traps -- --minutes 100",
+      "estimate": "105 min",
+      "limit": 118,
+      "why": "Lot 4 de la feuille de route 1.2 (Sami, 07/10) : toutes les fins de partie des duels gardés (~145 700), résolues exactement ; là où le favori du cœur des simulations du 1.1 perd, l'erreur classée par famille. ~3 300 pièges attendus (4,5 % des fins gagnées). Chaque résolution plafonnée à 400 000 positions (07/10 : sans plafond, 11 Go).",
+      "status": "done",
+      "doneAt": "2026-10-07T18:16",
+      "minutes": 101,
+      "output": "backlog-runs/2026-10-07-16-36_traps-full.txt"
     }
   ]
 }

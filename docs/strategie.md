@@ -2626,3 +2626,48 @@ pour une version qui a aussi gagné ses duels. Le gain est tout en fin de partie
 37,3 % contre 37,9 % ; tours 11-20, 48,7 % contre 48,8 % ; **tours 21-30, 63,5 % contre 58,4 %**
 (même coup que l'oracle 32,9 % contre 26,3 %). C'est là que les réponses adverses se lisent : plus
 de cartes connues, moins de réponses différentes d'un monde tiré à l'autre, et UCB qui en voit 7.
+
+## Les pièges de fin de partie (07/10, feuille de route 1.2)
+
+**La question** (Sami) : combien de puzzles faut-il pour voir les pièges qui reviennent, et
+lesquels ajouter au cœur 1.2 ? `npm run traps` (`src/sim/traps.js`) résout exactement les fins de
+partie des duels gardés (pioche vide, tours 31 à 37) ; là où le joueur au trait gagne mais où le
+favori du cœur des simulations du 1.1 (`stfig6`) perd, l'erreur est rangée par famille.
+
+**Le passage complet** (`traps-full`, 100 min sur 18 fils, chaque résolution plafonnée à
+400 000 positions) : 82 403 fins de partie examinées sur 145 715 (le temps a manqué pour le
+reste), 828 trop profondes laissées de côté, 42 074 gagnées pour le joueur au trait. **Le cœur
+s'y trompe 1 507 fois, soit 3,6 %.** À 1 507 erreurs, une famille se lit à ± 2,4 points.
+
+| Famille | Pièges | Part | Rang du coup gagnant chez le cœur (médiane) |
+| --- | --- | --- | --- |
+| ni la carte ni la borne du coup gagnant | 449 | 29,8 % | 2 |
+| bonne carte, mauvaise borne | 288 | 19,1 % | 2 |
+| **joker posé, alors qu'il fallait le garder** | 247 | **16,4 %** | 2 |
+| **joker gardé, alors qu'il fallait le poser** | 226 | **15,0 %** | 3 |
+| bonne borne, mauvaise carte | 165 | 10,9 % | 2 |
+| une borne de plus devient perdue | 67 | 4,4 % | 2 |
+| côté complété, et la borne est perdue | 64 | 4,2 % | 2 |
+| borne vierge ouverte | 1 | 0,1 % | 4 |
+| carte jetée sur une borne déjà perdue | 0 | 0 % | — |
+
+- **Le joker est le piège le plus net** : 473 erreurs sur 1 507 (31 %), dans les deux sens. Le
+  cœur juge le joker par un prix fixe (`jokerCost`) ; en fin de partie, tout est connu, et ce
+  prix ne dit plus rien.
+- **Le bon coup est presque toujours juste derrière** : 2e choix du cœur dans 927 pièges sur
+  1 507 (62 %), 3e dans 238. Le cœur ne se trompe pas de plan, il départage mal deux coups proches.
+- **Les erreurs de placement** (60 %) ne se lisent pas encore sur le plateau : il faudra des
+  traits plus fins (l'ordre dans lequel les côtés se complètent, qui départage les égalités, et ce
+  que la carte posée donne à l'adversaire).
+- Les pièges tombent surtout juste après la fin de la pioche (tours 31-32 : 754 sur 1 507).
+
+**Pistes pour le cœur 1.2**, à valider comme d'habitude (cœur contre cœur, puis duels longs contre
+le 1.1) :
+1. **le joker en fin de partie** : pioche vide, le prix fixe du joker remplacé par ce qu'il gagne
+   vraiment sur la borne (le meilleur côté qu'il complète, contre le meilleur côté adverse possible) ;
+2. **un second regard sur les deux premiers coups** quand la pioche est vide : une résolution
+   bornée (quelques milliers de positions) entre le 1er et le 2e choix du cœur, puisque le bon coup
+   est le 2e dans 62 % des pièges.
+
+`data/traps.json` (les familles), `data/traps-list.json` (chaque piège, avec son duel, sa partie
+et son tour : de quoi en faire des puzzles).
