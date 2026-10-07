@@ -1,0 +1,38 @@
+{
+ "built": "2026-10-07T19:43:51.846Z",
+ "engine": "ismcts+widen=7+depth=5+core=stfig6@200",
+ "gamesPerPile": 200,
+ "minutes": 5.2,
+ "piles": [
+  {
+   "config": "none",
+   "label": "sans figure",
+   "games": 200,
+   "firstPlayer": 0.53,
+   "turns": 35.44
+  },
+  {
+   "config": "sum",
+   "label": "V♦ seul",
+   "games": 200,
+   "firstPlayer": 0.495,
+   "turns": 36.525
+  }
+ ],
+ "figures": [
+  {
+   "key": "sum",
+   "text": "V♦",
+   "name": "Valet de Carreau",
+   "rule": "la Somme",
+   "gamesIn": 200,
+   "laid": 129,
+   "laidRate": 0.645,
+   "meanTurn": 26.25581395348837,
+   "wonBorder": 0.6744186046511628,
+   "wonGame": 0.6434108527131783,
+   "margin": 0.08265887076807048,
+   "tooStrong": true
+  }
+ ]
+}

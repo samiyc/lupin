@@ -2753,3 +2753,11 @@ Trois passes de 16 000 parties en file (vers 5 000 pièges), puis EndJoker jugé
 donnes nouvelles. Juger le joker par sa meilleure autre borne enlève quelques pièges (45 → 40 sur
 les mêmes fins de partie), trop peu pour se voir en partie entière. Le banc de pièges dira s'il
 faut une règle du joker plus fine (le joker se joue sur plusieurs coups).
+
+**La Somme, 200 parties de plus avec l'arbre** (07/10, 21 h 43, `extension-tree-somme`,
+`data/extension-sum-tree.json`) : sur sa pioche seule, le Valet de Carreau est posé dans 64,5 % des
+parties, vers le tour 26 ; sa borne est gagnée 67,4 % du temps et la partie **64,3 % ± 8,3** pour
+qui la pose. Les 60 premières disaient 64,7 % ± 10 : réunies, environ 64,5 % ± 6,4 sur quelque
+210 parties où elle est posée. **Trop forte**, et la seule au-dessus de 60 %. Le premier joueur
+reste à l'équilibre (49,5 %, 53,0 % sans figure). Sa règle ou sa place dans la pioche : à revoir
+avec Sami.
