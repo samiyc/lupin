@@ -1,0 +1,205 @@
+<title>L'extension Bornage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,600;0,6..96,700;1,6..96,500&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* The reports' felt and paper (as the changelogs), with the six figures laid out as cards: red and black suits, the rule beneath. */
+:root {
+  --felt: #1f5e45; --felt-ink: #eef4ef; --felt-soft: #b9d3c4;
+  --paper: #f6f7f3; --card: #ffffff; --edge: #d4dbd5; --ink: #16181a; --ink-2: #454d48; --ink-3: #66716a;
+  --line: #dce2dc; --wash: #edf1ec; --brass: #9b7614; --brass-wash: #f5ecd2; --seal: #b3262f; --seal-wash: #f8e3e1; --mark: #1f7a52; --mark-wash: #e2f1e8;
+  --suit-red: #b3262f; --suit-black: #16181a;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --felt: #0f3325; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+    --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+    --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20; --mark: #6fd19b; --mark-wash: #173428;
+    --suit-red: #ff7a86; --suit-black: #eef2ec;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --felt: #0f3325; --felt-ink: #eef4ef; --felt-soft: #9dbcac;
+  --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+  --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17; --seal: #ff7a86; --seal-wash: #3a1d20; --mark: #6fd19b; --mark-wash: #173428;
+  --suit-red: #ff7a86; --suit-black: #eef2ec;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.04rem/1.6 var(--body); }
+h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); font-weight: 700; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2rem); font-weight: 600; }
+h3 { font-size: 1.1rem; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+.band { background: var(--felt); color: var(--felt-ink); padding-block: 44px 30px; }
+.band .eyebrow { color: var(--felt-soft); }
+.band h1 em { font-style: italic; font-weight: 500; }
+.lead { max-width: 64ch; margin: 14px 0 0; color: var(--felt-soft); font-size: 1.1rem; }
+.eyebrow { font: 600 0.74rem/1.4 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+section { padding-block: 34px 6px; }
+.intro { max-width: 70ch; color: var(--ink-2); margin: 10px 0 18px; }
+.figures { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.figure { background: var(--card); border: 1px solid var(--edge); border-radius: 12px; padding: 16px 16px 14px; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: start; min-width: 0; }
+.face { grid-row: span 4; width: 58px; height: 82px; border: 1px solid var(--edge); border-radius: 7px; background: var(--paper); display: grid; place-items: center; font: 700 1.5rem/1 var(--display); }
+.face.red { color: var(--suit-red); } .face.black { color: var(--suit-black); }
+.figure h3 { font-size: 1.05rem; }
+.figure .rule { color: var(--ink-2); font-size: 0.95rem; margin: 0; }
+.figure .rule-name { margin: 0; font: 600 0.8rem/1.3 var(--mono); letter-spacing: 0.04em; color: var(--brass); }
+.chip { justify-self: start; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 8px; border-radius: 999px; background: var(--wash); color: var(--ink-2); }
+.panel { background: var(--card); border: 1px solid var(--edge); border-radius: 12px; padding: 18px; margin-bottom: 16px; min-width: 0; }
+.scroll { overflow-x: auto; }
+svg.chart { width: 100%; min-width: 560px; height: auto; display: block; }
+svg text { font: 400 12px var(--body); fill: var(--ink-2); }
+svg .label { font-weight: 700; fill: var(--ink); }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 0.74rem/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+td.num, th.num { text-align: right; }
+.verdict { font: 600 0.72rem/1 var(--mono); padding: 5px 8px; border-radius: 999px; white-space: nowrap; }
+.verdict.ok { background: var(--mark-wash); color: var(--mark); }
+.verdict.strong { background: var(--seal-wash); color: var(--seal); }
+.verdict.weak { background: var(--brass-wash); color: var(--brass); }
+.small { font-size: 0.92rem; color: var(--ink-2); }
+footer { padding-block: 26px 40px; color: var(--ink-3); font-size: 0.88rem; }
+</style>
+
+<header class="band">
+  <div class="wrap">
+    <p class="eyebrow">Lopin n°742 · Bornage · l'extension, première mouture</p>
+    <h1>L'extension <em>six cartes bonus</em></h1>
+    <p class="lead">Six figures mélangées à la pioche. Poser une figure à côté d'une borne est le coup du tour, et change la règle de cette borne. Le jeu de base ne bouge pas. Cette page dit ce que fait chaque carte, et si une carte est trop forte.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section aria-labelledby="t-cards">
+    <p class="eyebrow">Les cartes</p>
+    <h2 id="t-cards">Ce que fait chaque figure</h2>
+    <p class="intro">Une figure se pioche comme une carte et compte dans la main de 6. Elle va à côté d'une borne non décidée, une par borne et par joueur, à droite de ses trois cartes. Deux figures sur une même borne s'ajoutent : les Rois, puis La Somme, puis le Valet de Trèfle.</p>
+    <div class="figures" id="figures"></div>
+  </section>
+
+  <section aria-labelledby="t-balance">
+    <p class="eyebrow">L'équilibre</p>
+    <h2 id="t-balance">Qui pose la carte gagne-t-il plus souvent ?</h2>
+    <p class="intro" id="balance-intro"></p>
+    <div class="panel">
+      <div class="scroll"><svg class="chart" id="chart" viewBox="0 0 680 300" role="img" aria-label="Part des parties gagnées par le joueur qui pose chaque figure, avec la fourchette à 95 %"></svg></div>
+    </div>
+    <div class="panel scroll">
+      <table>
+        <thead><tr><th>Figure</th><th class="num">Posée dans</th><th class="num">Au tour</th><th class="num">Borne gagnée</th><th class="num">Partie gagnée</th><th>Verdict</th></tr></thead>
+        <tbody id="balance"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-piles">
+    <p class="eyebrow">Les pioches</p>
+    <h2 id="t-piles">Le premier joueur et la longueur des parties</h2>
+    <div class="panel scroll">
+      <table>
+        <thead><tr><th>Pioche</th><th class="num">Parties</th><th class="num">Le premier joueur gagne</th><th class="num">Tours par partie</th></tr></thead>
+        <tbody id="piles"></tbody>
+      </table>
+    </div>
+    <p class="small" id="method"></p>
+  </section>
+</main>
+
+<footer class="wrap">Règle complète : <code>docs/extension.md</code>. Mesures : <code>npm run extension</code>, données dans <code>data/extension.json</code>.</footer>
+
+<script>
+const DATA = /*__DATA__*/null;
+const $ = (id) => document.getElementById(id);
+const pct = (x, digits = 1) => (x === null || x === undefined ? "—" : `${(100 * x).toFixed(digits).replace(".", ",")} %`);
+const NS = "http://www.w3.org/2000/svg";
+const svgEl = (tag, attrs, text) => {
+  const node = document.createElementNS(NS, tag);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+  if (text !== undefined) node.textContent = text;
+  return node;
+};
+const html = (tag, attrs = {}, ...children) => {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
+  node.append(...children);
+  return node;
+};
+
+// What each figure does, in the words of docs/extension.md.
+const EFFECTS = {
+  weakest: { text: "Sur sa borne, la combinaison la plus faible gagne. À égalité, le premier côté complet.", scope: "les deux côtés" },
+  sum: { text: "Sur sa borne, les combinaisons ne comptent plus : la plus grosse somme gagne.", scope: "les deux côtés" },
+  swap: { text: "Sa borne échange sa place avec une autre borne non décidée, cartes et figures comprises.", scope: "deux bornes" },
+  recall: { text: "Reprend en main la dernière carte posée de son côté de cette borne. Pas de pioche ce tour-là.", scope: "qui la pose" },
+  oddFlush: { text: "Trois impairs d'une même couleur (1-3-7, 3-5-9…) battent une Suite couleur. Un joker n'en fait pas partie.", scope: "les deux côtés" },
+  plusTen: { text: "Une Suite ou une Suite couleur compte 10 de plus, à combinaison égale : 5-6-7 + 10 bat 8-9-10.", scope: "qui le pose" },
+};
+const red = (text) => /[♥♦]/.test(text);
+
+$("figures").replaceChildren(...DATA.figures.map((f) => html("article", { class: "figure" },
+  html("div", { class: `face ${red(f.text) ? "red" : "black"}`, "aria-hidden": "true" }, f.text),
+  html("h3", {}, f.name),
+  html("p", { class: "rule-name" }, f.rule),
+  html("p", { class: "rule" }, EFFECTS[f.key].text),
+  html("span", { class: "chip" }, EFFECTS[f.key].scope),
+)));
+
+const verdictOf = (f) => {
+  if (f.wonGame === null) return html("span", { class: "verdict weak" }, "jamais posée");
+  if (f.tooStrong) return html("span", { class: "verdict strong" }, "trop forte");
+  if (f.wonGame < 0.45) return html("span", { class: "verdict weak" }, "sous 45 %");
+  return html("span", { class: "verdict ok" }, "équilibrée");
+};
+
+$("balance").replaceChildren(...DATA.figures.map((f) => html("tr", {},
+  html("td", {}, `${f.text} ${f.rule}`),
+  html("td", { class: "num" }, `${pct(f.laidRate, 0)} des parties`),
+  html("td", { class: "num" }, f.meanTurn === null ? "—" : f.meanTurn.toFixed(0)),
+  html("td", { class: "num" }, pct(f.wonBorder)),
+  html("td", { class: "num" }, `${pct(f.wonGame)} ± ${pct(f.margin)}`),
+  html("td", {}, verdictOf(f)),
+)));
+
+$("piles").replaceChildren(...DATA.piles.map((p) => html("tr", {},
+  html("td", {}, p.label),
+  html("td", { class: "num" }, String(p.games)),
+  html("td", { class: "num" }, pct(p.firstPlayer)),
+  html("td", { class: "num" }, p.turns.toFixed(1)),
+)));
+
+$("balance-intro").textContent = `Pour chaque figure : la part des parties gagnées par le joueur qui l'a posée, sur toutes les parties où elle était dans la pioche. Au-dessus de 60 %, elle décide trop souvent de la partie. Un score bas ne veut pas dire une carte faible : le Rappel, l'Échange ou le +10 se posent souvent tard, par le joueur qui est en train de perdre. ${DATA.gamesPerPile} parties par pioche, ${DATA.engine} des deux côtés.`;
+$("method").textContent = `Mesuré le ${DATA.built.slice(8, 10)}/${DATA.built.slice(5, 7)} en ${DATA.minutes} min, à la règle de la page (revendication), le même robot des deux côtés. Le cœur ne fait qu'estimer grossièrement les figures : ce sont ses habitudes qui sont mesurées, pas celles d'un joueur. Un premier repère, avant les parties avec l'arbre.`;
+
+function drawChart() {
+  const svg = $("chart");
+  const [left, right, top] = [180, 640, 20];
+  const rowH = 40;
+  const X = (v) => left + ((v - 0.2) / 0.6) * (right - left);
+  const bottom = top + rowH * DATA.figures.length;
+  for (const v of [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]) {
+    const strong = v === 0.5 || v === 0.6;
+    svg.append(svgEl("line", { x1: X(v), x2: X(v), y1: top - 6, y2: bottom, stroke: strong ? "var(--ink-3)" : "var(--line)", "stroke-dasharray": v === 0.6 ? "4 4" : "none" }));
+    svg.append(svgEl("text", { x: X(v), y: bottom + 18, "text-anchor": "middle" }, pct(v, 0)));
+  }
+  svg.append(svgEl("text", { x: X(0.6) + 4, y: top - 8 }, "trop forte au-delà"));
+  DATA.figures.forEach((f, i) => {
+    const y = top + i * rowH + rowH / 2;
+    svg.append(svgEl("text", { x: left - 12, y: y + 4, "text-anchor": "end", class: "label" }, `${f.text} ${f.rule}`));
+    if (f.wonGame === null) return;
+    const color = f.tooStrong ? "var(--seal)" : "var(--mark)";
+    const lo = Math.max(0.2, f.wonGame - f.margin);
+    const hi = Math.min(0.8, f.wonGame + f.margin);
+    svg.append(svgEl("line", { x1: X(lo), x2: X(hi), y1: y, y2: y, stroke: color, "stroke-width": 3 }));
+    svg.append(svgEl("circle", { cx: X(Math.min(0.8, Math.max(0.2, f.wonGame))), cy: y, r: 6, fill: color }));
+  });
+  svg.setAttribute("viewBox", `0 0 680 ${bottom + 30}`);
+}
+drawChart();
+</script>

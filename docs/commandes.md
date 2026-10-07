@@ -104,4 +104,5 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | `npm run changelog -- [1.2]` | le changelog d'une version de l'Expérimental (la page `src/report/changelog/<version>.html`) | `out/changelog-exp-<version>.html` et `out/artifact/` |
 | `npm run retrospective` | la rétrospective du robot, archivée | `out/OLD/retrospective.html` |
 | `npm run pdf` | les règles en PDF, avec Edge ou Chrome sans fenêtre | `regles/regles.pdf` |
+| `npm run extension -- [--games 400] [--engine core:stfig6] [--threads N|max]` | l'extension (`docs/extension.md`) : des parties robot contre robot à la règle de la page, pour huit pioches (sans figure, chaque figure seule, les six) ; pour chaque figure, posée combien et quand, et combien de fois qui la pose gagne la borne et la partie (au-delà de 60 %, trop forte) | `data/extension.json`, `out/extension.html` |
 | `npm run bretagne` | une proposition de paquet (« Les 7 Menhirs ») : ses combinaisons énumérées | `out/lore-exploration.json` |

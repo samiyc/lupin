@@ -34,6 +34,7 @@
     "hiding": "node scripts/hiding.js",
     "policy": "node scripts/policy.js",
     "bretagne": "node scripts/bretagne.js",
+    "extension": "node scripts/extension.js",
     "pivots": "node scripts/pivots.js",
     "games": "node scripts/games.js",
     "branch": "node scripts/branch.js",

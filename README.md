@@ -50,7 +50,7 @@ automatiquement. Mode d'emploi : `docs/jouer.md`.
 | `out/changelog-exp-1.2.html` | « Changelog Exp v1.2 », en cours : les pièges de fin de partie du cœur, le suivi des puzzles, l'extension (`npm run changelog -- 1.2`) |
 | `out/changelog-exp-1.1.html` | « Changelog Exp v1.1 » : la base de référence V1 + Oracle et tout ce qui a été tenté du 1.0 au 1.1 (sorti le 06/10 : 7 réponses par étage) (`npm run changelog -- 1.1`) |
 | `out/changelog-exp-1.0.html` | « Changelog Exp v1.0 » : tout ce qui a été tenté du 0.9 au 1.0 (`npm run changelog -- 1.0`) ; aussi `changelog-exp-0.8.html` et `changelog-exp-0.6.html` |
-| `out/lore-exploration.html` | « Lore Exploration » : les 7 Menhirs, une proposition d'univers |
+| `out/extension.html` | « L'extension » : les six cartes bonus et leur équilibre mesuré (`npm run extension`, règle dans `docs/extension.md`) |
 | `out/OLD/retrospective.html` | archivée : la rétrospective du robot, ses onze versions sur une timeline, son cœur, les tours où la partie se joue (`npm run retrospective`) |
 | `data/irl/essais.json` | les 10 parties réelles, transcrites depuis les photos |
 | `data/replays/` | les replays gardés pour l'analyse (les autres vont dans `replays/`, hors git) |

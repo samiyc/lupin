@@ -70,6 +70,31 @@ la plus forte du lot (Sami) : à surveiller dans les mesures.
   incomplet, et c'est le moment où il se complète à nouveau qui compte pour une égalité.
 - Le Roi de Pique s'appelle la Couleur impaire, et vaut pour les deux côtés de sa borne.
 
+## Le premier équilibre (07/10)
+
+`npm run extension` : 1 000 parties par pioche, à la règle de la page, le cœur du 1.1
+(`core:stfig6`) des deux côtés ; la page « L'extension » du menu Versions les montre.
+
+| Figure | Posée dans | Au tour | Borne gagnée | Partie gagnée par qui la pose |
+| --- | --- | --- | --- | --- |
+| Valet de Trèfle | 95 % des parties | 19 | 43 % | 56,6 % ± 2,2 |
+| Valet de Carreau | 89 % | 23 | 56 % | 56,9 % ± 2,3 |
+| Dame de Cœur | 52 % | 33 | 29 % | 37,5 % ± 2,9 |
+| Dame de Pique | 74 % | 32 | 21 % | 36,5 % ± 2,4 |
+| Roi de Pique | 58 % | 31 | 26 % | 43,0 % ± 2,9 |
+| Roi de Carreau | 67 % | 32 | 17 % | 38,1 % ± 2,6 |
+
+- **Aucune figure ne dépasse 60 %.** Les deux Valets donnent le plus : ils se posent tôt et
+  changent la borne pour les deux côtés.
+- **Un score bas ne dit pas qu'une carte est faible** : le Rappel, l'Échange et les Rois se
+  posent tard (tour 31 à 33), souvent par le joueur qui est en train de perdre.
+- **Le premier joueur** gagne 49,7 % sans figure, 51 à 57 % avec une figure seule, 52,8 % avec
+  les six : les figures l'avantagent un peu.
+- **Les parties** passent de 35 à 41 tours avec les six figures.
+- **La limite** : le cœur ne fait qu'estimer grossièrement les figures (`src/sim/figure-gains.js`).
+  Ce sont ses habitudes qu'on mesure. La prochaine mesure se fait avec l'arbre, qui joue les
+  figures dans ses simulations.
+
 ## La suite
 
 1. Le moteur : les figures comme cartes en plus du paquet, `border.figures`, un seul point de
