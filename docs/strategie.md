@@ -2720,3 +2720,29 @@ la règle d'arrêt.
 pose, le Valet de Trèfle à 59,3 ± 10,1, les autres entre 44 et 51 %. Trop peu de parties pour
 conclure ; La Somme passe au-dessus de 60 % : 200 parties de plus sur sa pioche seule sont en file.
 La page « L'extension » garde la mesure du cœur (1 000 parties par pioche).
+
+## L'arbre et les pièges, le solveur et le banc de pièges (07/10, soir)
+
+**La question** (Sami) : la famille « ni la carte ni la borne du coup gagnant » pèse 29,8 % ; faut-il
+changer l'arbre, par exemple résoudre exactement chaque simulation dès que la pioche est vide ?
+
+**Ce que fait vraiment le 1.1** : sur 101 pièges du cœur (un sur quinze de `traps-list.json`),
+l'arbre à 2 000 itérations trouve le coup gagnant **69 fois (68 %)** : le bon coup est souvent le
+2e ou 3e choix du cœur, l'arbre le regarde. Il en reste un tiers.
+
+**Le solveur dans les simulations** : une résolution exacte d'une position pioche vide (la valeur
+seule) coûte 20 ms en médiane, 232 ms en moyenne, 0,6 s au 9e décile, 5,6 s au pire. Dans chaque
+simulation, environ 8 minutes par coup au lieu de 1,5 s : hors de portée. Le gain serait d'ailleurs
+mince, le cœur ne se trompant que dans 3 à 4 % des fins gagnées.
+
+**Le solveur pour le vrai coup** : pioche vide, tout est connu (la main adverse est le reste des
+cartes). L'option `+exact=12` calcule le coup exactement jusqu'à 12 cartes (au lieu de 8), avec un
+plafond de positions au-delà duquel l'arbre reprend : `ExactEnd12`, 4 duels longs contre le V1.1
+en file. Essayée le 01/10 sur le 0.8 (47,2 % sur trop peu de parties), jamais avec le 1.1.
+
+**Le banc de pièges** (`npm run trap-bench`, `src/sim/trap-bench.js`) : pour passer de 1 507 à
+5 000 pièges, des parties cœur contre cœur (exactement les fins de partie que jouent les
+simulations), chaque position pioche vide résolue ; un piège est gardé entier avec ses coups
+gagnants, une position saine sur trois en témoin. Premier essai, 200 parties : 527 fins gagnées,
+21 pièges (4,0 %). Un cœur y joue ensuite en secondes : pièges évités, positions saines cassées.
+Trois passes de 16 000 parties en file (vers 5 000 pièges), puis EndJoker jugé dessus.

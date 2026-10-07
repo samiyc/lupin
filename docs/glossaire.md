@@ -265,6 +265,14 @@ Du plus rapide au plus sûr. Aucune étape rapide ne suffit à adopter une versi
   point chacune. Le passage du 07/10 : le cœur se trompe dans 3,6 % des fins de partie gagnées,
   1 507 pièges sur 82 403 fins de partie examinées (± 2,4 points par famille). Le joker y est pour
   31 %, et le bon coup est le 2e choix du cœur dans 62 % des cas.
+- **Le banc de pièges** (`npm run trap-bench`, 07/10) : des fins de partie de parties cœur
+  contre cœur — celles que jouent les simulations de l'arbre — gardées entières, chacune avec ses
+  coups gagnants : les pièges du cœur des simulations du 1.1 (4 à 4,5 % des fins gagnées), et une
+  position saine sur trois en témoin. Un cœur y joue en secondes : les pièges qu'il évite, les
+  positions saines qu'il casse. Un tri pour un cœur, jamais un verdict : le duel long décide.
+- **L'arbre et les pièges** : sur 101 pièges du cœur, l'arbre du 1.1 trouve le coup gagnant 69 fois
+  (68 %). Une résolution exacte pioche vide coûte 20 ms en médiane, 232 ms en moyenne : trop cher
+  dans chaque simulation (environ 8 min par coup), pas pour le vrai coup (`ExactEnd12`).
 - **Pourquoi ça compte** : sous 9 cartes, le robot calcule la fin exactement ; mais le cœur joue
   toutes les fins de partie simulées de l'arbre, et chacun de ses pièges y fausse un résultat.
 
@@ -297,6 +305,7 @@ version :
 | `FirstExplo6-Tree-7w` | Tree-7w, avec une exploration de 0,6 au lieu de 0,7 partout où joue le premier joueur (toujours le joueur 0), racine comprise, dans l'arbre des deux sièges ; les nœuds du second gardent 0,7. En pratique : la racine quand le robot commence, les réponses adverses attendues quand il est second. Le chiffre est c × 10 | `ismcts+widen=7+depth=5+…+firstExploration=0.6` |
 | `FirstExplo8-Tree-7w` | le même, avec 0,8 au lieu de 0,6 : plus d'exploration pour le premier joueur | `ismcts+widen=7+depth=5+…+firstExploration=0.8` |
 | `EndJoker` | le cœur du 1.2 en essai (`stfig6ej`) : une fois la pioche vide, le joker jugé par ce qu'il gagne de plus que sur sa meilleure autre borne, au lieu de son prix fixe (`src/sim/end-joker.js`). Comparé au V1.1 | `ismcts+widen=7+depth=5+core=stfig6ej@2000` |
+| `ExactEnd12` | le V1.1 qui, pioche vide, calcule exactement son vrai coup jusqu'à 12 cartes en main (au lieu de 8), avec un plafond de positions au-delà duquel l'arbre reprend | `ismcts+widen=7+depth=5+core=stfig6+exact=12@2000` |
 | `RootHalving-Tree-5w` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
 | `RootHalving-Tree-2w-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |

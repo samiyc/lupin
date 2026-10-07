@@ -90,6 +90,17 @@
    "verdict": "tendance",
    "when": "07/10 20:45",
    "note": "La Somme à 64,7 % ± 10 pour qui la pose, le Valet de Trèfle à 59,3 ± 10, les autres 44 à 51 %. Trop peu de parties : 200 de plus sur La Somme seule en file."
+  },
+  {
+   "name": "L'arbre du 1.1 sur les pièges du cœur, et le coût d'une résolution exacte",
+   "family": "reference",
+   "bench": "puzzles",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "07/10 21:30",
+   "note": "L'arbre à 2 000 trouve le coup gagnant dans 69 pièges sur 101 (68 %). Résoudre chaque simulation pioche vide coûterait ~8 min par coup (232 ms en moyenne par résolution) : non. Le vrai coup, oui : ExactEnd12 en file."
   }
  ],
  "commitLabels": {},
@@ -98,6 +109,11 @@
    "when": "En file",
    "title": "EndJoker : 500 parties de plus, et La Somme avec l'arbre",
    "text": "EndJoker à 52,4 % (49,6 – 55,2) contre le V1.1 : deux duels sur des donnes nouvelles pour trancher. La Somme à 64,7 % ± 10 avec l'arbre : 200 parties sur sa pioche seule."
+  },
+  {
+   "when": "En file",
+   "title": "ExactEnd12 et le banc de pièges",
+   "text": "Le vrai coup calculé exactement jusqu'à 12 cartes, pioche vide (4 duels contre le V1.1) ; puis 48 000 parties cœur contre cœur pour 5 000 pièges, et EndJoker jugé sur ce banc."
   },
   {
    "when": "Piste",
