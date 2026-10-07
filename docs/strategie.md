@@ -2703,3 +2703,20 @@ la règle d'arrêt.
   (auto-jeu du 1.1) pour lire les petites familles.
 - **Les puzzles de Sami** : `npm run puzzle-stats` une fois ses tentatives assez nombreuses, pour
   croiser ses faux pas avec les familles de pièges.
+
+**EndJoker, les mesures** (07/10, soir) :
+- **Les pièges, sur les mêmes 3 779 fins de partie gagnées** (`npm run traps -- --games 1500`) :
+  le cœur du 1.1 s'y trompe 126 fois (3,33 %), dont 45 avec le joker ; EndJoker 119 fois (3,15 %),
+  dont 40. Cinq pièges de joker en moins sur 45 : le bon sens, mais peu. Le joker se joue sur
+  plusieurs coups, et sa meilleure autre borne n'en dit qu'une partie.
+- **Contre le V1.1** (`VALIDATE_LONG_1..4_EndJoker`, 2 000 itérations des deux côtés, 19 h 00 –
+  20 h 39) : 51,6 / 51,6 / 54,4 / 52,0 %, **52,4 % (49,6 – 55,2)** ; 50,4 % en commençant, 54,4 % en
+  second ; 2,83 bornes gagnées par partie contre 2,73. La fourchette basse touche 50 % : une
+  tendance, pas encore une version. Comme pour Tree-7w, 500 parties de plus sur des donnes
+  nouvelles (décalages 5 et 6) sont en file pour trancher.
+
+**L'extension avec l'arbre** (`extension-tree`, l'arbre du 1.1 à 200 itérations des deux côtés,
+60 parties par pioche, 6 min ; `data/extension-tree.json`) : La Somme à 64,7 % ± 10,2 pour qui la
+pose, le Valet de Trèfle à 59,3 ± 10,1, les autres entre 44 et 51 %. Trop peu de parties pour
+conclure ; La Somme passe au-dessus de 60 % : 200 parties de plus sur sa pioche seule sont en file.
+La page « L'extension » garde la mesure du cœur (1 000 parties par pioche).

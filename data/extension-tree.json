@@ -1,0 +1,150 @@
+{
+ "built": "2026-10-07T18:45:57.454Z",
+ "engine": "ismcts+widen=7+depth=5+core=stfig6@200",
+ "gamesPerPile": 60,
+ "minutes": 6.2,
+ "piles": [
+  {
+   "config": "none",
+   "label": "sans figure",
+   "games": 60,
+   "firstPlayer": 0.5833333333333334,
+   "turns": 35.38333333333333
+  },
+  {
+   "config": "weakest",
+   "label": "V♣ seul",
+   "games": 60,
+   "firstPlayer": 0.6333333333333333,
+   "turns": 36.333333333333336
+  },
+  {
+   "config": "sum",
+   "label": "V♦ seul",
+   "games": 60,
+   "firstPlayer": 0.5833333333333334,
+   "turns": 36.25
+  },
+  {
+   "config": "swap",
+   "label": "D♥ seul",
+   "games": 60,
+   "firstPlayer": 0.4666666666666667,
+   "turns": 35.483333333333334
+  },
+  {
+   "config": "recall",
+   "label": "D♠ seul",
+   "games": 60,
+   "firstPlayer": 0.4666666666666667,
+   "turns": 36.55
+  },
+  {
+   "config": "oddFlush",
+   "label": "R♠ seul",
+   "games": 60,
+   "firstPlayer": 0.5666666666666667,
+   "turns": 35.56666666666667
+  },
+  {
+   "config": "plusTen",
+   "label": "R♦ seul",
+   "games": 60,
+   "firstPlayer": 0.5666666666666667,
+   "turns": 36.083333333333336
+  },
+  {
+   "config": "all",
+   "label": "les six",
+   "games": 60,
+   "firstPlayer": 0.3,
+   "turns": 42.166666666666664
+  }
+ ],
+ "figures": [
+  {
+   "key": "weakest",
+   "text": "V♣",
+   "name": "Valet de Trèfle",
+   "rule": "la plus faible gagne",
+   "gamesIn": 120,
+   "laid": 91,
+   "laidRate": 0.7583333333333333,
+   "meanTurn": 23.175824175824175,
+   "wonBorder": 0.5054945054945055,
+   "wonGame": 0.5934065934065934,
+   "margin": 0.10092336556460384,
+   "tooStrong": false
+  },
+  {
+   "key": "sum",
+   "text": "V♦",
+   "name": "Valet de Carreau",
+   "rule": "la Somme",
+   "gamesIn": 120,
+   "laid": 85,
+   "laidRate": 0.7083333333333334,
+   "meanTurn": 28.03529411764706,
+   "wonBorder": 0.6352941176470588,
+   "wonGame": 0.6470588235294118,
+   "margin": 0.10159437312029079,
+   "tooStrong": true
+  },
+  {
+   "key": "swap",
+   "text": "D♥",
+   "name": "Dame de Cœur",
+   "rule": "l'Échange",
+   "gamesIn": 120,
+   "laid": 113,
+   "laidRate": 0.9416666666666667,
+   "meanTurn": 25.75221238938053,
+   "wonBorder": 0.25663716814159293,
+   "wonGame": 0.4424778761061947,
+   "margin": 0.0915785331599545,
+   "tooStrong": false
+  },
+  {
+   "key": "recall",
+   "text": "D♠",
+   "name": "Dame de Pique",
+   "rule": "le Rappel",
+   "gamesIn": 120,
+   "laid": 92,
+   "laidRate": 0.7666666666666667,
+   "meanTurn": 24.902173913043477,
+   "wonBorder": 0.2826086956521739,
+   "wonGame": 0.44565217391304346,
+   "margin": 0.10156670110201449,
+   "tooStrong": false
+  },
+  {
+   "key": "oddFlush",
+   "text": "R♠",
+   "name": "Roi de Pique",
+   "rule": "la Couleur impaire",
+   "gamesIn": 120,
+   "laid": 90,
+   "laidRate": 0.75,
+   "meanTurn": 25.988888888888887,
+   "wonBorder": 0.4222222222222222,
+   "wonGame": 0.5111111111111111,
+   "margin": 0.10327556064535208,
+   "tooStrong": false
+  },
+  {
+   "key": "plusTen",
+   "text": "R♦",
+   "name": "Roi de Carreau",
+   "rule": "+10 aux suites",
+   "gamesIn": 120,
+   "laid": 101,
+   "laidRate": 0.8416666666666667,
+   "meanTurn": 24.455445544554454,
+   "wonBorder": 0.3069306930693069,
+   "wonGame": 0.44554455445544555,
+   "margin": 0.09693358635139152,
+   "tooStrong": false
+  }
+ ]
+}

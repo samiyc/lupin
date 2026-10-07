@@ -1010,7 +1010,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 1 sur 4, règle d'arrêt.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-07T19:25",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-07-19-00_VALIDATE_LONG_1_EndJoker.txt"
     },
     {
       "id": "VALIDATE_LONG_2_EndJoker",
@@ -1018,7 +1021,7 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 2 sur 4, règle d'arrêt.",
-      "status": "todo",
+      "status": "done",
       "stopIf": [
         {
           "after": [
@@ -1026,7 +1029,10 @@
           ],
           "below": 0.47
         }
-      ]
+      ],
+      "doneAt": "2026-10-07T19:50",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-07-19-25_VALIDATE_LONG_2_EndJoker.txt"
     },
     {
       "id": "VALIDATE_LONG_3_EndJoker",
@@ -1034,7 +1040,7 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 3 sur 4, règle d'arrêt.",
-      "status": "todo",
+      "status": "done",
       "stopIf": [
         {
           "after": [
@@ -1049,7 +1055,10 @@
           ],
           "below": 0.5
         }
-      ]
+      ],
+      "doneAt": "2026-10-07T20:14",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-07-19-50_VALIDATE_LONG_3_EndJoker.txt"
     },
     {
       "id": "VALIDATE_LONG_4_EndJoker",
@@ -1057,7 +1066,7 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker (cœur stfig6ej, 1.2) : une fois la pioche vide, le joker jugé par son meilleur usage ailleurs au lieu de son prix fixe (les pièges : 31 % des erreurs du cœur en fin de partie). Contre le V1.1 à 2 000, jeu de donnes 4 sur 4, règle d'arrêt.",
-      "status": "todo",
+      "status": "done",
       "stopIf": [
         {
           "after": [
@@ -1072,7 +1081,10 @@
           ],
           "below": 0.5
         }
-      ]
+      ],
+      "doneAt": "2026-10-07T20:39",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-07-20-14_VALIDATE_LONG_4_EndJoker.txt"
     },
     {
       "id": "extension-tree",
@@ -1080,6 +1092,33 @@
       "estimate": "20 min",
       "limit": 60,
       "why": "L'équilibre de l'extension avec l'arbre du 1.1 (200 itérations), qui joue les figures dans ses simulations : la mesure du cœur seul ne fait qu'estimer grossièrement les figures.",
+      "status": "done",
+      "doneAt": "2026-10-07T20:45",
+      "minutes": 6,
+      "output": "backlog-runs/2026-10-07-20-39_extension-tree.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_5_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 5",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker : 52,4 % (49,6 – 55,2) sur les donnes 1 à 4, fourchette basse juste sous 50 % ; 500 parties de plus sur des donnes nouvelles (jeu 5) pour trancher, comme pour Tree-7w.",
+      "status": "todo"
+    },
+    {
+      "id": "VALIDATE_LONG_6_EndJoker",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6ej@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 6",
+      "estimate": "27 min",
+      "limit": 50,
+      "why": "EndJoker : 52,4 % (49,6 – 55,2) sur les donnes 1 à 4, fourchette basse juste sous 50 % ; 500 parties de plus sur des donnes nouvelles (jeu 6) pour trancher, comme pour Tree-7w.",
+      "status": "todo"
+    },
+    {
+      "id": "extension-tree-somme",
+      "command": "npm run extension -- --engine \"ismcts+widen=7+depth=5+core=stfig6@200\" --games 200 --only sum",
+      "estimate": "15 min",
+      "limit": 40,
+      "why": "La Somme à 64,7 % ± 10 avec l'arbre sur 60 parties : 200 parties de plus sur sa pioche seule pour savoir si elle est trop forte.",
       "status": "todo"
     }
   ]

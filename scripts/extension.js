@@ -19,14 +19,19 @@ const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name
 applyThreadsOption(args);
 const games = Number(option("--games", 400));
 const engine = option("--engine", "core:stfig6");
+// `--only sum`: the control pile and that figure's alone. A side measure (another engine, or one
+// figure) goes to data/extension-<tag>.json and leaves the page alone, which shows the main one.
+const only = option("--only", null);
+const tag = [only, engine === "core:stfig6" ? null : "tree"].filter(Boolean).join("-");
 const ROOT = new URL("../", import.meta.url);
 const CHUNK = 20;
 
-const CONFIGS = [
+const ALL_CONFIGS = [
   { config: "none", label: "sans figure", figures: [] },
   ...FIGURES.map((figure) => ({ config: figure.key, label: `${figure.text} seul`, figures: [figure.id] })),
   { config: "all", label: "les six", figures: FIGURES.map((figure) => figure.id) },
 ];
+const CONFIGS = only ? ALL_CONFIGS.filter((config) => config.config === "none" || config.config === only) : ALL_CONFIGS;
 
 const share = (part, whole) => (whole > 0 ? part / whole : null);
 const mean = (values) => (values.length ? values.reduce((a, b) => a + b, 0) / values.length : null);
@@ -73,21 +78,25 @@ const data = {
   gamesPerPile: games,
   minutes: +((Date.now() - started) / 60000).toFixed(1),
   piles: results.map(({ config, games: list }) => pileOf(CONFIGS.find((c) => c.config === config), list)),
-  figures: FIGURES.map((figure) => figureOf(figure, results)),
+  figures: FIGURES.filter((figure) => !only || figure.key === only).map((figure) => figureOf(figure, results)),
 };
-await writeFile(new URL("data/extension.json", ROOT), `${JSON.stringify(data, null, 1)}\n`);
+const OUT_NAME = tag ? "extension-" + tag : "extension";
+await writeFile(new URL(`data/${OUT_NAME}.json`, ROOT), `${JSON.stringify(data, null, 1)}\n`);
 
-// As the changelogs: the page without its skeleton for the artifact, wrapped for out/ (the Versions menu).
-const template = await readFile(new URL("src/report/extension.html", ROOT), "utf8");
-// The data lands inside a <script>: "</" is escaped so no text in it can close the tag.
-const page = template.replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
-await writeFile(new URL("out/artifact/extension.html", ROOT), page);
-const cut = page.indexOf('<header class="band">');
-const head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
-await writeFile(new URL("out/extension.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
+/** As the changelogs: the page without its skeleton for the artifact, wrapped for out/ (the Versions menu). */
+async function writePage() {
+  const template = await readFile(new URL("src/report/extension.html", ROOT), "utf8");
+  // The data lands inside a <script>: "</" is escaped so no text in it can close the tag.
+  const page = template.replace("/*__DATA__*/null", JSON.stringify(data).replaceAll("</", "<\\/"));
+  await writeFile(new URL("out/artifact/extension.html", ROOT), page);
+  const cut = page.indexOf('<header class="band">');
+  const head = '<!doctype html>\n<html lang="fr">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
+  await writeFile(new URL("out/extension.html", ROOT), `${head}${page.slice(0, cut)}</head>\n<body>\n${page.slice(cut)}</body>\n</html>\n`);
+}
+if (!tag) await writePage();
 
 const pct = (x) => (x === null ? "—" : `${(100 * x).toFixed(1).replace(".", ",")} %`);
 console.log(`${games} parties par pioche, ${CONFIGS.length} pioches, ${engine} des deux côtés — ${data.minutes} min`);
 for (const pile of data.piles) console.log(`  ${pile.label.padEnd(12)} premier joueur ${pct(pile.firstPlayer)} · ${pile.turns.toFixed(1)} tours`);
 for (const f of data.figures) console.log(`  ${f.text} ${f.rule.padEnd(22)} posée ${pct(f.laidRate)} des parties, au tour ${f.meanTurn?.toFixed(0) ?? "—"} · borne gagnée ${pct(f.wonBorder)} · partie gagnée ${pct(f.wonGame)} ± ${pct(f.margin)}${f.tooStrong ? "  ← trop forte" : ""}`);
-console.log("→ data/extension.json, out/extension.html");
+console.log(tag ? `→ data/extension-${tag}.json` : "→ data/extension.json, out/extension.html");

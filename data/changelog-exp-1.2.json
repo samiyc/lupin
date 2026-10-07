@@ -68,14 +68,36 @@
    "verdict": "neutre",
    "when": "07/10 17:45",
    "note": "Aucune figure au-dessus de 60 % : les deux Valets à 56,6 et 56,9 %, posés tôt ; les autres (Rappel, Échange, Rois) se posent tard, par le joueur qui perd. Le premier joueur passe de 49,7 à 51-57 %. Le cœur ne fait qu'estimer les figures : mesure avec l'arbre en file."
+  },
+  {
+   "name": "EndJoker contre le V1.1 (4 duels longs à 2 000)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 52.4,
+   "lo": 49.6,
+   "hi": 55.2,
+   "verdict": "tendance",
+   "when": "07/10 20:39",
+   "note": "51,6 / 51,6 / 54,4 / 52,0 % ; fourchette basse juste sous 50 %. Pièges sur les mêmes fins de partie : 126 → 119, joker 45 → 40. 500 parties de plus en file pour trancher."
+  },
+  {
+   "name": "L'extension avec l'arbre du 1.1 (200 itérations, 60 parties par pioche)",
+   "family": "extension",
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "tendance",
+   "when": "07/10 20:45",
+   "note": "La Somme à 64,7 % ± 10 pour qui la pose, le Valet de Trèfle à 59,3 ± 10, les autres 44 à 51 %. Trop peu de parties : 200 de plus sur La Somme seule en file."
   }
  ],
  "commitLabels": {},
  "next": [
   {
    "when": "En file",
-   "title": "EndJoker contre le V1.1",
-   "text": "4 duels longs à 2 000, avec la règle d'arrêt ; puis l'équilibre de l'extension avec l'arbre du 1.1."
+   "title": "EndJoker : 500 parties de plus, et La Somme avec l'arbre",
+   "text": "EndJoker à 52,4 % (49,6 – 55,2) contre le V1.1 : deux duels sur des donnes nouvelles pour trancher. La Somme à 64,7 % ± 10 avec l'arbre : 200 parties sur sa pioche seule."
   },
   {
    "when": "Piste",
