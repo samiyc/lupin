@@ -252,6 +252,21 @@ Du plus rapide au plus sûr. Aucune étape rapide ne suffit à adopter une versi
 - Leçon du 05/10 : une validation courte à 52-53 % ne dit presque rien (10c4r et
   DistOracle1Root y étaient à 52,8 % ; 49,4 % et 51,6 % en validation longue).
 
+## Les pièges
+
+- **Un piège** (Sami, 07/10) : une fin de partie (pioche vide, tout est connu) gagnée pour le
+  joueur au trait, où le coup favori du cœur perd. Pas de nul dans ce jeu : ne pas gagner, c'est
+  perdre. `npm run traps` les cherche dans les duels gardés et les range par **famille**, la
+  première règle qui distingue le coup du cœur du coup gagnant : joker posé ou gardé à tort, carte
+  jetée sur une borne perdue, côté complété sur une borne perdue, une borne de plus perdue, borne
+  vierge ouverte ; sinon par placement : bonne carte et mauvaise borne, bonne borne et mauvaise
+  carte, ou ni l'une ni l'autre.
+- **Combien en faut-il** : environ 5 000 erreurs pour classer une dizaine de familles à ± 1,5
+  point chacune. Le cœur se trompe dans environ 4,5 % des fins de partie gagnées : les ~145 700
+  fins de partie des duels gardés en donnent environ 3 300 (± 1,7 point).
+- **Pourquoi ça compte** : sous 9 cartes, le robot calcule la fin exactement ; mais le cœur joue
+  toutes les fins de partie simulées de l'arbre, et chacun de ses pièges y fausse un résultat.
+
 ## L'oracle
 
 - **L'oracle** : le même arbre que le V1, en beaucoup plus large et plus long (tous les coups à
