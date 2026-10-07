@@ -1,4 +1,5 @@
 import { JOKER, isJoker, realCardCount, valueOf } from "../core/cards.js";
+import { isFigure } from "../core/figures.js";
 
 /**
  * What a side of a border is likely to be worth once finished, seen from one
@@ -51,7 +52,10 @@ export function unseenCards(state, player) {
   const real = realCardCount(state.spec);
   const counts = new Array(real + 1).fill(1);
   counts[real] = state.spec.jokers;
-  const see = (card) => (counts[isJoker(card) ? real : card] -= 1);
+  // A figure (the extension) is never a card to finish a side with: not counted.
+  const see = (card) => {
+    if (!isFigure(card)) counts[isJoker(card) ? real : card] -= 1;
+  };
   state.hands[player].forEach(see);
   for (const border of state.borders) for (const side of border.sides) side.forEach(see);
   return listUnseen(counts, real);

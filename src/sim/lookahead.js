@@ -1,3 +1,4 @@
+import { isFigure } from "../core/figures.js";
 import { createRng } from "../core/random.js";
 import { applyMove, legalMoves } from "./game.js";
 import { unseenCards } from "./potential.js";
@@ -22,7 +23,7 @@ export function cloneState(state) {
     ...state,
     pile: [...state.pile],
     hands: state.hands.map((hand) => [...hand]),
-    borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), completedAt: [...border.completedAt], owner: border.owner })),
+    borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), completedAt: [...border.completedAt], owner: border.owner, figures: border.figures && [...border.figures] })),
     jokersPlayed: [...state.jokersPlayed],
     resolved: state.resolved.map((entry) => ({ ...entry })),
   };
@@ -35,7 +36,7 @@ export function cloneState(state) {
  * rest shuffled into the pile.
  */
 export function determinize(state, player, rng, hand = null) {
-  const unseen = unseenCards(state, player).entries.flatMap(([card, count]) => Array.from({ length: count }, () => card));
+  const unseen = [...unseenCards(state, player).entries.flatMap(([card, count]) => Array.from({ length: count }, () => card)), ...hiddenFigures(state, player)];
   const copy = cloneState(state);
   // Rollouts settle borders at the end: proving claims on every simulated move
   // would cost a third of the search speed, as the certainty in 0.6 did.
@@ -50,6 +51,14 @@ export function determinize(state, player, rng, hand = null) {
   copy.hands[1 - player] = unseen.slice(0, theirs);
   copy.pile = unseen.slice(theirs);
   return copy;
+}
+
+/** The extension's figures `player` cannot see: in the deck, not in their hand, not laid. None in the base game. */
+function hiddenFigures(state, player) {
+  const figures = state.deck.filter(isFigure);
+  if (figures.length === 0) return figures;
+  const seen = new Set([...state.hands[player], ...state.borders.flatMap((border) => border.figures ?? [])]);
+  return figures.filter((figure) => !seen.has(figure));
 }
 
 /** The cards of `all` left once one of each card of `taken` is removed. */

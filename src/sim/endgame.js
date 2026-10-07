@@ -27,7 +27,11 @@ function keyOf(state) {
   const rank = (turn) => (Number.isFinite(turn) ? filled.indexOf(turn) : "-");
   // The owner too: under the claim rule a border claimed early is closed, which changes the moves.
   const borders = state.borders.map((border) => `${border.sides.map(sortedText).join("/")}@${border.completedAt.map(rank).join("/")}${border.owner ?? ""}`).join(";");
-  return `${state.current}#${state.passes}#${hands}#${borders}`;
+  const key = `${state.current}#${state.passes}#${hands}#${borders}`;
+  // The extension: the figures laid, and the sides in the order they were laid (a Rappel takes the last card back).
+  if (!state.withFigures) return key;
+  const laid = state.borders.map((border) => [border.figures.join(","), border.sides.join("/")].join(":"));
+  return [key, ...laid].join(";");
 }
 
 function outcome(state, player) {

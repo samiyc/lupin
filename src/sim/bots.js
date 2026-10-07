@@ -1,4 +1,5 @@
 import { isJoker, valueOf } from "../core/cards.js";
+import { handOf, withFigureMoves } from "./figure-gains.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
 import { ismctsBot, ismctsSettings } from "./ismcts.js";
@@ -89,7 +90,7 @@ function views(state, lite = false, params = undefined) {
 
 function scoreGreedy(state, moves) {
   const { mine, threat } = views(state);
-  return moves.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) }));
+  return withFigureMoves(state, moves, () => borderChances(state, state.current, { mine, threat }), (cards) => cards.map((move) => ({ move, gain: moveGain(state, move, mine, threat[move.border]) })));
 }
 
 /** One move's score taken apart (the retrospective page, `scripts/retrospective.js`): potentials, odds before and after, the card's price. */
@@ -103,7 +104,7 @@ export function explainMove(state, move) {
 
 /** The bot's own odds of winning each border, as things stand. */
 function borderChances(state, player, { mine, threat }) {
-  const withHand = { ...mine, hand: state.hands[player] };
+  const withHand = { ...mine, hand: handOf(state, player) };
   return state.borders.map((border, index) => winChance(sidePotential(border.sides[player], withHand), threat[index], mine.params));
 }
 
@@ -131,7 +132,7 @@ function ideasContext(state, player, { ideas, gates, weights }, seen) {
     ideas,
     gates,
     weights,
-    hand: state.hands[player],
+    hand: handOf(state, player),
     theirSides: state.borders.map((border) => border.sides[1 - player]),
     boardCards: boardCards(state),
     pile: state.pile.length,
@@ -166,11 +167,9 @@ function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, 
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   const certainty = certaintyOf(context.ideas);
   const gainOf = certainty ? withCertainties(state, plainGain, (card) => cardCost(state.spec, card, params)) : plainGain;
-  return strategistMoves(moves, (move) => state.borders[move.border].sides[player], context, {
-    gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1),
-    scale: 1 / (4 * params.temperature),
-    keepAll,
-  });
+  const options = { gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1), scale: 1 / (4 * params.temperature), keepAll };
+  const scoreCards = (cards) => strategistMoves(cards, (move) => state.borders[move.border].sides[player], context, options);
+  return withFigureMoves(state, moves, () => borderChances(state, state.current, seen), scoreCards);
 }
 
 /**
@@ -182,7 +181,7 @@ function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, 
 function wholeGains(state, { mine, threat }) {
   const player = state.current;
   const sides = state.borders.map((border) => border.sides[player]);
-  const hand = state.hands[player];
+  const hand = handOf(state, player);
   const worth = (side, context, index) => winChance(sidePotential(side, context), threat[index], mine.params);
   const sum = (values) => values.reduce((a, b) => a + b, 0);
   const before = sum(sides.map((side, index) => worth(side, { ...mine, hand }, index)));
@@ -207,7 +206,7 @@ const winChance = (mine, theirs, params = BOT_PARAMS) => 1 / (1 + Math.exp((thei
 function withoutCard(state, context, card) {
   const cached = context.withoutCard?.get(card);
   if (cached) return cached;
-  const hand = [...state.hands[state.current]];
+  const hand = [...handOf(state, state.current)];
   hand.splice(hand.indexOf(card), 1);
   // The same fields as the view it comes from (`views`), the hand aside: written out, not spread.
   const { valuer, unseen, draws, jokerAllowed, memo, params, lite } = context;

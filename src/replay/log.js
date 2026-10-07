@@ -1,6 +1,7 @@
 import { DECKS, JOKER_RULES } from "../config/decks.js";
 import { ORDERS } from "../config/formations.js";
 import { isJoker } from "../core/cards.js";
+import { drawsAfter } from "../core/figures.js";
 import { bySuitThenValue, formatCard, formatCards, parseCard, parseCards } from "../core/notation.js";
 import { applyMove, createGame, legalMoves } from "../sim/game.js";
 
@@ -88,12 +89,13 @@ export function playLogged(log, state, move, scored = null) {
     return entry;
   }
   Object.assign(entry, {
-    move: { card: formatCard(spec, move.card), border: move.border + 1 },
+    // `target`: the border a Dame de Cœur swaps with (the extension).
+    move: { card: formatCard(spec, move.card), border: move.border + 1, ...(move.target === undefined ? {} : { target: move.target + 1 }) },
     side: sideContext(state, player, move.border),
     joker: isJoker(move.card),
     candidates: candidatesOf(spec, scored),
   });
-  const drawing = state.pile.length > 0;
+  const drawing = state.pile.length > 0 && drawsAfter(move.card);
   applyMove(state, move);
   const hand = state.hands[player];
   entry.drew = drawing ? formatCard(spec, hand[hand.length - 1]) : null;
@@ -128,13 +130,16 @@ export function snapshot(state) {
     current: state.current,
     pile: state.pile.length,
     hands: state.hands.map((hand) => [...hand]),
-    borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), owner: border.owner })),
+    borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), owner: border.owner, figures: border.figures ? [...border.figures] : [null, null] })),
     resolved: state.resolved.map((entry) => ({ ...entry })),
     winner: state.winner,
     winType: state.winType,
     over: state.over,
   };
 }
+
+/** A logged move read back: 1-based borders, and the swap's `target` when there is one (the extension). */
+const loggedMove = (spec, logged) => ({ card: parseCard(spec, logged.card), border: logged.border - 1, ...(logged.target === undefined ? {} : { target: logged.target - 1 }) });
 
 function replayTurn(state, entry, index) {
   const fail = (why) => {
@@ -146,9 +151,9 @@ function replayTurn(state, entry, index) {
     applyMove(state, null);
     return;
   }
-  const move = { card: parseCard(state.spec, entry.move.card), border: entry.move.border - 1 };
-  if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
-  const drawing = state.pile.length > 0;
+  const move = loggedMove(state.spec, entry.move);
+  if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border && m.target === move.target)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
+  const drawing = state.pile.length > 0 && drawsAfter(move.card);
   applyMove(state, move);
   const hand = state.hands[entry.player];
   if (drawing && formatCard(state.spec, hand[hand.length - 1]) !== entry.drew) fail(`pioche différente (${entry.drew})`);

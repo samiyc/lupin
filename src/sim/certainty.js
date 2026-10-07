@@ -1,4 +1,6 @@
 import { isJoker } from "../core/cards.js";
+import { withoutFigures } from "../core/figures.js";
+import { evaluatorFor } from "./border-rules.js";
 import { unseenCards } from "./potential.js";
 
 /**
@@ -48,30 +50,32 @@ function jokerRoom(state, player, side) {
 const sorted = (cards) => [...cards].sort((a, b) => a - b);
 const unseenList = (state, player) => sorted(unseenCards(state, player).entries.flatMap(([card, count]) => Array(count).fill(card)));
 
-/** My side is complete: won if no finish of theirs beats it (ties go to whoever completed first). */
-function statusOfMyFullSide(state, border, player, pool = unseenList(state, player)) {
+/** My side is complete: won if no finish of theirs beats it (ties go to whoever completed first). Each side under its border's rules. */
+function statusOfMyFullSide(state, index, player, pool = unseenList(state, player)) {
+  const border = state.borders[index];
   const [mine, theirs] = [border.sides[player], border.sides[1 - player]];
-  const score = state.evaluator.score(mine);
-  const theirBest = bestFinish(state.evaluator, theirs, pool, jokerRoom(state, 1 - player, theirs));
+  const score = evaluatorFor(state, index, player).score(mine);
+  const theirBest = bestFinish(evaluatorFor(state, index, 1 - player), theirs, pool, jokerRoom(state, 1 - player, theirs));
   const iWinTies = theirs.length < 3 || border.completedAt[player] < border.completedAt[1 - player];
   if (score > theirBest || (score === theirBest && iWinTies)) return STATUS.won;
   return theirs.length === 3 ? STATUS.lost : STATUS.open;
 }
 
 /** Only their side is complete: lost if no finish of mine beats it (a tie goes to them). */
-function statusAgainstTheirFullSide(state, border, player) {
+function statusAgainstTheirFullSide(state, index, player) {
+  const border = state.borders[index];
   const [mine, theirs] = [border.sides[player], border.sides[1 - player]];
-  const pool = sorted([...state.hands[player], ...unseenList(state, player)]);
-  const myBest = bestFinish(state.evaluator, mine, pool, jokerRoom(state, player, mine));
-  return myBest <= state.evaluator.score(theirs) ? STATUS.lost : STATUS.open;
+  const pool = sorted([...withoutFigures(state.hands[player]), ...unseenList(state, player)]);
+  const myBest = bestFinish(evaluatorFor(state, index, player), mine, pool, jokerRoom(state, player, mine));
+  return myBest <= evaluatorFor(state, index, 1 - player).score(theirs) ? STATUS.lost : STATUS.open;
 }
 
 /** The status of border `index` for `player` (`STATUS`). */
 export function borderStatus(state, index, player) {
   const border = state.borders[index];
   if (border.owner !== null && border.owner !== undefined) return border.owner === player ? STATUS.won : STATUS.lost;
-  if (border.sides[player].length === 3) return statusOfMyFullSide(state, border, player);
-  if (border.sides[1 - player].length === 3) return statusAgainstTheirFullSide(state, border, player);
+  if (border.sides[player].length === 3) return statusOfMyFullSide(state, index, player);
+  if (border.sides[1 - player].length === 3) return statusAgainstTheirFullSide(state, index, player);
   return STATUS.open;
 }
 
@@ -85,8 +89,8 @@ export function borderStatus(state, index, player) {
 export function isClaimable(state, index, player) {
   const border = state.borders[index];
   if (border.owner !== null || border.sides[player].length < 3) return false;
-  const offTable = sorted([...state.hands[player], ...unseenList(state, player)]);
-  return statusOfMyFullSide(state, border, player, offTable) === STATUS.won;
+  const offTable = sorted([...withoutFigures(state.hands[player]), ...unseenList(state, player)]);
+  return statusOfMyFullSide(state, index, player, offTable) === STATUS.won;
 }
 
 /** Every border's status for `player`. */

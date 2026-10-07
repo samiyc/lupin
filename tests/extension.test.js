@@ -1,0 +1,130 @@
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import { DECKS, JOKER_RULES } from "../src/config/decks.js";
+import { ORDERS } from "../src/config/formations.js";
+import { FIGURE_IDS, figureByKey, isFigure } from "../src/core/figures.js";
+import { parseCards } from "../src/core/notation.js";
+import { createRng } from "../src/core/random.js";
+import { replayStates, startLog, playLogged, finishLog } from "../src/replay/log.js";
+import { BOTS } from "../src/sim/bots.js";
+import { evaluatorFor } from "../src/sim/border-rules.js";
+import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
+
+const spec = DECKS.classique;
+const cards = (...texts) => parseCards(spec, texts);
+const id = (key) => figureByKey(key).id;
+
+/** A claim-end game with the six figures in its deck. */
+const newGame = (seed = 1, figures = FIGURE_IDS) => createGame(spec, { order: ORDERS.original, jokerRule: JOKER_RULES.colorless, rng: createRng(seed), endMode: "claim-end", figures });
+
+/** Border 0 with the given sides and figures; who wins it under its rules (1 when player 1's side scores higher). */
+function winnerOf(game, sides, figures) {
+  Object.assign(game.borders[0], { sides, figures, completedAt: [1, 2] });
+  const [zero, one] = [0, 1].map((player) => evaluatorFor(game, 0, player).score(sides[player]));
+  return zero === one ? 0 : Number(one > zero);
+}
+
+describe("the extension's border rules (border-rules.js, docs/extension.md)", () => {
+  it("leave a border with no figure to the game's own evaluator", () => {
+    const game = newGame();
+    assert.equal(evaluatorFor(game, 0, 0), game.evaluator);
+    game.borders[0].figures = [null, null];
+    assert.equal(evaluatorFor(game, 3, 1), game.evaluator);
+  });
+
+  it("Valet de Trèfle: the weakest combination wins", () => {
+    const flush = cards("2♣", "5♣", "9♣");
+    const sum = cards("2♠", "5♥", "9♦");
+    assert.equal(winnerOf(newGame(), [flush, sum], [null, null]), 0);
+    assert.equal(winnerOf(newGame(), [flush, sum], [id("weakest"), null]), 1);
+  });
+
+  it("Valet de Carreau: only the sums count", () => {
+    const lowRun = cards("1♥", "2♥", "3♥");
+    const bigSum = cards("10♠", "9♥", "7♦");
+    assert.equal(winnerOf(newGame(), [lowRun, bigSum], [null, null]), 0);
+    assert.equal(winnerOf(newGame(), [lowRun, bigSum], [null, id("sum")]), 1);
+  });
+
+  it("Roi de Pique: three odd cards of one suit beat a suited run, for both sides, never with a joker", () => {
+    const odd = cards("1♥", "3♥", "7♥");
+    const run = cards("4♠", "5♠", "6♠");
+    assert.equal(winnerOf(newGame(), [odd, run], [null, null]), 1);
+    assert.equal(winnerOf(newGame(), [odd, run], [null, id("oddFlush")]), 0, "the odd colour counts for the side that did not lay the King too");
+    assert.equal(winnerOf(newGame(), [cards("1♥", "3♥", "JK"), run], [id("oddFlush"), null]), 1);
+  });
+
+  it("Roi de Carreau: +10 to a run, for the side that laid it only", () => {
+    const small = cards("5♠", "6♥", "7♦");
+    const big = cards("8♣", "9♠", "10♥");
+    assert.equal(winnerOf(newGame(), [small, big], [null, null]), 1);
+    assert.equal(winnerOf(newGame(), [small, big], [id("plusTen"), null]), 0, "5-6-7 + 10 = 28 beats 27");
+    assert.equal(winnerOf(newGame(), [small, big], [null, id("plusTen")]), 1);
+  });
+
+  it("add up: the Valet de Trèfle and La Somme together, the smallest sum wins", () => {
+    const small = cards("1♠", "2♥", "4♦");
+    const big = cards("10♣", "9♣", "8♣");
+    assert.equal(winnerOf(newGame(), [small, big], [id("weakest"), id("sum")]), 0);
+  });
+});
+
+describe("the extension's figure moves (figure-moves.js)", () => {
+  it("lay a figure only beside an undecided border, one per border and player", () => {
+    const game = newGame();
+    game.hands[0] = [id("weakest"), ...game.hands[0].filter((card) => !isFigure(card)).slice(0, 5)];
+    game.borders[2].owner = 1;
+    game.borders[4].figures[0] = id("sum");
+    const borders = legalMoves(game).filter((move) => move.card === id("weakest")).map((move) => move.border);
+    assert.deepEqual(borders, [0, 1, 3, 5, 6]);
+  });
+
+  it("Dame de Cœur: swaps her border with another undecided one, and stays with hers", () => {
+    const game = newGame();
+    game.hands[0] = [id("swap"), ...cards("1♠", "2♠", "3♠", "4♠", "5♠")];
+    game.borders[1].sides[0] = cards("9♥");
+    game.borders[5].sides[1] = cards("8♦");
+    const before = game.pile.length;
+    applyMove(game, { card: id("swap"), border: 1, target: 5 });
+    assert.deepEqual(game.borders[5].sides[0], cards("9♥"));
+    assert.equal(game.borders[5].figures[0], id("swap"));
+    assert.deepEqual(game.borders[1].sides[1], cards("8♦"));
+    assert.equal(game.borders[1].figures[0], null, "the other border keeps its place free");
+    assert.equal(game.pile.length, before - 1, "the player draws after it");
+  });
+
+  it("Dame de Pique: takes back the last card laid there, without drawing; a full side is full no more", () => {
+    const game = newGame();
+    game.hands[0] = [id("recall"), ...cards("1♠", "2♠", "3♠", "4♠", "5♠")];
+    game.borders[3].sides[0] = cards("7♥", "8♥", "9♥");
+    game.borders[3].completedAt[0] = 5;
+    const before = game.pile.length;
+    applyMove(game, { card: id("recall"), border: 3 });
+    assert.deepEqual(game.borders[3].sides[0], cards("7♥", "8♥"));
+    assert.equal(game.borders[3].completedAt[0], Infinity);
+    assert.equal(game.hands[0].length, 6);
+    assert.ok(game.hands[0].includes(cards("9♥")[0]));
+    assert.equal(game.pile.length, before, "no draw after a Rappel");
+  });
+});
+
+describe("whole games with the six figures", () => {
+  it("are played out by the bots, the figures laid, and read back from their log", () => {
+    let laid = 0;
+    for (let seed = 1; seed <= 12; seed += 1) {
+      const game = newGame(seed);
+      const log = startLog(game, { rules: { deck: "classique", jokerRule: "colorless", order: "original", endMode: "claim-end" }, players: [], seed });
+      const bots = [BOTS.strategist(createRng(seed)), BOTS.greedy(createRng(seed + 100))];
+      for (let turns = 0; !game.over && turns < 200; turns += 1) {
+        const moves = legalMoves(game);
+        playLogged(log, game, moves.length > 0 ? bots[game.current].choose(game, moves) : null);
+      }
+      assert.ok(game.over, `game ${seed} ends`);
+      finishLog(log, game);
+      laid += game.borders.filter((border) => border.figures.some((figure) => figure !== null)).length;
+      const frames = replayStates(log);
+      assert.equal(frames.at(-1).state.winner, game.winner, `game ${seed} reads back`);
+    }
+    assert.ok(laid > 12, `figures were laid (${laid})`);
+  });
+});

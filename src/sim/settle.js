@@ -1,3 +1,4 @@
+import { evaluatorFor } from "./border-rules.js";
 import { isClaimable } from "./certainty.js";
 
 /**
@@ -25,7 +26,8 @@ function decidedBy(state, border, formations) {
 /** Settles a full border by comparing both sides. */
 export function resolveBorder(state, index) {
   const border = state.borders[index];
-  const scores = border.sides.map((side) => state.evaluator.score(side));
+  // Each side under its border's rules (border-rules.js): the game's evaluator when no figure sits there.
+  const scores = border.sides.map((side, player) => evaluatorFor(state, index, player).score(side));
   const formations = border.sides.map((side) => state.evaluator.formation(side));
   const winner = pickWinner(scores, border.completedAt);
   border.owner = winner;

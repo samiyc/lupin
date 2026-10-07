@@ -1,5 +1,7 @@
 import { buildDeck, isJoker } from "../core/cards.js";
+import { isFigure } from "../core/figures.js";
 import { getEvaluator } from "../core/evaluator.js";
+import { figureMoves, playFigure } from "./figure-moves.js";
 import { checkVictory, claimBorders, decideByCount, isFull, resolveBorder, resolveFinal } from "./settle.js";
 
 export { resolveFinal };
@@ -29,13 +31,17 @@ export { resolveFinal };
  *   next turn — the web game of 30/09, a move late. Kept so its replays read
  *   back as they were played.
  */
-export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null }) {
-  const shuffled = deck ? [...deck] : rng.shuffle(buildDeck(spec));
+export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null, figures = [] }) {
+  // The extension's figures (docs/extension.md) join the pile; without them, the base game's draw exactly.
+  const cards = figures.length > 0 ? [...buildDeck(spec), ...figures] : buildDeck(spec);
+  const shuffled = deck ? [...deck] : rng.shuffle(cards);
   const pile = [...shuffled];
   const borders = Array.from({ length: spec.borders }, () => ({
     sides: [[], []],
     completedAt: [Infinity, Infinity],
     owner: null,
+    // The figure laid beside each side (figures.js), null for none.
+    figures: [null, null],
   }));
   return {
     spec,
@@ -47,6 +53,8 @@ export function createGame(spec, { order, jokerRule, rng, endMode = "early", dec
     pile,
     hands: [pile.splice(0, spec.handSize), pile.splice(0, spec.handSize)],
     borders,
+    // The extension: figures in this game (the core leaves them out of the hands it weighs).
+    withFigures: shuffled.some(isFigure),
     jokersPlayed: [0, 0],
     // Each player's last move, replaced (never mutated), so a cheap clone can share it.
     lastMoves: [null, null],
@@ -65,7 +73,7 @@ const jokersOn = (side) => side.filter(isJoker).length;
 export function canPlace(state, player, card, borderIndex) {
   const border = state.borders[borderIndex];
   const side = border.sides[player];
-  if (border.owner !== null || side.length >= 3) return false;
+  if (border.owner !== null || side.length >= 3 || isFigure(card)) return false;
   if (!isJoker(card)) return true;
   return (
     jokersOn(side) < state.jokerRule.maxPerSide &&
@@ -73,11 +81,15 @@ export function canPlace(state, player, card, borderIndex) {
   );
 }
 
-/** One move per distinct card and open border: two jokers are one choice. */
+/** One move per distinct card and open border: two jokers are one choice. A figure has its own moves (figure-moves.js). */
 export function legalMoves(state) {
   const player = state.current;
   const moves = [];
   for (const card of new Set(state.hands[player])) {
+    if (isFigure(card)) {
+      moves.push(...figureMoves(state, player, card));
+      continue;
+    }
     state.borders.forEach((_, border) => {
       if (canPlace(state, player, card, border)) moves.push({ card, border });
     });
@@ -94,7 +106,8 @@ export function applyMove(state, move) {
     state.passes += 1;
     if (state.passes >= 2) endOnExhaustion(state);
   } else {
-    placeCard(state, player, move);
+    if (isFigure(move.card)) layFigure(state, player, move);
+    else placeCard(state, player, move);
     state.passes = 0;
   }
   state.turn += 1;
@@ -113,6 +126,12 @@ function settleAfter(state, player, move) {
 function claimAfterMove(state, player) {
   claimBorders(state, player);
   if (!state.over) claimBorders(state, 1 - player);
+}
+
+/** A figure laid: its effect, then the draw — but for the Rappel, which already gave a card back. */
+function layFigure(state, player, move) {
+  const draws = playFigure(state, player, move);
+  if (draws && state.pile.length > 0) state.hands[player].push(state.pile.pop());
 }
 
 function placeCard(state, player, { card, border }) {
