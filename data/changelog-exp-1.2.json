@@ -101,14 +101,25 @@
    "verdict": "neutre",
    "when": "07/10 21:30",
    "note": "L'arbre à 2 000 trouve le coup gagnant dans 69 pièges sur 101 (68 %). Résoudre chaque simulation pioche vide coûterait ~8 min par coup (232 ms en moyenne par résolution) : non. Le vrai coup, oui : ExactEnd12 en file."
+  },
+  {
+   "name": "EndJoker confirmé sur donnes nouvelles : six duels contre le V1.1",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 50.7,
+   "lo": 48.5,
+   "hi": 53,
+   "verdict": "neutre",
+   "when": "07/10 22:05",
+   "note": "Donnes 5 et 6 : 45,2 et 49,6 %. Les six : 50,7 %. Le 52,4 % des quatre premiers était du bruit ; écarté. Le banc de pièges dira s'il faut une règle du joker plus fine."
   }
  ],
  "commitLabels": {},
  "next": [
   {
    "when": "En file",
-   "title": "EndJoker : 500 parties de plus, et La Somme avec l'arbre",
-   "text": "EndJoker à 52,4 % (49,6 – 55,2) contre le V1.1 : deux duels sur des donnes nouvelles pour trancher. La Somme à 64,7 % ± 10 avec l'arbre : 200 parties sur sa pioche seule."
+   "title": "ExactEnd12, puis le banc de pièges",
+   "text": "EndJoker écarté (50,7 % sur 1 500 parties). ExactEnd12 contre le V1.1, puis 48 000 parties cœur contre cœur pour le banc de pièges."
   },
   {
    "when": "En file",

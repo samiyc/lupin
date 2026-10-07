@@ -2746,3 +2746,10 @@ simulations), chaque position pioche vide résolue ; un piège est gardé entier
 gagnants, une position saine sur trois en témoin. Premier essai, 200 parties : 527 fins gagnées,
 21 pièges (4,0 %). Un cœur y joue ensuite en secondes : pièges évités, positions saines cassées.
 Trois passes de 16 000 parties en file (vers 5 000 pièges), puis EndJoker jugé dessus.
+
+**EndJoker, le verdict** (07/10, 22 h) : les deux duels sur donnes nouvelles (`VALIDATE_LONG_5` et
+`_6_EndJoker`) font 45,2 et 49,6 %, soit 47,4 % (43,7 – 51,1). Les six réunis : **50,7 % (48,5 –
+53,0)**. **Neutre, écarté** : le 52,4 % des quatre premiers était du bruit, comme le montrent les
+donnes nouvelles. Juger le joker par sa meilleure autre borne enlève quelques pièges (45 → 40 sur
+les mêmes fins de partie), trop peu pour se voir en partie entière. Le banc de pièges dira s'il
+faut une règle du joker plus fine (le joker se joue sur plusieurs coups).
