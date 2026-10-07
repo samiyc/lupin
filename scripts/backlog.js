@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { localTimestamp } from "../src/replay/log.js";
 import { stopReason } from "./lib/backlog-stop.js";
+import { applyThreadsOption, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run backlog [-- --list]`: the long jobs kept for the night
@@ -24,9 +25,9 @@ import { stopReason } from "./lib/backlog-stop.js";
  * `--archive` moves the older finished ones (done, failed, timeout) to
  * data/backlog-done.json, the queue's history, once their results are read.
  *
- * `--threads N` (Sami, 04/10: run in the day on 9 cores of 12): every job
- * inherits `LOPIN_THREADS=N`, the number of worker threads its pools use
- * (scripts/lib/pool.js), so the machine stays usable.
+ * `--threads N|max`: every job inherits `LOPIN_THREADS`, the number of worker
+ * threads its pools use (scripts/lib/pool.js). Without it, the default: every
+ * core but 3, 18 at most (Sami, 07/10), so the machine stays usable.
  *
  * `stopIf` (Sami, 05/10): a job may be cancelled before it starts — marked
  * `skipped`, with its reason — when the duels it names, done, pool under a bar:
@@ -41,10 +42,9 @@ const LIMIT = 120;
 const ROOT = fileURLToPath(new URL("../", import.meta.url));
 const args = process.argv.slice(2);
 const queue = args.includes("--queue") ? args[args.indexOf("--queue") + 1] : null;
-const threads = args.includes("--threads") ? Number(args[args.indexOf("--threads") + 1]) : null;
-if (threads !== null && (Number.isNaN(threads) || threads <= 0)) throw new Error("--threads attend un nombre de fils");
 // The jobs are child processes: they inherit the variable their pools read.
-if (threads) process.env.LOPIN_THREADS = String(threads);
+applyThreadsOption(args);
+const threads = workerCount();
 if (queue !== null && !/^[a-z0-9-]+$/.test(queue)) throw new Error(`File inconnue : « ${queue} »`);
 const suffix = queue ? `-${queue}` : "";
 const FILE = `${ROOT}data/backlog${suffix}.json`;
@@ -123,7 +123,7 @@ if (args.includes("--archive")) {
   process.exit(0);
 }
 await mkdir(RUNS, { recursive: true });
-const onThreads = threads ? `, sur ${threads} fils` : "";
+const onThreads = `, sur ${threads} fils`;
 console.log(`${pending.length} traitement(s) à faire${onThreads}.`);
 // The next job is read from the file each time: one added while another ran is played too.
 const tried = new Set();

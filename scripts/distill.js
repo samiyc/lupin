@@ -2,7 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { createRng } from "../src/core/random.js";
 import { BASE_CORE, DISTILLED, clampUnits, heldOut, valuesAt } from "../src/sim/distill.js";
 import { DUELS_DIR } from "./lib/game-index.js";
-import { runPool, workerCount } from "./lib/pool.js";
+import { applyThreadsOption, runPool, workerCount } from "./lib/pool.js";
 
 /**
  * `npm run distill -- [--minutes 15] [--threads N] [--rebuild] [--keys pairDiscount] [--name pair]`: the 1.0's core
@@ -24,7 +24,7 @@ import { runPool, workerCount } from "./lib/pool.js";
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 const minutes = Math.min(20, Number(option("--minutes", 15)));
-if (args.includes("--threads")) process.env.LOPIN_THREADS = option("--threads", "");
+applyThreadsOption(args);
 const ROOT = new URL("../", import.meta.url);
 const CACHE = new URL("oracle/distill-cache.json", ROOT);
 const WORKER = new URL("./lib/distill-worker.js", import.meta.url);

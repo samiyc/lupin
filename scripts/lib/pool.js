@@ -1,14 +1,33 @@
 import os from "node:os";
 import { Worker } from "node:worker_threads";
 
+/** The most threads a run takes by default, whatever the machine (Sami, 07/10). */
+export const MAX_THREADS = 18;
+
 /**
- * How many worker threads to run: every logical core but one, or
- * `LOPIN_THREADS` when set — to keep a laptop cool, or the machine usable while
- * a job runs (docs/cloud.md).
+ * The threads a run takes by default (Sami, 07/10): half the logical cores up
+ * to 6, every core but 3 above, 18 at most — the PC stays usable, day and
+ * night: 2 → 1, 4 → 2, 6 → 3, 8 → 5, 12 → 9, 24 → 18.
  */
-export function workerCount() {
-  const asked = Number(process.env.LOPIN_THREADS);
-  return asked > 0 ? Math.floor(asked) : Math.max(1, os.cpus().length - 1);
+export const defaultThreads = (cores) => (cores <= 6 ? Math.max(1, Math.floor(cores / 2)) : Math.min(MAX_THREADS, cores - 3));
+
+/** `LOPIN_THREADS` read: a number of threads, `max` (every core but one, to go faster or on a server), else the default. */
+export function threadsFrom(asked, cores) {
+  if (asked === "max") return Math.max(1, cores - 1);
+  const count = Number(asked);
+  return count > 0 ? Math.floor(count) : defaultThreads(cores);
+}
+
+/** How many worker threads to run (docs/cloud.md). */
+export const workerCount = () => threadsFrom(process.env.LOPIN_THREADS, os.cpus().length);
+
+/** A script's `--threads N|max`, handed to `LOPIN_THREADS`, which the jobs a script starts inherit too. */
+export function applyThreadsOption(args) {
+  if (!args.includes("--threads")) return;
+  const asked = args[args.indexOf("--threads") + 1];
+  const valid = asked === "max" || Number(asked) > 0;
+  if (!valid) throw new Error("--threads attend un nombre de fils, ou max");
+  process.env.LOPIN_THREADS = asked;
 }
 
 /**

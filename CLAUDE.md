@@ -161,9 +161,12 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   for validation**, and those duels and simulations go to the night backlog
   (`data/backlog.json`, `"status": "scheduled"`). Core-against-core duels take
   seconds and are not concerned. Night jobs stay under 2 h each.
-  Between two heavy jobs, a 15-minute pause job (`npm run cooldown -- 15`,
-  Sami, 04/10) lets the CPU breathe and logs its load; no temperature sensor
-  is readable on this machine without LibreHardwareMonitor running.
+- **Threads** (Sami, 07/10): every pool takes `workerCount()`
+  (`scripts/lib/pool.js`) — half the logical cores up to 6, every core but 3
+  above, **18 at most**, day and night, so the PC stays usable.
+  `LOPIN_THREADS=N` or `--threads N` forces a count, `max` takes every core but
+  one (to go faster, or on a server). No pause jobs between heavy jobs any more
+  (the 15-minute `cooldown` is gone).
 - **A 400 screen rejects, it never promotes** (Sami, 03/10): three 10-minute
   screens promoted ideas that did not hold (stay 0.4 at 58.3 %, connector from
   turn 15 at 54.5 %, stay4e10 at 55.4 % — 48.5 % and 50.6 % once measured

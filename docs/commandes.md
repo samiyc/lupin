@@ -13,7 +13,7 @@ recettes de mesure sont dans [validation.md](validation.md). Un test
    Ses coups jugés par les visites de l'oracle, contre le 1.0 sur les mêmes positions :
    « à pousser », « neutre » ou « à écarter ».
 3. **Les duels qui décident** (1 000 parties) : `npm run banc -- <moteur> --queue --against <V1>`, puis
-   `npm run backlog` — quatre duels longs de 250 parties, une pause entre deux. Depuis le 04/10, le labo
+   `npm run backlog` — quatre duels longs de 250 parties, avec la règle d'arrêt. Depuis le 04/10, le labo
    joue à 2 000 itérations : le V1 à battre est `ismcts+widen=3+depth=5+core=stfig6@2000`.
 4. **Le verdict** : `npm run versus -- <moteur> <moteur du 1.0>` réunit les quatre duels par paires ;
    une version se décide sur une fourchette basse au-dessus de 50 %.
@@ -59,9 +59,9 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | Commande | Ce qu'elle fait | Écrit |
 | --- | --- | --- |
 | `npm run oracle -- [--minutes N] [--turns 15,16 \| 1-30] [--source A,B;C,D] [--out nom] [--runs 1\|2] [--keep 12] [--spread] [--rank cœur]` | l'oracle (un arbre sur tous les coups, 20 000 itérations) sur des positions de parties gardées. Aussi : `--summary`, `--confirm` (ses écarts rejoués jusqu'au tour 30), `--disagree <cœur>`, `--bench <cœur>,…` (le banc du cœur) | `oracle/positions*.jsonl`, `data/oracle-diffs*.json`, `data/oracle-confirm.json`, `data/oracle-bench.json` |
-| `npm run banc -- [<moteur>] [--against <moteur>] [--name B1Lite1] [--positions banc \| games] [--turns 1-12] [--threads N] [--queue] [--calibrate]` | le banc de similitude : une version jugée en minutes par les visites de l'oracle sur ses coups, contre le 1.0 sur les mêmes positions. `--positions games` : les coups de l'oracle dans ses parties entières | `data/banc.json`, `oracle/banc-cache.json` |
+| `npm run banc -- [<moteur>] [--against <moteur>] [--name B1Lite1] [--positions banc \| games] [--turns 1-12] [--threads N\|max] [--queue] [--calibrate]` | le banc de similitude : une version jugée en minutes par les visites de l'oracle sur ses coups, contre le 1.0 sur les mêmes positions. `--positions games` : les coups de l'oracle dans ses parties entières | `data/banc.json`, `oracle/banc-cache.json` |
 | `npm run shadow -- [<moteur oracle>] [--engine <V1>]` | le V1 relit les parties de l'oracle : même coup, top 1/3/8 de son cœur, par tranche de tours | `data/oracle-shadow.json` |
-| `npm run distill -- [--minutes 15] [--threads N] [--rebuild] [--keys pairDiscount] [--name pair]` | le cœur du 1.0 réglé sur l'oracle : tous ses poids bougent ensemble (SPSA) pour mettre le coup de l'oracle dans son top 8, jugé sur un quart des parties gardé de côté ; le résultat est le cœur `dist1` | `src/sim/distilled-core.js`, `data/distill.json`, `oracle/distill-cache.json` |
+| `npm run distill -- [--minutes 15] [--threads N\|max] [--rebuild] [--keys pairDiscount] [--name pair]` | le cœur du 1.0 réglé sur l'oracle : tous ses poids bougent ensemble (SPSA) pour mettre le coup de l'oracle dans son top 8, jugé sur un quart des parties gardé de côté ; le résultat est le cœur `dist1` | `src/sim/distilled-core.js`, `data/distill.json`, `oracle/distill-cache.json` |
 
 ## Relire les replays
 
@@ -91,8 +91,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 
 | Commande | Ce qu'elle fait | Écrit |
 | --- | --- | --- |
-| `npm run backlog [-- --list \| --archive \| --threads 18]` | les longs traitements de `data/backlog.json`, l'un après l'autre, 2 h au plus chacun ; un job `scheduled` attend son `notBefore`. `--threads 18` : chaque job sur 18 fils (9 cœurs sur 12), pour garder le PC utilisable en journée. **Le lanceur s'arrête s'il n'y a rien de prêt** : le lancer après l'heure. Un job peut porter un `stopIf` : annulé avant de partir si les duels qu'il nomme, finis, se réunissent sous un seuil (`npm run banc -- --queue` le pose : après un duel sous 47 %, ou deux réunis sous 50 %, la série s'arrête) | `backlog-runs/`, `data/backlog-done.json` |
-| `npm run cooldown -- [minutes]` | une pause entre deux jobs, avec la charge du CPU (et la température si LibreHardwareMonitor tourne) | — |
+| `npm run backlog [-- --list \| --archive \| --threads N\|max]` | les longs traitements de `data/backlog.json`, l'un après l'autre, 2 h au plus chacun ; un job `scheduled` attend son `notBefore`. Par défaut, chaque job prend tous les fils moins 3, 18 au plus (la moitié jusqu'à 6 fils) : le PC reste utilisable, jour et nuit ; `--threads N` en force N, `--threads max` les prend tous moins un. **Le lanceur s'arrête s'il n'y a rien de prêt** : le lancer après l'heure. Un job peut porter un `stopIf` : annulé avant de partir si les duels qu'il nomme, finis, se réunissent sous un seuil (`npm run banc -- --queue` le pose : après un duel sous 47 %, ou deux réunis sous 50 %, la série s'arrête) | `backlog-runs/`, `data/backlog-done.json` |
 
 ## Pages et documents
 

@@ -319,5 +319,9 @@ largeurs ; seuls les jobs lancés en groupe gardent le même gabarit.
 - **Un réveil** : une tâche programmée dans la session de Claude (elle meurt si la console se
   ferme) qui lit les résultats à l'heure prévue, met à jour les docs et le changelog, et fait le
   point.
-- **Les fils** (`--threads 18`) : le nombre de calculs en parallèle ; 18 sur les 24 de la machine
-  laissent le PC utilisable.
+- **Les fils** : le nombre de calculs en parallèle. Par défaut (Sami, 07/10), tous les fils de la
+  machine moins 3, 18 au plus, la moitié jusqu'à 6 fils : 18 sur les 24 du PC fixe, 5 sur les 8
+  du portable, jour et nuit. `--threads N` ou `LOPIN_THREADS=N` en force N, `max` les prend tous
+  moins un (pour aller plus vite, ou sur un serveur). Plus de pause de 15 min entre deux jobs. Le
+  nombre de fils découpe certains calculs (`selfplay`, `distill`, les vagues d'un duel) : deux
+  mesures se comparent à nombre de fils égal.

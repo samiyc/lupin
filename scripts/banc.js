@@ -4,7 +4,7 @@ import { againstBase, bancVerdict, judge, pairedDiff, rankCorrelation, summarize
 import { ORACLE } from "../src/replay/oracle.js";
 import { loadGame, readIndex } from "./lib/game-index.js";
 import { stopIfFor } from "./lib/backlog-stop.js";
-import { runPool } from "./lib/pool.js";
+import { applyThreadsOption, runPool } from "./lib/pool.js";
 
 /**
  * `npm run banc -- [<engine>] [--against <engine>] [--positions banc] [--threads N] [--queue [--name B1Lite1]] [--calibrate]`:
@@ -22,8 +22,8 @@ import { runPool } from "./lib/pool.js";
  *   12) most visited moves; `--turns 1-12` keeps the start of the game.
  * - `--queue`: the version's four long duels against `--against` (the 1.0
  *   by default; the lab plays it at 2 000 iterations since 04/10) go to the
- *   backlog, 250 games each (`--long --games 125 --page --offset 0..3`, a
- *   pause between two): the second step, the one that decides.
+ *   backlog, 250 games each (`--long --games 125 --page --offset 1..4`), with
+ *   the stop rule: the second step, the one that decides.
  * - `--calibrate`: every version of data/banc-calibration.json, whose real
  *   duel scores are known — does the bench rank them as the duels do?
  *
@@ -41,7 +41,7 @@ const positionsName = option("--positions", "banc");
 const [fromTurn, toTurn = fromTurn] = option("--turns", "1-99").split("-").map(Number);
 const inTurns = (entry) => entry.turn >= fromTurn && entry.turn <= toTurn;
 const ORACLE_ID = `${ORACLE.engine}@${ORACLE.budget}`;
-if (args.includes("--threads")) process.env.LOPIN_THREADS = option("--threads", "");
+applyThreadsOption(args);
 const BATCH = 20;
 const pct = (x) => `${(100 * x).toFixed(1).replace(".", ",")} %`;
 const pts = (x) => `${x >= 0 ? "+" : ""}${(100 * x).toFixed(2).replace(".", ",")}`;
@@ -138,25 +138,24 @@ async function calibrate() {
   await writeJson("data/banc.json", file);
 }
 
-/** The four long duels that decide, queued after the backlog's last job, a pause between two. */
+/** The four long duels that decide, queued after the backlog's last job. */
 async function queueDuels() {
   const path = "data/backlog.json";
   const backlog = await readJson(path, { jobs: [] });
   // The version's name (docs/glossaire.md): `--name B1Lite1`, else its core's.
   const name = option("--name", /core=(\w+)/.exec(tested)?.[1] ?? "variante").replace(/[^\w-]/g, "");
-  const pause = (n) => ({ id: `pause-${name}-${n}`, command: "npm run cooldown -- 15", estimate: "15 min", limit: 17, why: "Une pause entre deux jobs (Sami, 04/10).", status: "todo" });
   // The decks of the four duels: offsets 1 to 4, never those of the screen that chose the version (offset 0).
   const offset = (n) => ` --offset ${n + 1}`;
   // Fixed-width columns on the left, the version on the right (docs/glossaire.md, Sami 05/10).
   const ids = [1, 2, 3, 4].map((n) => `VALIDATE_LONG_${n}_${name}`);
   // A series that starts badly stops there (stopIf, scripts/lib/backlog-stop.js).
   const duel = (n) => ({ id: ids[n], command: `npm run duel -- "${tested}" "${against}" --long --games 125 --page${offset(n)}`, estimate: "30 min", limit: 45, why: `Passée au banc de similitude (npm run banc) : le jeu de donnes ${n + 1} sur 4 des duels longs qui décident (fourchette basse réunie au-dessus de 50 %, npm run versus).`, status: "todo", stopIf: stopIfFor(ids, n + 1) });
-  const jobs = [0, 1, 2, 3].flatMap((n) => (n === 0 ? [duel(n)] : [pause(n), duel(n)]));
+  const jobs = [0, 1, 2, 3].map(duel);
   backlog.jobs.push(...jobs);
   // The backlog keeps its own two-space indent.
   await writeFile(new URL(path, ROOT), `${JSON.stringify(backlog, null, 2)}
 `);
-  console.log(`${jobs.length} jobs ajoutés au backlog (${jobs.filter((job) => job.id.startsWith("duel")).length} duels longs) : npm run backlog`);
+  console.log(`${jobs.length} duels longs ajoutés au backlog : npm run backlog`);
 }
 
 if (args.includes("--calibrate")) await calibrate();

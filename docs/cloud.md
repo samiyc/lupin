@@ -171,9 +171,11 @@ pour un gain de trois commandes : à faire seulement si le portable sert souvent
 
 ### La chaleur
 
-On limite le nombre de fils de calcul avec **`LOPIN_THREADS`**, qui vaut pour
-tous les scripts.
-- **Sur 4 fils**, le portable garde de la marge. On surveille la température les
+Par défaut (Sami, 07/10), un calcul prend tous les fils moins 3, 18 au plus, la moitié
+jusqu'à 6 fils : 5 sur les 8 du portable, 18 sur les 24 du PC fixe. **`LOPIN_THREADS`**
+(ou `--threads`) en force un autre nombre, pour tous les scripts ; `max` les prend tous moins
+un, sur un serveur loué par exemple.
+- **Sur 4 fils**, le portable garde plus de marge. On surveille la température les
   premières fois, avec l'outil du fabricant ou HWiNFO.
 - **Sur une surface dure**, jamais sur un lit ou un canapé.
 - **Les traitements durent environ 3 fois plus longtemps** que sur le PC fixe,
@@ -181,5 +183,5 @@ tous les scripts.
   traitements courts, par exemple un tour d'`error-impact` à la fois (environ
   50 min).
 
-Le même réglage sert au PC fixe : `LOPIN_THREADS=16` laisse quelques cœurs
-libres pour travailler pendant un calcul.
+Le PC fixe garde par défaut 6 fils libres pour travailler pendant un calcul ;
+`LOPIN_THREADS=max` les prend presque tous quand on n'en a pas besoin.
