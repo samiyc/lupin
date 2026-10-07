@@ -2761,3 +2761,12 @@ qui la pose. Les 60 premières disaient 64,7 % ± 10 : réunies, environ 64,5 % 
 210 parties où elle est posée. **Trop forte**, et la seule au-dessus de 60 %. Le premier joueur
 reste à l'équilibre (49,5 %, 53,0 % sans figure). Sa règle ou sa place dans la pioche : à revoir
 avec Sami.
+
+**ExactEnd12, le verdict** (07/10, 23 h 22) : les quatre duels longs contre le V1.1 (donnes 1 à 4)
+font 52,8 / 55,2 / 52,4 / 51,2 %. Réunis par paires (`npm run versus`, « ExactEnd12 ») :
+**52,9 % (50,4 – 55,4)** sur 1 000 parties, la fourchette basse au-dessus de 50 %. **Gagne** : premier
+candidat du 1.2. Calculer exactement le vrai coup, pioche vide, jusqu'à 12 cartes au lieu de 8 suffit
+là où juger le joker (EndJoker) ne suffisait pas. Les duels ont duré 24 à 26 minutes, comme ceux
+d'EndJoker : pas de surcoût visible en partie entière, mais le temps par coup dans la page (le
+solveur à 9-12 cartes) reste à vérifier. La marge est mince (0,4 point) : 500 parties sur donnes
+nouvelles la confirmeraient.

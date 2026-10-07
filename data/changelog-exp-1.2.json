@@ -123,14 +123,30 @@
    "verdict": "tendance",
    "when": "07/10 21:43",
    "note": "Posée dans 64,5 % des parties, au tour 26 ; borne gagnée 67,4 %, partie gagnée 64,3 % ± 8,3 pour qui la pose : trop forte, comme sur les 60 premières (64,7 % ± 10). Réunies, environ 64,5 % ± 6,4 sur ~210 parties où elle est posée. Le premier joueur reste à l'équilibre (49,5 %, 53,0 % sans figure). À revoir avec Sami."
+  },
+  {
+   "name": "ExactEnd12 contre le V1.1 (4 duels longs à 2 000, 1 000 parties)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 52.9,
+   "lo": 50.4,
+   "hi": 55.4,
+   "verdict": "gagne",
+   "when": "07/10 23:22",
+   "note": "Pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes au lieu de 8. Donnes 1 à 4 : 52,8 / 55,2 / 52,4 / 51,2 %. Réunies par paires : 52,9 % (50,4 – 55,4), la fourchette basse au-dessus de 50 %. Premier candidat du 1.2 ; la marge est mince et le temps de réflexion dans la page reste à vérifier."
   }
  ],
  "commitLabels": {},
  "next": [
   {
    "when": "En file",
-   "title": "ExactEnd12 et le banc de pièges",
-   "text": "EndJoker écarté (50,7 % sur 1 500 parties). Le vrai coup calculé exactement jusqu'à 12 cartes, pioche vide : 4 duels longs contre le V1.1 (1 000 parties ; donnes 1 et 2 : 52,8 et 55,2 %). Puis 48 000 parties cœur contre cœur pour 5 000 pièges, et EndJoker jugé sur ce banc."
+   "title": "Le banc de pièges",
+   "text": "48 000 parties cœur contre cœur en trois passes (la première : 2 068 pièges sur 16 000 parties, 4,8 % des fins gagnées), puis EndJoker jugé sur ce banc."
+  },
+  {
+   "when": "Piste",
+   "title": "ExactEnd12, candidat du 1.2",
+   "text": "52,9 % (50,4 – 55,4) sur 1 000 parties contre le V1.1. À vérifier avant d'en faire le 1.2 : son temps par coup dans la page (le solveur à 9-12 cartes), et 500 parties de plus sur donnes nouvelles si Sami le souhaite, la fourchette basse étant juste au-dessus de 50 %."
   },
   {
    "when": "Avec Sami",

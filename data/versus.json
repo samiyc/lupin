@@ -4436,6 +4436,256 @@
      "b": 2.733
     }
    }
+  },
+  "ExactEnd12": {
+   "a": "ismcts+widen=7+depth=5+core=stfig6+exact=12@2000",
+   "b": "ismcts+widen=7+depth=5+core=stfig6@2000",
+   "built": "2026-10-07",
+   "files": 4,
+   "pairs": 500,
+   "low": 0.5036217230158276,
+   "high": 0.5543782769841724,
+   "games": 1000,
+   "score": 0.529,
+   "bySeat": {
+    "A commence": {
+     "games": 500,
+     "score": 0.514
+    },
+    "B commence": {
+     "games": 500,
+     "score": 0.544
+    }
+   },
+   "byJokers": {
+    "0 contre 1": {
+     "games": 3,
+     "score": 0.3333333333333333
+    },
+    "0 contre 2": {
+     "games": 237,
+     "score": 0.42616033755274263
+    },
+    "1 contre 0": {
+     "games": 5,
+     "score": 0.6
+    },
+    "1 contre 1": {
+     "games": 522,
+     "score": 0.5344827586206896
+    },
+    "2 contre 0": {
+     "games": 233,
+     "score": 0.6223175965665236
+    }
+   },
+   "turns": 34.42,
+   "traits": {
+    "début (1-12)": [
+     {
+      "trait": "au centre (bornes 3-5)",
+      "a": 0.3545,
+      "b": 0.34983333333333333
+     },
+     {
+      "trait": "bâtit une suite de couleur",
+      "a": 0.171,
+      "b": 0.17466666666666666
+     },
+     {
+      "trait": "ouvre avec de quoi faire une suite de couleur",
+      "a": 0.19333333333333333,
+      "b": 0.18983333333333333
+     },
+     {
+      "trait": "bâtit un brelan",
+      "a": 0.029666666666666668,
+      "b": 0.026166666666666668
+     },
+     {
+      "trait": "sur un bord (borne 1 ou 7)",
+      "a": 0.32,
+      "b": 0.31833333333333336
+     },
+     {
+      "trait": "carte forte (8+)",
+      "a": 0.2915,
+      "b": 0.2905
+     },
+     {
+      "trait": "ouvre sans suite prévue en main",
+      "a": 0.37333333333333335,
+      "b": 0.3725
+     },
+     {
+      "trait": "répond plus bas",
+      "a": 0.1045,
+      "b": 0.10533333333333333
+     },
+     {
+      "trait": "pose une 2e carte",
+      "a": 0.19683333333333333,
+      "b": 0.196
+     },
+     {
+      "trait": "complète un côté (3e carte)",
+      "a": 0.0045,
+      "b": 0.005166666666666667
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.4196666666666667,
+      "b": 0.42033333333333334
+     },
+     {
+      "trait": "répond à une borne adverse",
+      "a": 0.2871666666666667,
+      "b": 0.2876666666666667
+     }
+    ],
+    "milieu (13-24)": [
+     {
+      "trait": "carte forte (8+)",
+      "a": 0.29954992498749794,
+      "b": 0.3097182863810635
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.4082347057842974,
+      "b": 0.3983997332888815
+     },
+     {
+      "trait": "ouvre avec de quoi faire un brelan",
+      "a": 0.10918486414402401,
+      "b": 0.10168361393565595
+     },
+     {
+      "trait": "ouvre sans suite prévue en main",
+      "a": 0.14752458743123853,
+      "b": 0.15402567094515754
+     },
+     {
+      "trait": "sur un bord (borne 1 ou 7)",
+      "a": 0.25787631271878647,
+      "b": 0.26404400733455574
+     },
+     {
+      "trait": "répond à une borne adverse",
+      "a": 0.25120853475579263,
+      "b": 0.24537422903817302
+     },
+     {
+      "trait": "face à un côté adverse plein",
+      "a": 0.023837306217702952,
+      "b": 0.018503083847307884
+     },
+     {
+      "trait": "ouvre une borne vierge",
+      "a": 0.06901150191698617,
+      "b": 0.07334555759293215
+     },
+     {
+      "trait": "répond plus bas",
+      "a": 0.06567761293548925,
+      "b": 0.06201033505584264
+     },
+     {
+      "trait": "au centre (bornes 3-5)",
+      "a": 0.47974662443740623,
+      "b": 0.483247207867978
+     },
+     {
+      "trait": "bâtit un côté ni brelan ni suite de couleur",
+      "a": 0.09334889148191365,
+      "b": 0.09601600266711119
+     },
+     {
+      "trait": "ouvre avec de quoi faire une suite de couleur",
+      "a": 0.08301383563927321,
+      "b": 0.08034672445407567
+     }
+    ],
+    "fin (25+)": [
+     {
+      "trait": "bâtit un côté ni brelan ni suite de couleur",
+      "a": 0.3707908408697325,
+      "b": 0.44357366771159873
+     },
+     {
+      "trait": "bâtit un brelan",
+      "a": 0.32441793342312875,
+      "b": 0.2852664576802508
+     },
+     {
+      "trait": "face à un côté adverse plein",
+      "a": 0.28016163171060227,
+      "b": 0.25450626959247646
+     },
+     {
+      "trait": "bâtit une suite de couleur",
+      "a": 0.2532230132768905,
+      "b": 0.2280564263322884
+     },
+     {
+      "trait": "joker",
+      "a": 0.11756782759284203,
+      "b": 0.10286050156739812
+     },
+     {
+      "trait": "à côté d'une borne perdue",
+      "a": 0.34673850298248987,
+      "b": 0.3612852664576803
+     },
+     {
+      "trait": "carte faible (3-)",
+      "a": 0.27054069655570523,
+      "b": 0.2831112852664577
+     },
+     {
+      "trait": "à côté d'une borne gagnée",
+      "a": 0.34327496632672694,
+      "b": 0.335423197492163
+     },
+     {
+      "trait": "sur un bord (borne 1 ou 7)",
+      "a": 0.28477968058495284,
+      "b": 0.2784090909090909
+     },
+     {
+      "trait": "carte moyenne (4-7)",
+      "a": 0.3351933807966134,
+      "b": 0.34149686520376177
+     },
+     {
+      "trait": "ouvre avec de quoi faire un brelan",
+      "a": 0.015970752357129112,
+      "b": 0.02037617554858934
+     },
+     {
+      "trait": "carte forte (8+)",
+      "a": 0.27669809505483933,
+      "b": 0.27253134796238243
+     }
+    ]
+   },
+   "end": {
+    "openedBy10": {
+     "a": 4.252,
+     "b": 4.25
+    },
+    "complete": {
+     "a": 4.199,
+     "b": 4.133
+    },
+    "noFigure": {
+     "a": 1.61,
+     "b": 1.723
+    },
+    "won": {
+     "a": 2.926,
+     "b": 2.711
+    }
+   }
   }
  }
 }
