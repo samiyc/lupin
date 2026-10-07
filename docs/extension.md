@@ -38,8 +38,8 @@ bonus. Les bornes deviennent des jetons, ou les figures d'un autre paquet.
 | **Valet de Trèfle** | **La plus faible gagne** : sur sa borne, la combinaison la plus faible prend la borne. À égalité, le premier côté complet, comme d'habitude. | les deux côtés |
 | **Valet de Carreau** | **La Somme** : sur sa borne, les combinaisons ne comptent plus, la plus grosse somme gagne. | les deux côtés |
 | **Dame de Cœur** | **L'Échange** : sa borne échange sa place avec **n'importe quelle autre borne non décidée**, cartes et figures des deux joueurs comprises. La Dame reste avec la borne à côté de laquelle on l'a posée : elle n'occupe que cette place-là, l'autre borne garde sa place libre pour une figure. | les deux bornes |
-| **Dame de Pique** | **Le Rappel** : reprendre en main une de ses propres cartes d'une borne non décidée. | celui qui la pose |
-| **Roi de Pique** | **La Couleur impaire** : sur sa borne, trois cartes **impaires** d'une même couleur, qui se suivent ou non (1-3-7, 3-5-9, 1-7-9), forment une combinaison **au-dessus de la Suite couleur**. Un joker, sans couleur, ne peut pas en faire partie. | celui qui le pose |
+| **Dame de Pique** | **Le Rappel** : posée à côté d'une borne non décidée, elle reprend en main **la dernière carte qu'on y a posée** de son côté, même si ce côté était complet. **Pas de pioche** ce tour-là : la main reste à 6. | celui qui la pose |
+| **Roi de Pique** | **La Couleur impaire** : sur sa borne, trois cartes **impaires** d'une même couleur, qui se suivent ou non (1-3-7, 3-5-9, 1-7-9), forment une combinaison **au-dessus de la Suite couleur** ; entre deux, la plus grosse somme. Un joker, sans couleur, ne peut pas en faire partie. | **les deux côtés** : l'adversaire peut aussi en faire une |
 | **Roi de Carreau** | **+10** : sur sa borne, à combinaison égale, une Suite ou une Suite couleur compte 10 de plus dans sa somme. 5-6-7 + 10 = 28 bat 8-9-10 = 27 ; 1-2-3 + 10 = 16 perd contre 8-9-10 mais bat 4-5-6. Le Brelan et la Suite couleur restent au-dessus d'une Suite. | celui qui le pose |
 
 Choisis par Sami le 07/10 : La Somme (le pendant simple du Valet de Trèfle) et Le Rappel (corriger
@@ -50,25 +50,25 @@ sans suite, parce que trois impairs d'une couleur sont déjà assez rares.
 **Les jokers** gardent leur règle : sans couleur, ils prennent n'importe quelle valeur. Sous La
 Somme, un joker vaut la valeur qui l'arrange, comme ailleurs.
 
-## Les points encore ouverts
+## Deux figures sur une même borne
 
-1. **Deux figures sur une même borne.** Chaque joueur peut en poser une : que se passe-t-il quand
-   elles se rencontrent ? Proposition : elles se cumulent dans un ordre fixe.
-   - les Rois d'abord : chacun change ce que vaut le côté de celui qui l'a posé ;
-   - puis La Somme : on ne compare plus que les sommes ;
-   - puis le Valet de Trèfle : il inverse le résultat.
+Chaque joueur peut en poser une à côté d'une même borne. Elles **se cumulent**, dans cet ordre
+(Sami, 07/10) :
+1. les Rois : la Couleur impaire pour les deux côtés, le +10 pour le côté de qui l'a posé ;
+2. La Somme : on ne compare plus que les sommes ;
+3. le Valet de Trèfle, en dernier : il inverse le résultat.
 
-   Exemples : Valet de Trèfle et La Somme ensemble, la plus petite somme gagne. Valet de Trèfle
-   contre un Roi de Carreau : le +10 devient un handicap pour celui qui l'a posé.
-2. **Le Rappel : piocher ou non ?** Poser la Dame est le coup du tour, puis on pioche. Mais la carte
-   rappelée revient en main : on finirait à 7 cartes. Proposition : **pas de pioche** après un
-   Rappel, la main reste à 6. Et la Dame se pose à côté de la borne d'où l'on reprend la carte.
-3. **Le Rappel sur un côté complet** : permis ? Le côté redevient incomplet, et quand il se
-   complète à nouveau, c'est cette nouvelle fois qui compte pour départager une égalité.
-   Proposition : oui.
-4. **Le Roi de Pique : son nom.** Sans suite, ce n'est plus une « Suite impaire » : je propose
-   « la Couleur impaire ». Et entre deux Couleurs impaires, la plus grosse somme gagne, comme
-   ailleurs.
+Valet de Trèfle et La Somme ensemble : la plus petite somme gagne. Valet de Trèfle face à un Roi
+de Carreau : le +10 devient un handicap pour celui qui l'a posé. Le Valet de Trèfle est la carte
+la plus forte du lot (Sami) : à surveiller dans les mesures.
+
+## Décisions du 07/10 (Sami)
+
+- Le Rappel ne fait pas piocher : l'avantage de cartes serait trop fort, la main reste à 6.
+- Le Rappel reprend la dernière carte qu'on a posée sur la borne, pour simplifier ; reprendre une
+  carte plus ancienne reste une idée pour plus tard. Si le côté était complet, il redevient
+  incomplet, et c'est le moment où il se complète à nouveau qui compte pour une égalité.
+- Le Roi de Pique s'appelle la Couleur impaire, et vaut pour les deux côtés de sa borne.
 
 ## La suite
 
