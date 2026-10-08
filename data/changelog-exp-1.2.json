@@ -195,19 +195,19 @@
  "commitLabels": {},
  "next": [
   {
-   "when": "Adopté 1.2",
-   "title": "ExactEnd12 est la version 1.2",
-   "text": "52,7 % (50,5 – 54,8) sur 1 500 parties contre le V1.1, la fourchette basse au-dessus de 50 %. Calculer le vrai coup exactement pioche vide jusqu'à 12 cartes s'impose sans surcoût visible. Reste à intégrer et vérifier dans la page web."
+   "when": "Sorti 1.2",
+   "title": "ExactEnd12 est officiellement l'Expérimental 1.2",
+   "text": "Validé à 52,7 % (50,5 – 54,8) sur 1 500 parties contre le 1.1, et classé officiellement à 1 003 ± 18 Elo (premier bot au-dessus de 1 000 Elo). Solveur exact à 12 cartes actif en fin de partie dans le jeu web et les duels."
   },
   {
-   "when": "Avec Sami",
-   "title": "L'équilibrage du Valet de Trèfle",
-   "text": "Sur 4 000 parties avec l'arbre, le Valet de Trèfle (la plus faible gagne) culmine à 62,4 % ± 3,5 de victoires quand il est posé : c'est la seule figure au-dessus de 60 %. Sa règle est à ajuster avec Sami."
+   "when": "Suite",
+   "title": "L'équilibrage du Valet de Trèfle (V♣) et mode mains découvertes",
+   "text": "Refonte du Valet de Trèfle (malus -10 en cas d'égalité sur sa borne, bonus pioche-défausse immédiat) et intégration du mode mains découvertes dans l'interface et le simulateur."
   },
   {
-   "when": "Avec Sami",
-   "title": "Ses puzzles",
-   "text": "npm run puzzle-stats une fois ses tentatives nombreuses : ses faux pas croisés avec les familles de pièges."
+   "when": "La nouvelle lignée",
+   "title": "Naissance de « Le Borné »",
+   "text": "Diversification de l'arbre avec un cap strict de 2 bornes par carte et rétrécissement à widen=5 (+diverse=2+widen=5) : 81,2 % contre la 1.2. Une nouvelle catégorie de bot d'élite est créée."
   }
  ],
  "banc": {
