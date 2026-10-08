@@ -54,19 +54,29 @@ function swapGain(chances, { border, target }) {
 }
 
 const GAINS = {
-  // The weakest wins: the odds roughly turn over.
-  weakest: (state, border, c) => 1 - 2 * c,
-  sum: (state, border, c, player) => {
+  minusTen: (state, border, c, { move } = {}) => {
+    let gain = -0.04 * c;
+    if (move?.discard !== undefined && move?.discard !== null) {
+      if (isJoker(move.discard)) gain -= 0.15;
+      else {
+        const val = valueOf(state.spec, move.discard);
+        gain += 0.04 + ((5.5 - val) / 10) * 0.05;
+      }
+    }
+    return gain;
+  },
+  weakest: (state, border, c, ctx) => GAINS.minusTen(state, border, c, ctx),
+  sum: (state, border, c, { player }) => {
     const [mine, theirs] = border.sides.map((side) => likelySum(state.spec, side));
     return odds(player === 0 ? mine - theirs : theirs - mine, 4) - c;
   },
-  oddFlush: (state, border, c, player) => {
+  oddFlush: (state, border, c, { player }) => {
     const [mine, theirs] = [border.sides[player], border.sides[1 - player]];
     return 0.5 * Number(oddColourStart(state.spec, mine)) * (1 - c) - 0.5 * Number(oddColourStart(state.spec, theirs)) * c;
   },
-  plusTen: (state, border, c, player) => (runStart(state.spec, border.sides[player]) ? 0.3 * (1 - c) : 0),
+  plusTen: (state, border, c, { player }) => (runStart(state.spec, border.sides[player]) ? 0.3 * (1 - c) : 0),
   // Taking back a card is worth it on a border going badly; the card comes back to play elsewhere.
-  recall: (state, border, c, player) => {
+  recall: (state, border, c, { player }) => {
     const card = border.sides[player].at(-1);
     const back = isJoker(card) ? 0.1 : (0.05 * valueOf(state.spec, card)) / state.spec.values;
     return (c < 0.35 ? 0.35 - c : -0.05) + back;
@@ -78,7 +88,7 @@ export function figureGain(state, move, chances) {
   const { key } = figureOf(move.card);
   if (key === "swap") return swapGain(chances, move) - KEEP;
   const border = state.borders[move.border];
-  return GAINS[key](state, border, chances[move.border], state.current) - KEEP;
+  return GAINS[key](state, border, chances[move.border], { player: state.current, move }) - KEEP;
 }
 
 /** The hand the core weighs: the figures left out, which no side takes. */

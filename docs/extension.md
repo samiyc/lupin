@@ -35,32 +35,25 @@ bonus. Les bornes deviennent des jetons, ou les figures d'un autre paquet.
 
 | Carte | Effet | Pour qui |
 | --- | --- | --- |
-| **Valet de Trèfle** | **La plus faible gagne** : sur sa borne, la combinaison la plus faible prend la borne. À égalité, le premier côté complet, comme d'habitude. | les deux côtés |
+| **Valet de Trèfle** | **-10 à égalité & recyclage** : sur sa borne, malus de 10 points sur la somme en cas d'égalité (ou sur la somme brute sous La Somme), pour celui qui l'a posé (inverse du Roi de Carreau). En bonus immédiat, le joueur peut défausser une carte de sa main, piocher une remplaçante, puis remélanger la défausse dans la pioche. En fin de tour, la pioche normale remplace le Valet (la main revient à 6). | celui qui le pose |
 | **Valet de Carreau** | **La Somme** : sur sa borne, les combinaisons ne comptent plus, la plus grosse somme gagne. | les deux côtés |
 | **Dame de Cœur** | **L'Échange** : sa borne échange sa place avec **n'importe quelle autre borne non décidée**, cartes et figures des deux joueurs comprises. La Dame reste avec la borne à côté de laquelle on l'a posée : elle n'occupe que cette place-là, l'autre borne garde sa place libre pour une figure. | les deux bornes |
 | **Dame de Pique** | **Le Rappel** : posée à côté d'une borne non décidée, elle reprend en main **la dernière carte qu'on y a posée** de son côté, même si ce côté était complet. **Pas de pioche** ce tour-là : la main reste à 6. | celui qui la pose |
 | **Roi de Pique** | **La Couleur impaire** : sur sa borne, trois cartes **impaires** d'une même couleur, qui se suivent ou non (1-3-7, 3-5-9, 1-7-9), forment une combinaison **au-dessus de la Suite couleur** ; entre deux, la plus grosse somme. Un joker, sans couleur, ne peut pas en faire partie. | **les deux côtés** : l'adversaire peut aussi en faire une |
 | **Roi de Carreau** | **+10** : sur sa borne, à combinaison égale, une Suite ou une Suite couleur compte 10 de plus dans sa somme. 5-6-7 + 10 = 28 bat 8-9-10 = 27 ; 1-2-3 + 10 = 16 perd contre 8-9-10 mais bat 4-5-6. Le Brelan et la Suite couleur restent au-dessus d'une Suite. | celui qui le pose |
 
-Choisis par Sami le 07/10 : La Somme (le pendant simple du Valet de Trèfle) et Le Rappel (corriger
-une erreur sans toucher au jeu adverse), parmi trois propositions chacun ; l'Échange vers
-n'importe quelle borne non décidée, parce qu'il est moins fort que les autres ; la Couleur impaire
-sans suite, parce que trois impairs d'une couleur sont déjà assez rares.
+Choisis par Sami le 07/10 et 08/10 : La Somme et Le Rappel ; l'Échange vers n'importe quelle borne non décidée ; la Couleur impaire sans suite ; le Roi de Carreau (+10) ; et la refonte du Valet de Trèfle (malus -10 à égalité + recyclage de main) pour remplacer l'ancienne règle trop forte « la plus faible gagne ».
 
 **Les jokers** gardent leur règle : sans couleur, ils prennent n'importe quelle valeur. Sous La
 Somme, un joker vaut la valeur qui l'arrange, comme ailleurs.
 
 ## Deux figures sur une même borne
 
-Chaque joueur peut en poser une à côté d'une même borne. Elles **se cumulent**, dans cet ordre
-(Sami, 07/10) :
-1. les Rois : la Couleur impaire pour les deux côtés, le +10 pour le côté de qui l'a posé ;
-2. La Somme : on ne compare plus que les sommes ;
-3. le Valet de Trèfle, en dernier : il inverse le résultat.
+Chaque joueur peut en poser une à côté d'une même borne. Elles **se cumulent**, dans cet ordre :
+1. les Rois et Valets : la Couleur impaire pour les deux côtés, le +10 du Roi de Carreau et le malus -10 du Valet de Trèfle pour le camp de qui l'a posé ;
+2. La Somme : on ne compare plus que les sommes.
 
-Valet de Trèfle et La Somme ensemble : la plus petite somme gagne. Valet de Trèfle face à un Roi
-de Carreau : le +10 devient un handicap pour celui qui l'a posé. Le Valet de Trèfle est la carte
-la plus forte du lot (Sami) : à surveiller dans les mesures.
+Valet de Trèfle face à un Roi de Carreau : le +10 et le -10 s'appliquent indépendamment à leur camp respectif. Sur une borne où les deux joueurs ont une Suite égale, celui au Roi a 10 de plus et celui au Valet a 10 de moins.
 
 ## Décisions du 07/10 (Sami)
 

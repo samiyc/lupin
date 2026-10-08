@@ -12,7 +12,7 @@
 export const FIGURE_BASE = 100;
 
 export const FIGURES = Object.freeze([
-  Object.freeze({ id: 100, key: "weakest", text: "V♣", name: "Valet de Trèfle", rule: "la plus faible gagne", scope: "border" }),
+  Object.freeze({ id: 100, key: "minusTen", text: "V♣", name: "Valet de Trèfle", rule: "-10 à égalité", scope: "own" }),
   Object.freeze({ id: 101, key: "sum", text: "V♦", name: "Valet de Carreau", rule: "la Somme", scope: "border" }),
   Object.freeze({ id: 102, key: "swap", text: "D♥", name: "Dame de Cœur", rule: "l'Échange", scope: "move" }),
   Object.freeze({ id: 103, key: "recall", text: "D♠", name: "Dame de Pique", rule: "le Rappel", scope: "move" }),
@@ -27,8 +27,8 @@ export const isFigure = (card) => card >= FIGURE_BASE;
 /** The figure of id `card` (`FIGURES`), or undefined for a plain card. */
 export const figureOf = (card) => FIGURES[card - FIGURE_BASE];
 
-/** The figure with this key ("weakest", "swap", …). */
-export const figureByKey = (key) => FIGURES.find((figure) => figure.key === key);
+/** The figure with this key ("minusTen", "swap", …). */
+export const figureByKey = (key) => FIGURES.find((figure) => figure.key === key) ?? (key === "weakest" ? FIGURES[0] : undefined);
 
 /** The figure written `text` ("V♣"), or undefined. */
 export const figureByText = (text) => FIGURES.find((figure) => figure.text === text);

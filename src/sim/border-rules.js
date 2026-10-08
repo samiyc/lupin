@@ -23,10 +23,15 @@ const RUNS = new Set(["straight", "straightFlush"]);
 export function rulesOf(border, player) {
   const laid = (border.figures ?? []).flatMap((id, seat) => (id === null || id === undefined ? [] : [{ key: figureOf(id).key, seat }]));
   const has = (key) => laid.some((figure) => figure.key === key);
-  return { weakest: has("weakest"), sum: has("sum"), oddFlush: has("oddFlush"), plusTen: laid.some((figure) => figure.key === "plusTen" && figure.seat === player) };
+  return {
+    sum: has("sum"),
+    oddFlush: has("oddFlush"),
+    plusTen: laid.some((figure) => figure.key === "plusTen" && figure.seat === player),
+    minusTen: laid.some((figure) => (figure.key === "minusTen" || figure.key === "weakest") && figure.seat === player),
+  };
 }
 
-const isPlain = (rules) => !rules.weakest && !rules.sum && !rules.oddFlush && !rules.plusTen;
+const isPlain = (rules) => !rules.sum && !rules.oddFlush && !rules.plusTen && !rules.minusTen;
 
 /** Three odd cards of one real suit (a colourless joker's phantom suit never counts: the joker cannot help). */
 function isOddFlush(spec, cards) {
@@ -34,14 +39,15 @@ function isOddFlush(spec, cards) {
   return suit < spec.colors && cards.every((card) => colorOf(spec, card) === suit && valueOf(spec, card) % 2 === 1);
 }
 
-/** The value of three concrete cards under `rules` (jokers already stood in), before the Valet de Trèfle. */
+/** The value of three concrete cards under `rules` (jokers already stood in). */
 function valueOfTriple(spec, order, cards, rules) {
   const sum = sumOf(spec, cards);
   const formation = classify(spec, cards);
   const bonus = rules.plusTen && RUNS.has(formation) ? 10 : 0;
-  if (rules.sum) return sum + bonus;
-  if (rules.oddFlush && isOddFlush(spec, cards)) return order.length * RANK_SPAN + sum;
-  return strengthScore(order, formation, sum) + bonus;
+  const penalty = rules.minusTen ? 10 : 0;
+  if (rules.sum) return sum + bonus - penalty;
+  if (rules.oddFlush && isOddFlush(spec, cards)) return order.length * RANK_SPAN + sum - penalty;
+  return strengthScore(order, formation, sum) + bonus - penalty;
 }
 
 /** Every way the jokers of `cards` may stand in. */
@@ -57,7 +63,7 @@ function ruledEvaluator(state, rules) {
   const base = state.evaluator;
   if (!evaluators.has(base)) evaluators.set(base, new Map());
   const cache = evaluators.get(base);
-  const key = `${rules.weakest}${rules.sum}${rules.oddFlush}${rules.plusTen}`;
+  const key = `${rules.sum}${rules.oddFlush}${rules.plusTen}${rules.minusTen}`;
   if (!cache.has(key)) cache.set(key, buildRuled(state, rules));
   return cache.get(key);
 }
@@ -67,7 +73,7 @@ function buildRuled({ spec, order, jokerRule, evaluator: base }, rules) {
   const memo = new Map();
   const judge = (cards) => {
     const values = standIns(cards, options).map((triple) => valueOfTriple(spec, order, triple, rules));
-    return rules.weakest ? -Math.min(...values) : Math.max(...values);
+    return Math.max(...values);
   };
   const score = (cards) => {
     // A side not yet complete is never judged under a figure: only full sides are compared or proved.

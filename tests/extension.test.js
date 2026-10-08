@@ -15,7 +15,7 @@ const cards = (...texts) => parseCards(spec, texts);
 const id = (key) => figureByKey(key).id;
 
 /** A claim-end game with the six figures in its deck. */
-const newGame = (seed = 1, figures = FIGURE_IDS) => createGame(spec, { order: ORDERS.original, jokerRule: JOKER_RULES.colorless, rng: createRng(seed), endMode: "claim-end", figures });
+const newGame = (seed = 1, figures = FIGURE_IDS) => createGame(spec, { order: ORDERS.original, jokerRule: JOKER_RULES.colorless, rng: createRng(seed), endMode: "claim-end", figures, seed });
 
 /** Border 0 with the given sides and figures; who wins it under its rules (1 when player 1's side scores higher). */
 function winnerOf(game, sides, figures) {
@@ -32,11 +32,12 @@ describe("the extension's border rules (border-rules.js, docs/extension.md)", ()
     assert.equal(evaluatorFor(game, 3, 1), game.evaluator);
   });
 
-  it("Valet de Trèfle: the weakest combination wins", () => {
-    const flush = cards("2♣", "5♣", "9♣");
-    const sum = cards("2♠", "5♥", "9♦");
-    assert.equal(winnerOf(newGame(), [flush, sum], [null, null]), 0);
-    assert.equal(winnerOf(newGame(), [flush, sum], [id("weakest"), null]), 1);
+  it("Valet de Trèfle: -10 penalty on tie-break / sum for whoever laid it", () => {
+    const straightA = cards("5♠", "6♥", "7♦"); // sum 18
+    const straightB = cards("5♣", "6♦", "7♥"); // sum 18
+    assert.equal(winnerOf(newGame(), [straightA, straightB], [null, null]), 0, "equal sum without figure goes to first completed (player 0)");
+    assert.equal(winnerOf(newGame(), [straightA, straightB], [id("minusTen"), null]), 1, "with V♣ on player 0's side, 18 - 10 = 8 loses to 18");
+    assert.equal(winnerOf(newGame(), [straightA, straightB], [null, id("minusTen")]), 0, "with V♣ on player 1's side, player 1 loses");
   });
 
   it("Valet de Carreau: only the sums count", () => {
@@ -62,21 +63,39 @@ describe("the extension's border rules (border-rules.js, docs/extension.md)", ()
     assert.equal(winnerOf(newGame(), [small, big], [null, id("plusTen")]), 1);
   });
 
-  it("add up: the Valet de Trèfle and La Somme together, the smallest sum wins", () => {
-    const small = cards("1♠", "2♥", "4♦");
-    const big = cards("10♣", "9♣", "8♣");
-    assert.equal(winnerOf(newGame(), [small, big], [id("weakest"), id("sum")]), 0);
+  it("add up: the Valet de Trèfle and Roi de Carreau apply their bonuses/penalties independently", () => {
+    const small = cards("5♠", "6♥", "7♦");
+    const big = cards("8♣", "9♠", "10♥");
+    assert.equal(winnerOf(newGame(), [small, big], [id("plusTen"), id("minusTen")]), 0);
   });
 });
 
 describe("the extension's figure moves (figure-moves.js)", () => {
   it("lay a figure only beside an undecided border, one per border and player", () => {
     const game = newGame();
-    game.hands[0] = [id("weakest"), ...game.hands[0].filter((card) => !isFigure(card)).slice(0, 5)];
+    game.hands[0] = [id("minusTen"), ...game.hands[0].filter((card) => !isFigure(card)).slice(0, 5)];
     game.borders[2].owner = 1;
     game.borders[4].figures[0] = id("sum");
-    const borders = legalMoves(game).filter((move) => move.card === id("weakest")).map((move) => move.border);
+    const borders = [...new Set(legalMoves(game).filter((move) => move.card === id("minusTen")).map((move) => move.border))];
     assert.deepEqual(borders, [0, 1, 3, 5, 6]);
+  });
+
+  it("Valet de Trèfle: discards a chosen card, draws replacement from pile, shuffles discard, and draws at end of turn", () => {
+    const game = newGame(42);
+    const discardCard = cards("1♠")[0];
+    game.hands[0] = [id("minusTen"), discardCard, ...cards("2♠", "3♠", "4♠", "5♠")];
+    const initialPile = [...game.pile];
+    const topCard = initialPile[initialPile.length - 1];
+    const initialPileLen = game.pile.length;
+
+    applyMove(game, { card: id("minusTen"), border: 0, discard: discardCard });
+
+    assert.equal(game.borders[0].figures[0], id("minusTen"));
+    assert.equal(game.hands[0].length, 6);
+    assert.ok(!game.hands[0].includes(discardCard));
+    assert.ok(game.pile.includes(discardCard));
+    assert.ok(game.hands[0].includes(topCard));
+    assert.equal(game.pile.length, initialPileLen - 1);
   });
 
   it("Dame de Cœur: swaps her border with another undecided one, and stays with hers", () => {

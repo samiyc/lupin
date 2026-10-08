@@ -89,8 +89,13 @@ export function playLogged(log, state, move, scored = null) {
     return entry;
   }
   Object.assign(entry, {
-    // `target`: the border a Dame de Cœur swaps with (the extension).
-    move: { card: formatCard(spec, move.card), border: move.border + 1, ...(move.target === undefined ? {} : { target: move.target + 1 }) },
+    // `target`: the border a Dame de Cœur swaps with (the extension); `discard`: Valet de Trèfle.
+    move: {
+      card: formatCard(spec, move.card),
+      border: move.border + 1,
+      ...(move.target === undefined ? {} : { target: move.target + 1 }),
+      ...(move.discard === undefined ? {} : { discard: formatCard(spec, move.discard) }),
+    },
     side: sideContext(state, player, move.border),
     joker: isJoker(move.card),
     candidates: candidatesOf(spec, scored),
@@ -138,8 +143,13 @@ export function snapshot(state) {
   };
 }
 
-/** A logged move read back: 1-based borders, and the swap's `target` when there is one (the extension). */
-const loggedMove = (spec, logged) => ({ card: parseCard(spec, logged.card), border: logged.border - 1, ...(logged.target === undefined ? {} : { target: logged.target - 1 }) });
+/** A logged move read back: 1-based borders, and the swap's `target` or minusTen's `discard` (the extension). */
+const loggedMove = (spec, logged) => ({
+  card: parseCard(spec, logged.card),
+  border: logged.border - 1,
+  ...(logged.target === undefined ? {} : { target: logged.target - 1 }),
+  ...(logged.discard === undefined ? {} : { discard: parseCard(spec, logged.discard) }),
+});
 
 function replayTurn(state, entry, index) {
   const fail = (why) => {
@@ -152,7 +162,7 @@ function replayTurn(state, entry, index) {
     return;
   }
   const move = loggedMove(state.spec, entry.move);
-  if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border && m.target === move.target)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
+  if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border && m.target === move.target && m.discard === move.discard)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
   const drawing = state.pile.length > 0 && drawsAfter(move.card);
   applyMove(state, move);
   const hand = state.hands[entry.player];
@@ -189,7 +199,7 @@ function adviceFor(state, advisor, entry) {
 export function replayStates(log, { advisor = null } = {}) {
   if (log.format !== REPLAY_FORMAT) throw new Error(`Format de replay inconnu : ${log.format}`);
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
-  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null });
+  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed });
   const frames = [{ state: snapshot(state), entry: null, ...NO_OPINION }];
   log.turns.forEach((entry, index) => {
     const opinion = entry.candidates ? NO_OPINION : adviceFor(state, advisor, entry);
@@ -207,7 +217,7 @@ export function replayStates(log, { advisor = null } = {}) {
  */
 export function stateAt(log, turn) {
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
-  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null });
+  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed });
   log.turns.slice(0, turn - 1).forEach((entry, index) => replayTurn(state, entry, index));
   return state;
 }

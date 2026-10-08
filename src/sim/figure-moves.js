@@ -11,20 +11,39 @@ import { figureOf } from "../core/figures.js";
  */
 const undecided = (border) => border.owner === null;
 
-/** The legal moves of figure `card` for `player`: `{ card, border }`, plus `target` for the swap. */
+function swapMoves(state, card, index) {
+  const moves = [];
+  state.borders.forEach((other, target) => {
+    if (target !== index && undecided(other)) moves.push({ card, border: index, target });
+  });
+  return moves;
+}
+
+function minusTenMoves(state, player, card, index) {
+  const moves = [{ card, border: index }];
+  if (state.pile.length > 0) {
+    const others = [...new Set(state.hands[player].filter((c) => c !== card))];
+    for (const discard of others) moves.push({ card, border: index, discard });
+  }
+  return moves;
+}
+
+/** The legal moves of figure `card` for `player`: `{ card, border }`, plus `target` for the swap and `discard` for minusTen. */
 export function figureMoves(state, player, card) {
   const { key } = figureOf(card);
   const moves = [];
   state.borders.forEach((border, index) => {
     if (!undecided(border) || border.figures[player] !== null) return;
     if (key === "recall" && border.sides[player].length === 0) return;
-    if (key !== "swap") {
-      moves.push({ card, border: index });
+    if (key === "swap") {
+      moves.push(...swapMoves(state, card, index));
       return;
     }
-    state.borders.forEach((other, target) => {
-      if (target !== index && undecided(other)) moves.push({ card, border: index, target });
-    });
+    if (key === "minusTen" || key === "weakest") {
+      moves.push(...minusTenMoves(state, player, card, index));
+      return;
+    }
+    moves.push({ card, border: index });
   });
   return moves;
 }
@@ -37,8 +56,19 @@ function recall(state, player, border) {
   border.completedAt[player] = Infinity;
 }
 
+function cycleHand(state, hand, discard) {
+  const at = hand.indexOf(discard);
+  if (at < 0) return;
+  hand.splice(at, 1);
+  const drawn = state.pile.pop();
+  hand.push(drawn);
+  state.pile.push(discard);
+  const rng = state.pileRng ?? state.rng;
+  if (rng) rng.shuffle(state.pile);
+}
+
 /** Lays figure `move.card` beside `move.border`; true when the player draws after it (all but the Rappel). */
-export function playFigure(state, player, { card, border: index, target }) {
+export function playFigure(state, player, { card, border: index, target, discard }) {
   const hand = state.hands[player];
   hand.splice(hand.indexOf(card), 1);
   const border = state.borders[index];
@@ -51,5 +81,9 @@ export function playFigure(state, player, { card, border: index, target }) {
   }
   // The Dame de Cœur stays with the border she was laid beside: both move whole, figures included.
   if (key === "swap") [state.borders[index], state.borders[target]] = [state.borders[target], state.borders[index]];
+  // Valet de Trèfle: discard a card, draw a replacement, shuffle discarded card into pile.
+  if ((key === "minusTen" || key === "weakest") && discard !== undefined && discard !== null && state.pile.length > 0) {
+    cycleHand(state, hand, discard);
+  }
   return true;
 }
