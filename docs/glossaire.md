@@ -306,6 +306,8 @@ version :
 | `FirstExplo8-Tree-7w` | le même, avec 0,8 au lieu de 0,6 : plus d'exploration pour le premier joueur | `ismcts+widen=7+depth=5+…+firstExploration=0.8` |
 | `EndJoker` | le cœur du 1.2 en essai (`stfig6ej`) : une fois la pioche vide, le joker jugé par ce qu'il gagne de plus que sur sa meilleure autre borne, au lieu de son prix fixe (`src/sim/end-joker.js`). Comparé au V1.1 | `ismcts+widen=7+depth=5+core=stfig6ej@2000` |
 | `ExactEnd12` | le V1.1 qui, pioche vide, calcule exactement son vrai coup jusqu'à 12 cartes en main (au lieu de 8), avec un plafond de positions au-delà duquel l'arbre reprend | `ismcts+widen=7+depth=5+core=stfig6+exact=12@2000` |
+| `CriticalEnd` | le cœur 1.2 d'urgence tactique (`stfig6crit`, `src/sim/end-urgency.js`) : pioche vide, remboursement du cardCost, priorité de complétion et parades des 3 adjacentes | `ismcts+widen=7+depth=5+core=stfig6crit@2000` |
+| `CriticalEnd-Exact12` | le combo cœur tactique `stfig6crit` + solveur exact pioche vide à 12 cartes | `ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000` |
 | `RootHalving-Tree-5w` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
 | `RootHalving-Tree-2w-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |

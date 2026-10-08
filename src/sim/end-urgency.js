@@ -9,55 +9,44 @@
  * 3. Tactical arbitration when multiple 2-card borders exist: prioritize
  *    contested borders (opponent at 2 or 3 cards), and 3-adjacent win/block threats.
  */
+
+function completionBonus(twoCardCount, sideLength, oppSideLength) {
+  if (twoCardCount === 1) return sideLength === 2 ? 0.5 : -0.3;
+  if (twoCardCount > 1 && sideLength === 2) {
+    if (oppSideLength === 3) return 0.7;
+    if (oppSideLength === 2) return 0.5;
+    return 0.3;
+  }
+  return 0;
+}
+
+function hasPair(borders, owner, a, b) {
+  return borders[a]?.owner === owner && borders[b]?.owner === owner;
+}
+
+function threeInRow(borders, owner, b) {
+  return hasPair(borders, owner, b - 2, b - 1) || hasPair(borders, owner, b + 1, b + 2) || hasPair(borders, owner, b - 1, b + 1);
+}
+
+function adjacencyBonus(borders, b, player, opp) {
+  let bonus = 0;
+  if (threeInRow(borders, player, b)) bonus += 0.6;
+  if (threeInRow(borders, opp, b)) bonus += 0.5;
+  return bonus;
+}
+
 export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
   if (!on || state.pile.length > 0) return gainOf;
 
   const player = state.current;
   const opp = 1 - player;
-
-  // Pre-calculate 2-card borders for player
-  const myTwoCardBorders = state.borders
-    .map((border, index) => ({ index, count: border.sides[player].length, oppCount: border.sides[opp].length, owner: border.owner }))
-    .filter((entry) => entry.owner === null && entry.count === 2);
-
-  const wonBy = (idx, p) => idx >= 0 && idx < state.borders.length && state.borders[idx].owner === p;
+  const twoCards = state.borders.filter((b) => b.owner === null && b.sides[player].length === 2).length;
 
   return (move) => {
-    const baseGain = gainOf(move);
-    const border = state.borders[move.border];
-    const mySide = border.sides[player];
-    const oppSide = border.sides[opp];
-
-    // 1. Refund fixed card cost (cards should be spent freely pioche vide)
-    let bonus = costOf(move.card);
-
-    // 2. Prioritize finishing 2-card borders vs scattering
-    if (myTwoCardBorders.length === 1) {
-      if (mySide.length === 2) bonus += 0.5;
-      else bonus -= 0.3;
-    } else if (myTwoCardBorders.length > 1 && mySide.length === 2) {
-      bonus += 0.3;
-      if (oppSide.length === 3) bonus += 0.4;
-      else if (oppSide.length === 2) bonus += 0.2;
-    }
-
-    // 3. Three-adjacent win and block urgency
-    if (mySide.length === 2) {
-      const b = move.border;
-      // Win threat (our 3-in-a-row)
-      if ((wonBy(b - 1, player) && wonBy(b - 2, player)) ||
-          (wonBy(b + 1, player) && wonBy(b + 2, player)) ||
-          (wonBy(b - 1, player) && wonBy(b + 1, player))) {
-        bonus += 0.6;
-      }
-      // Critical block (opponent 3-in-a-row)
-      if ((wonBy(b - 1, opp) && wonBy(b - 2, opp)) ||
-          (wonBy(b + 1, opp) && wonBy(b + 2, opp)) ||
-          (wonBy(b - 1, opp) && wonBy(b + 1, opp))) {
-        bonus += 0.5;
-      }
-    }
-
-    return baseGain + bonus;
+    const mySide = state.borders[move.border].sides[player];
+    const oppSide = state.borders[move.border].sides[opp];
+    let bonus = costOf(move.card) + completionBonus(twoCards, mySide.length, oppSide.length);
+    if (mySide.length === 2) bonus += adjacencyBonus(state.borders, move.border, player, opp);
+    return gainOf(move) + bonus;
   };
 }

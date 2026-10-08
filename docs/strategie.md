@@ -2770,3 +2770,49 @@ là où juger le joker (EndJoker) ne suffisait pas. Les duels ont duré 24 à 26
 d'EndJoker : pas de surcoût visible en partie entière, mais le temps par coup dans la page (le
 solveur à 9-12 cartes) reste à vérifier. La marge est mince (0,4 point) : 500 parties sur donnes
 nouvelles la confirmeraient.
+
+**ExactEnd12 confirmé sur 1 500 parties** (08/10, 02 h 46) : les deux duels sur donnes nouvelles
+(`VALIDATE_LONG_5` et `_6_ExactEnd12`) font 50,4 et 54,0 %. Réunis par paires sur les six duels
+(`npm run versus`, « ExactEnd12 ») : **52,7 % (50,5 – 54,8)** sur 1 500 parties, la fourchette basse
+au-dessus de 50 %. **Gagne et confirmé** : ExactEnd12 devient le moteur de l'Expérimental 1.2.
+Calculer le vrai coup exactement pioche vide jusqu'à 12 cartes résout les pièges où le joueur au
+trait a une victoire garantie, sans alourdir le temps de recherche (24 min par duel de 250 parties).
+
+## Le banc de pièges complet et les essais CriticalEnd (08/10, matin)
+
+**Le banc de pièges complet** (`npm run trap-bench`, 08/10, 01 h 58) : 48 000 parties cœur contre cœur
+en trois passes de 16 000 graines ; 6 377 pièges répertoriés entiers avec leurs coups gagnants (4,9 %
+des fins gagnées), et 40 302 positions saines en contrôle.
+- **EndJoker (`stfig6ej`)** n'évite que **293 pièges sur 6 377 (4,6 %)** et 76 positions saines cassées
+  (0,2 %). Son gain est presque exclusivement sur le joker (196 pièges évités) et marginal ailleurs.
+- **CriticalEnd (`stfig6crit`, `src/sim/end-urgency.js`)** : règle d'urgence pioche vide (remboursement
+  du cardCost, priorité à la complétion des bornes à 2 cartes, arbitrage d'urgence face aux menaces
+  adverses et parade des 3 adjacentes). Il évite **2 290 pièges sur 6 377 (35,9 %)** pour seulement
+  1 158 positions saines cassées (2,9 %) : 708 pièges évités sur « mauvaise borne », 496 sur « autre »,
+  394 sur « mauvaise carte », 373 sur le joker.
+
+**CriticalEnd en duel long** (`VALIDATE_LONG_1` et `_2_CriticalEnd`, 08/10, 03 h 31) :
+Donnes 1 et 2 : 51,2 et 48,0 %, soit **49,6 % (46,0 – 53,2)** sur 500 parties. Stoppé par la règle
+d'arrêt. **Neutre, écarté** : un cœur tactique qui résout 36 % des pièges sur le banc statique ne
+produit pas de meilleurs rollouts dans l'arbre ISMCTS, où forcer la fermeture de colonnes restreint
+la variété des fins explorées.
+
+**CriticalEnd-Exact12 (le combo)** (`VALIDATE_LONG_1` à `_4_CriticalEnd-Exact12`, 08/10, 05 h 02) :
+Les quatre duels longs contre le V1.1 font 52,8 / 48,8 / 50,8 / 51,6 %, réunis par paires à
+**51,0 % (48,4 – 53,6)** sur 1 000 parties. **Neutre** : le solveur exact pioche vide à 12 cartes
+performe mieux quand les rollouts conservent le cœur `stfig6` neutre d'origine (52,7 %) que lorsqu'on
+leur injecte l'heuristique d'urgence (51,0 %).
+
+## L'extension consolidée avec l'arbre : 4 000 parties (08/10, 05 h 43)
+
+La mesure consolidée (`npm run extension -- --games 500`, 41 min sur 18 fils, `data/extension-tree.json`)
+joue 500 parties par pioche sur 8 configurations avec l'arbre du 1.1 à 200 itérations (barres d'erreur
+resserrées à ±3,5 %) :
+- **Équilibre du premier joueur** : 48,8 % sans figure, 48,0 % avec les six figures réunies (durée moyenne
+  passant de 35,3 à 41,5 tours).
+- **Valet de Trèfle (V♣, la plus faible gagne)** : posée dans 71,8 % des parties (tour 25) ; borne gagnée
+  55,6 % ; **partie gagnée 62,4 % ± 3,5**. **Trop forte** (la seule au-dessus de 60 %).
+- **Valet de Carreau (V♦, La Somme)** : posée 65,1 % (tour 28) ; borne gagnée 65,0 % ; **partie gagnée
+  59,9 % ± 3,8**. Redescend sous le seuil critique des 60 % avec l'échantillon élargi.
+- **Les quatre autres figures** : posées tard (tours 24-26) par le joueur dominé, leur taux de victoire
+  s'établit entre 41,5 % et 45,4 % (D♥ 43,5 % ± 3,2, D♠ 41,5 % ± 3,5, R♠ 45,4 % ± 3,6, R♦ 43,7 % ± 3,4).

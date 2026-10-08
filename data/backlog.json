@@ -1103,7 +1103,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker : 52,4 % (49,6 – 55,2) sur les donnes 1 à 4, fourchette basse juste sous 50 % ; 500 parties de plus sur des donnes nouvelles (jeu 5) pour trancher, comme pour Tree-7w.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-07T21:12",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-07-20-48_VALIDATE_LONG_5_EndJoker.txt"
     },
     {
       "id": "VALIDATE_LONG_6_EndJoker",
@@ -1111,7 +1114,10 @@
       "estimate": "27 min",
       "limit": 50,
       "why": "EndJoker : 52,4 % (49,6 – 55,2) sur les donnes 1 à 4, fourchette basse juste sous 50 % ; 500 parties de plus sur des donnes nouvelles (jeu 6) pour trancher, comme pour Tree-7w.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-07T21:38",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-07-21-12_VALIDATE_LONG_6_EndJoker.txt"
     },
     {
       "id": "extension-tree-somme",
@@ -1119,7 +1125,344 @@
       "estimate": "15 min",
       "limit": 40,
       "why": "La Somme à 64,7 % ± 10 avec l'arbre sur 60 parties : 200 parties de plus sur sa pioche seule pour savoir si elle est trop forte.",
-      "status": "todo"
+      "status": "done",
+      "doneAt": "2026-10-07T21:43",
+      "minutes": 5,
+      "output": "backlog-runs/2026-10-07-21-38_extension-tree-somme.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 07/10) : pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes (plafond de positions, l'arbre reprend au-delà), au lieu de 8 ; l'arbre du 1.1 tombe dans un tiers des pièges du cœur (69 sur 101). Contre le V1.1, jeu de donnes 1 sur 4, règle d'arrêt.",
+      "status": "done",
+      "doneAt": "2026-10-07T22:07",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-07-21-43_VALIDATE_LONG_1_ExactEnd12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 07/10) : pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes (plafond de positions, l'arbre reprend au-delà), au lieu de 8 ; l'arbre du 1.1 tombe dans un tiers des pièges du cœur (69 sur 101). Contre le V1.1, jeu de donnes 2 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_ExactEnd12"
+          ],
+          "below": 0.47
+        }
+      ],
+      "doneAt": "2026-10-07T22:33",
+      "minutes": 26,
+      "output": "backlog-runs/2026-10-07-22-07_VALIDATE_LONG_2_ExactEnd12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 07/10) : pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes (plafond de positions, l'arbre reprend au-delà), au lieu de 8 ; l'arbre du 1.1 tombe dans un tiers des pièges du cœur (69 sur 101). Contre le V1.1, jeu de donnes 3 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_ExactEnd12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_ExactEnd12",
+            "VALIDATE_LONG_2_ExactEnd12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-07T22:58",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-07-22-33_VALIDATE_LONG_3_ExactEnd12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 07/10) : pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes (plafond de positions, l'arbre reprend au-delà), au lieu de 8 ; l'arbre du 1.1 tombe dans un tiers des pièges du cœur (69 sur 101). Contre le V1.1, jeu de donnes 4 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_ExactEnd12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_ExactEnd12",
+            "VALIDATE_LONG_2_ExactEnd12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-07T23:22",
+      "minutes": 24,
+      "output": "backlog-runs/2026-10-07-22-58_VALIDATE_LONG_4_ExactEnd12.txt"
+    },
+    {
+      "id": "trap-bench-build-1",
+      "command": "npm run trap-bench -- --build --games 16000 --from 1 --minutes 105",
+      "estimate": "60 min",
+      "limit": 115,
+      "why": "Le banc de pièges (Sami, 07/10 : passer de 1 507 à 5 000 pièges) : parties cœur contre cœur, graines 1 à 16000 ; chaque fin de partie gagnée où le cœur des simulations du 1.1 se trompe est gardée entière avec ses coups gagnants (~0,1 piège par partie).",
+      "status": "done",
+      "doneAt": "2026-10-08T00:17",
+      "minutes": 54,
+      "output": "backlog-runs/2026-10-07-23-22_trap-bench-build-1.txt"
+    },
+    {
+      "id": "trap-bench-build-2",
+      "command": "npm run trap-bench -- --build --games 16000 --from 16001 --minutes 105",
+      "estimate": "60 min",
+      "limit": 115,
+      "why": "Le banc de pièges (Sami, 07/10 : passer de 1 507 à 5 000 pièges) : parties cœur contre cœur, graines 16001 à 32000 ; chaque fin de partie gagnée où le cœur des simulations du 1.1 se trompe est gardée entière avec ses coups gagnants (~0,1 piège par partie).",
+      "status": "done",
+      "doneAt": "2026-10-08T01:07",
+      "minutes": 50,
+      "output": "backlog-runs/2026-10-08-00-17_trap-bench-build-2.txt"
+    },
+    {
+      "id": "trap-bench-build-3",
+      "command": "npm run trap-bench -- --build --games 16000 --from 32001 --minutes 105",
+      "estimate": "60 min",
+      "limit": 115,
+      "why": "Le banc de pièges (Sami, 07/10 : passer de 1 507 à 5 000 pièges) : parties cœur contre cœur, graines 32001 à 48000 ; chaque fin de partie gagnée où le cœur des simulations du 1.1 se trompe est gardée entière avec ses coups gagnants (~0,1 piège par partie).",
+      "status": "done",
+      "doneAt": "2026-10-08T01:58",
+      "minutes": 51,
+      "output": "backlog-runs/2026-10-08-01-07_trap-bench-build-3.txt"
+    },
+    {
+      "id": "trap-bench-judge",
+      "command": "npm run trap-bench -- stfig6ej",
+      "estimate": "5 min",
+      "limit": 30,
+      "why": "EndJoker sur le banc de pièges complet : pièges évités par famille, positions saines cassées.",
+      "status": "done",
+      "doneAt": "2026-10-08T01:58",
+      "minutes": 1,
+      "output": "backlog-runs/2026-10-08-01-58_trap-bench-judge.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_5_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 5",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 08/10) : 52,9 % (50,4 – 55,4) sur les donnes 1 à 4 ; 500 parties de plus sur des donnes nouvelles (jeu 5 sur 6) pour confirmer sur 1 500 parties, comme pour Tree-7w et EndJoker.",
+      "status": "done",
+      "doneAt": "2026-10-08T02:23",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-08-01-58_VALIDATE_LONG_5_ExactEnd12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_6_ExactEnd12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 6",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "ExactEnd12 (Sami, 08/10) : 52,9 % (50,4 – 55,4) sur les donnes 1 à 4 ; 500 parties de plus sur des donnes nouvelles (jeu 6 sur 6) pour confirmer sur 1 500 parties, comme pour Tree-7w et EndJoker.",
+      "status": "done",
+      "doneAt": "2026-10-08T02:46",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-08-02-23_VALIDATE_LONG_6_ExactEnd12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_CriticalEnd",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd (Sami, 08/10) : cœur stfig6crit (urgence tactique et complétion pioche vide, 35 % des pièges évités sur le banc). Contre le V1.1, jeu de donnes 1 sur 4.",
+      "status": "done",
+      "doneAt": "2026-10-08T03:08",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-08-02-46_VALIDATE_LONG_1_CriticalEnd.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_CriticalEnd",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd : contre le V1.1, jeu de donnes 2 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd"
+          ],
+          "below": 0.47
+        }
+      ],
+      "doneAt": "2026-10-08T03:31",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-08-03-08_VALIDATE_LONG_2_CriticalEnd.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_CriticalEnd",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd : contre le V1.1, jeu de donnes 3 sur 4, règle d'arrêt.",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd",
+            "VALIDATE_LONG_2_CriticalEnd"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T03:31",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_CriticalEnd + VALIDATE_LONG_2_CriticalEnd : 49.6 % réunis, sous 50 %"
+    },
+    {
+      "id": "VALIDATE_LONG_4_CriticalEnd",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd : contre le V1.1, jeu de donnes 4 sur 4, règle d'arrêt.",
+      "status": "skipped",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd",
+            "VALIDATE_LONG_2_CriticalEnd"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T03:31",
+      "minutes": 0,
+      "reason": "VALIDATE_LONG_1_CriticalEnd + VALIDATE_LONG_2_CriticalEnd : 49.6 % réunis, sous 50 %"
+    },
+    {
+      "id": "trap-bench-judge-crit",
+      "command": "npm run trap-bench -- stfig6crit",
+      "estimate": "5 min",
+      "limit": 15,
+      "why": "stfig6crit sur le banc de pièges complet (6 377 pièges minés en 3 passes) : pièges évités et positions saines cassées.",
+      "status": "done",
+      "doneAt": "2026-10-08T03:32",
+      "minutes": 2,
+      "output": "backlog-runs/2026-10-08-03-31_trap-bench-judge-crit.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_CriticalEnd-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd-Exact12 (Sami, 08/10) : combo cœur stfig6crit + solveur exact pioche vide à 12 cartes. Contre le V1.1, jeu de donnes 1 sur 4.",
+      "status": "done",
+      "doneAt": "2026-10-08T03:55",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-08-03-32_VALIDATE_LONG_1_CriticalEnd-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_CriticalEnd-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd-Exact12 : contre le V1.1, jeu de donnes 2 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd-Exact12"
+          ],
+          "below": 0.47
+        }
+      ],
+      "doneAt": "2026-10-08T04:17",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-08-03-55_VALIDATE_LONG_2_CriticalEnd-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_CriticalEnd-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd-Exact12 : contre le V1.1, jeu de donnes 3 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd-Exact12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd-Exact12",
+            "VALIDATE_LONG_2_CriticalEnd-Exact12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T04:40",
+      "minutes": 22,
+      "output": "backlog-runs/2026-10-08-04-17_VALIDATE_LONG_3_CriticalEnd-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_CriticalEnd-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "CriticalEnd-Exact12 : contre le V1.1, jeu de donnes 4 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd-Exact12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_CriticalEnd-Exact12",
+            "VALIDATE_LONG_2_CriticalEnd-Exact12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T05:02",
+      "minutes": 23,
+      "output": "backlog-runs/2026-10-08-04-40_VALIDATE_LONG_4_CriticalEnd-Exact12.txt"
+    },
+    {
+      "id": "extension-tree-500",
+      "command": "npm run extension -- --engine \"ismcts+widen=7+depth=5+core=stfig6@200\" --games 500",
+      "estimate": "55 min",
+      "limit": 90,
+      "why": "Mesure consolidée de l'extension avec l'arbre du 1.1 à 200 itérations (Sami, 08/10) : 500 parties par pioche sur les 8 pioches (4 000 parties) pour des barres d'erreur fines (±4 %).",
+      "status": "done",
+      "doneAt": "2026-10-08T05:43",
+      "minutes": 41,
+      "output": "backlog-runs/2026-10-08-05-02_extension-tree-500.txt"
     }
   ]
 }

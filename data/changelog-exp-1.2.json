@@ -125,48 +125,72 @@
    "note": "Posée dans 64,5 % des parties, au tour 26 ; borne gagnée 67,4 %, partie gagnée 64,3 % ± 8,3 pour qui la pose : trop forte, comme sur les 60 premières (64,7 % ± 10). Réunies, environ 64,5 % ± 6,4 sur ~210 parties où elle est posée. Le premier joueur reste à l'équilibre (49,5 %, 53,0 % sans figure). À revoir avec Sami."
   },
   {
-   "name": "ExactEnd12 contre le V1.1 (4 duels longs à 2 000, 1 000 parties)",
+   "name": "ExactEnd12 contre le V1.1 (6 duels longs, 1 500 parties)",
    "family": "oracle",
    "bench": "duel",
-   "score": 52.9,
-   "lo": 50.4,
-   "hi": 55.4,
+   "score": 52.7,
+   "lo": 50.5,
+   "hi": 54.8,
    "verdict": "gagne",
-   "when": "07/10 23:22",
-   "note": "Pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes au lieu de 8. Donnes 1 à 4 : 52,8 / 55,2 / 52,4 / 51,2 %. Réunies par paires : 52,9 % (50,4 – 55,4), la fourchette basse au-dessus de 50 %. Premier candidat du 1.2 ; la marge est mince et le temps de réflexion dans la page reste à vérifier."
+   "when": "08/10 02:46",
+   "note": "Pioche vide, le vrai coup calculé exactement jusqu'à 12 cartes. Donnes 1 à 6 : 52,8 / 55,2 / 52,4 / 51,2 / 50,4 / 54,0 %. Réunies par paires (npm run versus) : 52,7 % (50,5 – 54,8), la borne basse reste au-dessus de 50 %. Confirmé sur 1 500 parties : adopté pour le 1.2."
+  },
+  {
+   "name": "Le banc de pièges complet (6 377 pièges minés en 3 passes)",
+   "family": "reference",
+   "bench": "puzzles",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "08/10 01:58",
+   "note": "48 000 parties cœur contre cœur examinées : 6 377 pièges répertoriés avec leurs coups gagnants, 40 302 positions saines en témoin. EndJoker (stfig6ej) n'en évite que 4,6 % (293 pièges, presque tous sur le joker). Le cœur d'urgence tactique stfig6crit en évite 35,9 % (2 290 pièges)."
+  },
+  {
+   "name": "CriticalEnd en duel long (stfig6crit contre le V1.1)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 49.6,
+   "lo": 46,
+   "hi": 53.2,
+   "verdict": "neutre",
+   "when": "08/10 03:31",
+   "note": "Donnes 1 et 2 : 51,2 % puis 48,0 % (49,6 % réunis par paires). Stoppé par la règle d'arrêt. Le cœur évite 36 % des pièges sur le banc, mais forcer les complétions tactiques dans les rollouts de l'arbre ne bat pas le V1.1 seul."
+  },
+  {
+   "name": "CriticalEnd-Exact12 contre le V1.1 (le combo, 4 duels longs)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 51,
+   "lo": 48.4,
+   "hi": 53.6,
+   "verdict": "neutre",
+   "when": "08/10 05:02",
+   "note": "Donnes 1 à 4 : 52,8 / 48,8 / 50,8 / 51,6 %, réunies à 51,0 % (48,4 – 53,6). Inférieur à ExactEnd12 seul (52,7 %) : le solveur exact à 12 cartes gagne davantage quand les simulations de l'arbre gardent le cœur stfig6 neutre."
+  },
+  {
+   "name": "L'extension consolidée avec l'arbre du 1.1 (500 parties par pioche, 4 000 parties)",
+   "family": "extension",
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "tendance",
+   "when": "08/10 05:43",
+   "note": "4 000 parties jouées avec l'arbre à 200 itérations (barres d'erreur fines à ±3,5 %). Le Valet de Trèfle (la plus faible gagne) ressort trop fort : posé dans 71,8 % des parties, 62,4 % ± 3,5 de victoires. La Somme (V♦) redescend sous les 60 % (59,9 % ± 3,8). L'équilibre 1er/2nd joueur reste parfait (48,8 % sans figure, 48,0 % avec les six)."
   }
  ],
  "commitLabels": {},
  "next": [
   {
-   "when": "En file",
-   "title": "Le banc de pièges",
-   "text": "48 000 parties cœur contre cœur en trois passes (la première : 2 068 pièges sur 16 000 parties, 4,8 % des fins gagnées), puis EndJoker jugé sur ce banc."
-  },
-  {
-   "when": "Piste",
-   "title": "ExactEnd12, candidat du 1.2",
-   "text": "52,9 % (50,4 – 55,4) sur 1 000 parties contre le V1.1. À vérifier avant d'en faire le 1.2 : son temps par coup dans la page (le solveur à 9-12 cartes), et 500 parties de plus sur donnes nouvelles si Sami le souhaite, la fourchette basse étant juste au-dessus de 50 %."
+   "when": "Adopté 1.2",
+   "title": "ExactEnd12 est la version 1.2",
+   "text": "52,7 % (50,5 – 54,8) sur 1 500 parties contre le V1.1, la fourchette basse au-dessus de 50 %. Calculer le vrai coup exactement pioche vide jusqu'à 12 cartes s'impose sans surcoût visible. Reste à intégrer et vérifier dans la page web."
   },
   {
    "when": "Avec Sami",
-   "title": "La Somme trop forte",
-   "text": "64 % des parties gagnées pour qui pose le Valet de Carreau, avec l'arbre (200 itérations) : sa règle ou sa place dans la pioche à revoir."
-  },
-  {
-   "when": "Piste",
-   "title": "Un second regard sur les deux premiers coups",
-   "text": "Pioche vide, le bon coup est le 2e choix du cœur dans 62 % des pièges : une résolution bornée entre les deux, à mesurer en coût d'abord."
-  },
-  {
-   "when": "Plus tard",
-   "title": "Les pièges de placement",
-   "text": "60 % des pièges ne se lisent pas encore sur le plateau : l'ordre où les côtés se complètent, ce que la carte donne à l'adversaire. Et 5 000 pièges demandent plus de parties (auto-jeu)."
-  },
-  {
-   "when": "Plus tard",
-   "title": "L'extension",
-   "text": "Affiner l'estimation des figures par le cœur (figure-gains.js), le Rappel d'une carte plus ancienne (idée de Sami), et la règle imprimée relue sur papier."
+   "title": "L'équilibrage du Valet de Trèfle",
+   "text": "Sur 4 000 parties avec l'arbre, le Valet de Trèfle (la plus faible gagne) culmine à 62,4 % ± 3,5 de victoires quand il est posé : c'est la seule figure au-dessus de 60 %. Sa règle est à ajuster avec Sami."
   },
   {
    "when": "Avec Sami",

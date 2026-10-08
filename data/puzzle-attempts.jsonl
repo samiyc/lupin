@@ -1,1 +1,2 @@
 {"format":"lopin-puzzle-attempt/1","id":363,"kind":"endgame","startedAt":"2026-10-07T15:58:04.051Z","retry":false,"moves":[{"move":"9♦→7","thinkMs":37620},{"move":"3♣→6","thinkMs":5412}],"slips":0,"revealedAtMs":null,"activeMs":43039,"result":"solved"}
+{"format":"lopin-puzzle-attempt/1","id":304,"kind":"endgame","startedAt":"2026-10-08T00:21:41.836Z","retry":false,"moves":[{"move":"10♥→3","thinkMs":12726,"winning":false,"winners":["JK→3"]},{"move":"JK→3","thinkMs":1315},{"move":"4♠→6","thinkMs":12259}],"slips":1,"revealedAtMs":null,"activeMs":26311,"result":"lost"}

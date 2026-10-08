@@ -43,3 +43,6 @@ yarn-error.log*
 
 # Oracle positions (npm run oracle): appended as they land, the summary goes to data/.
 /oracle/
+
+# Raw benchmark generation data (~25MB)
+/data/trap-bench.json
