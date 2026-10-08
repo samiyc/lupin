@@ -119,6 +119,27 @@
       "wins": 280,
       "games": 300,
       "source": "duel de 300 parties du 06/10, 2 000 itérations, règle de la page, gardé dans duels/ : 93,3 % (90,6 – 96,1 par paires)"
+    },
+    {
+      "a": "experimental@1.2",
+      "b": "experimental@1.1",
+      "wins": 790,
+      "games": 1500,
+      "source": "quatre duels longs du 08/10, 2 000 itérations des deux côtés : ExactEnd12 (52,7 %, 50,5 – 54,8 par paires)"
+    },
+    {
+      "a": "borne@1.0",
+      "b": "experimental@1.2",
+      "wins": 406,
+      "games": 500,
+      "source": "deux duels longs du 09/10, 2 000 itérations des deux côtés : Le Borné (81,2 %, 77,8 – 84,6 par paires)"
+    },
+    {
+      "a": "borne@1.0",
+      "b": "stratege@2.1",
+      "wins": 151,
+      "games": 200,
+      "source": "duel de 200 parties du 09/10, 2 000 itérations : Le Borné (75,5 %, 69,7 – 81,3 par paires)"
     }
   ]
 }

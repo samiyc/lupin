@@ -1,3 +1,4 @@
+import { BOT_LINEUP } from "../../src/config/bots.js";
 import { FORMATIONS, FORMATION_LABELS } from "../../src/config/formations.js";
 import { $, el } from "./dom.js";
 import { fetchStats } from "./replays-api.js";
@@ -8,7 +9,10 @@ import { fetchStats } from "./replays-api.js";
  * from the saved games (`/api/stats`, `src/replay/stats.js`).
  */
 const pct = (part, whole) => (whole ? `${Math.round((100 * part) / whole)} %` : "—");
-const name = (player) => player.replace("@", " ");
+const name = (player) => {
+  const [id, version] = player.split("@");
+  return version ? `${BOT_LINEUP[id]?.label ?? id} ${version}` : player;
+};
 const minutes = (ms) => (ms ? `${Math.round(ms / 60000)} min` : "—");
 const seconds = (ms) => (ms ? `${Math.round(ms / 1000)} s` : "—");
 

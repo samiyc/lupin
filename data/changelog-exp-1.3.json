@@ -77,6 +77,26 @@
     "against": "experimental@1.2",
     "verdict": "neutre"
    }
+  },
+  {
+   "id": "tree-widen5-diverse2",
+   "name": "Cap 2 partout et canalisation de l'arbre (+widen=5+diverse=2)",
+   "family": "racine",
+   "date": "2026-10-09 00:23",
+   "idea": "Application du cap à 2 bornes par carte partout dans l'arbre (à la racine ET sous la racine dans shortlist) combinée à la réduction de widen de 7 à 5. Avec le cap à 2, 5 coups offrent 3 cartes distinctes (plus que les 2 cartes du Top 7 standard) tout en réduisant le branchement de 28 %, permettant à UCB de converger et d'explorer plus en profondeur.",
+   "verdict": "gagne",
+   "status": "mesuré",
+   "details": "Duel sur 500 parties (250 donnes en miroir) contre experimental@1.2 à budget @2000 : score 81.2 % (IC 95 % par paires : 77.8 % – 84.6 %). En commençant : 75.2 % · En second : 87.2 %. Victoire écrasante confirmant que widen=7 était un contournement artificiel de la saturation de cartes du core.",
+   "duel": {
+    "games": 500,
+    "score": 0.812,
+    "interval": [
+     0.778,
+     0.846
+    ],
+    "against": "experimental@1.2",
+    "verdict": "gagne"
+   }
   }
  ],
  "manualJobs": []

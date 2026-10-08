@@ -2840,3 +2840,20 @@ Ce résultat illustre un principe classique en Monte Carlo Tree Search (MCTS / I
 3. **Le découplage gagnant pour l'architecture 1.2** :
    - **Dans l'arbre et les simulations** : conserver un cœur de rollout stochastique, neutre et régulier (`stfig6`), garantissant la meilleure estimation statistique des valeurs de branches.
    - **À la racine en partie réelle** : activer le calcul exact rétrograde (`exact=12`) dès que la pioche est vide. Sur le plateau réel, le bot n'a alors plus besoin d'heuristique ni d'approximation : il joue à 100 % le coup mathématiquement parfait.
+
+## Le Borné 1.0 : la canalisation de l'arbre et la fin de la saturation (09/10)
+
+Après la sortie de l'Expérimental 1.2, une analyse du comportement en début de partie (tours 1-10) a révélé un goulot d'étranglement majeur :
+- Le cœur heuristique proposait souvent 4 ou 5 coups pour une même carte sur des bornes vierges équivalentes, monopolisant le Top 7 de l'arbre sur 1 ou 2 cartes seulement.
+- Dans le V1.1 et la 1.2, `widen=7` avait été introduit pour forcer artificiellement l'arbre à attraper au moins 2 cartes distinctes, mais au prix d'un facteur de branchement excessif ($7^5$ chemins) qui dispersait les 2 000 itérations sans converger au-delà du pli 1.
+
+### La solution : Diversification au mérite (`diverse=2`) et réduction (`widen=5`)
+1. **Plafond strict de 2 bornes par carte (`diverse=2`)** appliqué à tous les étages de l'arbre (`shortlist`) : la meilleure et la deuxième meilleure borne d'une carte sont conservées, les autres sont ignorées au profit de la meilleure borne des cartes suivantes.
+2. **Rétrécissement de l'arbre à `widen=5`** : avec 2 bornes max par carte, 5 slots garantissent la présence d'au moins 3 cartes distinctes dans chaque nœud (contre 2 cartes auparavant sur 7 slots).
+3. **Réduction de 28 % du branchement** : les 2 000 itérations de Monte Carlo descendent beaucoup plus profondément (convergence dès les plis 3 et 4).
+
+### Le verdict
+- **Duel long (500 parties) contre l'Expérimental 1.2 (@2000)** : **81,2 % de victoires** (fourchette à 95 % par paires : 77,8 % – 84,6 %).
+- En commençant : 75,2 % · En second : 87,2 %.
+- Ce saut de performance sans précédent (+31 points de winrate au-dessus de 50 %) justifie la création d'une nouvelle catégorie de bot d'élite : **« Le Borné » v1.0** (`ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000`).
+

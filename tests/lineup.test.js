@@ -8,8 +8,8 @@ import { BOTS, engineFor } from "../src/sim/bots.js";
 import { createGame, legalMoves } from "../src/sim/game.js";
 
 describe("the bot line-up", () => {
-  it("has the three majors, each on an existing engine", () => {
-    assert.deepEqual(BOT_IDS, ["basique", "stratege", "experimental"]);
+  it("has the lineup bots, each on an existing engine", () => {
+    assert.deepEqual(BOT_IDS, ["basique", "stratege", "experimental", "borne"]);
     for (const id of BOT_IDS) assert.doesNotThrow(() => engineFor(engineOf(id)), id);
     assert.ok(BOT_IDS.includes(DEFAULT_OPPONENT));
   });
