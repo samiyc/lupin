@@ -146,4 +146,18 @@ describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
     // Diverse=2 caps at 2 per card: [1:0, 1:1, 2:0, 2:1]
     assert.deepEqual(pickCandidates(scored, 4, 2).map((m) => m.card), [1, 1, 2, 2]);
   });
+
+  it("diverse=2 runs ISMCTS search down the tree with cap at 2 everywhere", () => {
+    const spec = { borders: 3, handSize: 3, values: 5, colors: 2, jokers: 0, suits: ["♠", "♥"] };
+    const game = createGame(spec, { order: ["sum"], jokerRule: "colorless", rng: createRng(42) });
+    const moves = legalMoves(game);
+    const scored = moves.map((move) => ({ move, gain: move.border === 0 ? 0.9 : 0.1 }));
+    const search = createIsmcts(game, scored, {
+      budget: 20, candidates: 4, widen: 3, depth: 3, diverse: 2, seed: 123,
+      policy: (r) => BOTS.strategist(r),
+    });
+    for (let i = 0; i < 20; i += 1) search.step();
+    assert.equal(search.tree().visits, 0);
+    assert.equal(search.tree().children.size, 4);
+  });
 });

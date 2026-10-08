@@ -33,7 +33,7 @@ import { moveKey } from "./search.js";
  *   child's value blends in that shared statistic, weighted √(k / (3n + k)): it
  *   speaks while the child has few visits, and fades as they grow.
  */
-export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7 });
+export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7, diverse: 0 });
 
 const newNode = () => ({ visits: 0, wins: 0, avail: 0, children: new Map() });
 
@@ -45,13 +45,10 @@ const pointsFor = (winner, player) => {
 };
 
 /** The core's `count` best moves where `state` stands, or a pass when there is none. */
-function shortlist(judge, state, count) {
+function shortlist(judge, state, count, diverse = 0) {
   const moves = legalMoves(state);
   if (moves.length === 0) return [null];
-  return [...judge.scoreMoves(state, moves)]
-    .sort((a, b) => b.gain - a.gain)
-    .slice(0, count)
-    .map(({ move }) => move);
+  return pickCandidates(judge.scoreMoves(state, moves), count, diverse);
 }
 
 /** A child's value: its own wins, blended with what its move did everywhere (`rave`) while it has few visits. */
@@ -145,7 +142,7 @@ const explorationAt = (game, ctx) => (game.current === 0 ? (ctx.firstExploration
 /** The move taken at this ply: the root's halving, or UCB among the root's candidates or the core's shortlist. */
 function choiceAt(node, ply, game, ctx) {
   if (ply === 0 && ctx.halving) return rootChoice(node, ctx);
-  const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx));
+  const moves = ply === 0 ? ctx.rootMoves : shortlist(ctx.judge, game, breadth(node, ctx), ctx.diverse);
   return select(node, moves, { exploration: explorationAt(game, ctx), amaf: ctx.amaf, rave: ctx.rave }, game.current);
 }
 
@@ -223,6 +220,7 @@ function resolveCtx(state, scored, { seed, treePolicy, policy, firstExploration,
     firstExploration,
     halving: phases ? createHalving(phases, rootMoves) : null,
     iterations: 0,
+    diverse,
   };
 }
 
