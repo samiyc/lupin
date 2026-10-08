@@ -1,8 +1,9 @@
 {
- "note": "Le carnet du 1.2 : les essais depuis la sortie du 1.1 (06/10 au soir). Lu par npm run changelog -- 1.2 (scripts/changelog.js, page src/report/changelog/1.2.html).",
- "period": "depuis le 06/10 au soir",
+ "note": "Le carnet du 1.2 : les essais depuis la sortie du 1.1 (06/10 au soir) jusqu'à la sortie du 1.2 (08/10). Lu par npm run changelog -- 1.2 (scripts/changelog.js, page src/report/changelog/1.2.html).",
+ "period": "du 06/10 au soir au 08/10",
  "since": "2026-10-06 23:59",
- "lead": "Ce qui se cherche après le 1.1 : les pièges de fin de partie où le cœur tombe, comptés sur des milliers de fins de partie résolues, et les puzzles vus par Sami, qui les résout en volontaire ; puis l'extension, ses six cartes bonus et leur équilibre.",
+ "until": "2026-10-08 17:15",
+ "lead": "Ce qui a fondé le 1.2 : la résolution exacte de fin de partie à la racine (ExactEnd12, 52,7 % contre le 1.1 sur 1 500 parties) validant l'intégration hybride MCTS + solveur exact, ainsi que la formalisation de la loi classique de Monte Carlo pour les rollouts.",
  "families": {
   "reference": "La base de référence",
   "oracle": "L'oracle",

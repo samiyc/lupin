@@ -28,11 +28,11 @@ export const BOT_LINEUP = Object.freeze({
     pace: "≈ 0,5 s par coup",
   }),
   experimental: Object.freeze({
-    // 1.1 (Tree-7w, 06/10): the 1.0 with 7 replies a ply instead of 3, at the same cost per iteration —
-    // 54.4 % (52.1-56.7) over 1 500 games against the 1.0, both at 2 000 iterations, the lab's budget
-    // since 04/10. The 1.0 is `V1_ENGINE` below, the 0.9 `ismcts+widen=3+depth=5@800`.
-    engine: "ismcts+widen=7+depth=5+core=stfig6@2000",
-    version: "1.1",
+    // 1.2 (ExactEnd12, 08/10): 1.1 + exact solver at the root when <= 12 cards remain in (hand + pile).
+    // 52.7 % (50.5-54.8) over 1 500 games against 1.1 across 4 datasets, strictly above 50% lower-bound.
+    // The 1.1 was `ismcts+widen=7+depth=5+core=stfig6@2000`, the 1.0 `V1_ENGINE` below.
+    engine: "ismcts+widen=7+depth=5+core=stfig6+exact=12@2000",
+    version: "1.2",
     label: "Expérimental",
     description: "Il cherche en arbre",
     examines: "5 coups d'avance, la fin de partie calculée exactement",
@@ -60,7 +60,7 @@ export const V1_ENGINE = "ismcts+widen=3+depth=5+core=stfig6@800";
 export const KEPT_VERSIONS = Object.freeze({
   basique: Object.freeze(["1.0"]),
   stratege: Object.freeze(["2.1", "2.0", "1.1"]),
-  experimental: Object.freeze(["1.1", "1.0", "0.9"]),
+  experimental: Object.freeze(["1.2", "1.1", "1.0"]),
 });
 
 /** "2.1.0" → "2.1": the version a game saved with three numbers stands for. */
