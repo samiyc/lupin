@@ -2,24 +2,24 @@
  "note": "npm run trap-bench <cœur> : les pièges évités et les positions saines cassées, cœur par cœur.",
  "cores": {
   "stfig6crit": {
-   "at": "2026-10-08T06:54:54.837Z",
+   "at": "2026-10-08T07:17:01.623Z",
    "core": "stfig6crit",
    "traps": 6377,
-   "avoided": 2815,
+   "avoided": 2907,
    "controls": 40302,
-   "broken": 752,
+   "broken": 778,
    "families": [
     {
      "family": "jokerSpent",
      "label": "joker posé, alors qu'il fallait le garder",
      "traps": 752,
-     "avoided": 275
+     "avoided": 284
     },
     {
      "family": "jokerKept",
      "label": "joker gardé, alors qu'il fallait le poser",
      "traps": 378,
-     "avoided": 212
+     "avoided": 213
     },
     {
      "family": "deadBorder",
@@ -31,13 +31,13 @@
      "family": "completesLoser",
      "label": "côté complété, et la borne est perdue",
      "traps": 693,
-     "avoided": 403
+     "avoided": 402
     },
     {
      "family": "givesBorder",
      "label": "une borne de plus devient perdue",
      "traps": 202,
-     "avoided": 133
+     "avoided": 135
     },
     {
      "family": "opensBorder",
@@ -49,19 +49,19 @@
      "family": "wrongBorder",
      "label": "bonne carte, mauvaise borne",
      "traps": 1636,
-     "avoided": 847
+     "avoided": 883
     },
     {
      "family": "wrongCard",
      "label": "bonne borne, mauvaise carte",
      "traps": 1055,
-     "avoided": 394
+     "avoided": 420
     },
     {
      "family": "other",
      "label": "ni la carte ni la borne du coup gagnant",
      "traps": 1614,
-     "avoided": 519
+     "avoided": 538
     }
    ]
   },

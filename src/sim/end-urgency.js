@@ -10,9 +10,17 @@ import { evaluatorFor } from "./border-rules.js";
  * 2. Border completion priority: if a 2-card border wins against the opponent,
  *    finish it rather than scattering. If completing it loses, heavily penalize.
  * 3. Tactical arbitration when multiple 2-card borders exist: prioritize
- *    contested borders and 3-adjacent win/block threats.
- * 4. Joker discipline: don't dump jokers onto empty borders when threats exist.
+ *    contested borders, match-point wins (4th border), and 3-adjacent threats.
+ * 4. Joker discipline & anti-overkill: don't burn jokers or high cards when a
+ *    cheaper natural winner already secures the border.
  */
+
+function matchPointBonus(myScore, oppScore, ctx) {
+  let bonus = 0;
+  if (myScore > oppScore && ctx.myBorders === 3) bonus += 1.5;
+  if (ctx.oppBorders === 3) bonus += 1.0;
+  return bonus;
+}
 
 function sideCompletionBonus(state, move, ctx) {
   const border = state.borders[move.border];
@@ -22,12 +30,14 @@ function sideCompletionBonus(state, move, ctx) {
 
   if (oppSide.length === 3) {
     const oppScore = evaluatorFor(state, move.border, ctx.opp).score(oppSide);
-    return myScore > oppScore ? 1.2 : -2.0;
+    if (myScore <= oppScore) return -2.0;
+    return 1.2 + matchPointBonus(myScore, oppScore, ctx);
   }
   if (oppSide.length === 2) {
-    return myScore >= 2000 ? 0.9 : 0.5;
+    const base = myScore >= 2000 ? 0.9 : 0.5;
+    return base + (ctx.myBorders === 3 ? 1.0 : 0);
   }
-  return ctx.twoCards === 1 ? 0.5 : 0.3;
+  return (ctx.twoCards === 1 ? 0.5 : 0.3) + (ctx.myBorders === 3 ? 0.8 : 0);
 }
 
 function hasPair(borders, owner, a, b) {
@@ -57,13 +67,44 @@ function moveUrgencyBonus(state, move, ctx) {
   return 0;
 }
 
-function jokerPenalty(state, move, opp) {
+function hasWinningNaturalAlternative(state, move, ctx) {
+  const border = state.borders[move.border];
+  const oppSide = border.sides[ctx.opp];
+  if (oppSide.length !== 3) return false;
+  const oppScore = evaluatorFor(state, move.border, ctx.opp).score(oppSide);
+  const mySide = border.sides[ctx.player];
+  return ctx.moves.some((m) => m.border === move.border && !isJoker(m.card) && evaluatorFor(state, move.border, ctx.player).score([...mySide, m.card]) > oppScore);
+}
+
+function jokerPenalty(state, move, ctx) {
   if (!isJoker(move.card)) return 0;
-  const oppSide = state.borders[move.border].sides[opp];
-  if (oppSide.length === 0 && state.borders.some((b) => b.owner === null && b.sides[opp].length >= 2)) {
-    return -0.6;
+  const oppSide = state.borders[move.border].sides[ctx.opp];
+  let penalty = 0;
+  if (oppSide.length === 0 && state.borders.some((b) => b.owner === null && b.sides[ctx.opp].length >= 2)) {
+    penalty -= 0.6;
   }
-  return 0;
+  if (hasWinningNaturalAlternative(state, move, ctx)) {
+    penalty -= 0.8;
+  }
+  return penalty;
+}
+
+function overkillPenalty(state, move, ctx) {
+  if (isJoker(move.card)) return 0;
+  const border = state.borders[move.border];
+  const oppSide = border.sides[ctx.opp];
+  if (oppSide.length !== 3) return 0;
+  const oppScore = evaluatorFor(state, move.border, ctx.opp).score(oppSide);
+  const mySide = border.sides[ctx.player];
+  const myScore = evaluatorFor(state, move.border, ctx.player).score([...mySide, move.card]);
+  if (myScore <= oppScore) return 0;
+  const cardVal = (move.card % 10) + 1;
+  const hasCheaperWinner = ctx.moves.some((m) => {
+    if (m.border !== move.border || isJoker(m.card)) return false;
+    const otherVal = (m.card % 10) + 1;
+    return otherVal < cardVal && evaluatorFor(state, move.border, ctx.player).score([...mySide, m.card]) > oppScore;
+  });
+  return hasCheaperWinner ? -0.3 : 0;
 }
 
 export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
@@ -71,11 +112,13 @@ export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
 
   const player = state.current;
   const opp = 1 - player;
+  const myBorders = state.borders.filter((b) => b.owner === player).length;
+  const oppBorders = state.borders.filter((b) => b.owner === opp).length;
   const twoCards = state.borders.filter((b) => b.owner === null && b.sides[player].length === 2).length;
-  const ctx = { player, opp, twoCards };
+  const ctx = { player, opp, myBorders, oppBorders, twoCards, moves };
 
   return (move) => {
-    const bonus = costOf(move.card) + moveUrgencyBonus(state, move, ctx) + jokerPenalty(state, move, opp);
+    const bonus = costOf(move.card) + moveUrgencyBonus(state, move, ctx) + jokerPenalty(state, move, ctx) + overkillPenalty(state, move, ctx);
     return gainOf(move) + bonus;
   };
 }
