@@ -1,23 +1,33 @@
+import { isJoker } from "../core/cards.js";
+import { evaluatorFor } from "./border-rules.js";
+
 /**
  * `endUrgency` (core 1.2, Sami 08/10, from the endgame traps): once the pile is
  * empty, tactical urgency dominates over raw local formation scores.
  *
  * 1. Card cost is refunded: all remaining cards will be played anyway, so
  *    penalizing high cards in the endgame is counter-productive.
- * 2. Border completion priority: if only one border has 2 cards, finish it
- *    rather than scattering cards to incomplete (0- or 1-card) borders.
+ * 2. Border completion priority: if a 2-card border wins against the opponent,
+ *    finish it rather than scattering. If completing it loses, heavily penalize.
  * 3. Tactical arbitration when multiple 2-card borders exist: prioritize
- *    contested borders (opponent at 2 or 3 cards), and 3-adjacent win/block threats.
+ *    contested borders and 3-adjacent win/block threats.
+ * 4. Joker discipline: don't dump jokers onto empty borders when threats exist.
  */
 
-function completionBonus(twoCardCount, sideLength, oppSideLength) {
-  if (twoCardCount === 1) return sideLength === 2 ? 0.5 : -0.3;
-  if (twoCardCount > 1 && sideLength === 2) {
-    if (oppSideLength === 3) return 0.7;
-    if (oppSideLength === 2) return 0.5;
-    return 0.3;
+function sideCompletionBonus(state, move, ctx) {
+  const border = state.borders[move.border];
+  const oppSide = border.sides[ctx.opp];
+  const mySide = [...border.sides[ctx.player], move.card];
+  const myScore = evaluatorFor(state, move.border, ctx.player).score(mySide);
+
+  if (oppSide.length === 3) {
+    const oppScore = evaluatorFor(state, move.border, ctx.opp).score(oppSide);
+    return myScore > oppScore ? 1.2 : -2.0;
   }
-  return 0;
+  if (oppSide.length === 2) {
+    return myScore >= 2000 ? 0.9 : 0.5;
+  }
+  return ctx.twoCards === 1 ? 0.5 : 0.3;
 }
 
 function hasPair(borders, owner, a, b) {
@@ -30,9 +40,30 @@ function threeInRow(borders, owner, b) {
 
 function adjacencyBonus(borders, b, player, opp) {
   let bonus = 0;
-  if (threeInRow(borders, player, b)) bonus += 0.6;
-  if (threeInRow(borders, opp, b)) bonus += 0.5;
+  if (threeInRow(borders, player, b)) bonus += 0.7;
+  if (threeInRow(borders, opp, b)) bonus += 0.6;
   return bonus;
+}
+
+function moveUrgencyBonus(state, move, ctx) {
+  const mySide = state.borders[move.border].sides[ctx.player];
+  const oppSide = state.borders[move.border].sides[ctx.opp];
+
+  if (mySide.length === 2) {
+    return sideCompletionBonus(state, move, ctx) + adjacencyBonus(state.borders, move.border, ctx.player, ctx.opp);
+  }
+  if (ctx.twoCards === 1) return -0.4;
+  if (ctx.twoCards === 0 && oppSide.length === 2 && mySide.length === 0) return 0.3;
+  return 0;
+}
+
+function jokerPenalty(state, move, opp) {
+  if (!isJoker(move.card)) return 0;
+  const oppSide = state.borders[move.border].sides[opp];
+  if (oppSide.length === 0 && state.borders.some((b) => b.owner === null && b.sides[opp].length >= 2)) {
+    return -0.6;
+  }
+  return 0;
 }
 
 export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
@@ -41,12 +72,10 @@ export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
   const player = state.current;
   const opp = 1 - player;
   const twoCards = state.borders.filter((b) => b.owner === null && b.sides[player].length === 2).length;
+  const ctx = { player, opp, twoCards };
 
   return (move) => {
-    const mySide = state.borders[move.border].sides[player];
-    const oppSide = state.borders[move.border].sides[opp];
-    let bonus = costOf(move.card) + completionBonus(twoCards, mySide.length, oppSide.length);
-    if (mySide.length === 2) bonus += adjacencyBonus(state.borders, move.border, player, opp);
+    const bonus = costOf(move.card) + moveUrgencyBonus(state, move, ctx) + jokerPenalty(state, move, opp);
     return gainOf(move) + bonus;
   };
 }
