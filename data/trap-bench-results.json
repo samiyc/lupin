@@ -1,0 +1,133 @@
+{
+ "note": "npm run trap-bench <cœur> : les pièges évités et les positions saines cassées, cœur par cœur.",
+ "cores": {
+  "stfig6crit": {
+   "at": "2026-10-07T23:52:42.394Z",
+   "core": "stfig6crit",
+   "traps": 4293,
+   "avoided": 1519,
+   "controls": 26877,
+   "broken": 790,
+   "families": [
+    {
+     "family": "jokerSpent",
+     "label": "joker posé, alors qu'il fallait le garder",
+     "traps": 509,
+     "avoided": 146
+    },
+    {
+     "family": "jokerKept",
+     "label": "joker gardé, alors qu'il fallait le poser",
+     "traps": 244,
+     "avoided": 109
+    },
+    {
+     "family": "deadBorder",
+     "label": "carte jetée sur une borne déjà perdue",
+     "traps": 0,
+     "avoided": 0
+    },
+    {
+     "family": "completesLoser",
+     "label": "côté complété, et la borne est perdue",
+     "traps": 479,
+     "avoided": 108
+    },
+    {
+     "family": "givesBorder",
+     "label": "une borne de plus devient perdue",
+     "traps": 136,
+     "avoided": 82
+    },
+    {
+     "family": "opensBorder",
+     "label": "borne vierge ouverte",
+     "traps": 32,
+     "avoided": 17
+    },
+    {
+     "family": "wrongBorder",
+     "label": "bonne carte, mauvaise borne",
+     "traps": 1111,
+     "avoided": 468
+    },
+    {
+     "family": "wrongCard",
+     "label": "bonne borne, mauvaise carte",
+     "traps": 707,
+     "avoided": 268
+    },
+    {
+     "family": "other",
+     "label": "ni la carte ni la borne du coup gagnant",
+     "traps": 1075,
+     "avoided": 321
+    }
+   ]
+  },
+  "stfig6ej": {
+   "at": "2026-10-07T23:58:36.874Z",
+   "core": "stfig6ej",
+   "traps": 6377,
+   "avoided": 293,
+   "controls": 40302,
+   "broken": 76,
+   "families": [
+    {
+     "family": "jokerSpent",
+     "label": "joker posé, alors qu'il fallait le garder",
+     "traps": 752,
+     "avoided": 76
+    },
+    {
+     "family": "jokerKept",
+     "label": "joker gardé, alors qu'il fallait le poser",
+     "traps": 378,
+     "avoided": 120
+    },
+    {
+     "family": "deadBorder",
+     "label": "carte jetée sur une borne déjà perdue",
+     "traps": 0,
+     "avoided": 0
+    },
+    {
+     "family": "completesLoser",
+     "label": "côté complété, et la borne est perdue",
+     "traps": 693,
+     "avoided": 10
+    },
+    {
+     "family": "givesBorder",
+     "label": "une borne de plus devient perdue",
+     "traps": 202,
+     "avoided": 10
+    },
+    {
+     "family": "opensBorder",
+     "label": "borne vierge ouverte",
+     "traps": 47,
+     "avoided": 0
+    },
+    {
+     "family": "wrongBorder",
+     "label": "bonne carte, mauvaise borne",
+     "traps": 1636,
+     "avoided": 61
+    },
+    {
+     "family": "wrongCard",
+     "label": "bonne borne, mauvaise carte",
+     "traps": 1055,
+     "avoided": 11
+    },
+    {
+     "family": "other",
+     "label": "ni la carte ni la borne du coup gagnant",
+     "traps": 1614,
+     "avoided": 5
+    }
+   ]
+  }
+ }
+}

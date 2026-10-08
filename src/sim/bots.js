@@ -1,5 +1,6 @@
 import { isJoker, valueOf } from "../core/cards.js";
 import { withEndJoker } from "./end-joker.js";
+import { withEndUrgency } from "./end-urgency.js";
 import { handOf, withFigureMoves } from "./figure-gains.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
@@ -168,8 +169,9 @@ function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, 
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   const certainty = certaintyOf(context.ideas);
   const costOf = (card) => cardCost(state.spec, card, params);
-  // `endJoker` (core 1.2, end-joker.js): pile empty, a joker priced by its best use elsewhere.
-  const gainOf = withEndJoker(state, moves, certainty ? withCertainties(state, plainGain, costOf) : plainGain, { costOf, on: tuning.endJoker });
+  // `endJoker` (core 1.2, end-joker.js) and `endUrgency` (core 1.2, end-urgency.js): pile empty adjustments.
+  const baseGain = withEndJoker(state, moves, certainty ? withCertainties(state, plainGain, costOf) : plainGain, { costOf, on: tuning.endJoker });
+  const gainOf = withEndUrgency(state, moves, baseGain, { costOf, on: tuning.endUrgency });
   const options = { gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1), scale: 1 / (4 * params.temperature), keepAll };
   const scoreCards = (cards) => strategistMoves(cards, (move) => state.borders[move.border].sides[player], context, options);
   return withFigureMoves(state, moves, () => borderChances(state, state.current, seen), scoreCards);

@@ -210,9 +210,10 @@ export const CORES = Object.freeze({
   v1lite: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, lite: true },
   // B3: the 1.0 with its pair discount tuned on the oracle (npm run distill -- --keys pairDiscount --name pair); nothing else moves.
   distpair: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, params: PAIR_CORE.params },
-  // The 1.0 without connector (Sami, 05/10, npm run features: 4.4 % of the core's time, the favourite changed in 1.7 % of positions).
   // The 1.2 core under test (Sami, 07/10, the endgame traps): the 1.1's core, the joker priced by its best use elsewhere once the pile is empty (end-joker.js).
   stfig6ej: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, endJoker: true },
+  // The 1.2 tactical urgency core (Sami, 08/10, from the endgame traps): empty pile, priority to completing 2-card borders, urgency checks, no cardCost penalty (end-urgency.js).
+  stfig6crit: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas, "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 }, endUrgency: true },
   v1nc: { ...EXPERIMENT, ideas: [...EXPERIMENT.ideas.filter((idea) => idea !== "connector"), "stay"], weights: { ...EXPERIMENT.weights, stay: 0.6, stayFigure: 1 } },
   // The 1.0's core with every weight tuned at once on the oracle's moves (npm run distill, distill.js; Sami, 04/10).
   dist1: {
