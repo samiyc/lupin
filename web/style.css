@@ -223,6 +223,7 @@ dialog .opponent { display: grid; grid-template-columns: auto 1fr; column-gap: 6
 dialog .opponent .facts { grid-column: 2; color: var(--ink-2); line-height: 1.35; }
 dialog h2 { margin-top: 0; font: 700 1.3rem var(--display); }
 dialog fieldset { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 10px; display: grid; gap: 4px; }
+dialog .check { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 dialog .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
 .toast { position: fixed; bottom: 16px; right: 16px; background: var(--felt); color: var(--felt-ink); padding: 10px 14px; border-radius: 8px; max-width: 420px; }
 

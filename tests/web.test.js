@@ -102,6 +102,13 @@ describe("the table view", () => {
     assert.equal(observing.top.cards.length, 6);
   });
 
+  it("shows the opponent's hand when playing with openHands", () => {
+    const openState = createGame(spec, { order, jokerRule, endMode, rng, openHands: true });
+    const view = tableView(spec, snapshot(openState), { bottom: 0 });
+    assert.equal(view.top.hidden, false);
+    assert.equal(view.top.cards.length, 6);
+  });
+
   it("gives the turn number and the pile, and whose turn it is", () => {
     const view = tableView(spec, snapshot(state), { bottom: 1 });
     assert.equal(view.turn, 1);

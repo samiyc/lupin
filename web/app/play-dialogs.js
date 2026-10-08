@@ -27,14 +27,17 @@ export function wireGameDialogs(game) {
   showElo();
   $("player-name").value = recall("lopin.name", "Joueur");
   $("bonus-count").value = recall("lopin.bonus", "0");
+  $("open-hands").checked = recall("lopin.open", false);
   const dialog = $("dialog-new");
   dialog.addEventListener("close", () => {
     if (dialog.returnValue !== "start") return;
     const form = new FormData($("form-new"));
     const name = String(form.get("name") ?? "").trim() || "Joueur";
+    const openHands = Boolean(form.get("open"));
     remember("lopin.name", name);
     remember("lopin.bonus", String(form.get("bonus") ?? "0"));
-    game.start({ first: form.get("first"), opponent: form.get("opponent"), name, bonus: Number(form.get("bonus") ?? 0) });
+    remember("lopin.open", openHands);
+    game.start({ first: form.get("first"), opponent: form.get("opponent"), name, bonus: Number(form.get("bonus") ?? 0), openHands });
   });
   $("btn-new").addEventListener("click", () => openDialog(dialog));
   const confirm = $("dialog-reset");

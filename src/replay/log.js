@@ -134,6 +134,7 @@ export function snapshot(state) {
     turn: state.turn,
     current: state.current,
     pile: state.pile.length,
+    openHands: Boolean(state.openHands),
     hands: state.hands.map((hand) => [...hand]),
     borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), owner: border.owner, figures: border.figures ? [...border.figures] : [null, null] })),
     resolved: state.resolved.map((entry) => ({ ...entry })),
@@ -199,7 +200,7 @@ function adviceFor(state, advisor, entry) {
 export function replayStates(log, { advisor = null } = {}) {
   if (log.format !== REPLAY_FORMAT) throw new Error(`Format de replay inconnu : ${log.format}`);
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
-  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed });
+  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed, openHands: Boolean(log.rules?.openHands) });
   const frames = [{ state: snapshot(state), entry: null, ...NO_OPINION }];
   log.turns.forEach((entry, index) => {
     const opinion = entry.candidates ? NO_OPINION : adviceFor(state, advisor, entry);
@@ -217,7 +218,7 @@ export function replayStates(log, { advisor = null } = {}) {
  */
 export function stateAt(log, turn) {
   const { spec, order, jokerRule, endMode } = rulesOf(log.rules);
-  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed });
+  const state = createGame(spec, { order, jokerRule, endMode, deck: parseCards(spec, log.deck), rng: null, seed: log.seed, openHands: Boolean(log.rules?.openHands) });
   log.turns.slice(0, turn - 1).forEach((entry, index) => replayTurn(state, entry, index));
   return state;
 }

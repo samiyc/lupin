@@ -25,9 +25,7 @@ import { settledAtEnd, tableView } from "./view.js";
  * while the page is hidden or out of focus, or the "Jouer" tab is not shown.
  */
 /** How long a bot turn lasts at least; its thinking time counts toward it. */
-const BOT_DELAY = 700;
-const PAINT = 30;
-const REVEAL_DELAY = 650;
+const BOT_DELAY = 700, PAINT = 30, REVEAL_DELAY = 650;
 
 const play = { game: null, generation: 0, visible: true, syncFocus: () => {} };
 
@@ -51,16 +49,11 @@ export function render() {
   const { game } = play;
   if (game === null || !play.visible) return;
   renderClock();
-  const view = tableView(SPEC, snapshot(game.state), { bottom: game.human, handOrder: game.order, shown: game.shown, lastMove: game.lastMove });
+  const view = tableView(SPEC, snapshot(game.state), { bottom: game.human, handOrder: game.order, shown: game.shown, lastMove: game.lastMove, reveal: Boolean(game.openHands) });
   renderTable(view, {
-    status: status(),
-    names: { bottom: game.name, top: game.opponentName },
-    interactive: active(),
-    selected: game.selected,
-    legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
-    lastMove: game.lastMove,
-    premove: game.premove?.border ?? null,
-    showTools: true,
+    status: status(), names: { bottom: game.name, top: game.opponentName }, interactive: active(),
+    selected: game.selected, legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
+    lastMove: game.lastMove, premove: game.premove?.border ?? null, showTools: true,
   });
 }
 
@@ -176,22 +169,24 @@ export function playCard(grip, border) {
   botTurns(play.generation);
 }
 
-export function start({ first, opponent, name, bonus = 0 }) {
+export function start({ first, opponent, name, bonus = 0, openHands = false }) {
   play.generation += 1;
   clearDrag();
   play.game?.thinker.stop();
   const seed = freshSeed();
-  const state = newGame(seed, bonus);
+  const state = newGame(seed, bonus, openHands);
   const human = first === "me" ? 0 : 1;
   const players = [humanEntry(human, name), botEntry(1 - human, opponent)].sort((a, b) => a.seat - b.seat);
+  const rules = { ...(bonus > 0 ? { ...RULES, bonus } : RULES), ...(openHands ? { openHands: true } : {}) };
   play.game = {
     state,
     human,
+    openHands: Boolean(openHands),
     name,
     opponentName: playerName(botEntry(1 - human, opponent)),
     bot: botPlayer(opponent, seed + 1),
     thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
-    log: startLog(state, { rules: bonus > 0 ? { ...RULES, bonus } : RULES, players, seed }),
+    log: startLog(state, { rules, players, seed }),
     order: sortBySuit(SPEC, state.hands[human]),
     selected: null,
     // The Dame de Cœur's first border, while the second is chosen.

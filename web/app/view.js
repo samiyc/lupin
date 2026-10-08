@@ -119,6 +119,7 @@ function bottomHand(spec, snap, seat, handOrder) {
 /** `{ turn, over, pile, current, top, bottom, borders, suits, result }` for `snap`. */
 export function tableView(spec, snap, options) {
   const { bottom, reveal, handOrder, topOrder, shown, lastMove } = { ...DEFAULTS, ...options };
+  const showAll = Boolean(snap.openHands || reveal);
   const claimed = snap.resolved.filter(isClaimed);
   const revealed = settledAtEnd(snap).slice(0, shown);
   const visible = [...claimed, ...revealed];
@@ -129,10 +130,10 @@ export function tableView(spec, snap, options) {
     over: snap.over,
     pile: snap.pile,
     current: snap.current === bottom ? "bottom" : "top",
-    top: topHand(spec, snap, 1 - bottom, { reveal, topOrder }),
+    top: topHand(spec, snap, 1 - bottom, { reveal: showAll, topOrder }),
     bottom: bottomHand(spec, snap, bottom, handOrder),
     borders: snap.borders.map((_, index) => borderView(spec, snap, index, context)),
-    suits: suitCounts(spec, snap, { bottom, reveal }),
+    suits: suitCounts(spec, snap, { bottom, reveal: showAll }),
     result: resultView(snap, bottom, visible.length === snap.resolved.length),
   };
 }
