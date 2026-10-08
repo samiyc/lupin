@@ -2816,3 +2816,15 @@ resserrées à ±3,5 %) :
   59,9 % ± 3,8**. Redescend sous le seuil critique des 60 % avec l'échantillon élargi.
 - **Les quatre autres figures** : posées tard (tours 24-26) par le joueur dominé, leur taux de victoire
   s'établit entre 41,5 % et 45,4 % (D♥ 43,5 % ± 3,2, D♠ 41,5 % ± 3,5, R♠ 45,4 % ± 3,6, R♦ 43,7 % ± 3,4).
+
+## RolloutCrit-Exact12 : 1 000 parties (08/10, 11 h 17)
+
+Test du découplage fin avec le cœur d'urgence v3 (45,6 % de pièges évités sur le banc complet, anti-suicide
+de borne, balle de match et anti-overkill) utilisé uniquement pour les simulations de l'arbre (`rollout`),
+tandis que les nœuds d'évaluation (profondeurs 1 à 5) conservent le cœur `stfig6` classique du V1.1, et
+`exact=12` à la racine :
+- **Quatre duels longs** (donnes 1 à 4) : 50,4 / 50,8 / 52,4 / 52,8 %.
+- **Réunis par paires** (`npm run versus`, « RolloutCrit-Exact12 ») : **51,4 % (48,6 – 54,2)** sur 1 000 parties.
+- **Enseignement définitif** : bien qu'amélioré (+0,4 point sur le combo initial à 51,0 %), le modèle avec
+  rollout contraint reste nettement inférieur à **ExactEnd12 seul (52,7 %, borne basse 50,5 % > 50 %)**.
+  La diversité stochastique des rollouts non contraints donne une meilleure convergence MCTS globale.

@@ -178,6 +178,17 @@
    "verdict": "tendance",
    "when": "08/10 05:43",
    "note": "4 000 parties jouées avec l'arbre à 200 itérations (barres d'erreur fines à ±3,5 %). Le Valet de Trèfle (la plus faible gagne) ressort trop fort : posé dans 71,8 % des parties, 62,4 % ± 3,5 de victoires. La Somme (V♦) redescend sous les 60 % (59,9 % ± 3,8). L'équilibre 1er/2nd joueur reste parfait (48,8 % sans figure, 48,0 % avec les six)."
+  },
+  {
+   "name": "RolloutCrit-Exact12 : shortlist stfig6 + rollout stfig6crit v3 + exact=12 (1 000 parties)",
+   "family": "oracle",
+   "bench": "duel",
+   "score": 51.4,
+   "lo": 48.6,
+   "hi": 54.2,
+   "verdict": "neutre",
+   "when": "08/10 11:17",
+   "note": "Donnes 1 à 4 : 50,4 / 50,8 / 52,4 / 52,8 %, réunies à 51,4 % (48,6 – 54,2). Même découplé avec stfig6 dans l'arbre et avec le cœur d'urgence v3 (45,6 % des pièges évités sur le banc), le rollout contraint reste inférieur à ExactEnd12 seul (52,7 %) : la souplesse et diversité des rollouts neutres stfig6 surpassent toute urgence tactique en simulation."
   }
  ],
  "commitLabels": {},

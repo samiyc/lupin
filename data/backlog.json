@@ -1463,6 +1463,88 @@
       "doneAt": "2026-10-08T05:43",
       "minutes": 41,
       "output": "backlog-runs/2026-10-08-05-02_extension-tree-500.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_RolloutCrit-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+shortlist=stfig6+rollout=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 1",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "RolloutCrit-Exact12 (Sami, 08/10) : arbre stfig6 + rollout stfig6crit (v3) + exact=12. Contre V1.1, donnes 1 sur 4.",
+      "status": "done",
+      "doneAt": "2026-10-08T09:44",
+      "minutes": 27,
+      "output": "backlog-runs/2026-10-08-09-17_VALIDATE_LONG_1_RolloutCrit-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_2_RolloutCrit-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+shortlist=stfig6+rollout=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 2",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "RolloutCrit-Exact12 : contre V1.1, donnes 2 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_RolloutCrit-Exact12"
+          ],
+          "below": 0.47
+        }
+      ],
+      "doneAt": "2026-10-08T10:21",
+      "minutes": 27,
+      "output": "backlog-runs/2026-10-08-09-54_VALIDATE_LONG_2_RolloutCrit-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_3_RolloutCrit-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+shortlist=stfig6+rollout=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 3",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "RolloutCrit-Exact12 : contre V1.1, donnes 3 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_RolloutCrit-Exact12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_RolloutCrit-Exact12",
+            "VALIDATE_LONG_2_RolloutCrit-Exact12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T10:48",
+      "minutes": 28,
+      "output": "backlog-runs/2026-10-08-10-21_VALIDATE_LONG_3_RolloutCrit-Exact12.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_4_RolloutCrit-Exact12",
+      "command": "npm run duel -- \"ismcts+widen=7+depth=5+shortlist=stfig6+rollout=stfig6crit+exact=12@2000\" \"ismcts+widen=7+depth=5+core=stfig6@2000\" --long --games 125 --page --offset 4",
+      "estimate": "30 min",
+      "limit": 55,
+      "why": "RolloutCrit-Exact12 : contre V1.1, donnes 4 sur 4, règle d'arrêt.",
+      "status": "done",
+      "stopIf": [
+        {
+          "after": [
+            "VALIDATE_LONG_1_RolloutCrit-Exact12"
+          ],
+          "below": 0.47
+        },
+        {
+          "after": [
+            "VALIDATE_LONG_1_RolloutCrit-Exact12",
+            "VALIDATE_LONG_2_RolloutCrit-Exact12"
+          ],
+          "below": 0.5
+        }
+      ],
+      "doneAt": "2026-10-08T11:17",
+      "minutes": 28,
+      "output": "backlog-runs/2026-10-08-10-48_VALIDATE_LONG_4_RolloutCrit-Exact12.txt"
     }
   ]
 }
