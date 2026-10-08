@@ -55,6 +55,8 @@ const endMode = args.includes("--page") ? OFFICIAL_RULES.endMode : "early";
 const handClass = args.includes("--hands") ? args[args.indexOf("--hands") + 1] : null;
 const HAND_LABELS = { weak: "faibles", strong: "fortes" };
 const handsNote = handClass ? `, mains ${HAND_LABELS[handClass]} au 1er joueur` : "";
+const openHands = args.includes("--open") || args.includes("--reveal-hands");
+const openNote = openHands ? ", mains révélées" : "";
 
 const engine = (id) => (id in BOT_LINEUP ? engineOf(id) : id);
 const tag = (id) => (id in BOT_LINEUP ? botTag(id) : id);
@@ -100,7 +102,7 @@ while (!verdict.stop) {
   for (const [players, labels] of [[[engine(a), engine(b)], [tag(a), tag(b)]], [[engine(b), engine(a)], [tag(b), tag(a)]]]) {
     for (let t = 0; t < tasksPerSeat; t += 1) {
       tally.tasks += 1;
-      tasks.push({ ...DUEL_ROW, endMode, handClass, keepWinners: true, keepLogs: save, labels, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
+      tasks.push({ ...DUEL_ROW, endMode, handClass, openHands, keepWinners: true, keepLogs: save, labels, players, games: Math.min(plan.chunk, perSeat - t * plan.chunk), seed: base + 104729 * tally.tasks, deals: base + 7 * 104729 * (round + t) });
     }
   }
   const results = await runPool(new URL("./lib/sim-worker.js", import.meta.url), tasks);
@@ -134,12 +136,12 @@ function conclusion() {
 }
 process.stdout.write(
   [
-    `${tag(a)} contre ${tag(b)} — ${2 * tally.games} parties (${tally.games} de chaque côté), règle ${endMode}${handsNote}, profil ${profileLabel}, ${((Date.now() - started) / 1000).toFixed(1)} s`,
+    `${tag(a)} contre ${tag(b)} — ${2 * tally.games} parties (${tally.games} de chaque côté), règle ${endMode}${handsNote}${openNote}, profil ${profileLabel}, ${((Date.now() - started) / 1000).toFixed(1)} s`,
     `  ${a} gagne ${pct(share)}  (fourchette à 95 % par paires : ${pct(verdict.low)} – ${pct(verdict.high)} ; partie par partie : ${pct(verdict.wilson[0])} – ${pct(verdict.wilson[1])})`,
     `  en commençant : ${pct(tally.first / tally.games)} · en second : ${pct(tally.second / tally.games)}`,
     `  paires : ${pairStats(tally.pairs)}${offsetNote}`,
     conclusion(),
-    save ? await saveDuel({ a: tag(a), b: tag(b), engines: [engine(a), engine(b)], settings: { endMode, handClass, offset, profile: profileLabel }, logs }) : "  (parties non gardées : --save pour les garder)",
+    save ? await saveDuel({ a: tag(a), b: tag(b), engines: [engine(a), engine(b)], settings: { endMode, handClass, openHands, offset, profile: profileLabel }, logs }) : "  (parties non gardées : --save pour les garder)",
     "",
   ].join("\n"),
 );

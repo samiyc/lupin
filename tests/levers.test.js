@@ -6,6 +6,7 @@ import { createRng } from "../src/core/random.js";
 import { BOTS, engineFor, pickSampled } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
 import { createIsmcts, isPivot } from "../src/sim/ismcts.js";
+import { pickCandidates } from "../src/sim/pick.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { HABITS } from "../src/sim/strategist.js";
 import { rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
@@ -124,5 +125,25 @@ describe("ideas for the end of the game only", () => {
     assert.deepEqual(scores(late, before), scores(never, before));
     assert.deepEqual(scores(late, after), scores(always, after));
     assert.notDeepEqual(scores(always, before), scores(never, before), "spread does weigh at turn 6");
+  });
+});
+
+describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
+  it("diverse=1 selects one move per distinct card first, then fills by gain", () => {
+    const scored = [
+      { move: { card: 1, border: 0 }, gain: 0.9 },
+      { move: { card: 1, border: 1 }, gain: 0.8 },
+      { move: { card: 1, border: 2 }, gain: 0.7 },
+      { move: { card: 2, border: 0 }, gain: 0.6 },
+      { move: { card: 2, border: 1 }, gain: 0.5 },
+      { move: { card: 3, border: 0 }, gain: 0.4 },
+      { move: { card: 4, border: 0 }, gain: 0.3 },
+    ];
+    // Baseline picks [1:0, 1:1, 1:2, 2:0] (only cards 1 and 2)
+    assert.deepEqual(pickCandidates(scored, 4, 0).map((m) => m.card), [1, 1, 1, 2]);
+    // Diverse=1 picks [1:0, 2:0, 3:0, 4:0] (all 4 distinct cards)
+    assert.deepEqual(pickCandidates(scored, 4, 1).map((m) => m.card), [1, 2, 3, 4]);
+    // Diverse=2 caps at 2 per card: [1:0, 1:1, 2:0, 2:1]
+    assert.deepEqual(pickCandidates(scored, 4, 2).map((m) => m.card), [1, 1, 2, 2]);
   });
 });

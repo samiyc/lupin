@@ -5,6 +5,7 @@ import { applyMove, legalMoves } from "./game.js";
 import { createHalving, parseHalving } from "./halving.js";
 import { createReader, inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
+import { pickCandidates } from "./pick.js";
 import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
 
@@ -208,26 +209,32 @@ function iterate(root, ctx) {
 /** `infer`: the opponent's hand guessed from their moves (infer.js), from a seed of its own so the deals stay a plain search's when it is off. */
 const guessedHands = (state, judge, seed, { infer, readings }) => (infer > 0 ? inferredHands(state, judge, createRng(seed ^ 0x5bd1e995), { size: infer, readings }) : null);
 
+function resolveCtx(state, scored, { seed, treePolicy, policy, firstExploration, ...settings }, deals) {
+  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null, diverse } = { ...ISMCTS, ...settings };
+  const rootMoves = pickCandidates(scored, candidates, diverse);
+  const judge = (treePolicy ?? policy)(createRng(1));
+  const phases = parseHalving(settings.halving);
+  return {
+    state, player: state.current, deals, rootMoves, judge,
+    rollout: policy(createRng(deals.int(2 ** 31))),
+    widen, depth, exploration, pw, rave, trunc, oddsOf,
+    amaf: rave > 0 ? new Map() : null,
+    hands: guessedHands(state, judge, seed, settings),
+    firstExploration,
+    halving: phases ? createHalving(phases, rootMoves) : null,
+    iterations: 0,
+  };
+}
+
 /**
  * A search from `state`, advanced one iteration at a time by `step()` — the
  * same interface as `createSearch` (search.js), so the page's worker runs it
  * against its clock. `scored`: the core's `scoreMoves` output; the root
  * shortlist is its `candidates` best. A root move's gain is its visits.
  */
-export function createIsmcts(state, scored, { policy, treePolicy, seed, ...settings }) {
-  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null } = { ...ISMCTS, ...settings };
-  const deals = createRng(seed);
-  const rootMoves = [...scored]
-    .sort((a, b) => b.gain - a.gain)
-    .slice(0, candidates)
-    .map(({ move }) => move);
-  const ctx = { state, player: state.current, deals, rootMoves, judge: (treePolicy ?? policy)(createRng(1)), rollout: policy(createRng(deals.int(2 ** 31))), widen, depth, exploration, pw, rave, trunc, oddsOf, amaf: rave > 0 ? new Map() : null, hands: null };
-  ctx.firstExploration = settings.firstExploration;
-  ctx.hands = guessedHands(state, ctx.judge, seed, settings);
-  // `halving` (halving.js): the root's candidates in turn, the worse half dropped at each phase's end.
-  const phases = parseHalving(settings.halving);
-  ctx.halving = phases ? createHalving(phases, rootMoves) : null;
-  ctx.iterations = 0;
+export function createIsmcts(state, scored, options) {
+  const deals = createRng(options.seed);
+  const ctx = resolveCtx(state, scored, options, deals);
   const root = newNode();
   const rated = () => ratingOf(root, scored, ctx);
   return {
@@ -235,7 +242,7 @@ export function createIsmcts(state, scored, { policy, treePolicy, seed, ...setti
       iterate(root, ctx);
       ctx.iterations += 1;
     },
-    done: () => rootMoves.length <= 1,
+    done: () => ctx.rootMoves.length <= 1,
     rollouts: () => ctx.iterations,
     scored: rated,
     best: () => rated().reduce((a, b) => (b.gain > a.gain ? b : a)).move,
@@ -315,9 +322,8 @@ export function ismctsSettings(name) {
   return Object.fromEntries(
     changes.map((change) => {
       const [key, value] = change.split("=");
-      // A named core (`core=nb1`, experimental.js) stays a name; every other setting is a number.
       if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration", "diverse"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

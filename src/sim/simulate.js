@@ -66,8 +66,8 @@ function dealOf(spec, deals, handClass, g) {
 }
 
 /** Game `g` of a batch: its rules, and its deck when the batch fixes one. Shared with the recorded duels (`src/replay/bot-games.js`). */
-export function gameRules(spec, { order, jokerRule, deals = null, handClass = null, deck: fixed = null, endMode = "early" }, g) {
-  return { order, jokerRule, deck: fixed ?? dealOf(spec, deals, handClass, g), endMode };
+export function gameRules(spec, { order, jokerRule, deals = null, handClass = null, deck: fixed = null, endMode = "early", openHands = false }, g) {
+  return { order, jokerRule, deck: fixed ?? dealOf(spec, deals, handClass, g), endMode, openHands: Boolean(openHands) };
 }
 
 /**

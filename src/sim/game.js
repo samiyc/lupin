@@ -1,6 +1,7 @@
 import { buildDeck, isJoker } from "../core/cards.js";
 import { isFigure } from "../core/figures.js";
 import { getEvaluator } from "../core/evaluator.js";
+import { createRng } from "../core/random.js";
 import { figureMoves, playFigure } from "./figure-moves.js";
 import { checkVictory, claimBorders, decideByCount, isFull, resolveBorder, resolveFinal } from "./settle.js";
 
@@ -31,18 +32,25 @@ export { resolveFinal };
  *   next turn — the web game of 30/09, a move late. Kept so its replays read
  *   back as they were played.
  */
-export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null, figures = [] }) {
-  // The extension's figures (docs/extension.md) join the pile; without them, the base game's draw exactly.
+function buildShuffledDeck(spec, figures, deck, rng) {
+  if (deck) return [...deck];
   const cards = figures.length > 0 ? [...buildDeck(spec), ...figures] : buildDeck(spec);
-  const shuffled = deck ? [...deck] : rng.shuffle(cards);
-  const pile = [...shuffled];
-  const borders = Array.from({ length: spec.borders }, () => ({
+  return rng.shuffle(cards);
+}
+
+const resolvePileRng = (seed, rng) => (seed !== null && seed !== undefined ? createRng(seed + 7919) : (rng ?? createRng(1)));
+
+const emptyBorders = (count) =>
+  Array.from({ length: count }, () => ({
     sides: [[], []],
     completedAt: [Infinity, Infinity],
     owner: null,
-    // The figure laid beside each side (figures.js), null for none.
     figures: [null, null],
   }));
+
+export function createGame(spec, { order, jokerRule, rng, endMode = "early", deck = null, figures = [], openHands = false, seed = null }) {
+  const shuffled = buildShuffledDeck(spec, figures, deck, rng);
+  const pile = [...shuffled];
   return {
     spec,
     order,
@@ -52,7 +60,11 @@ export function createGame(spec, { order, jokerRule, rng, endMode = "early", dec
     evaluator: getEvaluator(spec, order, jokerRule),
     pile,
     hands: [pile.splice(0, spec.handSize), pile.splice(0, spec.handSize)],
-    borders,
+    borders: emptyBorders(spec.borders),
+    openHands: Boolean(openHands),
+    rng,
+    pileRng: resolvePileRng(seed, rng),
+    seed,
     // The extension: figures in this game (the core leaves them out of the hands it weighs).
     withFigures: shuffled.some(isFigure),
     jokersPlayed: [0, 0],
@@ -156,8 +168,8 @@ function endOnExhaustion(state) {
 }
 
 /** Runs a match to its end; `bots[p].choose(state, moves)` picks a move. */
-export function playGame(spec, { order, jokerRule, rng, bots, endMode = "early", deck = null }) {
-  const state = createGame(spec, { order, jokerRule, rng, endMode, deck });
+export function playGame(spec, { order, jokerRule, rng, bots, endMode = "early", deck = null, openHands = false }) {
+  const state = createGame(spec, { order, jokerRule, rng, endMode, deck, openHands });
   const guard = spec.borders * 6 * 3;
   while (!state.over && state.turn < guard) {
     const moves = legalMoves(state);

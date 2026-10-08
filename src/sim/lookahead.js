@@ -41,6 +41,11 @@ export function determinize(state, player, rng, hand = null) {
   // Rollouts settle borders at the end: proving claims on every simulated move
   // would cost a third of the search speed, as the certainty in 0.6 did.
   if (copy.endMode.startsWith("claim")) copy.endMode = "final";
+  if (state.openHands) {
+    copy.hands[1 - player] = [...state.hands[1 - player]];
+    copy.pile = rng.shuffle(withoutCards(unseen, state.hands[1 - player]));
+    return copy;
+  }
   if (hand) {
     copy.hands[1 - player] = [...hand];
     copy.pile = rng.shuffle(withoutCards(unseen, hand));

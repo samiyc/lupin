@@ -26,3 +26,34 @@ export function pickBest(scored, rng) {
   }
   return best[rng.int(best.length)];
 }
+
+function pickDiverse(sorted, candidates, limit) {
+  const picked = [];
+  const counts = new Map();
+  for (const { move } of sorted) {
+    const count = counts.get(move.card) ?? 0;
+    if (count < limit) {
+      picked.push(move);
+      counts.set(move.card, count + 1);
+      if (picked.length === candidates) break;
+    }
+  }
+  return picked;
+}
+
+/**
+ * Shortlist candidates at the root of a search (`ismcts.js`): highest gains first,
+ * optionally capped or diversified per distinct card (`diverse`: 1 = 1 per card first, 2+ = max per card).
+ */
+export function pickCandidates(scored, candidates, diverse = 0) {
+  const sorted = [...scored].sort((a, b) => b.gain - a.gain);
+  if (!diverse || sorted.length <= candidates) {
+    return sorted.slice(0, candidates).map(({ move }) => move);
+  }
+  const picked = pickDiverse(sorted, candidates, diverse === 1 ? 1 : diverse);
+  for (const { move } of sorted) {
+    if (picked.length >= candidates) break;
+    if (!picked.includes(move)) picked.push(move);
+  }
+  return picked;
+}
