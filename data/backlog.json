@@ -1545,6 +1545,17 @@
       "doneAt": "2026-10-08T11:17",
       "minutes": 28,
       "output": "backlog-runs/2026-10-08-10-48_VALIDATE_LONG_4_RolloutCrit-Exact12.txt"
+    },
+    {
+      "id": "confirm-lead2-offset1",
+      "command": "npm run duel -- \"ismcts+widen=4+depth=5+core=stfig6+exact=12+diverse=lead2@2000\" borne --games 125 --offset 1",
+      "estimate": "35 min",
+      "limit": 50,
+      "why": "Confirmer l'écart 1er/2nd joueur sur 250 parties supplémentaires (donnes décalées de 1) pour widen=4+diverse=lead2 contre Le Borné.",
+      "status": "done",
+      "doneAt": "2026-10-09T19:17",
+      "minutes": 33,
+      "output": "backlog-runs/2026-10-09-18-44_confirm-lead2-offset1.txt"
     }
   ]
 }
