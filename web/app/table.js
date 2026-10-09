@@ -159,6 +159,8 @@ export function clearTable(message) {
   for (const id of ["hand-top", "board", "hand-bottom", "label-top", "label-bottom"]) $(id).replaceChildren();
   $("sorters").hidden = true;
   $("suit-bar").hidden = true;
+  const pass = $("btn-pass");
+  if (pass) pass.hidden = true;
   highlight(null);
   $("banner").hidden = true;
   $("status").textContent = message;
@@ -172,7 +174,7 @@ export function clearTable(message) {
  * legalBorders: Set, lastMove: { border, side } | null, showTools }`.
  */
 export function renderTable(view, options) {
-  const settings = { interactive: false, selected: null, legalBorders: new Set(), lastMove: null, showTools: false, ...options };
+  const settings = { interactive: false, selected: null, legalBorders: new Set(), lastMove: null, showTools: false, canPass: false, ...options };
   renderCounters(view, settings.status);
   $("label-top").textContent = settings.names.top;
   $("label-bottom").textContent = settings.names.bottom;
@@ -181,5 +183,7 @@ export function renderTable(view, options) {
   $("board").replaceChildren(...view.borders.map((border) => borderElement(border, settings)));
   renderSuitBar(view.suits);
   $("sorters").hidden = !settings.showTools;
+  const pass = $("btn-pass");
+  if (pass) pass.hidden = !settings.canPass;
   renderBanner(view.result, settings.names);
 }

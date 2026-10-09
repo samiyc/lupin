@@ -8,10 +8,15 @@ const pendingStatus = (game) => {
   return `Dame de Cœur : choisis la borne à échanger avec la borne ${game.pending.border + 1}.`;
 };
 
-export function statusLine(game, humanTurn) {
+const humanStatus = (game, canPass) => {
+  if (game.pending) return pendingStatus(game);
+  return canPass ? "Aucun coup possible : passe ton tour." : "À toi de jouer.";
+};
+
+const opponentStatus = (game) => (game.premove ? `${game.opponentName} réfléchit… Ton coup est prêt (Échap l'annule).` : `${game.opponentName} réfléchit…`);
+
+export function statusLine(game, humanTurn, canPass = false) {
   if (game.revealing) return "Les bornes se règlent…";
   if (game.state.over) return game.saved ?? "Partie terminée.";
-  if (humanTurn && game.pending) return pendingStatus(game);
-  if (humanTurn) return "À toi de jouer.";
-  return game.premove ? `${game.opponentName} réfléchit… Ton coup est prêt (Échap l'annule).` : `${game.opponentName} réfléchit…`;
+  return humanTurn ? humanStatus(game, canPass) : opponentStatus(game);
 }

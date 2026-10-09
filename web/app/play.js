@@ -32,8 +32,9 @@ const play = { game: null, generation: 0, visible: true, syncFocus: () => {} };
 const alive = (id) => play.game !== null && id === play.generation;
 const active = () => play.game !== null && !play.game.state.over;
 const humanTurn = () => active() && play.game.state.current === play.game.human;
+const canPass = () => humanTurn() && legalMoves(play.game.state).length === 0;
 
-const status = () => statusLine(play.game, humanTurn());
+const status = () => statusLine(play.game, humanTurn(), canPass());
 
 export function legalFor(index) {
   if (!humanTurn()) return new Set();
@@ -53,7 +54,7 @@ export function render() {
   renderTable(view, {
     status: status(), names: { bottom: game.name, top: game.opponentName }, interactive: active(),
     selected: game.selected, legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
-    lastMove: game.lastMove, premove: game.premove?.border ?? null, showTools: true,
+    lastMove: game.lastMove, premove: game.premove?.border ?? null, showTools: true, canPass: canPass(),
   });
 }
 
@@ -236,6 +237,7 @@ export function wirePlayControls() {
   setInterval(renderClock, 1000);
   $("sort-suit").addEventListener("click", () => reorderWith((order) => sortBySuit(SPEC, order)));
   $("sort-value").addEventListener("click", () => reorderWith((order) => sortByValue(SPEC, order)));
+  $("btn-pass")?.addEventListener("click", () => { if (canPass()) executeMove(null); });
 }
 
 /**
@@ -263,6 +265,7 @@ export const playInput = {
     render();
   },
   play: playCard,
+  pass: () => { if (canPass()) executeMove(null); },
   reorder: (grip, to) => { const from = active() ? locate(grip) : null; if (from !== null) reorderWith((order) => moveCard(order, from, to)); },
   legalFor,
   /** For `?debug`: how the thinker reached its last answer (time pondered, rollouts, time thought). */
