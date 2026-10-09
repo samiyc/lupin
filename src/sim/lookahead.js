@@ -22,6 +22,7 @@ export function cloneState(state) {
   return {
     ...state,
     pile: [...state.pile],
+    pileRng: state.pileRng?.clone?.() ?? state.pileRng,
     hands: state.hands.map((hand) => [...hand]),
     borders: state.borders.map((border) => ({ sides: border.sides.map((side) => [...side]), completedAt: [...border.completedAt], owner: border.owner, figures: border.figures && [...border.figures] })),
     jokersPlayed: [...state.jokersPlayed],
@@ -38,6 +39,8 @@ export function cloneState(state) {
 export function determinize(state, player, rng, hand = null) {
   const unseen = [...unseenCards(state, player).entries.flatMap(([card, count]) => Array.from({ length: count }, () => card)), ...hiddenFigures(state, player)];
   const copy = cloneState(state);
+  copy.pileRng = rng;
+  copy.rng = rng;
   // Rollouts settle borders at the end: proving claims on every simulated move
   // would cost a third of the search speed, as the certainty in 0.6 did.
   if (copy.endMode.startsWith("claim")) copy.endMode = "final";

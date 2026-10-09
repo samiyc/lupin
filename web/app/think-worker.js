@@ -62,11 +62,29 @@ const HANDLERS = {
     limits = { limitMs, minMs };
   },
   ponder({ log }) {
-    ponder = createPonder(current(log), bot, { limitMs: limits.limitMs / CREDIT, seed: log.turns.length + 1 });
-    keepPondering(ponder);
+    try {
+      ponder = createPonder(current(log), bot, { limitMs: limits.limitMs / CREDIT, seed: log.turns.length + 1 });
+      keepPondering(ponder);
+    } catch (err) {
+      console.error("Worker ponder error:", err);
+    }
   },
   decide({ log }) {
-    postMessage({ type: "move", ...decide(log) });
+    try {
+      postMessage({ type: "move", ...decide(log) });
+    } catch (err) {
+      console.error("Worker decide error:", err);
+      try {
+        const state = current(log);
+        const moves = legalMoves(state);
+        const scored = bot.scoreMoves(state, moves);
+        const best = scored.reduce((a, b) => (b.gain > a.gain ? b : a), scored[0]);
+        postMessage({ type: "move", move: best?.move ?? moves[0] ?? null, scored, pondered: 0, rollouts: 0, thoughtMs: 0 });
+      } catch (recoveryErr) {
+        console.error("Worker recovery error:", recoveryErr);
+        postMessage({ type: "error", error: err.message });
+      }
+    }
   },
   stop() {
     ponder = null;

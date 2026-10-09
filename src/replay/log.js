@@ -100,7 +100,7 @@ export function playLogged(log, state, move, scored = null) {
     joker: isJoker(move.card),
     candidates: candidatesOf(spec, scored),
   });
-  const drawing = state.pile.length > 0 && drawsAfter(move.card);
+  const drawing = state.pile.length > 0 && drawsAfter(move.card, move);
   applyMove(state, move);
   const hand = state.hands[player];
   entry.drew = drawing ? formatCard(spec, hand[hand.length - 1]) : null;
@@ -164,7 +164,7 @@ function replayTurn(state, entry, index) {
   }
   const move = loggedMove(state.spec, entry.move);
   if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border && m.target === move.target && m.discard === move.discard)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
-  const drawing = state.pile.length > 0 && drawsAfter(move.card);
+  const drawing = state.pile.length > 0 && drawsAfter(move.card, move);
   applyMove(state, move);
   const hand = state.hands[entry.player];
   if (drawing && formatCard(state.spec, hand[hand.length - 1]) !== entry.drew) fail(`pioche différente (${entry.drew})`);

@@ -33,8 +33,15 @@ export const figureByKey = (key) => FIGURES.find((figure) => figure.key === key)
 /** The figure written `text` ("V♣"), or undefined. */
 export const figureByText = (text) => FIGURES.find((figure) => figure.text === text);
 
-/** Does the player draw after laying `card`? Always, but after the Dame de Pique: the Rappel gave a card back. */
-export const drawsAfter = (card) => !isFigure(card) || figureOf(card).key !== "recall";
+const minusTenDrew = (key, move) => (key === "minusTen" || key === "weakest") && move?.discard !== undefined && move?.discard !== null;
+
+/** Does the player draw after laying `card`? Always, but after the Dame de Pique (le Rappel) or Valet de Trèfle with discard (drew 2 during play). */
+export const drawsAfter = (card, move = null) => {
+  if (!isFigure(card)) return true;
+  const { key } = figureOf(card);
+  if (key === "recall") return false;
+  return !minusTenDrew(key, move);
+};
 
 /** The cards of `cards` that are not figures: the ones that go on a side. */
 export const withoutFigures = (cards) => cards.filter((card) => !isFigure(card));

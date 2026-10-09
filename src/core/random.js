@@ -12,7 +12,7 @@ export function createRng(seed) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
   const int = (n) => Math.floor(next() * n);
-  return {
+  const rng = {
     next,
     int,
     /** In-place Fisher-Yates; returns the array for chaining. */
@@ -23,5 +23,15 @@ export function createRng(seed) {
       }
       return array;
     },
+    clone() {
+      const copy = createRng(0);
+      copy.setState(state);
+      return copy;
+    },
+    getState: () => state,
+    setState: (s) => {
+      state = s >>> 0;
+    },
   };
+  return rng;
 }

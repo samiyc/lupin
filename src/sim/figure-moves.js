@@ -1,5 +1,5 @@
-import { isJoker } from "../core/cards.js";
-import { figureOf } from "../core/figures.js";
+import { isJoker, valueOf } from "../core/cards.js";
+import { figureOf, isFigure } from "../core/figures.js";
 
 /**
  * The extension's moves (docs/extension.md, Sami 07/10): laying a figure is
@@ -10,6 +10,19 @@ import { figureOf } from "../core/figures.js";
  * (border-rules.js) and do nothing else when laid.
  */
 const undecided = (border) => border.owner === null;
+
+/** The weakest card in hand to discard when playing Valet de Trèfle: plain cards with lowest value first, then joker, then figure. */
+export function weakestCard(spec, hand, figureCard) {
+  const candidates = hand.filter((c) => c !== figureCard);
+  if (candidates.length === 0) return null;
+  const plains = candidates.filter((c) => !isFigure(c) && !isJoker(c));
+  if (plains.length > 0) {
+    return plains.reduce((weakest, c) => (valueOf(spec, c) < valueOf(spec, weakest) ? c : weakest));
+  }
+  const nonFigures = candidates.filter((c) => !isFigure(c));
+  if (nonFigures.length > 0) return nonFigures[0];
+  return candidates[0];
+}
 
 function swapMoves(state, card, index) {
   const moves = [];
@@ -22,8 +35,13 @@ function swapMoves(state, card, index) {
 function minusTenMoves(state, player, card, index) {
   const moves = [{ card, border: index }];
   if (state.pile.length > 0) {
-    const others = [...new Set(state.hands[player].filter((c) => c !== card))];
-    for (const discard of others) moves.push({ card, border: index, discard });
+    const hand = state.hands[player];
+    const weakest = weakestCard(state.spec, hand, card);
+    if (weakest !== null) moves.push({ card, border: index, discard: weakest });
+    const others = [...new Set(hand.filter((c) => c !== card))];
+    for (const discard of others) {
+      if (discard !== weakest) moves.push({ card, border: index, discard });
+    }
   }
   return moves;
 }
@@ -60,14 +78,14 @@ function cycleHand(state, hand, discard) {
   const at = hand.indexOf(discard);
   if (at < 0) return;
   hand.splice(at, 1);
-  const drawn = state.pile.pop();
-  hand.push(drawn);
+  if (state.pile.length > 0) hand.push(state.pile.pop());
+  if (state.pile.length > 0) hand.push(state.pile.pop());
   state.pile.push(discard);
   const rng = state.pileRng ?? state.rng;
   if (rng) rng.shuffle(state.pile);
 }
 
-/** Lays figure `move.card` beside `move.border`; true when the player draws after it (all but the Rappel). */
+/** Lays figure `move.card` beside `move.border`; true when the player draws after it (all but the Rappel and minusTen with discard). */
 export function playFigure(state, player, { card, border: index, target, discard }) {
   const hand = state.hands[player];
   hand.splice(hand.indexOf(card), 1);
@@ -81,9 +99,10 @@ export function playFigure(state, player, { card, border: index, target, discard
   }
   // The Dame de Cœur stays with the border she was laid beside: both move whole, figures included.
   if (key === "swap") [state.borders[index], state.borders[target]] = [state.borders[target], state.borders[index]];
-  // Valet de Trèfle: discard a card, draw a replacement, shuffle discarded card into pile.
+  // Valet de Trèfle: discard a card, draw 2 replacements, shuffle discard into pile, no draw after.
   if ((key === "minusTen" || key === "weakest") && discard !== undefined && discard !== null && state.pile.length > 0) {
     cycleHand(state, hand, discard);
+    return false;
   }
   return true;
 }

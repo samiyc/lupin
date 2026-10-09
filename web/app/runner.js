@@ -17,7 +17,7 @@ export const SPEC = rulesOf(RULES).spec;
 /** A new game; `bonus` figures of the extension (0 to 6) join its pile, openHands reveals hands. */
 export function newGame(seed, bonus = 0, openHands = false) {
   const { spec, order, jokerRule, endMode } = rulesOf(RULES);
-  return createGame(spec, { order, jokerRule, endMode, rng: createRng(seed), figures: figuresFor(seed, bonus), openHands: Boolean(openHands) });
+  return createGame(spec, { order, jokerRule, endMode, rng: createRng(seed), figures: figuresFor(seed, bonus), openHands: Boolean(openHands), seed });
 }
 
 export function botPlayer(id, seed) {

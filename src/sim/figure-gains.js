@@ -57,7 +57,8 @@ const GAINS = {
   minusTen: (state, border, c, { move } = {}) => {
     let gain = -0.04 * c;
     if (move?.discard !== undefined && move?.discard !== null) {
-      if (isJoker(move.discard)) gain -= 0.15;
+      if (isFigure(move.discard)) gain -= 0.3;
+      else if (isJoker(move.discard)) gain -= 0.15;
       else {
         const val = valueOf(state.spec, move.discard);
         gain += 0.04 + ((5.5 - val) / 10) * 0.05;

@@ -80,12 +80,13 @@ describe("the extension's figure moves (figure-moves.js)", () => {
     assert.deepEqual(borders, [0, 1, 3, 5, 6]);
   });
 
-  it("Valet de Trèfle: discards a chosen card, draws replacement from pile, shuffles discard, and draws at end of turn", () => {
+  it("Valet de Trèfle: discards a chosen card, draws two from pile, shuffles discard into pile, no draw at end of turn", () => {
     const game = newGame(42);
     const discardCard = cards("1♠")[0];
     game.hands[0] = [id("minusTen"), discardCard, ...cards("2♠", "3♠", "4♠", "5♠")];
     const initialPile = [...game.pile];
-    const topCard = initialPile[initialPile.length - 1];
+    const topCard1 = initialPile[initialPile.length - 1];
+    const topCard2 = initialPile[initialPile.length - 2];
     const initialPileLen = game.pile.length;
 
     applyMove(game, { card: id("minusTen"), border: 0, discard: discardCard });
@@ -94,7 +95,8 @@ describe("the extension's figure moves (figure-moves.js)", () => {
     assert.equal(game.hands[0].length, 6);
     assert.ok(!game.hands[0].includes(discardCard));
     assert.ok(game.pile.includes(discardCard));
-    assert.ok(game.hands[0].includes(topCard));
+    assert.ok(game.hands[0].includes(topCard1));
+    assert.ok(game.hands[0].includes(topCard2));
     assert.equal(game.pile.length, initialPileLen - 1);
   });
 
