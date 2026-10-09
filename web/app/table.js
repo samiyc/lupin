@@ -99,7 +99,8 @@ function renderSuitBar(suits) {
   }
   suits.forEach(({ suit, label, seen, total }, i) => {
     const button = bar.children[i];
-    button.textContent = `${label} ${seen}/${total}`;
+    const icon = suit === "joker" ? label : el("span", { class: "sym" }, label);
+    button.replaceChildren(icon, ` ${seen}/${total}`);
     button.setAttribute("aria-label", `${SUIT_NAMES[suit] ?? suit} : ${seen} cartes vues sur ${total}`);
   });
 }

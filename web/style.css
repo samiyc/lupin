@@ -22,6 +22,7 @@
   --focus: #b8932a;
   --display: "Bodoni Moda", Didot, Georgia, serif;
   --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --suit: "Times New Roman", Times, Georgia, serif;
   --card-w: 58px;
   --card-h: 82px;
   --overlap: 26px;
@@ -105,8 +106,8 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
    cards overlap on a border. */
 .card .corner { display: flex; align-items: baseline; gap: 1px; line-height: 1; }
 .card .v { font: 700 1.15rem/1 var(--display); }
-.card .cs { font-size: 1rem; }
-.card .s { justify-self: end; align-self: end; font-size: 1.35rem; line-height: 1; }
+.card .cs { font-size: 1.2rem; font-family: var(--suit); transform: translateY(-1.5px); display: inline-block; }
+.card .s { justify-self: end; align-self: end; font-size: 1.62rem; line-height: 1; font-family: var(--suit); }
 .card.red { color: var(--red); }
 .card.joker { border-style: dashed; }
 .card .j { place-self: center; font: 700 0.7rem var(--body); letter-spacing: 0.05em; }
@@ -142,6 +143,7 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .top-row { display: flex; align-items: flex-start; gap: 12px; }
 .suit-bar { margin-left: auto; display: flex; gap: 6px; }
 .suit-bar button { background: var(--panel); color: var(--ink); border-color: var(--line); font-weight: 700; padding: 6px 10px; touch-action: none; user-select: none; }
+.suit-bar button .sym { font-family: var(--suit); font-size: 1.2em; line-height: 1; }
 .suit-bar button.red { color: var(--red); }
 .suit-bar button:active { border-color: var(--focus); }
 .hand.bottom { padding: 8px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
