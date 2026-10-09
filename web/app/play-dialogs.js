@@ -27,7 +27,12 @@ export function wireGameDialogs(game) {
   showElo();
   $("player-name").value = recall("lopin.name", "Joueur");
   $("bonus-count").value = recall("lopin.bonus", "0");
-  $("open-hands").checked = recall("lopin.open", false);
+  $("open-hands").checked = false;
+  try {
+    localStorage.removeItem("lopin.open");
+  } catch {
+    // Private window or blocked storage.
+  }
   const dialog = $("dialog-new");
   dialog.addEventListener("close", () => {
     if (dialog.returnValue !== "start") return;
@@ -36,15 +41,18 @@ export function wireGameDialogs(game) {
     const openHands = Boolean(form.get("open"));
     remember("lopin.name", name);
     remember("lopin.bonus", String(form.get("bonus") ?? "0"));
-    remember("lopin.open", openHands);
     game.start({ first: form.get("first"), opponent: form.get("opponent"), name, bonus: Number(form.get("bonus") ?? 0), openHands });
   });
-  $("btn-new").addEventListener("click", () => openDialog(dialog));
+  $("btn-new").addEventListener("click", () => {
+    $("open-hands").checked = false;
+    openDialog(dialog);
+  });
   const confirm = $("dialog-reset");
   $("btn-reset").addEventListener("click", () => openDialog(game.active() ? confirm : dialog));
   confirm.addEventListener("close", () => {
     if (confirm.returnValue !== "reset") return;
     game.abandon();
+    $("open-hands").checked = false;
     openDialog(dialog);
   });
 }

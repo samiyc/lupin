@@ -217,8 +217,19 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .replay-list button[aria-current="true"] { box-shadow: 0 0 0 2px var(--focus); }
 
 dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); max-width: 380px; }
+#dialog-new { max-width: 660px; width: min(660px, 94vw); }
 /* The dialog takes the focus when it opens, so no field starts outlined; Tab reaches them. */
 dialog:focus, dialog:focus-visible { outline: none; }
+.dialog-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 14px; align-items: stretch; margin-bottom: 6px; }
+.dialog-col { display: flex; flex-direction: column; gap: 10px; }
+.dialog-col fieldset { margin: 0; }
+.dialog-col #opponents { height: 100%; }
+.dialog-col .name-field { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 4px; font-weight: 600; font-size: 0.92rem; }
+.dialog-col .name-field input { flex: 1; max-width: 170px; }
+@media (max-width: 620px) {
+  .dialog-cols { grid-template-columns: 1fr; }
+  .dialog-col .name-field input { max-width: none; }
+}
 dialog .opponent { display: grid; grid-template-columns: auto 1fr; column-gap: 6px; align-items: baseline; }
 dialog .opponent .facts { grid-column: 2; color: var(--ink-2); line-height: 1.35; }
 dialog h2 { margin-top: 0; font: 700 1.3rem var(--display); }

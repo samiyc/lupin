@@ -124,31 +124,37 @@
 <dialog id="dialog-new" autofocus>
   <form method="dialog" id="form-new">
     <h2>Nouvelle partie</h2>
-    <fieldset>
-      <legend>Qui commence ?</legend>
-      <label><input type="radio" name="first" value="me" checked> Moi</label>
-      <label><input type="radio" name="first" value="bot"> Le robot</label>
-    </fieldset>
-    <fieldset id="opponents">
-      <legend>Adversaire</legend>
-    </fieldset>
-    <fieldset>
-      <legend>L'extension</legend>
-      <label>Cartes bonus dans la pioche
-        <select name="bonus" id="bonus-count">
-          <option value="0">0 : le jeu de base</option>
-          <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-          <option value="4">4</option><option value="5">5</option><option value="6">6 : toutes</option>
-        </select>
-      </label>
-      <small class="facts">Valet ♣, Valet ♦, Dame ♥, Dame ♠, Roi ♠, Roi ♦, tirées au hasard. Les règles : menu Versions, « L'extension ».</small>
-    </fieldset>
-    <fieldset>
-      <legend>Options</legend>
-      <label class="check"><input type="checkbox" name="open" id="open-hands"> Mains découvertes</label>
-      <small class="facts">Les deux mains restent visibles tout au long de la partie. La pioche reste cachée.</small>
-    </fieldset>
-    <label>Ton prénom <input name="name" id="player-name" autocomplete="given-name" maxlength="24"></label>
+    <div class="dialog-cols">
+      <div class="dialog-col">
+        <fieldset id="opponents">
+          <legend>Adversaire</legend>
+        </fieldset>
+      </div>
+      <div class="dialog-col">
+        <fieldset>
+          <legend>Qui commence ?</legend>
+          <label><input type="radio" name="first" value="me" checked> Moi</label>
+          <label><input type="radio" name="first" value="bot"> Le robot</label>
+        </fieldset>
+        <fieldset>
+          <legend>L'extension</legend>
+          <label>Cartes bonus dans la pioche
+            <select name="bonus" id="bonus-count">
+              <option value="0">0 : le jeu de base</option>
+              <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+              <option value="4">4</option><option value="5">5</option><option value="6">6 : toutes</option>
+            </select>
+          </label>
+          <small class="facts">Valet ♣, Valet ♦, Dame ♥, Dame ♠, Roi ♠, Roi ♦, tirées au hasard. Les règles : menu Versions, « L'extension ».</small>
+        </fieldset>
+        <fieldset>
+          <legend>Options</legend>
+          <label class="check"><input type="checkbox" name="open" id="open-hands"> Mains découvertes</label>
+          <small class="facts">Les deux mains restent visibles tout au long de la partie. La pioche reste cachée.</small>
+        </fieldset>
+        <label class="name-field">Ton prénom <input name="name" id="player-name" autocomplete="given-name" maxlength="24"></label>
+      </div>
+    </div>
     <div class="actions">
       <button value="cancel" class="quiet" formnovalidate>Annuler</button>
       <button value="start" class="primary">Commencer</button>
