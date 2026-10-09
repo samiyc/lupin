@@ -22,17 +22,19 @@ function table(headers, rows) {
 
 function eloBlock(elo) {
   const top = Math.max(...elo.map((row) => row.elo + row.margin));
-  const rows = elo.map((row) =>
-    el(
+  const rows = elo.map((row) => {
+    const [id, version] = row.player.split("@");
+    const vs = BOT_LINEUP[id]?.version === version && BOT_LINEUP[id]?.vsLower ? ` (${BOT_LINEUP[id].vsLower})` : "";
+    return el(
       "tr",
       { class: row.human ? "human" : "" },
-      el("td", {}, name(row.player)),
+      el("td", {}, name(row.player), vs ? el("small", { class: "facts" }, ` ${vs}`) : null),
       el("td", { class: "num" }, String(row.elo)),
       el("td", { class: "num" }, `±${row.margin}`),
       el("td", { class: "bar-cell" }, el("span", { class: "bar", style: `width:${(100 * (row.elo - 400)) / (top - 400)}%` })),
       el("td", { class: "num" }, String(row.games)),
-    ),
-  );
+    );
+  });
   return [el("h3", {}, "Classement Elo"), table(["Joueur", "Elo", "Marge", "", "Parties"], rows), el("p", { class: "hint" }, "Basique = 500. Tes parties et les duels entre robots, en un seul ajustement (npm run elo).")];
 }
 

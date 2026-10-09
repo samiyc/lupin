@@ -26,6 +26,7 @@ export const BOT_LINEUP = Object.freeze({
     description: "Il anticipe",
     examines: "4 coups × 16 fins de partie",
     pace: "≈ 0,5 s par coup",
+    vsLower: "85 % vs Basique",
   }),
   experimental: Object.freeze({
     // 1.2 (ExactEnd12, 08/10): 1.1 + exact solver at the root when <= 12 cards remain in (hand + pile).
@@ -37,6 +38,7 @@ export const BOT_LINEUP = Object.freeze({
     description: "Il cherche en arbre",
     examines: "5 coups d'avance, la fin de partie calculée exactement",
     pace: "jusqu'à 10 s, et pendant ton tour",
+    vsLower: "76 % vs Stratège",
     // In the page: a worker, up to limitMs a move, pondering during the human's turn (web/app/thinker.js).
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
   }),
@@ -49,6 +51,7 @@ export const BOT_LINEUP = Object.freeze({
     description: "L'arbre canalisé",
     examines: "5 coups d'avance canalisés, 2 bornes max par carte, fin exacte",
     pace: "jusqu'à 10 s, et pendant ton tour",
+    vsLower: "81 % vs Expérimental",
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
   }),
 });

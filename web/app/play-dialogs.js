@@ -14,7 +14,10 @@ async function showElo() {
   const table = await fetchElo().catch(() => []);
   for (const id of BOT_IDS) {
     const row = table.find((entry) => entry.player === `${id}@${BOT_LINEUP[id].version}`);
-    if (row) $(`elo-${id}`).textContent = ` · Elo ${row.elo}`;
+    if (row) {
+      const vs = BOT_LINEUP[id].vsLower ? ` (${BOT_LINEUP[id].vsLower})` : "";
+      $(`elo-${id}`).textContent = ` · Elo ${row.elo}${vs}`;
+    }
   }
 }
 
