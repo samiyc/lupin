@@ -141,8 +141,8 @@ const html = (tag, attrs = {}, ...children) => {
 
 // What each figure does, in the words of docs/extension.md.
 const EFFECTS = {
-  minusTen: { text: "Sur sa borne, malus de 10 points sur la somme en cas d'égalité (pour qui l'a posé). Permet aussi de défausser une carte en main, d'en piocher une de remplacement, et de remélanger la défausse à la pioche.", scope: "qui le pose" },
-  weakest: { text: "Sur sa borne, malus de 10 points sur la somme en cas d'égalité (pour qui l'a posé). Permet aussi de défausser une carte en main, d'en piocher une de remplacement, et de remélanger la défausse à la pioche.", scope: "qui le pose" },
+  minusTen: { text: "Sur sa borne, malus de 10 points sur la somme en cas d'égalité (pour qui l'a posé). Permet aussi de défausser une carte en main, d'en piocher deux dans la pioche, puis d'y remélanger la défausse (pas de pioche en fin de tour).", scope: "qui le pose" },
+  weakest: { text: "Sur sa borne, malus de 10 points sur la somme en cas d'égalité (pour qui l'a posé). Permet aussi de défausser une carte en main, d'en piocher deux dans la pioche, puis d'y remélanger la défausse (pas de pioche en fin de tour).", scope: "qui le pose" },
   sum: { text: "Sur sa borne, les combinaisons ne comptent plus : la plus grosse somme gagne.", scope: "les deux côtés" },
   swap: { text: "Sa borne échange sa place avec une autre borne non décidée, cartes et figures comprises.", scope: "deux bornes" },
   recall: { text: "Reprend en main la dernière carte posée de son côté de cette borne. Pas de pioche ce tour-là.", scope: "qui la pose" },
