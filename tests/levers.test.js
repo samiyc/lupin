@@ -145,6 +145,9 @@ describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
     assert.deepEqual(pickCandidates(scored, 4, 1).map((m) => m.card), [1, 2, 3, 4]);
     // Diverse=2 caps at 2 per card: [1:0, 1:1, 2:0, 2:1]
     assert.deepEqual(pickCandidates(scored, 4, 2).map((m) => m.card), [1, 1, 2, 2]);
+    // Diverse=lead2 / 2-1 gives 2 to the lead card and 1 to others: [1:0, 1:1, 2:0, 3:0]
+    assert.deepEqual(pickCandidates(scored, 4, "lead2").map((m) => m.card), [1, 1, 2, 3]);
+    assert.deepEqual(pickCandidates(scored, 4, "2-1").map((m) => m.card), [1, 1, 2, 3]);
   });
 
   it("diverse=2 runs ISMCTS search down the tree with cap at 2 everywhere", () => {

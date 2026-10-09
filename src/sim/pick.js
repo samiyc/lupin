@@ -27,12 +27,18 @@ export function pickBest(scored, rng) {
   return best[rng.int(best.length)];
 }
 
-function pickDiverse(sorted, candidates, limit) {
+function cardLimit(card, leadCard, diverse) {
+  if (diverse === "lead2" || diverse === "2-1") return card === leadCard ? 2 : 1;
+  return diverse;
+}
+
+function pickDiverse(sorted, candidates, diverse) {
   const picked = [];
   const counts = new Map();
+  const leadCard = sorted[0]?.move?.card;
   for (const { move } of sorted) {
     const count = counts.get(move.card) ?? 0;
-    if (count < limit) {
+    if (count < cardLimit(move.card, leadCard, diverse)) {
       picked.push(move);
       counts.set(move.card, count + 1);
       if (picked.length === candidates) break;
@@ -43,7 +49,7 @@ function pickDiverse(sorted, candidates, limit) {
 
 /**
  * Shortlist candidates at the root of a search (`ismcts.js`): highest gains first,
- * optionally capped or diversified per distinct card (`diverse`: 1 = 1 per card first, 2+ = max per card).
+ * optionally capped or diversified per distinct card (`diverse`: 1 = 1 per card first, 2+ = max per card, "lead2" / "2-1" = 2 on lead card, 1 on others).
  */
 export function pickCandidates(scored, candidates, diverse = 0) {
   const sorted = [...scored].sort((a, b) => b.gain - a.gain);
