@@ -18,6 +18,10 @@ describe("the extension in the page (web/app/figure-input.js)", () => {
     assert.deepEqual(stepOf(sum, 2, null), { move: { card: sum, border: 2 } });
     assert.deepEqual(stepOf(swap, 2, null), { pending: { border: 2 } });
     assert.deepEqual(stepOf(swap, 5, { border: 2 }), { move: { card: swap, border: 2, target: 5 } });
+    const minusTen = figureByKey("minusTen").id;
+    assert.deepEqual(stepOf(minusTen, 3, null), { pending: { card: minusTen, border: 3, action: "discard" } });
+    assert.deepEqual(stepOf(minusTen, 3, { card: minusTen, border: 3, action: "discard" }), { move: { card: minusTen, border: 3 } });
+    assert.deepEqual(stepOf(minusTen, 3, null, { pile: 0 }), { move: { card: minusTen, border: 3 } });
   });
 
   it("offers the Dame de Cœur's borders, then the ones she may swap with", () => {

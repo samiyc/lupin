@@ -90,9 +90,7 @@ async function playPremove(id) {
 async function save(id) {
   try {
     const saved = await saveReplay(play.game.log);
-    if (!alive(id)) return;
-    play.game.saved = `Partie enregistrée : ${saved.path}`;
-    toast(play.game.saved);
+    if (alive(id)) { play.game.saved = `Partie enregistrée : ${saved.path}`; toast(play.game.saved); }
   } catch (error) {
     if (alive(id)) play.game.saved = `Replay non enregistré (${error.message}).`;
   }
@@ -137,8 +135,7 @@ async function botTurns(id) {
     play.game.clock.mark();
     play.game.thinker.ponder(play.game.log);
     await playPremove(id);
-  }
-  else if (play.game.state.over) await finish(id);
+  } else if (play.game.state.over) await finish(id);
 }
 
 /**
@@ -153,20 +150,33 @@ function locate({ index, card }) {
   return found === -1 ? null : found;
 }
 
+function executeMove(move) {
+  const { game } = play;
+  game.pending = null;
+  game.selected = null;
+  const thinkMs = Math.round(game.clock.mark());
+  const entry = playLogged(game.log, game.state, move);
+  entry.thinkMs = thinkMs;
+  afterMove(game.human, entry);
+  botTurns(play.generation);
+}
+
+function resolveDiscard(game, index) {
+  if (game.pending?.action !== "discard") return false;
+  const discard = game.order[index];
+  if (discard !== game.pending.card) executeMove({ card: game.pending.card, border: game.pending.border, discard });
+  return true;
+}
+
 export function playCard(grip, border) {
   if (!active()) return;
   const index = locate(grip);
   if (!humanTurn()) return programMove(index, border);
-  if (index === null || !legalFor(index).has(border)) return;
-  const { game } = play;
-  const step = stepOf(game.order[index], border, game.pending);
-  game.pending = step.pending ?? null;
-  if (step.pending) return render();
-  const thinkMs = Math.round(game.clock.mark());
-  const entry = playLogged(game.log, game.state, step.move);
-  entry.thinkMs = thinkMs;
-  afterMove(game.human, entry);
-  botTurns(play.generation);
+  if (index === null || resolveDiscard(play.game, index) || !legalFor(index).has(border)) return;
+  const step = stepOf(play.game.order[index], border, play.game.pending, { pile: play.game.state.pile.length });
+  play.game.pending = step.pending ?? null;
+  if (step.pending) { play.game.selected = null; return render(); }
+  executeMove(step.move);
 }
 
 export function start({ first, opponent, name, bonus = 0, openHands = false }) {
@@ -179,23 +189,10 @@ export function start({ first, opponent, name, bonus = 0, openHands = false }) {
   const players = [humanEntry(human, name), botEntry(1 - human, opponent)].sort((a, b) => a.seat - b.seat);
   const rules = { ...(bonus > 0 ? { ...RULES, bonus } : RULES), ...(openHands ? { openHands: true } : {}) };
   play.game = {
-    state,
-    human,
-    openHands: Boolean(openHands),
-    name,
-    opponentName: playerName(botEntry(1 - human, opponent)),
-    bot: botPlayer(opponent, seed + 1),
-    thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
-    log: startLog(state, { rules, players, seed }),
-    order: sortBySuit(SPEC, state.hands[human]),
-    selected: null,
-    // The Dame de Cœur's first border, while the second is chosen.
-    pending: null,
-    premove: null,
-    shown: 0,
-    lastMove: null,
-    revealing: false,
-    saved: null,
+    state, human, openHands: Boolean(openHands), name, opponentName: playerName(botEntry(1 - human, opponent)),
+    bot: botPlayer(opponent, seed + 1), thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
+    log: startLog(state, { rules, players, seed }), order: sortBySuit(SPEC, state.hands[human]),
+    selected: null, pending: null, premove: null, shown: 0, lastMove: null, revealing: false, saved: null,
     clock: createClock(() => performance.now()),
   };
   play.syncFocus();
@@ -209,10 +206,7 @@ export function abandon() {
   clearDrag();
   play.game?.thinker.stop();
   play.game = null;
-  if (play.visible) {
-    clearTable("Partie abandonnée, rien n'a été enregistré.");
-    $("clock").textContent = "";
-  }
+  if (play.visible) { clearTable("Partie abandonnée, rien n'a été enregistré."); $("clock").textContent = ""; }
 }
 
 export const hasGame = () => play.game !== null;
@@ -253,16 +247,23 @@ export const playInput = {
   enabled: () => play.visible && active(),
   selected: () => play.game?.selected ?? null,
   select(index) {
-    play.game.selected = index;
-    play.game.pending = null;
-    if (index === null) play.game.premove = null;
+    const { game } = play;
+    if (game?.pending?.action === "discard") {
+      if (index !== null && game.order[index] !== game.pending.card) {
+        executeMove({ card: game.pending.card, border: game.pending.border, discard: game.order[index] });
+        return;
+      }
+      game.pending = null;
+      render();
+      return;
+    }
+    game.selected = index;
+    game.pending = null;
+    if (index === null) game.premove = null;
     render();
   },
   play: playCard,
-  reorder(grip, to) {
-    const from = active() ? locate(grip) : null;
-    if (from !== null) reorderWith((order) => moveCard(order, from, to));
-  },
+  reorder: (grip, to) => { const from = active() ? locate(grip) : null; if (from !== null) reorderWith((order) => moveCard(order, from, to)); },
   legalFor,
   /** For `?debug`: how the thinker reached its last answer (time pondered, rollouts, time thought). */
   thinking: () => play.game?.thinker.last ?? null,
