@@ -145,11 +145,12 @@ export function snapshot(state) {
 }
 
 /** A logged move read back: 1-based borders, and the swap's `target` or minusTen's `discard` (the extension). */
-const loggedMove = (spec, logged) => ({
+const loggedMove = (spec, logged, drew = null) => ({
   card: parseCard(spec, logged.card),
   border: logged.border - 1,
   ...(logged.target === undefined ? {} : { target: logged.target - 1 }),
   ...(logged.discard === undefined ? {} : { discard: parseCard(spec, logged.discard) }),
+  ...(logged.card === "V♣" && logged.discard !== undefined && drew !== null ? { legacy: true } : {}),
 });
 
 function replayTurn(state, entry, index) {
@@ -162,7 +163,7 @@ function replayTurn(state, entry, index) {
     applyMove(state, null);
     return;
   }
-  const move = loggedMove(state.spec, entry.move);
+  const move = loggedMove(state.spec, entry.move, entry.drew);
   if (!legalMoves(state).some((m) => m.card === move.card && m.border === move.border && m.target === move.target && m.discard === move.discard)) fail(`coup illégal ${entry.move.card} → ${entry.move.border}`);
   const drawing = state.pile.length > 0 && drawsAfter(move.card, move);
   applyMove(state, move);

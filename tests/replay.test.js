@@ -1,5 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { DECKS } from "../src/config/decks.js";
 import { JOKER, cardOf } from "../src/core/cards.js";
 import { formatCard, parseCard } from "../src/core/notation.js";
@@ -79,5 +80,12 @@ describe("replay logs", () => {
     redrawn.turns[0].drew = redrawn.turns[0].drew === "1♠" ? "2♠" : "1♠";
     assert.throws(() => replayStates(redrawn), /pioche/);
     assert.throws(() => replayStates({ ...log, format: "autre/9" }), /Format/);
+  });
+
+  it("replays legacy logs where V♣ drew after laying", () => {
+    const raw = readFileSync(new URL("../replays/2026-10-09_20-53-59_borne-vs-sami_4-3.json", import.meta.url), "utf8");
+    const frames = replayStates(JSON.parse(raw));
+    assert.equal(frames.length, 42);
+    assert.equal(frames.at(-1).state.winner, 0);
   });
 });

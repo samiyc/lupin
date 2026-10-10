@@ -74,19 +74,29 @@ function recall(state, player, border) {
   border.completedAt[player] = Infinity;
 }
 
-function cycleHand(state, hand, discard) {
+function cycleHand(state, hand, discard, legacy = false) {
   const at = hand.indexOf(discard);
   if (at < 0) return;
   hand.splice(at, 1);
   if (state.pile.length > 0) hand.push(state.pile.pop());
-  if (state.pile.length > 0) hand.push(state.pile.pop());
+  if (!legacy && state.pile.length > 0) hand.push(state.pile.pop());
   state.pile.push(discard);
   const rng = state.pileRng ?? state.rng;
   if (rng) rng.shuffle(state.pile);
 }
 
+const isMinusTen = (key) => key === "minusTen" || key === "weakest";
+
+function applyMinusTen(state, hand, discard, legacy) {
+  if (discard !== undefined && discard !== null && state.pile.length > 0) {
+    cycleHand(state, hand, discard, legacy);
+    return Boolean(legacy);
+  }
+  return true;
+}
+
 /** Lays figure `move.card` beside `move.border`; true when the player draws after it (all but the Rappel and minusTen with discard). */
-export function playFigure(state, player, { card, border: index, target, discard }) {
+export function playFigure(state, player, { card, border: index, target, discard, legacy = false }) {
   const hand = state.hands[player];
   hand.splice(hand.indexOf(card), 1);
   const border = state.borders[index];
@@ -99,10 +109,7 @@ export function playFigure(state, player, { card, border: index, target, discard
   }
   // The Dame de Cœur stays with the border she was laid beside: both move whole, figures included.
   if (key === "swap") [state.borders[index], state.borders[target]] = [state.borders[target], state.borders[index]];
-  // Valet de Trèfle: discard a card, draw 2 replacements, shuffle discard into pile, no draw after.
-  if ((key === "minusTen" || key === "weakest") && discard !== undefined && discard !== null && state.pile.length > 0) {
-    cycleHand(state, hand, discard);
-    return false;
-  }
+  // Valet de Trèfle: discard a card, draw replacements, shuffle discard into pile, no draw after (except legacy).
+  if (isMinusTen(key)) return applyMinusTen(state, hand, discard, legacy);
   return true;
 }

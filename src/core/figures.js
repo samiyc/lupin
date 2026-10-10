@@ -40,6 +40,7 @@ export const drawsAfter = (card, move = null) => {
   if (!isFigure(card)) return true;
   const { key } = figureOf(card);
   if (key === "recall") return false;
+  if (move?.legacy) return true;
   return !minusTenDrew(key, move);
 };
 
