@@ -65,7 +65,7 @@ src/report/   data (exact + starting hands), tasks (pool tasks: rows, duels,
               solo), analysis + analysis-play (findings + narrative checks),
               ascii/ + markdown.js, html/ + page/, rules-stats (the rules box)
 src/replay/   log (write a game log, replay it frame by frame), summary
-web/          index.html, style.css, app/: main (tabs), play (Jouer), viewer +
+web/          index.html, style.css, app/: main (tabs), play (Jouer) + play-game (a new game), viewer +
               panels (Observer, Replays), view + hand (PURE, tested), table
               (DOM), drag (input), runner (games as the page plays them),
               clock (PURE timer, paused out of focus), steps (PURE replay
@@ -174,9 +174,9 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   (`--long --games 125 --page --offset 0` to `3`, 1 000 games), pooled over
   the deck pairs with `npm run versus`, the lower bound above 50 %. **Since
   04/10 the lab plays at 2 000 iterations** (Sami: the core got faster), both
-  sides: `…stfig6@2000` was the V1 to beat; the 1.0's own figures stay at 800. **Since 06/10
-  the Expérimental 1.1 (`ismcts+widen=7+depth=5+core=stfig6@2000`, Tree-7w) is the version to beat**
-  (« V1.1 »); the 1.0 stays the reference of the oracle base and the banc (`V1_ENGINE`). Before spending those, ask the
+  sides: `…stfig6@2000` was the V1 to beat; the 1.0's own figures stay at 800. **Since 08/10
+  the Expérimental 1.2 (`ismcts+widen=7+depth=5+core=stfig6+exact=12@2000`, ExactEnd12: the 1.1 plus
+  the exact solver at the root up to 12 cards) is the version to beat** (the 1.1, Tree-7w, was until then); the 1.0 stays the reference of the oracle base and the banc (`V1_ENGINE`). Before spending those, ask the
   oracle: `npm run oracle -- --disagree <core>` says which of the two cores'
   favourites it plays where they differ, `--summary --core <core>` whether the
   oracle's move entered the core's top 8 (stfig6: 54 % → 66 %).
@@ -238,7 +238,7 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   thrown away) and its search prunes on them (`prune`). `npm run selfplay`
   (20 min max, `selfplay/`, ignored) and `npm run mine` measure the patterns.
 - **Elo** (`src/replay/elo.js`, pure): Bradley-Terry fitted on human replays
-  and `data/elo-duels.json` together, anchored on Basique = 1000, one virtual
+  and `data/elo-duels.json` together, anchored on Basique = 500, one virtual
   draw per player against the anchor so a lone win stays finite. Served by
   `/api/elo` (`scripts/lib/elo-data.js`) and shown in the Stats tab, beside
   `/api/stats` (`src/replay/stats.js`, pure: record per opponent, formation
@@ -313,8 +313,29 @@ scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
   a move** — check the 1.0 fingerprint after any change there. Hands, pools and the
   core leave figures out (`handOf`, `withoutFigures`, `unseenCards`). Balance:
   `npm run extension`; the page: `web/app/figure-input.js`.
-- **The 1.2 core under test is `stfig6ej`** (`endJoker`, `src/sim/end-joker.js`): pile
-  empty, a joker priced by its best use elsewhere — the endgame traps' biggest family.
+- **The endgame cores under test** (`src/sim/end-urgency.js`, `withEndgame`): `stfig6ej`
+  (`endJoker`, `end-joker.js`: pile empty, a joker priced by its best use elsewhere) and
+  `stfig6crit` (`endUrgency`: completion priority, match point, anti-overkill). Neither beat the
+  plain core in duels; the 1.2 won with the solver instead. `npm run trap-bench` screens a core on
+  the kept endgame traps in seconds, never a verdict.
+- **The Valet de Trèfle** (Sami, 08/10 then 10/10) is no longer « the weakest wins »: -10 to the
+  sum of its layer's side (`minusTen` in `border-rules.js`), and, pile not empty, an optional
+  discard: `{ card, border, discard }` draws two, shuffles the discard back with `state.pileRng`
+  (seeded from the game's `seed`, so replays and the worker shuffle alike), and skips the end of
+  turn draw. The old key `weakest` is read as `minusTen`; logs of 09/10 where the Valet drew after
+  the discard read back through `legacy` (`loggedMove`, `drawsAfter`;
+  `tests/fixtures/replays/vclub-drew-after-laying.json`). In the page: `discardMove`
+  (`figure-input.js`) — a card of the hand discards, the Valet again on its border lays it alone.
+- **Le Borné 1.0** (`borne` in the line-up, 09/10): `ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000`.
+  `diverse` (`pickCandidates`, `src/sim/pick.js`) caps the moves a card may take among the
+  candidates (`2`, or `lead2`: 2 for the best card, 1 for the others), at the root and, since
+  80d5951, in every `shortlist` of the tree. Its 81,2 % against the 1.2 is 500 games, not the
+  protocol's 1k@2k: `VALIDATE_LONG_1..4_Borne10` are in the backlog. `src/report/borne.html`
+  (copied by hand to `out/borne-1.0.html`) types its numbers by hand, against the report rule.
+- **Open hands** (`openHands` in `createGame`, `--open` in `npm run duel`, the « Mains
+  découvertes » box of the page): both hands visible, the pile hidden; `determinize` then deals only
+  the pile. Written into the log's rules, so the replay shows both hands.
+- **No legal move**: the human passes with « Passer mon tour » (`btn-pass`), shown only then.
 - **Puzzle attempts are tracked** (Sami, 07/10, `src/replay/puzzle-attempts.js`):
   `web/app/puzzle-tracker.js` times each attempt with the focus-aware clock and
   POSTs it on close to `/api/puzzles/attempts`, which appends one line to

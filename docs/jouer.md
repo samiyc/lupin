@@ -39,9 +39,23 @@ côte, gagne.
 
 Dans l'ordre : Jouer, Observer, Puzzles, Replays, Stats.
 
-**Jouer.** « Nouvelle partie » : choisis de jouer premier ou second, ton
-adversaire et ton prénom. Chaque robot est décrit en une ligne chiffrée : ce
-qu'il examine, son rythme, et son Elo lu dans tes replays (`/api/elo`).
+**Jouer.** « Nouvelle partie », sur deux colonnes : à gauche ton adversaire,
+à droite qui commence, les cartes bonus de l'extension (0 à 6), l'option
+« Mains découvertes » et ton prénom. Chaque robot est décrit en une ligne
+chiffrée : ce qu'il examine, son rythme, son Elo lu dans tes replays
+(`/api/elo`) et son score contre le robot du dessous (« 81 % vs Expérimental »,
+`vsLower` dans `src/config/bots.js`).
+- **Mains découvertes** : les deux mains restent visibles toute la partie, la
+  pioche reste cachée. La case est décochée à chaque ouverture du dialogue ; le
+  replay garde l'option (`rules.openHands`) et montre les deux mains.
+- **Les figures de l'extension** se posent comme une carte, à côté d'une borne.
+  La **Dame de Cœur** prend deux clics : sa borne, puis celle à échanger. Le
+  **Valet de Trèfle**, pioche non vide, attend sa défausse : clique une carte de
+  ta main pour la défausser (tu en pioches deux, la défausse retourne dans la
+  pioche, pas de pioche en fin de tour), ou reclique sur la même borne pour le
+  poser sans défausse. Échap, ou un clic sur le Valet, annule.
+- **Passer mon tour** : le bouton n'apparaît que si tu n'as plus aucun coup
+  légal, comme le robot qui passe dans la même situation.
 - **Poser une carte** : glisse-la de ta main vers une borne. Autre façon : clique
   la carte, puis la borne, ou tape 1 à 7. Échap annule la sélection.
 - **Jouer à l'avance** : pendant que le robot réfléchit, sélectionne une carte
@@ -95,10 +109,12 @@ qu'il examine, son rythme, et son Elo lu dans tes replays (`/api/elo`).
 
 **Replays.** La liste des parties récentes (`replays/`) et gardées
 (`data/replays/`), cinq visibles à la fois.
-- Chaque partie tient sur deux lignes :
+- Chaque partie tient sur trois lignes :
   - « (W) Sami -vs- Stratège 2.1.0 » : le (W) est du côté du gagnant, et le
     bouton est vert si tu as gagné, rouge sinon ;
-  - en dessous, le score (ou « 3 bornes connectées »), la durée et la date.
+  - le score (ou « 3 bornes connectées ») et le mode : « Standard » ou
+    « Extension (6 bonus) » ;
+  - la durée et la date.
 - Même lecteur que l'Observer.
 - Pour chacun de tes coups, le panneau donne le temps que tu as mis (« Joue 5♥
   sur la borne 2 en 2 min 30 s »). Il dit aussi ce que le **Stratège 2.1**
@@ -198,7 +214,7 @@ la main adverse, ce sont les cartes vues nulle part.
 | **Stratège** | 2.1 | **Il anticipe.** Il prend ses 4 meilleurs coups selon son cœur, le Stratège 1.2 (plus bas). Pour chacun, il rejoue 16 fois la fin de la partie en distribuant au hasard les cartes qu'il ne voit pas. Il garde le coup qui gagne le plus souvent, en tenant un peu compte de l'avis du cœur. Le 2.0 battait le cœur 1.1 dans 74 % des parties, et le 2.1 bat le 2.0 dans 55 %. |
 | Stratège 1.2 | (cœur du 2.1) | Le Basique, plus les trois habitudes de Sami : garder le joker pour un Brelan, ouvrir au milieu une couleur à la fois, préférer une suite de même couleur à une paire. Plus trois idées tirées des parties en ligne : les trois bornes du milieu seulement pour un départ solide ; jamais la même valeur seule sur deux bornes ; ne jamais séparer deux cartes de même couleur qui se suivent (1.2). C'est lui qui joue les statistiques du rapport : le 2.1 est trop lent pour un million de parties. Le détail : `docs/strategie.md`. |
 | **Expérimental** | 1.2 | **Depuis le 1.2, il résout exactement la fin de partie à la racine dès 12 cartes restantes.** Pioche vide, si la somme de sa main et des cartes restantes est ≤ 12, le solveur exact rétrograde calcule à coup sûr le chemin gagnant (`exact=12`). Il bat le 1.1 dans 52,7 % des parties (fourchette 50,5 – 54,8 %, 1 500 parties) et franchit pour la première fois le cap symbolique des 1 000 Elo (1 003 ± 18). Il conserve la recherche en arbre ISMCTS sur 5 coups d'avance et 7 réponses par niveau (`widen=7`). |
-| **Le Borné** | 1.0 | **L'arbre canalisé : 2 bornes max par carte, certitude en profondeur.** Au lieu d'éparpiller ses simulations sur des bornes redondantes pour la même carte (ce qui saturait le Top 7 du 1.2), Le Borné applique un plafond strict de 2 bornes par carte (`diverse=2`) à tous les niveaux de l'arbre et resserre la largeur à 5 (`widen=5`). Cela libère 28 % de branchement tout en offrant au moins 3 cartes distinctes par niveau. UCB1 converge plus vite et explore en profondeur (plis 3 et 4). Il bat l'Expérimental 1.2 dans **81,2 %** des parties (77,8 – 84,6 % sur 500 parties). Il hérite aussi du solveur exact de fin de partie à 12 cartes. |
+| **Le Borné** | 1.0 | **L'arbre canalisé : 2 bornes max par carte, certitude en profondeur.** Au lieu d'éparpiller ses simulations sur des bornes redondantes pour la même carte (ce qui saturait le Top 7 du 1.2), Le Borné applique un plafond strict de 2 bornes par carte (`diverse=2`) à tous les niveaux de l'arbre et resserre la largeur à 5 (`widen=5`). Cela libère 28 % de branchement tout en offrant au moins 3 cartes distinctes par niveau. UCB1 converge plus vite et explore en profondeur (plis 3 et 4). Il bat l'Expérimental 1.2 dans **81,2 %** des parties (77,8 – 84,6 % sur 500 parties) : un chiffre encore à confirmer par les quatre duels longs du protocole (`VALIDATE_LONG_1` à `4_Borne10`, au backlog), le cap à 2 à la racine seule ayant fait 49,0 % sur 1 000 parties. Il hérite aussi du solveur exact de fin de partie à 12 cartes. |
 
 **Versions.** Deux chiffres, depuis le 03/10. Un robot ne change de numéro qu'une fois le changement validé
 (duels longs sur plusieurs jeux de donnes) :

@@ -308,6 +308,10 @@ version :
 | `ExactEnd12` | le V1.1 qui, pioche vide, calcule exactement son vrai coup jusqu'à 12 cartes en main (au lieu de 8), avec un plafond de positions au-delà duquel l'arbre reprend | `ismcts+widen=7+depth=5+core=stfig6+exact=12@2000` |
 | `CriticalEnd` | le cœur 1.2 d'urgence tactique (`stfig6crit`, `src/sim/end-urgency.js`) : pioche vide, remboursement du cardCost, priorité de complétion et parades des 3 adjacentes | `ismcts+widen=7+depth=5+core=stfig6crit@2000` |
 | `CriticalEnd-Exact12` | le combo cœur tactique `stfig6crit` + solveur exact pioche vide à 12 cartes | `ismcts+widen=7+depth=5+core=stfig6crit+exact=12@2000` |
+| `Diverse1` | à la racine, le meilleur coup de chaque carte distincte d'abord, puis les meilleurs gains (`diverse=1`, `pickCandidates` dans `src/sim/pick.js`) | `ismcts+…+diverse=1@2000` |
+| `Diverse2` | au plus 2 bornes par carte parmi les candidats, au mérite (`diverse=2`) ; complété par les gains si les cartes manquent | `ismcts+widen=7+…+diverse=2@2000` |
+| `Lead2` | 2 bornes pour la carte du meilleur coup, 1 pour les autres (`diverse=lead2`, ou `2-1`) | `ismcts+widen=4+…+diverse=lead2@2000` |
+| `Canalisé` (Le Borné 1.0) | le cap `diverse=2` à la racine **et** à chaque étage de l'arbre, avec 5 réponses par étage au lieu de 7 | `ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000` |
 | `RootHalving-Tree-5w` | RootHalving avec 5 réponses par étage au lieu de 3 (même profondeur) | `ismcts+widen=5+depth=5+…+halving=…` |
 | `RootHalving-Tree-2w-6d` | RootHalving avec un arbre de 2 réponses sur 6 coups | `ismcts+widen=2+depth=6+…+halving=750-375-375@1500` |
 | `RootHalving` | à la racine, les candidats à tour de rôle puis la moitié éliminée à chaque phase (1 000 / 500 / 500 itérations : 125, 250, 500 visites) au lieu d'UCB | `…+halving=1000-500-500` |

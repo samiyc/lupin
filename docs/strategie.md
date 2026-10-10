@@ -2810,7 +2810,7 @@ joue 500 parties par pioche sur 8 configurations avec l'arbre du 1.1 à 200 ité
 resserrées à ±3,5 %) :
 - **Équilibre du premier joueur** : 48,8 % sans figure, 48,0 % avec les six figures réunies (durée moyenne
   passant de 35,3 à 41,5 tours).
-- **Valet de Trèfle (V♣, la plus faible gagne)** : posée dans 71,8 % des parties (tour 25) ; borne gagnée
+- **Valet de Trèfle (V♣, la plus faible gagne — règle remplacée le 08/10, voir plus bas)** : posée dans 71,8 % des parties (tour 25) ; borne gagnée
   55,6 % ; **partie gagnée 62,4 % ± 3,5**. **Trop forte** (la seule au-dessus de 60 %).
 - **Valet de Carreau (V♦, La Somme)** : posée 65,1 % (tour 28) ; borne gagnée 65,0 % ; **partie gagnée
   59,9 % ± 3,8**. Redescend sous le seuil critique des 60 % avec l'échantillon élargi.
@@ -2857,3 +2857,35 @@ Après la sortie de l'Expérimental 1.2, une analyse du comportement en début d
 - En commençant : 75,2 % · En second : 87,2 %.
 - Ce saut de performance sans précédent (+31 points de winrate au-dessus de 50 %) justifie la création d'une nouvelle catégorie de bot d'élite : **« Le Borné » v1.0** (`ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000`).
 
+### À confirmer (relecture du 10/10)
+- Le chiffre vient de **deux duels de 250 parties**, sur des donnes non notées. Le protocole d'une version
+  (`docs/validation.md`) demande quatre jeux de donnes de 250 en profil long, mis en commun par
+  `npm run versus`, la borne basse au-dessus de 50 % : ce sont `VALIDATE_LONG_1` à `4_Borne10`, au
+  backlog de nuit (`--offset 1` à `4`).
+- Le saut ne ressemble à aucun autre : chaque version précédente gagnait 2 à 5 points, et le cap à 2 **à la
+  racine seule** (`widen=7+diverse=2`) faisait **49,0 % sur 1 000 parties** contre le même 1.2. Si les
+  duels longs confirment, l'écart vient du couple `widen=5` + cap dans l'arbre ; sinon, chercher d'abord
+  dans les réglages du duel (budget, `--page`, `--open`).
+- Les duels gardés dans `duels/` contre le 1.2 sont tous en `widen=7+diverse=2` : aucun n'est celui du
+  Borné tel qu'il est publié.
+
+## L'extension après la refonte du Valet de Trèfle (10/10)
+
+`npm run extension` (cœur `stfig6` des deux côtés, 400 parties par pioche) rejoué avec la règle finale :
+malus -10 pour son camp, défausse d'une carte contre deux piochées, défausse remélangée, pas de pioche
+en fin de tour. Le V♣ est posé dans 39,6 % des parties (tour 34), gagne sa borne 11,7 % du temps et la
+partie **29,0 % ± 5,0** : de la carte trop forte (62,4 %), il est devenu la plus faible du lot, posé tard
+par le joueur dominé. Le premier joueur reste équilibré (48,0 % sans figure, 49,3 % avec les six).
+À mesurer avec l'arbre avant d'y toucher (`npm run extension -- --engine …`), le cœur jouant mal la
+défausse.
+
+Un cas limite reste ouvert : pioche à une carte, le Valet avec défausse fait piocher cette carte, puis
+remet la défausse dans la pioche ; la main finit à 5 (`cycleHand`, `figure-moves.js`).
+
+## Le cœur `stfig6crit` : une branche morte (relecture du 10/10)
+
+`sideCompletionBonus` (`end-urgency.js`) donnait 0,9 au lieu de 0,5 à un côté « de score 2 000 ou
+plus » : aucun côté n'y arrive (64 par rang de combinaison, 286 au plus). Les chiffres mesurés
+(45,6 % des pièges évités, RolloutCrit-Exact12 à 51,4 %) ont donc été obtenus sans elle. Le code
+garde le comportement mesuré (empreinte `core:stfig6crit,greedy 10` → `de547e1ece02970b`, inchangée) ;
+un seuil réel (une Suite couleur ou un Brelan, par exemple) serait une nouvelle idée à mesurer.
