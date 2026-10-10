@@ -72,13 +72,25 @@ export function pickCandidates(scored, candidates, diverse = 0) {
   return picked;
 }
 
-/** Resolves phased diversity like "cap321_2" into "cap321" (turn 0-3 / T1-4) or 2 (turn 4+ / T5+). */
-export function resolveDiverse(div, state) {
-  if (div === "cap321_2" || div === "cap321t4_2" || div === "cap321t4") {
-    return (state?.turn ?? 0) < 4 ? "cap321" : 2;
-  }
-  return div;
+/** The phased cap (Sami, 10/10): "cap321" over the first four half-moves of the game (`state.turn` 0 to 3), 2 from the fifth on. */
+const PHASED = "cap321_2";
+const PHASED_UNTIL = 4;
+
+/** The named caps `diverse` and `rootDiverse` take beside a number. */
+const DIVERSE_NAMES = Object.freeze(["lead2", "2-1", "cap321", "321", PHASED]);
+
+/** A `diverse` or `rootDiverse` value of an engine id (ismctsSettings): a number, or a named cap — any other name is refused. */
+export function parseDiverse(value) {
+  if (!Number.isNaN(Number(value))) return Number(value);
+  if (!DIVERSE_NAMES.includes(value)) throw new Error(`Diversité inconnue : « ${value} » (connues : ${DIVERSE_NAMES.join(", ")})`);
+  return value;
 }
 
-/** The default child shortlist cap when a phased root cap was given: 2. */
-export const treeDiverseOf = (div) => (typeof div === "string" && (div.includes("_2") || div.includes("t4")) ? 2 : div);
+/** The root's cap at `state`: the phased one resolved, any other as given. */
+export function resolveDiverse(div, state) {
+  if (div !== PHASED) return div;
+  return (state?.turn ?? 0) < PHASED_UNTIL ? "cap321" : 2;
+}
+
+/** The cap under the root: 2 for the phased one, any other as given. */
+export const treeDiverseOf = (div) => (div === PHASED ? 2 : div);

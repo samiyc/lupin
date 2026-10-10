@@ -5,11 +5,9 @@ import { applyMove, legalMoves } from "./game.js";
 import { createHalving, parseHalving } from "./halving.js";
 import { createReader, inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
-import { pickCandidates, resolveDiverse, treeDiverseOf } from "./pick.js";
+import { parseDiverse, pickCandidates, resolveDiverse, treeDiverseOf } from "./pick.js";
 import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
-
-export { resolveDiverse };
 
 /**
  * A tree search over hidden information (single-observer ISMCTS), the 4th
@@ -222,7 +220,7 @@ function resolveCtx(state, scored, { seed, treePolicy, policy, firstExploration,
     amaf: cfg.rave > 0 ? new Map() : null,
     hands: guessedHands(state, judge, seed, settings),
     firstExploration, halving: phases ? createHalving(phases, rootMoves) : null,
-    iterations: 0, diverse: treeDiverseOf(cfg.diverse), rootDiverse: cfg.rootDiverse,
+    iterations: 0, diverse: treeDiverseOf(cfg.diverse),
   };
 }
 
@@ -323,8 +321,8 @@ export function ismctsSettings(name) {
     changes.map((change) => {
       const [key, value] = change.split("=");
       if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
-      if (key === "diverse" || key === "rootDiverse") return [key, Number.isNaN(Number(value)) ? value : Number(value)];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration", "rootDiverse"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (key === "diverse" || key === "rootDiverse") return [key, parseDiverse(value)];
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

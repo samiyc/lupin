@@ -5,8 +5,8 @@ import { ORDERS } from "../src/config/formations.js";
 import { createRng } from "../src/core/random.js";
 import { BOTS, engineFor, pickSampled } from "../src/sim/bots.js";
 import { applyMove, createGame, legalMoves } from "../src/sim/game.js";
-import { createIsmcts, isPivot } from "../src/sim/ismcts.js";
-import { pickCandidates } from "../src/sim/pick.js";
+import { createIsmcts, isPivot, ismctsSettings } from "../src/sim/ismcts.js";
+import { pickCandidates, resolveDiverse, treeDiverseOf } from "../src/sim/pick.js";
 import { EXPERIMENT } from "../src/sim/experimental.js";
 import { HABITS } from "../src/sim/strategist.js";
 import { rolloutPolicyOf, strategistBot } from "../src/sim/bots.js";
@@ -170,6 +170,16 @@ describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
     for (let i = 0; i < 20; i += 1) search.step();
     assert.equal(search.tree().visits, 0);
     assert.equal(search.tree().children.size, 4);
+  });
+
+  it("names its caps: cap321_2 is cap321 over the first four half-moves, then 2, and 2 under the root; an unknown name is refused", () => {
+    assert.equal(resolveDiverse("cap321_2", { turn: 3 }), "cap321");
+    assert.equal(resolveDiverse("cap321_2", { turn: 4 }), 2);
+    assert.equal(resolveDiverse(2, { turn: 0 }), 2);
+    assert.equal(treeDiverseOf("cap321_2"), 2);
+    assert.equal(treeDiverseOf("cap321"), "cap321");
+    assert.equal(ismctsSettings("ismcts+rootDiverse=cap321_2").rootDiverse, "cap321_2");
+    assert.throws(() => ismctsSettings("ismcts+diverse=cap321t4"), /Diversité inconnue/);
   });
 
   it("rootDiverse=cap321_2 applies cap321 on turn < 4 and cap2 on turn >= 4", () => {

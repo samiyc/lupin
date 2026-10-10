@@ -46,3 +46,6 @@ yarn-error.log*
 
 # Raw benchmark generation data (~25MB)
 /data/trap-bench.json
+
+# Raw tree analyses (24 MB): the findings live in docs/analyse-arbre-ismcts.md
+/data/arbre-analysis-results-1000.json

@@ -4,6 +4,8 @@ Cette étude analyse la structure interne de l'arbre ISMCTS à la racine et dans
 
 L'analyse porte sur **1 000 positions de jeu réelles** (125 parties complètes du duel officiel du 10/10, analysées aux tours 1, 2, 3, 4 pour le début de partie [500 positions] et aux tours 10, 11, 12, 13 pour le milieu de partie contesté [500 positions]), comparant **4 configurations à budget @2 000** et l'**Oracle à @20 000 itérations** sur les mêmes donnes et graines aléatoires (soit **5 000 arbres Monte-Carlo analysés nœud par nœud**).
 
+*Un « tour » est ici un **demi-coup** (une carte posée, par l'un ou l'autre joueur) : les tours 1–4 sont les positions avant les 4 premières cartes de la partie (`state.turn` 0 à 3), la fenêtre exacte du Cap321 de `cap321_2` ; les tours 10–13, `state.turn` 9 à 12.*
+
 ---
 
 ## 1. Les 4 configurations comparées
@@ -334,6 +336,6 @@ Un duel officiel `VALIDATE_LONG` (4 × 250 parties, règle officielle `--page`) 
 
 2. **La voie royale pour la Version 1.3** :
    Les données de plus de 2 000 parties de duel et 5 000 arbres analysés dégagent une feuille de route limpide :
-   - **Ouverture créative à la racine uniquement** : Activer le cap diversifié `Cap321` exclusivement à la racine et strictement aux tours d'ouverture (T1–4) via `rootDiverse=cap321t4`. Cela confère le bond d'ouverture (+86 % d'accord Oracle) sans aucun des inconvénients en milieu de jeu.
+   - **Ouverture créative à la racine uniquement** : activer le cap `Cap321` à la racine sur les 4 premiers demi-coups. Le seul réglage existant est `rootDiverse=cap321_2` (sans `diverse` sous la racine, l'arbre reste libre) ; il repasse à un cap 2 dès le 5ᵉ demi-coup, pas à une racine libre. *(Corrigé le 11/10 : `cap321t4`, cité ici d'abord, faisait exactement la même chose que `cap321_2` et a été fusionné avec lui ; le « +86 % » d'accord Oracle a été mesuré sur `w8_d4_r10_c2`, pas sur ce réglage, et repose sur 26 coups contre 14 sur 500 positions.)*
    - **Liberté tactique totale dans l'arbre** : Conserver `widen=7, diverse=0` dans toute la shortlist enfant pour laisser l'ISMCTS contrer librement les menaces adverses sur les bornes contestées.
    - **Résolution mathématique des singletons** : Introduire le **Progressive Widening (`pw=1`)** pour ne plus jamais gaspiller 30 à 40 % des itérations en nœuds parasites à 1 visite, tout en approfondissant dynamiquement les branches prometteuses.
