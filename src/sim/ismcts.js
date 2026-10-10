@@ -322,7 +322,7 @@ export function ismctsSettings(name) {
       const [key, value] = change.split("=");
       if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
       if (key === "diverse") return [key, Number.isNaN(Number(value)) ? value : Number(value)];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration", "diverse"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

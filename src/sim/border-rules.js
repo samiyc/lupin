@@ -10,11 +10,12 @@ import { jokerStandIns } from "../core/stand-ins.js";
  * untouched — the base game does not change by a bit; otherwise an evaluator
  * with the same `score` contract (higher wins, ties to the first side
  * complete), the figures added up in a fixed order:
- * 1. the Kings: the odd colour for both sides (Roi de Pique), +10 to a run
- *    for the side of whoever laid it (Roi de Carreau);
- * 2. La Somme (Valet de Carreau): only the sums are compared;
- * 3. the Valet de Trèfle last: the weakest wins — the score is negated, and a
- *    joker then takes the value that makes its side weakest.
+ * 1. the Kings and the Valet de Trèfle: the odd colour for both sides (Roi de
+ *    Pique), +10 to a run (Roi de Carreau) and -10 to the sum (Valet de
+ *    Trèfle, Sami 08/10) for the side of whoever laid it;
+ * 2. La Somme (Valet de Carreau): only the sums are compared, the ±10 kept.
+ * The Valet de Trèfle's old rule (« the weakest wins ») is gone; its key
+ * `weakest` is read as `minusTen` so that older logs still load.
  */
 const RANK_SPAN = 64;
 const RUNS = new Set(["straight", "straightFlush"]);

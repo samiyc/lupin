@@ -1,5 +1,6 @@
-import { isJoker } from "../core/cards.js";
+import { isJoker, valueOf } from "../core/cards.js";
 import { evaluatorFor } from "./border-rules.js";
+import { withEndJoker } from "./end-joker.js";
 
 /**
  * `endUrgency` (core 1.2, Sami 08/10, from the endgame traps): once the pile is
@@ -33,10 +34,9 @@ function sideCompletionBonus(state, move, ctx) {
     if (myScore <= oppScore) return -2.0;
     return 1.2 + matchPointBonus(myScore, oppScore, ctx);
   }
-  if (oppSide.length === 2) {
-    const base = myScore >= 2000 ? 0.9 : 0.5;
-    return base + (ctx.myBorders === 3 ? 1.0 : 0);
-  }
+  // The measured version (08/10) gave 0.9 here to a side scoring 2 000 or more, a score no side
+  // reaches (64 a formation rank, 286 at most): always 0.5. Kept so its figures still hold.
+  if (oppSide.length === 2) return 0.5 + (ctx.myBorders === 3 ? 1.0 : 0);
   return (ctx.twoCards === 1 ? 0.5 : 0.3) + (ctx.myBorders === 3 ? 0.8 : 0);
 }
 
@@ -98,10 +98,10 @@ function overkillPenalty(state, move, ctx) {
   const mySide = border.sides[ctx.player];
   const myScore = evaluatorFor(state, move.border, ctx.player).score([...mySide, move.card]);
   if (myScore <= oppScore) return 0;
-  const cardVal = (move.card % 10) + 1;
+  const cardVal = valueOf(state.spec, move.card);
   const hasCheaperWinner = ctx.moves.some((m) => {
     if (m.border !== move.border || isJoker(m.card)) return false;
-    const otherVal = (m.card % 10) + 1;
+    const otherVal = valueOf(state.spec, m.card);
     return otherVal < cardVal && evaluatorFor(state, move.border, ctx.player).score([...mySide, m.card]) > oppScore;
   });
   return hasCheaperWinner ? -0.3 : 0;
@@ -121,4 +121,10 @@ export function withEndUrgency(state, moves, gainOf, { costOf, on }) {
     const bonus = costOf(move.card) + moveUrgencyBonus(state, move, ctx) + jokerPenalty(state, move, ctx) + overkillPenalty(state, move, ctx);
     return gainOf(move) + bonus;
   };
+}
+
+/** The core's endgame corrections, pile empty, in order: the joker priced by its best use (end-joker.js), then the urgency. */
+export function withEndgame(state, moves, gainOf, { costOf, tuning }) {
+  const priced = withEndJoker(state, moves, gainOf, { costOf, on: tuning.endJoker });
+  return withEndUrgency(state, moves, priced, { costOf, on: tuning.endUrgency });
 }

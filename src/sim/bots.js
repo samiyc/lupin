@@ -1,6 +1,5 @@
 import { isJoker, valueOf } from "../core/cards.js";
-import { withEndJoker } from "./end-joker.js";
-import { withEndUrgency } from "./end-urgency.js";
+import { withEndgame } from "./end-urgency.js";
 import { handOf, withFigureMoves } from "./figure-gains.js";
 import { withCertainties } from "./certainty.js";
 import { EXPERIMENT, budgetOf, coreEngines, coreOf, experimentalSettings } from "./experimental.js";
@@ -31,7 +30,9 @@ import { tuningsOf } from "./tuning.js";
  * observer's "why this move" panel read it. `options.keepAll` keeps the moves
  * a bot refuses to consider (marked `refused`), to advise on a human's move.
  */
-const TEMPERATURE = 0.35, JOKER_COST = 0.08, CARD_COST = 0.02;
+const TEMPERATURE = 0.35;
+const JOKER_COST = 0.08;
+const CARD_COST = 0.02;
 /** Slope of the win chance at even odds: value units → win-chance units. */
 const VALUE_TO_CHANCE = 1 / (4 * TEMPERATURE);
 /** The estimate's settings; a bot may carry its own (`params`), to be tuned. */
@@ -167,8 +168,8 @@ function scoreStrategist(state, moves, { habits, strategy, params, ...tuning }, 
   const plainGain = context.ideas?.has("whole") ? wholeGains(state, seen) : (move) => moveGain(state, move, mine, threat[move.border]);
   const certainty = certaintyOf(context.ideas);
   const costOf = (card) => cardCost(state.spec, card, params);
-  const coreGain = withEndJoker(state, moves, certainty ? withCertainties(state, plainGain, costOf) : plainGain, { costOf, on: tuning.endJoker });
-  const gainOf = withEndUrgency(state, moves, coreGain, { costOf, on: tuning.endUrgency });
+  // `endJoker` (core 1.2) and `endUrgency` (stfig6crit), end-urgency.js: once the pile is empty.
+  const gainOf = withEndgame(state, moves, certainty ? withCertainties(state, plainGain, costOf) : plainGain, { costOf, tuning });
   const options = { gainOf: (move) => gainOf(move) * (factors?.[move.border] ?? 1), scale: 1 / (4 * params.temperature), keepAll };
   const scoreCards = (cards) => strategistMoves(cards, (move) => state.borders[move.border].sides[player], context, options);
   return withFigureMoves(state, moves, () => borderChances(state, state.current, seen), scoreCards);

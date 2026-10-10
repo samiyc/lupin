@@ -56,7 +56,7 @@ export function pickCandidates(scored, candidates, diverse = 0) {
   if (!diverse || sorted.length <= candidates) {
     return sorted.slice(0, candidates).map(({ move }) => move);
   }
-  const picked = pickDiverse(sorted, candidates, diverse === 1 ? 1 : diverse);
+  const picked = pickDiverse(sorted, candidates, diverse);
   for (const { move } of sorted) {
     if (picked.length >= candidates) break;
     if (!picked.includes(move)) picked.push(move);
