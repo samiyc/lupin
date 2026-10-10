@@ -150,19 +150,25 @@ function outcomeOf(header) {
   return header.winner === human.seat ? "won" : "lost";
 }
 
+function modeLabel(bonus) {
+  if (!bonus) return "Standard";
+  if (bonus === 1) return "Extension (1 bonus)";
+  return `Extension (${bonus} bonus)`;
+}
+
 /**
- * A replay list entry on two lines. `title`: both players, first player first,
- * "(W)" on the winner's side. `detail`: the score (or "3 bornes connectées"),
- * the time played and the date — short enough to hold on one line. `outcome`: "won" or "lost" for
- * the human, null for a game between bots. `nameOf` names a player entry.
+ * A replay list entry on three lines. `title`: both players, first player first,
+ * "(W)" on the winner's side. `detail`: score and mode ("Standard" or "Extension (X bonus)").
+ * `sub`: duration and date. `outcome`: "won" or "lost" for the human, null for bots.
  */
 export function replayLabel(header, nameOf) {
   const [first, second] = [...header.players].sort((a, b) => a.seat - b.seat).map(nameOf);
   const title = `${header.winner === 0 ? "(W) " : ""}${first} -vs- ${second}${header.winner === 1 ? " (W)" : ""}`;
   const how = header.winType === "adjacent" ? "3 bornes connectées" : header.borders && `Score:${header.borders.join("-")}`;
+  const detail = [how, modeLabel(header.bonus)].filter(Boolean).join(". ");
   const time = header.durationMs ? `Durée:${formatMinutes(header.durationMs).replace(" ", "")}` : null;
-  const detail = [how, time, shortDate(header.startedAt)].filter(Boolean).join(". ");
-  return { title, detail, outcome: outcomeOf(header) };
+  const sub = [time, shortDate(header.startedAt)].filter(Boolean).join(". ");
+  return { title, detail, sub, outcome: outcomeOf(header) };
 }
 
 export const WIN_TYPES = Object.freeze({

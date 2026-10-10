@@ -57,6 +57,17 @@ function durationOf(log) {
   return Number.isFinite(span) ? span : null;
 }
 
+const FIGURE_TEXTS = new Set(["V♣", "V♦", "D♥", "D♠", "R♠", "R♦"]);
+
+const bonusCount = (log) => {
+  if (typeof log.rules?.bonus === "number") return log.rules.bonus;
+  if (Array.isArray(log.deck)) {
+    const count = log.deck.filter((card) => FIGURE_TEXTS.has(card)).length;
+    if (count > 0) return count;
+  }
+  return 0;
+};
+
 /** What the replay list shows, without sending whole logs. */
 export function replayHeader(dir, name, log) {
   return {
@@ -69,5 +80,6 @@ export function replayHeader(dir, name, log) {
     winType: log.result?.winType ?? null,
     borders: bordersWon(log.result),
     durationMs: durationOf(log),
+    bonus: bonusCount(log),
   };
 }

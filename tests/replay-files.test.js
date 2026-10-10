@@ -53,7 +53,12 @@ describe("replay file names", () => {
       winType: "adjacent",
       borders: null,
       durationMs: null,
+      bonus: 0,
     });
+    const withBonus = { ...log, rules: { bonus: 6 } };
+    assert.equal(replayHeader("recent", "x.json", withBonus).bonus, 6);
+    const withDeckFigures = { ...log, deck: ["1♠", "V♣", "D♥", "2♠"] };
+    assert.equal(replayHeader("recent", "x.json", withDeckFigures).bonus, 2);
   });
 
   it("count the borders and the time played, the clock first, the wall clock else", () => {

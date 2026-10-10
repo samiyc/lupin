@@ -190,7 +190,7 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .explain ol { margin: 0; padding-left: 1.3em; }
 .explain li.chosen { font-weight: 700; }
 /* Five games in sight, then the list scrolls: the player's buttons stay on screen. */
-.replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.05rem; }
+.replay-list { display: grid; gap: 4px; max-height: calc(2.3rem + 5 * (var(--replay-item) + 4px)); overflow: auto; scrollbar-width: thin; --replay-item: 3.8rem; }
 /* Stats tab */
 .stats-view { display: grid; gap: 12px; align-content: start; min-width: 0; grid-column: 1 / -1; width: 100%; max-width: 1100px; justify-self: center; }
 .stats-view h2 { margin: 0; font: 700 1.6rem var(--display); }

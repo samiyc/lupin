@@ -49,14 +49,16 @@ export function wireObserve() {
   });
 }
 
-/** Two lines: who played (and who won), then score, time and date. Green or red for the human. */
+/** Three lines: who played (and who won), score and mode, then duration and date. Green or red for the human. */
 function replayButton(header) {
-  const { title, detail, outcome } = replayLabel(header, playerName);
+  const { title, detail, sub, outcome } = replayLabel(header, playerName);
+  const hint = [title, detail, sub].filter(Boolean).join("\n");
   return el(
     "button",
-    { type: "button", class: outcome, title: `${title}\n${detail}`, dataset: { name: header.name, dir: header.dir } },
+    { type: "button", class: outcome, title: hint, dataset: { name: header.name, dir: header.dir } },
     el("span", { class: "replay-title" }, title),
     el("span", { class: "replay-detail" }, detail),
+    el("span", { class: "replay-detail" }, sub),
   );
 }
 

@@ -187,12 +187,14 @@ describe("the replay list", () => {
   it("puts (W) on the winner's side, first player first", () => {
     assert.deepEqual(replayLabel(header(), nameOf), {
       title: "(W) Sami -vs- Stratège 1.1.0",
-      detail: "Score:4-3. Durée:21min. 24/09/26 à 01h57",
+      detail: "Score:4-3. Standard",
+      sub: "Durée:21min. 24/09/26 à 01h57",
       outcome: "won",
     });
-    const lost = replayLabel(header({ winner: 1, winType: "adjacent", borders: [3, 4] }), nameOf);
+    const lost = replayLabel(header({ winner: 1, winType: "adjacent", borders: [3, 4], bonus: 6 }), nameOf);
     assert.equal(lost.title, "Sami -vs- Stratège 1.1.0 (W)");
-    assert.equal(lost.detail, "3 bornes connectées. Durée:21min. 24/09/26 à 01h57");
+    assert.equal(lost.detail, "3 bornes connectées. Extension (6 bonus)");
+    assert.equal(lost.sub, "Durée:21min. 24/09/26 à 01h57");
     assert.equal(lost.outcome, "lost");
   });
 
@@ -200,6 +202,7 @@ describe("the replay list", () => {
     const bots = header({ players: [{ seat: 0, kind: "bot", version: "1.1.0" }, { seat: 1, kind: "bot", version: "1.0.0" }], durationMs: null });
     const label = replayLabel(bots, nameOf);
     assert.equal(label.outcome, null);
-    assert.equal(label.detail, "Score:4-3. 24/09/26 à 01h57");
+    assert.equal(label.detail, "Score:4-3. Standard");
+    assert.equal(label.sub, "24/09/26 à 01h57");
   });
 });
