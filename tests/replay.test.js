@@ -83,7 +83,7 @@ describe("replay logs", () => {
   });
 
   it("replays legacy logs where V♣ drew after laying", () => {
-    const raw = readFileSync(new URL("../replays/2026-10-09_20-53-59_borne-vs-sami_4-3.json", import.meta.url), "utf8");
+    const raw = readFileSync(new URL("./fixtures/replays/vclub-drew-after-laying.json", import.meta.url), "utf8");
     const frames = replayStates(JSON.parse(raw));
     assert.equal(frames.length, 42);
     assert.equal(frames.at(-1).state.winner, 0);

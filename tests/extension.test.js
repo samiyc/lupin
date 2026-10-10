@@ -100,6 +100,18 @@ describe("the extension's figure moves (figure-moves.js)", () => {
     assert.equal(game.pile.length, initialPileLen - 1);
   });
 
+  it("Valet de Trèfle: no discard once the pile is empty, one move a border then", () => {
+    const game = newGame(3);
+    game.hands[0] = [id("minusTen"), ...cards("1♠", "2♠", "3♠", "4♠", "5♠")];
+    const withPile = legalMoves(game).filter((move) => move.card === id("minusTen"));
+    assert.ok(withPile.some((move) => move.discard !== undefined), "a discard is offered while the pile lasts");
+    assert.equal(withPile.filter((move) => move.border === 0).length, 6, "laid alone, or with any of the 5 other cards");
+    game.pile = [];
+    const empty = legalMoves(game).filter((move) => move.card === id("minusTen"));
+    assert.deepEqual(empty.map((move) => move.border), [0, 1, 2, 3, 4, 5, 6]);
+    assert.ok(empty.every((move) => move.discard === undefined));
+  });
+
   it("Dame de Cœur: swaps her border with another undecided one, and stays with hers", () => {
     const game = newGame();
     game.hands[0] = [id("swap"), ...cards("1♠", "2♠", "3♠", "4♠", "5♠")];
@@ -132,6 +144,7 @@ describe("the extension's figure moves (figure-moves.js)", () => {
 describe("whole games with the six figures", () => {
   it("are played out by the bots, the figures laid, and read back from their log", () => {
     let laid = 0;
+    let discards = 0;
     for (let seed = 1; seed <= 12; seed += 1) {
       const game = newGame(seed);
       const log = startLog(game, { rules: { deck: "classique", jokerRule: "colorless", order: "original", endMode: "claim-end" }, players: [], seed });
@@ -143,9 +156,15 @@ describe("whole games with the six figures", () => {
       assert.ok(game.over, `game ${seed} ends`);
       finishLog(log, game);
       laid += game.borders.filter((border) => border.figures.some((figure) => figure !== null)).length;
+      // A Valet de Trèfle laid with a discard draws during the move, so its log entry draws nothing after it.
+      for (const entry of log.turns.filter((turn) => turn.move?.discard !== undefined)) {
+        assert.equal(entry.drew, null, `game ${seed}, turn ${entry.turn}`);
+        discards += 1;
+      }
       const frames = replayStates(log);
       assert.equal(frames.at(-1).state.winner, game.winner, `game ${seed} reads back`);
     }
     assert.ok(laid > 12, `figures were laid (${laid})`);
+    assert.ok(discards > 0, "the bots laid a Valet de Trèfle with a discard, and it read back");
   });
 });

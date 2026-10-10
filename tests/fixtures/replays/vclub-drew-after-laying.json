@@ -1,0 +1,2098 @@
+{
+ "format": "lopin-replay/1",
+ "startedAt": "2026-10-09T20:53:59+02:00",
+ "endedAt": "2026-10-09T21:01:03+02:00",
+ "rules": {
+  "deck": "classique",
+  "jokerRule": "colorless",
+  "order": "original",
+  "endMode": "claim-end",
+  "bonus": 6
+ },
+ "players": [
+  {
+   "seat": 0,
+   "kind": "bot",
+   "bot": "borne",
+   "version": "1.0",
+   "label": "Le Borné"
+  },
+  {
+   "seat": 1,
+   "kind": "human",
+   "name": "Sami"
+  }
+ ],
+ "seed": 201191854,
+ "deck": [
+  "6♦",
+  "5♦",
+  "7♠",
+  "8♠",
+  "D♠",
+  "1♦",
+  "9♣",
+  "10♣",
+  "2♠",
+  "8♣",
+  "6♠",
+  "8♥",
+  "JK",
+  "5♣",
+  "3♥",
+  "D♥",
+  "3♦",
+  "5♠",
+  "V♣",
+  "6♣",
+  "R♦",
+  "1♥",
+  "3♠",
+  "5♥",
+  "7♥",
+  "2♣",
+  "V♦",
+  "4♣",
+  "2♥",
+  "R♠",
+  "4♦",
+  "10♥",
+  "9♠",
+  "7♣",
+  "4♠",
+  "3♣",
+  "JK",
+  "9♥",
+  "7♦",
+  "1♠",
+  "9♦",
+  "8♦",
+  "4♥",
+  "10♠",
+  "2♦",
+  "6♥",
+  "10♦",
+  "1♣"
+ ],
+ "turns": [
+  {
+   "turn": 1,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "8♠",
+    "1♦",
+    "5♦",
+    "6♦",
+    "D♠"
+   ],
+   "pile": 36,
+   "move": {
+    "card": "6♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "6♦",
+     "border": 3,
+     "gain": 1333
+    },
+    {
+     "card": "8♠",
+     "border": 4,
+     "gain": 1105
+    },
+    {
+     "card": "8♠",
+     "border": 3,
+     "gain": 936
+    },
+    {
+     "card": "7♠",
+     "border": 3,
+     "gain": 848
+    },
+    {
+     "card": "5♦",
+     "border": 4,
+     "gain": 805
+    }
+   ],
+   "drew": "1♣"
+  },
+  {
+   "turn": 2,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "6♠",
+    "8♥",
+    "8♣",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 35,
+   "move": {
+    "card": "8♣",
+    "border": 4
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "10♦",
+   "thinkMs": 263
+  },
+  {
+   "turn": 3,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "8♠",
+    "1♦",
+    "5♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 34,
+   "move": {
+    "card": "8♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "8♠",
+     "border": 5,
+     "gain": 1384
+    },
+    {
+     "card": "1♣",
+     "border": 1,
+     "gain": 1169
+    },
+    {
+     "card": "7♠",
+     "border": 4,
+     "gain": 985
+    },
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 954
+    },
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 848
+    }
+   ],
+   "drew": "6♥"
+  },
+  {
+   "turn": 4,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "6♠",
+    "8♥",
+    "10♦",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 33,
+   "move": {
+    "card": "10♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "6♦"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "2♦",
+   "thinkMs": 12375
+  },
+  {
+   "turn": 5,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "6♥",
+    "1♦",
+    "5♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 32,
+   "move": {
+    "card": "1♦",
+    "border": 2
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "1♦",
+     "border": 2,
+     "gain": 928
+    },
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 881
+    },
+    {
+     "card": "6♥",
+     "border": 1,
+     "gain": 693
+    },
+    {
+     "card": "1♣",
+     "border": 1,
+     "gain": 304
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 280
+    }
+   ],
+   "drew": "10♠"
+  },
+  {
+   "turn": 6,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "6♠",
+    "8♥",
+    "2♦",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 31,
+   "move": {
+    "card": "6♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "8♠"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "4♥",
+   "thinkMs": 1852
+  },
+  {
+   "turn": 7,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "10♠",
+    "6♥",
+    "5♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 30,
+   "move": {
+    "card": "5♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "6♦"
+    ],
+    "theirs": [
+     "10♦"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 2760
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 1811
+    },
+    {
+     "card": "10♠",
+     "border": 1,
+     "gain": 911
+    },
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 828
+    },
+    {
+     "card": "6♥",
+     "border": 1,
+     "gain": 470
+    }
+   ],
+   "drew": "8♦"
+  },
+  {
+   "turn": 8,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♥",
+    "8♥",
+    "2♦",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 29,
+   "move": {
+    "card": "8♥",
+    "border": 2
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "1♦"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "9♦",
+   "thinkMs": 7421
+  },
+  {
+   "turn": 9,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "10♠",
+    "6♥",
+    "8♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 28,
+   "move": {
+    "card": "6♥",
+    "border": 6
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "6♥",
+     "border": 6,
+     "gain": 1454
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 1090
+    },
+    {
+     "card": "10♠",
+     "border": 5,
+     "gain": 818
+    },
+    {
+     "card": "6♥",
+     "border": 1,
+     "gain": 718
+    },
+    {
+     "card": "10♠",
+     "border": 1,
+     "gain": 706
+    }
+   ],
+   "drew": "1♠"
+  },
+  {
+   "turn": 10,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♥",
+    "2♦",
+    "9♦",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 27,
+   "move": {
+    "card": "9♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "10♦"
+    ],
+    "theirs": [
+     "6♦",
+     "5♦"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "7♦",
+   "thinkMs": 740
+  },
+  {
+   "turn": 11,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "10♠",
+    "8♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 26,
+   "move": {
+    "card": "10♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [
+     "8♠"
+    ],
+    "theirs": [
+     "6♠"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "10♠",
+     "border": 5,
+     "gain": 3150
+    },
+    {
+     "card": "1♠",
+     "border": 2,
+     "gain": 1576
+    },
+    {
+     "card": "10♠",
+     "border": 1,
+     "gain": 1057
+    },
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 1044
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 1039
+    }
+   ],
+   "drew": "9♥"
+  },
+  {
+   "turn": 12,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♥",
+    "2♦",
+    "7♦",
+    "9♣",
+    "10♣"
+   ],
+   "pile": 25,
+   "move": {
+    "card": "9♣",
+    "border": 4
+   },
+   "side": {
+    "mine": [
+     "8♣"
+    ],
+    "theirs": [],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "JK",
+   "thinkMs": 11299
+  },
+  {
+   "turn": 13,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "9♥",
+    "8♦",
+    "1♣",
+    "D♠"
+   ],
+   "pile": 24,
+   "move": {
+    "card": "8♦",
+    "border": 7
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "8♦",
+     "border": 7,
+     "gain": 1127
+    },
+    {
+     "card": "1♠",
+     "border": 2,
+     "gain": 906
+    },
+    {
+     "card": "9♥",
+     "border": 1,
+     "gain": 664
+    },
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 644
+    },
+    {
+     "card": "8♦",
+     "border": 1,
+     "gain": 614
+    }
+   ],
+   "drew": "3♣"
+  },
+  {
+   "turn": 14,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♥",
+    "2♦",
+    "7♦",
+    "10♣",
+    "JK"
+   ],
+   "pile": 23,
+   "move": {
+    "card": "10♣",
+    "border": 4
+   },
+   "side": {
+    "mine": [
+     "8♣",
+     "9♣"
+    ],
+    "theirs": [],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "4♠",
+   "thinkMs": 259
+  },
+  {
+   "turn": 15,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "9♥",
+    "1♣",
+    "3♣",
+    "D♠"
+   ],
+   "pile": 22,
+   "move": {
+    "card": "3♣",
+    "border": 1
+   },
+   "side": {
+    "mine": [],
+    "theirs": [],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "3♣",
+     "border": 1,
+     "gain": 6054
+    },
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 2531
+    },
+    {
+     "card": "1♠",
+     "border": 2,
+     "gain": 2021
+    },
+    {
+     "card": "1♣",
+     "border": 1,
+     "gain": 1117
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 875
+    }
+   ],
+   "drew": "7♣"
+  },
+  {
+   "turn": 16,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♠",
+    "4♥",
+    "2♦",
+    "7♦",
+    "JK"
+   ],
+   "pile": 21,
+   "move": {
+    "card": "7♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "10♦",
+     "9♦"
+    ],
+    "theirs": [
+     "6♦",
+     "5♦"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "9♠",
+   "thinkMs": 29545
+  },
+  {
+   "turn": 17,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "9♥",
+    "1♣",
+    "7♣",
+    "D♠"
+   ],
+   "pile": 20,
+   "move": {
+    "card": "D♠",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "6♦",
+     "5♦"
+    ],
+    "theirs": [
+     "10♦",
+     "9♦",
+     "7♦"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "D♠",
+     "border": 3,
+     "gain": 130
+    },
+    {
+     "card": "1♣",
+     "border": 1,
+     "gain": 122
+    },
+    {
+     "card": "7♠",
+     "border": 7,
+     "gain": 95
+    },
+    {
+     "card": "1♠",
+     "border": 2,
+     "gain": 71
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 67
+    }
+   ],
+   "drew": null
+  },
+  {
+   "turn": 18,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♠",
+    "9♠",
+    "4♥",
+    "2♦",
+    "JK"
+   ],
+   "pile": 20,
+   "move": {
+    "card": "9♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [
+     "6♠"
+    ],
+    "theirs": [
+     "8♠",
+     "10♠"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "10♥",
+   "thinkMs": 29609
+  },
+  {
+   "turn": 19,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "9♥",
+    "5♦",
+    "1♣",
+    "7♣"
+   ],
+   "pile": 19,
+   "move": {
+    "card": "1♣",
+    "border": 2
+   },
+   "side": {
+    "mine": [
+     "1♦"
+    ],
+    "theirs": [
+     "8♥"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "1♣",
+     "border": 2,
+     "gain": 213
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 128
+    },
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 114
+    },
+    {
+     "card": "5♦",
+     "border": 7,
+     "gain": 71
+    },
+    {
+     "card": "7♣",
+     "border": 1,
+     "gain": 67
+    }
+   ],
+   "drew": "4♦"
+  },
+  {
+   "turn": 20,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♠",
+    "4♥",
+    "10♥",
+    "2♦",
+    "JK"
+   ],
+   "pile": 18,
+   "move": {
+    "card": "4♠",
+    "border": 1
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "3♣"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "R♠",
+   "thinkMs": 49623
+  },
+  {
+   "turn": 21,
+   "player": 0,
+   "hand": [
+    "1♠",
+    "7♠",
+    "9♥",
+    "4♦",
+    "5♦",
+    "7♣"
+   ],
+   "pile": 17,
+   "move": {
+    "card": "1♠",
+    "border": 2
+   },
+   "side": {
+    "mine": [
+     "1♦",
+     "1♣"
+    ],
+    "theirs": [
+     "8♥"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "1♠",
+     "border": 2,
+     "gain": 178
+    },
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 155
+    },
+    {
+     "card": "7♣",
+     "border": 1,
+     "gain": 123
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 98
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 65
+    }
+   ],
+   "drew": "2♥"
+  },
+  {
+   "turn": 22,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "4♥",
+    "10♥",
+    "2♦",
+    "JK",
+    "R♠"
+   ],
+   "pile": 16,
+   "move": {
+    "card": "4♥",
+    "border": 1
+   },
+   "side": {
+    "mine": [
+     "4♠"
+    ],
+    "theirs": [
+     "3♣"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "4♣",
+   "thinkMs": 24275
+  },
+  {
+   "turn": 23,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "2♥",
+    "9♥",
+    "4♦",
+    "5♦",
+    "7♣"
+   ],
+   "pile": 15,
+   "move": {
+    "card": "4♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "6♦"
+    ],
+    "theirs": [
+     "10♦",
+     "9♦",
+     "7♦"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "4♦",
+     "border": 3,
+     "gain": 247
+    },
+    {
+     "card": "7♣",
+     "border": 1,
+     "gain": 245
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 142
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": 105
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 55
+    }
+   ],
+   "drew": "V♦"
+  },
+  {
+   "turn": 24,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "10♥",
+    "2♦",
+    "4♣",
+    "JK",
+    "R♠"
+   ],
+   "pile": 14,
+   "move": {
+    "card": "4♣",
+    "border": 1
+   },
+   "side": {
+    "mine": [
+     "4♠",
+     "4♥"
+    ],
+    "theirs": [
+     "3♣"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "2♣",
+   "thinkMs": 1259
+  },
+  {
+   "turn": 25,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "2♥",
+    "9♥",
+    "5♦",
+    "7♣",
+    "V♦"
+   ],
+   "pile": 13,
+   "move": {
+    "card": "7♣",
+    "border": 7
+   },
+   "side": {
+    "mine": [
+     "8♦"
+    ],
+    "theirs": [],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "7♣",
+     "border": 7,
+     "gain": 20440
+    },
+    {
+     "card": "9♥",
+     "border": 7,
+     "gain": 4420
+    },
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 3145
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 819
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 371
+    }
+   ],
+   "drew": "7♥"
+  },
+  {
+   "turn": 26,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "10♥",
+    "2♦",
+    "2♣",
+    "JK",
+    "R♠"
+   ],
+   "pile": 12,
+   "move": {
+    "card": "10♥",
+    "border": 2
+   },
+   "side": {
+    "mine": [
+     "8♥"
+    ],
+    "theirs": [
+     "1♦",
+     "1♣",
+     "1♠"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "5♥",
+   "thinkMs": 15580
+  },
+  {
+   "turn": 27,
+   "player": 0,
+   "hand": [
+    "7♠",
+    "2♥",
+    "7♥",
+    "9♥",
+    "5♦",
+    "V♦"
+   ],
+   "pile": 11,
+   "move": {
+    "card": "5♦",
+    "border": 3
+   },
+   "side": {
+    "mine": [
+     "6♦",
+     "4♦"
+    ],
+    "theirs": [
+     "10♦",
+     "9♦",
+     "7♦"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "5♦",
+     "border": 3,
+     "gain": 3387
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 3149
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 2727
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 2187
+    },
+    {
+     "card": "9♥",
+     "border": 7,
+     "gain": 967
+    }
+   ],
+   "drew": "3♠"
+  },
+  {
+   "turn": 28,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "5♥",
+    "2♦",
+    "2♣",
+    "JK",
+    "R♠"
+   ],
+   "pile": 10,
+   "move": {
+    "card": "2♣",
+    "border": 6
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "6♥"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "1♥",
+   "thinkMs": 12320
+  },
+  {
+   "turn": 29,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "7♠",
+    "2♥",
+    "7♥",
+    "9♥",
+    "V♦"
+   ],
+   "pile": 9,
+   "move": {
+    "card": "9♥",
+    "border": 7
+   },
+   "side": {
+    "mine": [
+     "8♦",
+     "7♣"
+    ],
+    "theirs": [],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "9♥",
+     "border": 7,
+     "gain": 8947
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 4918
+    },
+    {
+     "card": "3♠",
+     "border": 5,
+     "gain": 3616
+    },
+    {
+     "card": "9♥",
+     "border": 6,
+     "gain": 2171
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": 1732
+    }
+   ],
+   "drew": "R♦"
+  },
+  {
+   "turn": 30,
+   "player": 1,
+   "hand": [
+    "2♠",
+    "1♥",
+    "5♥",
+    "2♦",
+    "JK",
+    "R♠"
+   ],
+   "pile": 8,
+   "move": {
+    "card": "2♠",
+    "border": 6
+   },
+   "side": {
+    "mine": [
+     "2♣"
+    ],
+    "theirs": [
+     "6♥"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "6♣",
+   "thinkMs": 254
+  },
+  {
+   "turn": 31,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "7♠",
+    "2♥",
+    "7♥",
+    "V♦",
+    "R♦"
+   ],
+   "pile": 7,
+   "move": {
+    "card": "R♦",
+    "border": 5
+   },
+   "side": {
+    "mine": [
+     "8♠",
+     "10♠"
+    ],
+    "theirs": [
+     "6♠",
+     "9♠"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "R♦",
+     "border": 5,
+     "gain": 40448
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 8231
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": 3980
+    },
+    {
+     "card": "V♦",
+     "border": 6,
+     "gain": 3845
+    },
+    {
+     "card": "3♠",
+     "border": 5,
+     "gain": 2714
+    }
+   ],
+   "drew": "V♣"
+  },
+  {
+   "turn": 32,
+   "player": 1,
+   "hand": [
+    "1♥",
+    "5♥",
+    "2♦",
+    "6♣",
+    "JK",
+    "R♠"
+   ],
+   "pile": 6,
+   "move": {
+    "card": "2♦",
+    "border": 6
+   },
+   "side": {
+    "mine": [
+     "2♣",
+     "2♠"
+    ],
+    "theirs": [
+     "6♥"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "5♠",
+   "thinkMs": 2
+  },
+  {
+   "turn": 33,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "7♠",
+    "2♥",
+    "7♥",
+    "V♣",
+    "V♦"
+   ],
+   "pile": 5,
+   "move": {
+    "card": "V♦",
+    "border": 6
+   },
+   "side": {
+    "mine": [
+     "6♥"
+    ],
+    "theirs": [
+     "2♣",
+     "2♠",
+     "2♦"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "V♦",
+     "border": 6,
+     "gain": 21028
+    },
+    {
+     "card": "3♠",
+     "border": 5,
+     "gain": 14730
+    },
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 14180
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 12857
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": 9071
+    }
+   ],
+   "drew": "3♦"
+  },
+  {
+   "turn": 34,
+   "player": 1,
+   "hand": [
+    "5♠",
+    "1♥",
+    "5♥",
+    "6♣",
+    "JK",
+    "R♠"
+   ],
+   "pile": 4,
+   "move": {
+    "card": "5♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [
+     "6♠",
+     "9♠"
+    ],
+    "theirs": [
+     "8♠",
+     "10♠"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": "D♥",
+   "thinkMs": 4600
+  },
+  {
+   "turn": 35,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "7♠",
+    "2♥",
+    "7♥",
+    "3♦",
+    "V♣"
+   ],
+   "pile": 3,
+   "move": {
+    "card": "7♠",
+    "border": 5
+   },
+   "side": {
+    "mine": [
+     "8♠",
+     "10♠"
+    ],
+    "theirs": [
+     "6♠",
+     "9♠",
+     "5♠"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "7♠",
+     "border": 5,
+     "gain": 34907
+    },
+    {
+     "card": "3♠",
+     "border": 5,
+     "gain": 34907
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 8480
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": 8032
+    },
+    {
+     "card": "V♣",
+     "border": 7,
+     "gain": 6739
+    }
+   ],
+   "drew": "3♥"
+  },
+  {
+   "turn": 36,
+   "player": 1,
+   "hand": [
+    "1♥",
+    "5♥",
+    "6♣",
+    "JK",
+    "D♥",
+    "R♠"
+   ],
+   "pile": 2,
+   "move": {
+    "card": "JK",
+    "border": 7
+   },
+   "side": {
+    "mine": [],
+    "theirs": [
+     "8♦",
+     "7♣",
+     "9♥"
+    ],
+    "wasEmpty": true,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": true,
+   "candidates": null,
+   "drew": "5♣",
+   "thinkMs": 63237
+  },
+  {
+   "turn": 37,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "2♥",
+    "3♥",
+    "7♥",
+    "3♦",
+    "V♣"
+   ],
+   "pile": 1,
+   "move": {
+    "card": "V♣",
+    "border": 7,
+    "discard": "2♥"
+   },
+   "side": {
+    "mine": [
+     "8♦",
+     "7♣",
+     "9♥"
+    ],
+    "theirs": [
+     "JK"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": false
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "V♣",
+     "border": 7,
+     "gain": 1314
+    },
+    {
+     "card": "V♣",
+     "border": 7,
+     "gain": 1314
+    },
+    {
+     "card": "V♣",
+     "border": 7,
+     "gain": 1314
+    },
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 1170
+    },
+    {
+     "card": "3♥",
+     "border": 6,
+     "gain": 1170
+    }
+   ],
+   "drew": "2♥"
+  },
+  {
+   "turn": 38,
+   "player": 1,
+   "hand": [
+    "1♥",
+    "5♥",
+    "5♣",
+    "6♣",
+    "D♥",
+    "R♠"
+   ],
+   "pile": 0,
+   "move": {
+    "card": "5♥",
+    "border": 7
+   },
+   "side": {
+    "mine": [
+     "JK"
+    ],
+    "theirs": [
+     "8♦",
+     "7♣",
+     "9♥"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": null,
+   "thinkMs": 5872
+  },
+  {
+   "turn": 39,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "2♥",
+    "3♥",
+    "7♥",
+    "3♦",
+    "JK"
+   ],
+   "pile": 0,
+   "move": {
+    "card": "7♥",
+    "border": 6
+   },
+   "side": {
+    "mine": [
+     "6♥"
+    ],
+    "theirs": [
+     "2♣",
+     "2♠",
+     "2♦"
+    ],
+    "wasEmpty": false,
+    "completes": false,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "7♥",
+     "border": 6,
+     "gain": 1.005
+    },
+    {
+     "card": "3♥",
+     "border": 6,
+     "gain": -2.9994
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": -2.9995
+    },
+    {
+     "card": "3♠",
+     "border": 6,
+     "gain": -3.0007
+    },
+    {
+     "card": "3♦",
+     "border": 6,
+     "gain": -3.0007
+    }
+   ],
+   "drew": null
+  },
+  {
+   "turn": 40,
+   "player": 1,
+   "hand": [
+    "1♥",
+    "5♣",
+    "6♣",
+    "D♥",
+    "R♠"
+   ],
+   "pile": 0,
+   "move": {
+    "card": "5♣",
+    "border": 7
+   },
+   "side": {
+    "mine": [
+     "JK",
+     "5♥"
+    ],
+    "theirs": [
+     "8♦",
+     "7♣",
+     "9♥"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": null,
+   "drew": null,
+   "thinkMs": 1680
+  },
+  {
+   "turn": 41,
+   "player": 0,
+   "hand": [
+    "3♠",
+    "2♥",
+    "3♥",
+    "3♦",
+    "JK"
+   ],
+   "pile": 0,
+   "move": {
+    "card": "3♥",
+    "border": 6
+   },
+   "side": {
+    "mine": [
+     "6♥",
+     "7♥"
+    ],
+    "theirs": [
+     "2♣",
+     "2♠",
+     "2♦"
+    ],
+    "wasEmpty": false,
+    "completes": true,
+    "theirsFull": true
+   },
+   "joker": false,
+   "candidates": [
+    {
+     "card": "3♥",
+     "border": 6,
+     "gain": 1
+    },
+    {
+     "card": "2♥",
+     "border": 6,
+     "gain": -3.0001
+    },
+    {
+     "card": "3♠",
+     "border": 6,
+     "gain": -3.0013
+    },
+    {
+     "card": "3♦",
+     "border": 6,
+     "gain": -3.0013
+    },
+    {
+     "card": "JK",
+     "border": 6,
+     "gain": -3.0019
+    }
+   ],
+   "drew": null
+  }
+ ],
+ "result": {
+  "winner": 0,
+  "winType": "majority",
+  "borders": [
+   {
+    "border": 4,
+    "sides": [
+     [],
+     [
+      "8♣",
+      "9♣",
+      "10♣"
+     ]
+    ],
+    "formations": [
+     null,
+     "straightFlush"
+    ],
+    "sums": [
+     null,
+     27
+    ],
+    "winner": 1,
+    "decidedBy": "claim",
+    "filledAt": null,
+    "claimedAt": 14
+   },
+   {
+    "border": 1,
+    "sides": [
+     [
+      "3♣"
+     ],
+     [
+      "4♠",
+      "4♥",
+      "4♣"
+     ]
+    ],
+    "formations": [
+     null,
+     "threeOfAKind"
+    ],
+    "sums": [
+     null,
+     12
+    ],
+    "winner": 1,
+    "decidedBy": "claim",
+    "filledAt": null,
+    "claimedAt": 24
+   },
+   {
+    "border": 3,
+    "sides": [
+     [
+      "6♦",
+      "4♦",
+      "5♦"
+     ],
+     [
+      "10♦",
+      "9♦",
+      "7♦"
+     ]
+    ],
+    "formations": [
+     "straightFlush",
+     "flush"
+    ],
+    "sums": [
+     15,
+     26
+    ],
+    "winner": 0,
+    "decidedBy": "formation",
+    "filledAt": 27,
+    "claimedAt": 27
+   },
+   {
+    "border": 2,
+    "sides": [
+     [
+      "1♦",
+      "1♣",
+      "1♠"
+     ],
+     [
+      "8♥",
+      "10♥"
+     ]
+    ],
+    "formations": [
+     "threeOfAKind",
+     null
+    ],
+    "sums": [
+     3,
+     null
+    ],
+    "winner": 0,
+    "decidedBy": "claim",
+    "filledAt": null,
+    "claimedAt": 29
+   },
+   {
+    "border": 5,
+    "sides": [
+     [
+      "8♠",
+      "10♠",
+      "7♠"
+     ],
+     [
+      "6♠",
+      "9♠",
+      "5♠"
+     ]
+    ],
+    "formations": [
+     "flush",
+     "flush"
+    ],
+    "sums": [
+     25,
+     20
+    ],
+    "winner": 0,
+    "decidedBy": "sum",
+    "filledAt": 35,
+    "claimedAt": 35
+   },
+   {
+    "border": 7,
+    "sides": [
+     [
+      "8♦",
+      "7♣",
+      "9♥"
+     ],
+     [
+      "JK",
+      "5♥",
+      "5♣"
+     ]
+    ],
+    "formations": [
+     "straight",
+     "threeOfAKind"
+    ],
+    "sums": [
+     24,
+     15
+    ],
+    "winner": 1,
+    "decidedBy": "formation",
+    "filledAt": 40,
+    "claimedAt": 40
+   },
+   {
+    "border": 6,
+    "sides": [
+     [
+      "6♥",
+      "7♥",
+      "3♥"
+     ],
+     [
+      "2♣",
+      "2♠",
+      "2♦"
+     ]
+    ],
+    "formations": [
+     "flush",
+     "threeOfAKind"
+    ],
+    "sums": [
+     16,
+     6
+    ],
+    "winner": 0,
+    "decidedBy": "formation",
+    "filledAt": 41,
+    "claimedAt": 41
+   }
+  ],
+  "activeMs": 383221
+ }
+}
