@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { FIGURE_IDS, figureByKey } from "../src/core/figures.js";
-import { bordersFor, discardMove, figuresFor, stepOf } from "../web/app/figure-input.js";
+import { bordersFor, discardMove, discardables, figuresFor, recallBorders, stepOf } from "../web/app/figure-input.js";
 
 const swap = figureByKey("swap").id;
 const sum = figureByKey("sum").id;
@@ -41,5 +41,17 @@ describe("the extension in the page (web/app/figure-input.js)", () => {
     assert.deepEqual([...bordersFor(moves, swap, null)], [1, 3]);
     assert.deepEqual([...bordersFor(moves, swap, { border: 1 })], [3, 4]);
     assert.deepEqual([...bordersFor(moves, sum, null)], [6]);
+  });
+
+  it("lights what the Dame de Pique would take back, and what the Valet de Trèfle may discard", () => {
+    const recall = figureByKey("recall").id;
+    const minusTen = figureByKey("minusTen").id;
+    const moves = [{ card: recall, border: 0 }, { card: recall, border: 4 }, { card: minusTen, border: 2 }, { card: minusTen, border: 2, discard: 7 }, { card: minusTen, border: 2, discard: 31 }, { card: minusTen, border: 5, discard: 9 }];
+    assert.deepEqual([...recallBorders(moves, recall)], [0, 4]);
+    assert.deepEqual([...recallBorders(moves, sum)], []);
+    assert.deepEqual([...discardables(moves, null)], []);
+    assert.deepEqual([...discardables(moves, { card: minusTen, border: 2, action: "discard" })], [7, 31]);
+    // The pile empty: the Valet has no discard to offer.
+    assert.deepEqual([...discardables(moves.slice(0, 3), { card: minusTen, border: 2, action: "discard" })], []);
   });
 });

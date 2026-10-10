@@ -43,10 +43,10 @@ function renderTopHand(hand) {
   $("hand-top").replaceChildren(...cards);
 }
 
-function renderBottomHand(hand, { interactive, selected }) {
+function renderBottomHand(hand, { interactive, selected, marks }) {
   const cards = hand.cards.map((card, index) =>
     cardElement(card, {
-      class: index === selected ? "selected" : "",
+      class: [index === selected ? "selected" : "", marks.discard.has(card.id) ? "discardable" : ""].filter(Boolean).join(" "),
       draggable: interactive ? "true" : null,
       tabindex: interactive ? "0" : null,
       role: interactive ? "button" : null,
@@ -56,8 +56,13 @@ function renderBottomHand(hand, { interactive, selected }) {
   $("hand-bottom").replaceChildren(...cards);
 }
 
-function sideElement(cards, position, border, { legal, lastMove, premove = false }) {
-  const drawn = cards.map((card, i) => cardElement(card, { class: lastMove && i === cards.length - 1 && position === lastMove ? "last" : "" }));
+/** A side's cards: the last one played ringed, and the one a selected Dame de Pique would take back lit (`recalled`). */
+function sideElement(cards, position, border, { legal, lastMove, premove = false, recalled = false }) {
+  const classOf = (i) => {
+    if (i !== cards.length - 1) return "";
+    return [lastMove && position === lastMove ? "last" : "", recalled ? "recallable" : ""].filter(Boolean).join(" ");
+  };
+  const drawn = cards.map((card, i) => cardElement(card, { class: classOf(i) }));
   const classes = ["side", position, legal ? "drop-ok" : "", premove ? "premove" : ""].filter(Boolean).join(" ");
   return el("div", { class: classes, dataset: { border: border.index, position } }, ...drawn);
 }
@@ -74,16 +79,17 @@ function sideRow(side, figure) {
   return el("div", { class: "side-row" }, side, cardElement(figure, { class: "small", title: figure.title }));
 }
 
-function borderElement(border, { legalBorders, lastMove, premove }) {
+function borderElement(border, { legalBorders, lastMove, premove, marks }) {
   const legal = legalBorders.has(border.index);
   const lastSide = border.lastMove ? lastMove.side : null;
+  const recalled = marks.recall.has(border.index);
   return el(
     "div",
     { class: "border", dataset: { border: border.index } },
     el("p", { class: "formation" }, border.formations?.top ?? ""),
     sideRow(sideElement(border.top, "top", border, { legal: false, lastMove: lastSide }), border.figures?.top),
     stoneElement(border),
-    sideRow(sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide, premove: premove === border.index }), border.figures?.bottom),
+    sideRow(sideElement(border.bottom, "bottom", border, { legal, lastMove: lastSide, premove: premove === border.index, recalled }), border.figures?.bottom),
     el("p", { class: "formation" }, border.formations?.bottom ?? ""),
   );
 }
@@ -169,12 +175,17 @@ export function clearTable(message) {
   $("pile-text").textContent = "";
 }
 
+const NO_MARKS = Object.freeze({ recall: new Set(), discard: new Set() });
+
 /**
  * `options`: `{ status, names: { top, bottom }, interactive, selected,
- * legalBorders: Set, lastMove: { border, side } | null, showTools }`.
+ * legalBorders: Set, lastMove: { border, side } | null, marks, showTools }`.
+ * `marks` (the extension): `recall`, the borders whose bottom card a selected
+ * Dame de Pique would take back; `discard`, the card ids a Valet de Trèfle may discard.
  */
 export function renderTable(view, options) {
   const settings = { interactive: false, selected: null, legalBorders: new Set(), lastMove: null, showTools: false, canPass: false, ...options };
+  settings.marks ??= NO_MARKS;
   renderCounters(view, settings.status);
   $("label-top").textContent = settings.names.top;
   $("label-bottom").textContent = settings.names.bottom;

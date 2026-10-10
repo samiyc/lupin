@@ -20,6 +20,9 @@
   --won: #1f8a4c;
   --lost: #c23b3b;
   --focus: #b8932a;
+  /* The extension's hints: what a Dame de Pique takes back, what a Valet de Trèfle may discard. */
+  --recall: #1a8fa0;
+  --discard: #e07a10;
   --display: "Bodoni Moda", Didot, Georgia, serif;
   --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   --suit: "Times New Roman", Times, Georgia, serif;
@@ -49,6 +52,8 @@ html { zoom: var(--ui-zoom); }
     --stone: #56615b;
     --won: #3fbf74;
     --lost: #e06464;
+    --recall: #3cc4d6;
+    --discard: #f59a3a;
     color-scheme: dark;
   }
 }
@@ -164,6 +169,9 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .side.premove { outline: 2px dashed var(--focus); background: color-mix(in oklab, var(--focus) 16%, transparent); }
 .side.drop-target { background: color-mix(in oklab, var(--won) 32%, transparent); }
 .card.last { box-shadow: 0 0 0 3px var(--focus); }
+/* The extension: the card a selected Dame de Pique would take back (green-blue), the cards a Valet de Trèfle may discard (orange). */
+.card.recallable { background: color-mix(in oklab, var(--card) 72%, var(--recall)); box-shadow: 0 0 0 3px var(--recall); }
+.card.discardable { background: color-mix(in oklab, var(--card) 70%, var(--discard)); box-shadow: 0 0 0 3px var(--discard); }
 .formation { margin: 0; font-size: 0.75rem; color: var(--ink-2); min-height: 1em; text-align: center; }
 
 .stone {

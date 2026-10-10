@@ -53,7 +53,10 @@ chiffrée : ce qu'il examine, son rythme, son Elo lu dans tes replays
   **Valet de Trèfle**, pioche non vide, attend sa défausse : clique une carte de
   ta main pour la défausser (tu en pioches deux, la défausse retourne dans la
   pioche, pas de pioche en fin de tour), ou reclique sur la même borne pour le
-  poser sans défausse. Échap, ou un clic sur le Valet, annule.
+  poser sans défausse. Échap, ou un clic sur le Valet, annule. Pendant
+  l'attente, les cartes qu'il peut défausser sont **en orange** dans ta main.
+  La **Dame de Pique** sélectionnée allume **en bleu-vert** la carte qu'elle
+  reprendrait sur chaque borne où elle peut aller : la dernière posée de ton côté.
 - **Passer mon tour** : le bouton n'apparaît que si tu n'as plus aucun coup
   légal, comme le robot qui passe dans la même situation.
 - **Poser une carte** : glisse-la de ta main vers une borne. Autre façon : clique

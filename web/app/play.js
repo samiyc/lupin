@@ -9,7 +9,7 @@ import { SPEC } from "./runner.js";
 import { wireGameDialogs } from "./play-dialogs.js";
 import { createPlayGame } from "./play-game.js";
 import { keepSelection, planPremove, resolvePremove } from "./premove.js";
-import { awaitsDiscard, bordersFor, discardMove, stepOf } from "./figure-input.js";
+import { awaitsDiscard, bordersFor, discardMove, figureMarks, stepOf } from "./figure-input.js";
 import { statusLine } from "./play-status.js";
 import { clearTable, renderTable } from "./table.js";
 import { settledAtEnd, tableView } from "./view.js";
@@ -60,6 +60,7 @@ export function render() {
     legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
     lastMove: game.lastMove,
     premove: game.premove?.border ?? null,
+    marks: humanTurn() ? figureMarks(legalMoves(game.state), game.order[game.selected], game.pending) : undefined,
     showTools: true,
     canPass: canPass(),
   });
@@ -162,8 +163,7 @@ function locate({ index, card }) {
 
 function executeMove(move) {
   const { game } = play;
-  game.pending = null;
-  game.selected = null;
+  Object.assign(game, { pending: null, selected: null });
   const thinkMs = Math.round(game.clock.mark());
   const entry = playLogged(game.log, game.state, move);
   entry.thinkMs = thinkMs;
