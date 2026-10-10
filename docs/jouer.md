@@ -192,8 +192,10 @@ la main adverse, ce sont les cartes vues nulle part.
     les duels entre robots de `data/elo-duels.json`, en un seul ajustement
     (modèle de Bradley-Terry, `src/replay/elo.js`). Un robot que tu n'as pas
     affronté est donc quand même placé par rapport à toi.
-  - Les Expérimental y sont mesurés à 1 s par coup, plus faibles qu'avec les
-    10 s de la page.
+  - Les Expérimental y sont mesurés à 2 000 itérations par coup, comme dans la
+    page depuis le 11/10 (avant, la page les laissait chercher jusqu'à 10 s : tu
+    jouais contre plus fort que la version classée). Seule différence : dans la
+    page, il réfléchit aussi pendant ton tour.
   - Seules les 3 dernières versions de chaque robot sont affichées
     (`KEPT_VERSIONS`, `src/config/bots.js`), ici comme dans les autres
     tableaux. Tes parties contre les plus anciennes comptent toujours dans ton Elo.

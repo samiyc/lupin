@@ -1,15 +1,18 @@
 import { createRng } from "../../src/core/random.js";
 import { stateAt } from "../../src/replay/log.js";
 import { engineFor } from "../../src/sim/bots.js";
+import { budgetOf } from "../../src/sim/experimental.js";
 import { legalMoves } from "../../src/sim/game.js";
 import { CREDIT, createPonder } from "../../src/sim/ponder.js";
 
 /**
  * The experimental bot's own thread (`thinker.js` talks to it). It searches
  * without freezing the page, and during the human's turn it ponders its
- * reply (`src/sim/ponder.js`). A move gets `limitMs` of thought, minus
- * `CREDIT` of the time pondered, but never less than `minMs`: a human who
- * thought 20 s gets an answer at once.
+ * reply (`src/sim/ponder.js`). A move stops at the engine's own iterations
+ * (`@2000`: the bot of the duels and the Elo, Sami 11/10 — it ran to the
+ * clock before, so the page played a stronger bot than the one rated), and
+ * within `limitMs` of thought minus `CREDIT` of the time pondered, but never
+ * less than `minMs`: a human who thought 20 s gets an answer at once.
  *
  * Messages in: `init { engine, seed, limitMs, minMs }`, `ponder { log }` (the
  * human is to move), `decide { log }` (the bot is to move), `stop`.
@@ -17,7 +20,7 @@ import { CREDIT, createPonder } from "../../src/sim/ponder.js";
  */
 const SLICE_MS = 25;
 let bot = null;
-let limits = { limitMs: 10000, minMs: 400 };
+let limits = { limitMs: 10000, minMs: 400, iterations: Infinity };
 let ponder = null;
 
 const now = () => performance.now();
@@ -34,7 +37,7 @@ function searchReply(state, moves, { warm, spentMs }) {
   const started = now();
   const search = bot.searchFor(state, moves, {}, { warm });
   const budget = Math.max(limits.minMs, limits.limitMs - CREDIT * spentMs);
-  while (!search.done() && now() - started < budget) search.step();
+  while (!search.done() && search.rollouts() < limits.iterations && now() - started < budget) search.step();
   return { move: search.best(), scored: search.scored(), pondered: Math.round(spentMs), rollouts: search.rollouts(), thoughtMs: Math.round(now() - started) };
 }
 
@@ -59,7 +62,7 @@ function decide(log) {
 const HANDLERS = {
   init({ engine, seed, limitMs, minMs }) {
     bot = engineFor(engine)(createRng(seed));
-    limits = { limitMs, minMs };
+    limits = { limitMs, minMs, iterations: budgetOf(engine.split("@")[1]).budget ?? Infinity };
   },
   ponder({ log }) {
     try {
