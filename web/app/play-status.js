@@ -1,10 +1,11 @@
 /**
  * The line under the table during a game (play.js): settling, over, the
- * human's turn — or the Dame de Cœur waiting for her second border (the
- * extension) — or the bot thinking, with a move programmed or not.
+ * human's turn — the Dame de Cœur waiting for her second border, the Valet de
+ * Trèfle for its discard (the extension), no move left — or the bot thinking,
+ * with a move programmed or not.
  */
 const pendingStatus = (game) => {
-  if (game.pending?.action === "discard") return "Valet de Trèfle : choisis une carte en main à défausser (ou reclique sur la borne pour passer).";
+  if (game.pending?.action === "discard") return `Valet de Trèfle : clique une carte de ta main pour la défausser (tu en pioches deux), ou reclique sur la borne ${game.pending.border + 1} pour le poser sans défausse. Échap annule.`;
   return `Dame de Cœur : choisis la borne à échanger avec la borne ${game.pending.border + 1}.`;
 };
 

@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { FIGURE_IDS, figureByKey } from "../src/core/figures.js";
-import { bordersFor, figuresFor, stepOf } from "../web/app/figure-input.js";
+import { bordersFor, discardMove, figuresFor, stepOf } from "../web/app/figure-input.js";
 
 const swap = figureByKey("swap").id;
 const sum = figureByKey("sum").id;
@@ -22,6 +22,18 @@ describe("the extension in the page (web/app/figure-input.js)", () => {
     assert.deepEqual(stepOf(minusTen, 3, null), { pending: { card: minusTen, border: 3, action: "discard" } });
     assert.deepEqual(stepOf(minusTen, 3, { card: minusTen, border: 3, action: "discard" }), { move: { card: minusTen, border: 3 } });
     assert.deepEqual(stepOf(minusTen, 3, null, { pile: 0 }), { move: { card: minusTen, border: 3 } });
+  });
+
+  it("resolves the Valet de Trèfle's wait: a card discards, the Valet again on its border lays it alone, else it cancels", () => {
+    const minusTen = figureByKey("minusTen").id;
+    const pending = { card: minusTen, border: 3, action: "discard" };
+    assert.deepEqual(discardMove(pending, 12), { card: minusTen, border: 3, discard: 12 });
+    assert.deepEqual(discardMove(pending, 12, 5), { card: minusTen, border: 3, discard: 12 }, "a card dropped anywhere is the discard");
+    assert.deepEqual(discardMove(pending, minusTen, 3), { card: minusTen, border: 3 });
+    assert.equal(discardMove(pending, minusTen, 5), null);
+    assert.equal(discardMove(pending, minusTen), null, "the Valet clicked in the hand");
+    assert.equal(discardMove(pending, null), null, "Escape");
+    assert.deepEqual([...bordersFor([], minusTen, pending)], [3]);
   });
 
   it("offers the Dame de Cœur's borders, then the ones she may swap with", () => {

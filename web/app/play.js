@@ -1,16 +1,15 @@
-import { BOT_LINEUP } from "../../src/config/bots.js";
-import { finishLog, playLogged, snapshot, startLog } from "../../src/replay/log.js";
+import { finishLog, playLogged, snapshot } from "../../src/replay/log.js";
 import { legalMoves } from "../../src/sim/game.js";
-import { clockLine, createClock, watchFocus } from "./clock.js";
+import { clockLine, watchFocus } from "./clock.js";
 import { $, freshSeed, toast, wait } from "./dom.js";
 import { clearDrag } from "./drag.js";
 import { moveCard, sortBySuit, sortByValue, syncOrder } from "./hand.js";
 import { saveReplay } from "./replays-api.js";
-import { RULES, SPEC, botEntry, botPlayer, humanEntry, newGame, playerName } from "./runner.js";
+import { SPEC } from "./runner.js";
 import { wireGameDialogs } from "./play-dialogs.js";
+import { createPlayGame } from "./play-game.js";
 import { keepSelection, planPremove, resolvePremove } from "./premove.js";
-import { createThinker } from "./thinker.js";
-import { bordersFor, stepOf } from "./figure-input.js";
+import { awaitsDiscard, bordersFor, discardMove, stepOf } from "./figure-input.js";
 import { statusLine } from "./play-status.js";
 import { clearTable, renderTable } from "./table.js";
 import { settledAtEnd, tableView } from "./view.js";
@@ -25,7 +24,9 @@ import { settledAtEnd, tableView } from "./view.js";
  * while the page is hidden or out of focus, or the "Jouer" tab is not shown.
  */
 /** How long a bot turn lasts at least; its thinking time counts toward it. */
-const BOT_DELAY = 700, PAINT = 30, REVEAL_DELAY = 650;
+const BOT_DELAY = 700;
+const PAINT = 30;
+const REVEAL_DELAY = 650;
 
 const play = { game: null, generation: 0, visible: true, syncFocus: () => {} };
 
@@ -52,9 +53,15 @@ export function render() {
   renderClock();
   const view = tableView(SPEC, snapshot(game.state), { bottom: game.human, handOrder: game.order, shown: game.shown, lastMove: game.lastMove, reveal: Boolean(game.openHands) });
   renderTable(view, {
-    status: status(), names: { bottom: game.name, top: game.opponentName }, interactive: active(),
-    selected: game.selected, legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
-    lastMove: game.lastMove, premove: game.premove?.border ?? null, showTools: true, canPass: canPass(),
+    status: status(),
+    names: { bottom: game.name, top: game.opponentName },
+    interactive: active(),
+    selected: game.selected,
+    legalBorders: game.selected === null ? new Set() : legalFor(game.selected),
+    lastMove: game.lastMove,
+    premove: game.premove?.border ?? null,
+    showTools: true,
+    canPass: canPass(),
   });
 }
 
@@ -91,7 +98,9 @@ async function playPremove(id) {
 async function save(id) {
   try {
     const saved = await saveReplay(play.game.log);
-    if (alive(id)) { play.game.saved = `Partie enregistrée : ${saved.path}`; toast(play.game.saved); }
+    if (!alive(id)) return;
+    play.game.saved = `Partie enregistrée : ${saved.path}`;
+    toast(play.game.saved);
   } catch (error) {
     if (alive(id)) play.game.saved = `Replay non enregistré (${error.message}).`;
   }
@@ -162,40 +171,39 @@ function executeMove(move) {
   botTurns(play.generation);
 }
 
-function resolveDiscard(game, index) {
-  if (game.pending?.action !== "discard") return false;
-  const discard = game.order[index];
-  if (discard !== game.pending.card) executeMove({ card: game.pending.card, border: game.pending.border, discard });
-  return true;
+/** The Valet de Trèfle waiting for its discard, a card picked (or none, or the Valet on a border): play it, or cancel the wait. */
+function resolveDiscard(index, border = null) {
+  const move = discardMove(play.game.pending, index === null ? null : play.game.order[index], border);
+  if (move) return executeMove(move);
+  play.game.pending = null;
+  render();
 }
 
 export function playCard(grip, border) {
   if (!active()) return;
   const index = locate(grip);
   if (!humanTurn()) return programMove(index, border);
-  if (index === null || resolveDiscard(play.game, index) || !legalFor(index).has(border)) return;
+  if (index === null) return;
+  if (awaitsDiscard(play.game.pending)) return resolveDiscard(index, border);
+  if (!legalFor(index).has(border)) return;
   const step = stepOf(play.game.order[index], border, play.game.pending, { pile: play.game.state.pile.length });
   play.game.pending = step.pending ?? null;
-  if (step.pending) { play.game.selected = null; return render(); }
-  executeMove(step.move);
+  if (!step.pending) return executeMove(step.move);
+  play.game.selected = index; // kept: the Dame de Cœur's second click, or the Valet de Trèfle's border again (no discard)
+  render();
 }
 
-export function start({ first, opponent, name, bonus = 0, openHands = false }) {
+/** No legal move left to the human: the turn passes, as it does for a bot. */
+function pass() {
+  if (canPass()) executeMove(null);
+}
+
+/** `{ first, opponent, name, bonus, openHands }`: the answers of "Nouvelle partie" (play-dialogs.js). */
+export function start(choices) {
   play.generation += 1;
   clearDrag();
   play.game?.thinker.stop();
-  const seed = freshSeed();
-  const state = newGame(seed, bonus, openHands);
-  const human = first === "me" ? 0 : 1;
-  const players = [humanEntry(human, name), botEntry(1 - human, opponent)].sort((a, b) => a.seat - b.seat);
-  const rules = { ...(bonus > 0 ? { ...RULES, bonus } : RULES), ...(openHands ? { openHands: true } : {}) };
-  play.game = {
-    state, human, openHands: Boolean(openHands), name, opponentName: playerName(botEntry(1 - human, opponent)),
-    bot: botPlayer(opponent, seed + 1), thinker: createThinker(botPlayer(opponent, seed + 1), BOT_LINEUP[opponent].think, seed + 1),
-    log: startLog(state, { rules, players, seed }), order: sortBySuit(SPEC, state.hands[human]),
-    selected: null, pending: null, premove: null, shown: 0, lastMove: null, revealing: false, saved: null,
-    clock: createClock(() => performance.now()),
-  };
+  play.game = createPlayGame(choices, freshSeed());
   play.syncFocus();
   render();
   botTurns(play.generation);
@@ -207,7 +215,10 @@ export function abandon() {
   clearDrag();
   play.game?.thinker.stop();
   play.game = null;
-  if (play.visible) { clearTable("Partie abandonnée, rien n'a été enregistré."); $("clock").textContent = ""; }
+  if (play.visible) {
+    clearTable("Partie abandonnée, rien n'a été enregistré.");
+    $("clock").textContent = "";
+  }
 }
 
 export const hasGame = () => play.game !== null;
@@ -237,7 +248,7 @@ export function wirePlayControls() {
   setInterval(renderClock, 1000);
   $("sort-suit").addEventListener("click", () => reorderWith((order) => sortBySuit(SPEC, order)));
   $("sort-value").addEventListener("click", () => reorderWith((order) => sortByValue(SPEC, order)));
-  $("btn-pass")?.addEventListener("click", () => { if (canPass()) executeMove(null); });
+  $("btn-pass").addEventListener("click", pass);
 }
 
 /**
@@ -249,24 +260,19 @@ export const playInput = {
   enabled: () => play.visible && active(),
   selected: () => play.game?.selected ?? null,
   select(index) {
+    if (awaitsDiscard(play.game.pending)) return resolveDiscard(index);
     const { game } = play;
-    if (game?.pending?.action === "discard") {
-      if (index !== null && game.order[index] !== game.pending.card) {
-        executeMove({ card: game.pending.card, border: game.pending.border, discard: game.order[index] });
-        return;
-      }
-      game.pending = null;
-      render();
-      return;
-    }
     game.selected = index;
     game.pending = null;
     if (index === null) game.premove = null;
     render();
   },
   play: playCard,
-  pass: () => { if (canPass()) executeMove(null); },
-  reorder: (grip, to) => { const from = active() ? locate(grip) : null; if (from !== null) reorderWith((order) => moveCard(order, from, to)); },
+  pass,
+  reorder(grip, to) {
+    const from = active() ? locate(grip) : null;
+    if (from !== null) reorderWith((order) => moveCard(order, from, to));
+  },
   legalFor,
   /** For `?debug`: how the thinker reached its last answer (time pondered, rollouts, time thought). */
   thinking: () => play.game?.thinker.last ?? null,

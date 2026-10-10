@@ -8,6 +8,8 @@ import { createRng } from "../../src/core/random.js";
  * clicks: her border, then the border she swaps it with. Pure, so tested.
  */
 export const isSwap = (card) => isFigure(card) && figureOf(card).key === "swap";
+/** A Valet de Trèfle laid beside `pending.border`, waiting for the card to discard (`discardMove`). */
+export const awaitsDiscard = (pending) => pending?.action === "discard";
 export const isMinusTen = (card) => isFigure(card) && (figureOf(card).key === "minusTen" || figureOf(card).key === "weakest");
 
 /** The `bonus` figures (0 to 6) of a new game, drawn from its seed apart from the deal: none leaves the base game as it was. */
@@ -15,7 +17,7 @@ export const figuresFor = (seed, bonus) => (bonus > 0 ? createRng(seed ^ 0x2f6a)
 
 /** The borders `card` may go to now — or, a Dame de Cœur waiting beside `pending.border`, the borders she may swap it with. */
 export function bordersFor(moves, card, pending) {
-  if (pending?.action === "discard") return new Set([pending.border]);
+  if (awaitsDiscard(pending)) return new Set([pending.border]);
   const own = moves.filter((move) => move.card === card);
   if (pending && isSwap(card)) return new Set(own.filter((move) => move.border === pending.border).map((move) => move.target));
   return new Set(own.map((move) => move.border));
@@ -25,10 +27,21 @@ const stepSwap = (card, border, pending) => (!pending ? { pending: { border } } 
 
 const stepMinusTen = (card, border, pending, ctx) => {
   if (ctx?.pile === 0) return { move: { card, border } };
-  if (!pending) return { pending: { card, border, action: "discard" } };
-  if (pending.action === "discard" && pending.border === border) return { move: { card, border } };
-  return { move: { card, border } };
+  // A second click on the border plays the Valet without a discard; a card picked from the hand discards it (play.js).
+  return pending ? { move: { card, border } } : { pending: { card, border, action: "discard" } };
 };
+
+/**
+ * The Valet de Trèfle waiting beside `pending.border` for its discard, then
+ * `card` played on `border` (null for a card picked in the hand): another card
+ * is discarded; the Valet again on its border is laid without a discard; no
+ * card, or the Valet anywhere else, cancels the wait (null).
+ */
+export function discardMove(pending, card, border = null) {
+  if (card === null || card === undefined) return null;
+  if (card !== pending.card) return { card: pending.card, border: pending.border, discard: card };
+  return border === pending.border ? { card, border } : null;
+}
 
 /** A click on `border` with `card`: the move to play, or — Dame de Cœur / Valet de Trèfle — the pending step. */
 export function stepOf(card, border, pending, ctx = null) {
