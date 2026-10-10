@@ -2852,22 +2852,24 @@ Après la sortie de l'Expérimental 1.2, une analyse du comportement en début d
 2. **Rétrécissement de l'arbre à `widen=5`** : avec 2 bornes max par carte, 5 slots garantissent la présence d'au moins 3 cartes distinctes dans chaque nœud (contre 2 cartes auparavant sur 7 slots).
 3. **Réduction de 28 % du branchement** : les 2 000 itérations de Monte Carlo descendent beaucoup plus profondément (convergence dès les plis 3 et 4).
 
-### Le verdict
-- **Duel long (500 parties) contre l'Expérimental 1.2 (@2000)** : **81,2 % de victoires** (fourchette à 95 % par paires : 77,8 % – 84,6 %).
-- En commençant : 75,2 % · En second : 87,2 %.
-- Ce saut de performance sans précédent (+31 points de winrate au-dessus de 50 %) justifie la création d'une nouvelle catégorie de bot d'élite : **« Le Borné » v1.0** (`ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000`).
+### Le premier chiffre (09/10)
+- Deux duels de 250 parties contre l'Expérimental 1.2 (@2000) : **81,2 %** (77,8 – 84,6 par paires),
+  sur des donnes non notées, et pas gardés dans `duels/`. Le chiffre a suffi pour mettre le Borné au
+  line-up.
 
-### À confirmer (relecture du 10/10)
-- Le chiffre vient de **deux duels de 250 parties**, sur des donnes non notées. Le protocole d'une version
-  (`docs/validation.md`) demande quatre jeux de donnes de 250 en profil long, mis en commun par
-  `npm run versus`, la borne basse au-dessus de 50 % : ce sont `VALIDATE_LONG_1` à `4_Borne10`, au
-  backlog de nuit (`--offset 1` à `4`).
-- Le saut ne ressemble à aucun autre : chaque version précédente gagnait 2 à 5 points, et le cap à 2 **à la
-  racine seule** (`widen=7+diverse=2`) faisait **49,0 % sur 1 000 parties** contre le même 1.2. Si les
-  duels longs confirment, l'écart vient du couple `widen=5` + cap dans l'arbre ; sinon, chercher d'abord
-  dans les réglages du duel (budget, `--page`, `--open`).
-- Les duels gardés dans `duels/` contre le 1.2 sont tous en `widen=7+diverse=2` : aucun n'est celui du
-  Borné tel qu'il est publié.
+### Le verdict du protocole (10/10) : il ne bat pas la 1.2
+- Quatre duels longs de 250 parties, `--long --games 125 --page --offset 1` à `4`
+  (`VALIDATE_LONG_1` à `4_Borne10`) : **45,6 %, 43,6 %, 49,2 %, 45,2 %**.
+- Mis en commun par `npm run versus` : **45,9 % sur 1 000 parties (43,3 – 48,5 par paires)**. En
+  commençant 45,6 %, en second 46,2 %. La borne haute est sous 50 % : la 1.2 est meilleure.
+- Elo (`npm run elo`, 10/10) : Borné 978 ± 20, Expérimental 1.2 1 005 ± 14. Il bat toujours le
+  Stratège 2.1 (75,5 % sur 200 parties), et reste au line-up comme adversaire.
+- Les 81,2 % ne se reproduisent pas, et le saut de +31 points ne ressemblait à aucun autre ; le cap à 2
+  **à la racine seule** (`widen=7+diverse=2`) faisait déjà 49,0 % sur 1 000 parties. La piste
+  « plus étroit, donc plus profond » n'a pas payé à 2 000 itérations.
+- Ce que `versus` montre du jeu : le Borné ouvre plus de bornes vierges en début de partie (+2,7 points)
+  et répond moins aux bornes adverses (−3,2) ; à jokers égaux il fait 49,2 %.
+- Reste à savoir lequel coûte, de `widen=5` ou du cap dans l'arbre : un duel de chacun seul contre la 1.2.
 
 ## L'extension après la refonte du Valet de Trèfle (10/10)
 

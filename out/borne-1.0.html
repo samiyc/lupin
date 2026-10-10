@@ -57,6 +57,7 @@ section { padding-block: 36px 12px; }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
 .chip { display: inline-block; font: 600 0.75rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px; border-radius: 999px; background: var(--mark-wash); color: var(--mark); }
 .chip.brass { background: var(--brass-wash); color: var(--brass); }
+.chip.seal { background: var(--seal-wash); color: var(--seal); }
 table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; margin-top: 10px; }
 th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); }
 th { font: 600 0.8rem/1.4 var(--mono); text-transform: uppercase; color: var(--ink-3); }
@@ -70,18 +71,18 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
 
 <header class="band">
   <div class="wrap">
-    <div class="eyebrow">Nouvelle Génération · Robot d'Élite</div>
+    <div class="eyebrow">Robot du line-up · Essai non confirmé</div>
     <h1>Le Borné <em>v1.0</em></h1>
-    <p class="lead">L'arbre canalisé : 2 bornes au maximum par carte, une largeur resserrée à 5 coups, et la certitude en profondeur.</p>
+    <p class="lead">L'arbre canalisé : 2 bornes au maximum par carte et une largeur resserrée à 5 coups. Mesuré selon le protocole le 10/10, il ne bat pas l'Expérimental 1.2.</p>
 
     <div class="tiles">
       <div class="tile">
-        <b>81,2 %</b>
-        <span>Victoire vs Expérimental 1.2 (500 parties)</span>
+        <b>45,9 %</b>
+        <span>Victoire vs Expérimental 1.2 (1 000 parties, 43,3 – 48,5)</span>
       </div>
       <div class="tile">
-        <b>1 160</b>
-        <span>Classement Elo (±32 sur 715 parties, onglet Stats au 10/10)</span>
+        <b>978</b>
+        <span>Classement Elo (±20 sur 1 215 parties, npm run elo au 10/10)</span>
       </div>
       <div class="tile">
         <b class="setting">widen = 5</b>
@@ -126,7 +127,7 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
       <div class="card">
         <h3>Canalisation à <code>widen = 5</code></h3>
         <p>Grâce au cap à 2, 5 slots suffisent désormais pour garantir la présence d'au moins <strong>3 cartes différentes</strong> à chaque niveau de l'arbre (contre 2 seulement auparavant dans un Top 7 saturé).</p>
-        <p>Le facteur de branchement chute de 28 %, permettant à l'algorithme UCB1 de converger rapidement et de propager ses simulations vers les plis 3 et 4.</p>
+        <p>Le facteur de branchement chute de 28 %. L'idée était qu'UCB1 converge plus vite et pousse ses simulations vers les plis 3 et 4 ; la mesure du 10/10 ne le confirme pas (section 3).</p>
       </div>
     </div>
   </section>
@@ -147,24 +148,31 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
         <tbody>
           <tr>
             <td><strong>Expérimental 1.2</strong> (@2000)</td>
-            <td class="num">500</td>
-            <td class="num"><strong>81,2 %</strong></td>
-            <td class="num">[77,8 % – 84,6 %]</td>
-            <td><span class="chip brass">À confirmer</span></td>
+            <td class="num">1 000</td>
+            <td class="num"><strong>45,9 %</strong></td>
+            <td class="num">[43,3 % – 48,5 %]</td>
+            <td><span class="chip seal">Perd</span></td>
           </tr>
           <tr>
             <td>— En premier joueur</td>
-            <td class="num">250</td>
-            <td class="num">75,2 %</td>
+            <td class="num">500</td>
+            <td class="num">45,6 %</td>
             <td class="num">—</td>
-            <td>Avantage net</td>
+            <td>—</td>
           </tr>
           <tr>
             <td>— En second joueur</td>
-            <td class="num">250</td>
-            <td class="num">87,2 %</td>
+            <td class="num">500</td>
+            <td class="num">46,2 %</td>
             <td class="num">—</td>
-            <td>Domination totale</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Expérimental 1.2, premier essai du 09/10</td>
+            <td class="num">500</td>
+            <td class="num">81,2 %</td>
+            <td class="num">[77,8 % – 84,6 %]</td>
+            <td>Non reproduit</td>
           </tr>
           <tr>
             <td><strong>Stratège 2.1</strong></td>
@@ -175,7 +183,7 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
           </tr>
         </tbody>
       </table>
-      <p style="margin-top:14px">Deux duels de 250 parties, sur des donnes que la page ne précise pas. Le protocole d'une version (docs/validation.md) en demande quatre jeux de donnes de 250 (<code>--long --games 125 --page --offset 0</code> à <code>3</code>), mis en commun avec <code>npm run versus</code>, la borne basse au-dessus de 50 % : ils sont au backlog de nuit. Un écart de 31 points, quand chaque version précédente en gagnait 2 à 5, demande cette confirmation avant d'être cru. Les chiffres de cette page sont tapés à la main : <code>data/elo-duels.json</code> et l'onglet Stats font foi.</p>
+      <p style="margin-top:14px">Le protocole d'une version (docs/validation.md) : quatre jeux de donnes de 250 parties (<code>--long --games 125 --page --offset 1</code> à <code>4</code>), mis en commun avec <code>npm run versus</code>, la borne basse au-dessus de 50 %. Les quatre duels du 10/10 (<code>VALIDATE_LONG_1</code> à <code>4_Borne10</code>) font 45,6 %, 43,6 %, 49,2 % et 45,2 % : aucun ne passe 50 %, et la borne haute de l'ensemble reste sous 50 %. Les 81,2 % du 09/10 ne sont pas dans <code>duels/</code> et n'ont pas pu être relus. L'Expérimental 1.2 reste la version à battre. Les chiffres de cette page sont tapés à la main : <code>data/elo-duels.json</code> et l'onglet Stats font foi.</p>
     </div>
   </section>
 
@@ -204,22 +212,22 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
             <td><strong>Stratège</strong></td>
             <td>2.1</td>
             <td><code>lookahead</code></td>
-            <td class="num">807 ± 17</td>
+            <td class="num">799 ± 16</td>
             <td>Anticipation 4 coups × 16 fins de partie</td>
           </tr>
           <tr>
             <td><strong>Expérimental</strong></td>
             <td>1.2</td>
             <td><code>ismcts+widen=7+exact=12@2000</code></td>
-            <td class="num">965 ± 16</td>
+            <td class="num"><strong>1 005 ± 14</strong></td>
             <td>Arbre ISMCTS 5 coups + solveur exact</td>
           </tr>
           <tr>
             <td><strong>Le Borné</strong></td>
             <td>1.0</td>
             <td><code>ismcts+widen=5+diverse=2+exact=12@2000</code></td>
-            <td class="num"><strong>1 160 ± 32</strong></td>
-            <td>Arbre canalisé, 2 bornes/carte, profondeur maximale</td>
+            <td class="num">978 ± 20</td>
+            <td>Arbre canalisé, 2 bornes/carte</td>
           </tr>
         </tbody>
       </table>

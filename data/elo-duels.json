@@ -130,9 +130,9 @@
     {
       "a": "borne@1.0",
       "b": "experimental@1.2",
-      "wins": 406,
-      "games": 500,
-      "source": "deux duels longs du 09/10, 2 000 itérations des deux côtés : Le Borné (81,2 %, 77,8 – 84,6 par paires)"
+      "wins": 459,
+      "games": 1000,
+      "source": "quatre duels longs du 10/10 (VALIDATE_LONG_1 à 4_Borne10), 2 000 itérations des deux côtés, gardés dans duels/ : Le Borné (45,9 %, 43,3 – 48,5 par paires). Remplace les 81,2 % sur 500 parties du 09/10, qui ne sont pas dans duels/ et que le protocole n'a pas confirmés"
     },
     {
       "a": "borne@1.0",

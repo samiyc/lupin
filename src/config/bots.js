@@ -44,14 +44,15 @@ export const BOT_LINEUP = Object.freeze({
   }),
   borne: Object.freeze({
     // 1.0 (Canalisé, 09/10): ISMCTS widen=5, profondeur 5, cap 2 bornes par carte partout, exact=12.
-    // 81.2 % contre experimental@1.2 sur 500 parties.
+    // 45.9 % (43.3-48.5) contre experimental@1.2 sur 1 000 parties, 4 jeux de donnes (10/10) :
+    // les 81.2 % sur 500 parties du 09/10 n'ont pas tenu. Pas plus fort que la 1.2.
     engine: "ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000",
     version: "1.0",
     label: "Le Borné",
     description: "L'arbre canalisé",
     examines: "5 coups d'avance canalisés, 2 bornes max par carte, fin exacte",
     pace: "jusqu'à 10 s, et pendant ton tour",
-    vsLower: "81 % vs Expérimental",
+    vsLower: "46 % vs Expérimental",
     think: Object.freeze({ limitMs: 10000, minMs: 400 }),
   }),
 });

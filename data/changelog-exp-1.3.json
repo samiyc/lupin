@@ -78,12 +78,12 @@
    "name": "Cap 2 partout et canalisation de l'arbre (+widen=5+diverse=2)",
    "family": "racine",
    "bench": "duel",
-   "score": 81.2,
-   "lo": 77.8,
-   "hi": 84.6,
-   "verdict": "attente",
-   "when": "09/10 00:23",
-   "note": "Duel sur 500 parties (250 donnes en miroir) contre experimental@1.2 à budget @2000 : score 81.2 % (IC 95 % par paires : 77.8 % – 84.6 %). En commençant : 75.2 % · En second : 87.2 %. Victoire écrasante confirmant que widen=7 était un contournement artificiel de la saturation de cartes du core. En attente : 500 parties seulement, quand le cap à 2 à la racine seule faisait 49,0 % sur 1 000. Les quatre duels longs du protocole sont au backlog (VALIDATE_LONG_1 à 4_Borne10).",
+   "score": 45.9,
+   "lo": 43.3,
+   "hi": 48.5,
+   "verdict": "perd",
+   "when": "10/10 14:06",
+   "note": "Validé selon le protocole : quatre duels longs de 250 parties contre experimental@1.2 à @2000 (VALIDATE_LONG_1 à 4_Borne10 : 45,6 %, 43,6 %, 49,2 %, 45,2 %), mis en commun avec npm run versus : 45,9 % sur 1 000 parties (IC 95 % par paires : 43,3 % – 48,5 %). En commençant : 45,6 % · En second : 46,2 %. Les 81,2 % du 09/10 (500 parties, pas gardées dans duels/) ne tiennent pas : la borne haute reste sous 50 %. Le Borné reste au line-up comme adversaire, mais il ne bat pas la 1.2.",
    "idea": "Application du cap à 2 bornes par carte partout dans l'arbre (à la racine ET sous la racine dans shortlist) combinée à la réduction de widen de 7 à 5. Avec le cap à 2, 5 coups offrent 3 cartes distinctes (plus que les 2 cartes du Top 7 standard) tout en réduisant le branchement de 28 %, permettant à UCB de converger et d'explorer plus en profondeur."
   }
  ],
@@ -176,14 +176,14 @@
  },
  "next": [
   {
-   "when": "Cette nuit",
-   "title": "Valider Le Borné 1.0 selon le protocole",
-   "text": "Quatre duels longs de 250 parties contre l'Expérimental 1.2 (VALIDATE_LONG_1 à 4_Borne10, au backlog), mis en commun avec npm run versus. Ses 81,2 % viennent de 500 parties : un écart aussi grand demande la mesure complète avant d'en faire la référence."
+   "when": "Ensuite",
+   "title": "Comprendre pourquoi Le Borné ne tient pas",
+   "text": "Validé le 10/10 : 45,9 % sur 1 000 parties contre l'Expérimental 1.2, loin des 81,2 % annoncés sur 500. La 1.2 reste la version à battre. À regarder : le cap à 2 seul (49,0 %) et widen=5 seul, pour savoir lequel des deux coûte."
   },
   {
    "when": "Ensuite",
-   "title": "Rejouer l'équilibre de l'extension",
-   "text": "data/extension.json date d'avant la version finale du Valet de Trèfle : npm run extension la remesure, pioche par pioche."
+   "title": "Remesurer le Valet de Trèfle avec l'arbre",
+   "text": "npm run extension a remesuré la version finale le 10/10 avec le cœur : V♣ posé dans 39,6 % des parties, partie gagnée 29,0 % ± 5,0 quand il est posé. La figure paraît faible ; à confirmer avec l'Expérimental."
   }
  ]
 }

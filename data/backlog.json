@@ -1563,8 +1563,10 @@
       "estimate": "35 min",
       "limit": 60,
       "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 1 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
-      "status": "scheduled",
-      "notBefore": "2026-10-10T23:30:00+02:00"
+      "status": "done",
+      "doneAt": "2026-10-10T12:40",
+      "minutes": 29,
+      "output": "backlog-runs/2026-10-10-12-11_VALIDATE_LONG_1_Borne10.txt"
     },
     {
       "id": "VALIDATE_LONG_2_Borne10",
@@ -1572,8 +1574,10 @@
       "estimate": "35 min",
       "limit": 60,
       "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 2 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
-      "status": "scheduled",
-      "notBefore": "2026-10-10T23:30:00+02:00"
+      "status": "done",
+      "doneAt": "2026-10-10T13:12",
+      "minutes": 32,
+      "output": "backlog-runs/2026-10-10-12-40_VALIDATE_LONG_2_Borne10.txt"
     },
     {
       "id": "VALIDATE_LONG_3_Borne10",
@@ -1581,8 +1585,10 @@
       "estimate": "35 min",
       "limit": 60,
       "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 3 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
-      "status": "scheduled",
-      "notBefore": "2026-10-10T23:30:00+02:00"
+      "status": "done",
+      "doneAt": "2026-10-10T13:41",
+      "minutes": 29,
+      "output": "backlog-runs/2026-10-10-13-12_VALIDATE_LONG_3_Borne10.txt"
     },
     {
       "id": "VALIDATE_LONG_4_Borne10",
@@ -1590,8 +1596,10 @@
       "estimate": "35 min",
       "limit": 60,
       "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 4 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
-      "status": "scheduled",
-      "notBefore": "2026-10-10T23:30:00+02:00"
+      "status": "done",
+      "doneAt": "2026-10-10T14:06",
+      "minutes": 25,
+      "output": "backlog-runs/2026-10-10-13-41_VALIDATE_LONG_4_Borne10.txt"
     }
   ]
 }
