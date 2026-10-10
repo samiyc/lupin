@@ -210,7 +210,7 @@ select, input { padding: 4px 6px; border: 1px solid var(--line); border-radius: 
 .elo td + td { text-align: right; }
 .elo tr.human { font-weight: 700; color: var(--felt); }
 .replay-list h3 { margin: 6px 0 2px; font-size: 0.85rem; color: var(--ink-2); }
-.replay-list button { display: grid; align-content: center; gap: 1px; height: var(--replay-item); text-align: left; background: transparent; color: var(--ink); border-color: var(--line); font-size: 0.85rem; padding: 4px 6px; }
+.replay-list button { margin: 0 2px 0 2px; display: grid; align-content: center; gap: 1px; height: var(--replay-item); text-align: left; background: transparent; color: var(--ink); border-color: var(--line); font-size: 0.85rem; padding: 4px 6px; }
 .replay-list .replay-title, .replay-list .replay-detail { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .replay-list .replay-title { font-weight: 700; }
 .replay-list .replay-detail { font-size: 0.66rem; color: var(--ink-2); }
