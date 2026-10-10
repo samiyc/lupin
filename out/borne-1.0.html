@@ -28,6 +28,14 @@
     --sky: #8cbbe8; --sky-wash: #1b2c3b;
   }
 }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --felt: #0e2d21; --felt-deep: #081d15; --felt-ink: #eef5f1; --felt-soft: #9fbeaf;
+  --paper: #12211b; --card: #1a2d25; --edge: #2c4238; --ink: #eef2ec; --ink-2: #bfcac2; --ink-3: #93a198;
+  --line: #2b3f35; --wash: #172a22; --brass: #e2c15a; --brass-wash: #2e2a17;
+  --seal: #ff7a86; --seal-wash: #3a1d20; --mark: #6fd19b; --mark-wash: #173428;
+  --sky: #8cbbe8; --sky-wash: #1b2c3b;
+}
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.04rem/1.6 var(--body); }
 .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
@@ -42,6 +50,7 @@ p { margin: 0 0 14px; max-width: 72ch; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 30px; }
 .tile { border-top: 1px solid color-mix(in srgb, var(--felt-ink) 30%, transparent); padding-top: 12px; }
 .tile b { font: 700 clamp(1.8rem, 4vw, 2.4rem)/1.1 var(--mono); color: var(--felt-ink); display: block; }
+.tile b.setting { font-size: clamp(1.2rem, 2.6vw, 1.6rem); white-space: nowrap; }
 .tile span { color: var(--felt-soft); font-size: 0.88rem; }
 section { padding-block: 36px 12px; }
 .card { background: var(--card); border: 1px solid var(--edge); border-radius: 12px; padding: 22px; margin-bottom: 20px; }
@@ -71,19 +80,19 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
         <span>Victoire vs Expérimental 1.2 (500 parties)</span>
       </div>
       <div class="tile">
-        <b>1 166</b>
-        <span>Classement Elo (±32 sur 700 parties)</span>
+        <b>1 160</b>
+        <span>Classement Elo (±32 sur 715 parties, onglet Stats au 10/10)</span>
       </div>
       <div class="tile">
-        <b>widen = 5</b>
+        <b class="setting">widen = 5</b>
         <span>Largeur d'arbre (-28 % de branchement)</span>
       </div>
       <div class="tile">
-        <b>diverse = 2</b>
+        <b class="setting">diverse = 2</b>
         <span>Cap strict de bornes par carte</span>
       </div>
       <div class="tile">
-        <b>exact = 12</b>
+        <b class="setting">exact = 12</b>
         <span>Solveur parfait en fin de partie</span>
       </div>
     </div>
@@ -141,7 +150,7 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
             <td class="num">500</td>
             <td class="num"><strong>81,2 %</strong></td>
             <td class="num">[77,8 % – 84,6 %]</td>
-            <td><span class="chip">Écrasant</span></td>
+            <td><span class="chip brass">À confirmer</span></td>
           </tr>
           <tr>
             <td>— En premier joueur</td>
@@ -166,6 +175,7 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
           </tr>
         </tbody>
       </table>
+      <p style="margin-top:14px">Deux duels de 250 parties, sur des donnes que la page ne précise pas. Le protocole d'une version (docs/validation.md) en demande quatre jeux de donnes de 250 (<code>--long --games 125 --page --offset 0</code> à <code>3</code>), mis en commun avec <code>npm run versus</code>, la borne basse au-dessus de 50 % : ils sont au backlog de nuit. Un écart de 31 points, quand chaque version précédente en gagnait 2 à 5, demande cette confirmation avant d'être cru. Les chiffres de cette page sont tapés à la main : <code>data/elo-duels.json</code> et l'onglet Stats font foi.</p>
     </div>
   </section>
 
@@ -187,28 +197,28 @@ td.num, th.num { text-align: right; font-family: var(--mono); }
             <td><strong>Basique</strong></td>
             <td>1.0</td>
             <td><code>greedy</code></td>
-            <td class="num">500 ± 0</td>
+            <td class="num">500 (l'ancre)</td>
             <td>Meilleur coup immédiat à 1 coup</td>
           </tr>
           <tr>
             <td><strong>Stratège</strong></td>
             <td>2.1</td>
             <td><code>lookahead</code></td>
-            <td class="num">808 ± 17</td>
+            <td class="num">807 ± 17</td>
             <td>Anticipation 4 coups × 16 fins de partie</td>
           </tr>
           <tr>
             <td><strong>Expérimental</strong></td>
             <td>1.2</td>
             <td><code>ismcts+widen=7+exact=12@2000</code></td>
-            <td class="num">968 ± 16</td>
+            <td class="num">965 ± 16</td>
             <td>Arbre ISMCTS 5 coups + solveur exact</td>
           </tr>
           <tr>
             <td><strong>Le Borné</strong></td>
             <td>1.0</td>
             <td><code>ismcts+widen=5+diverse=2+exact=12@2000</code></td>
-            <td class="num"><strong>1 166 ± 32</strong></td>
+            <td class="num"><strong>1 160 ± 32</strong></td>
             <td>Arbre canalisé, 2 bornes/carte, profondeur maximale</td>
           </tr>
         </tbody>

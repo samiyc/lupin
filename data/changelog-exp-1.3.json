@@ -7,7 +7,10 @@
   "racine": "Diversité à la racine",
   "extension": "L'extension et équilibrage",
   "mains": "Mains révélées",
-  "vitesse": "La vitesse et le banc"
+  "vitesse": "La vitesse et le banc",
+  "sortie": "La sortie",
+  "lecteur": "La page",
+  "outils": "Les outils"
  },
  "benches": {
   "cout": "temps d'un coup",
@@ -22,82 +25,165 @@
    "id": "open-hands",
    "name": "Mains révélées en jeu et duels (--open)",
    "family": "mains",
-   "date": "2026-10-08 17:30",
-   "idea": "Permet de jouer des parties ou des duels offline avec les mains des deux joueurs visibles tout au long de la partie, la pioche restant cachée pour préserver l'aléa. Supprime le brouillard de guerre sur la main adverse et réduit la variance.",
-   "verdict": "adopté",
-   "status": "intégré",
-   "details": "Option openHands dans createGame, playGame et scripts/duel.js (--open). Déterminisation adaptée dans determinize() sans altérer la pioche cachée."
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "08/10 17:30",
+   "note": "Option openHands dans createGame, playGame et scripts/duel.js (--open). Déterminisation adaptée dans determinize() sans altérer la pioche cachée. Une option de jeu, pas une version : pas de score.",
+   "idea": "Permet de jouer des parties ou des duels offline avec les mains des deux joueurs visibles tout au long de la partie, la pioche restant cachée pour préserver l'aléa. Supprime le brouillard de guerre sur la main adverse et réduit la variance."
   },
   {
    "id": "valet-trefle-rework",
    "name": "Refonte du Valet de Trèfle (V♣) : malus -10 et recyclage",
    "family": "extension",
-   "date": "2026-10-08 18:05",
-   "idea": "Remplacement de l'ancienne règle trop forte « la plus faible gagne » : sur sa borne, malus de 10 points sur la somme en cas d'égalité pour son camp (miroir du Roi de Carreau). Bonus immédiat : défausser une carte en main, piocher une remplaçante, remélanger la défausse dans la pioche, puis pioche normale en fin de tour.",
-   "verdict": "adopté",
-   "status": "intégré",
-   "details": "Implémenté dans figures.js, border-rules.js, figure-moves.js, figure-gains.js. Gestion déterministe du mélange de pioche compatible replays et tests 100% verts."
+   "bench": "duel",
+   "score": null,
+   "lo": null,
+   "hi": null,
+   "verdict": "neutre",
+   "when": "08/10 18:05",
+   "note": "Implémenté dans figures.js, border-rules.js, figure-moves.js, figure-gains.js. Gestion déterministe du mélange de pioche compatible replays et tests 100% verts. Règle finale (10/10) : défausser une carte, en piocher deux, remélanger la défausse, pas de pioche en fin de tour ; sans défausse, la pioche normale. Son équilibre est à remesurer (npm run extension).",
+   "idea": "Remplacement de l'ancienne règle trop forte « la plus faible gagne » : sur sa borne, malus de 10 points sur la somme en cas d'égalité pour son camp (miroir du Roi de Carreau). Bonus immédiat : défausser une carte en main, piocher une remplaçante, remélanger la défausse dans la pioche, puis pioche normale en fin de tour."
   },
   {
    "id": "root-diversity-onefirst",
    "name": "Diversification inconditionnelle (+diverse=1)",
    "family": "racine",
-   "date": "2026-10-08 18:15",
-   "idea": "Sur les tours 1-10, le core sature le Top 8 sur 1 ou 2 cartes seulement (dupliquées sur 4 bornes vides). L'oracle est absent du Top 8 dans 62.4% des débuts de partie ! L'option +diverse=1 sélectionne le meilleur coup de chaque carte distincte en main avant de compléter par les meilleurs gains restants.",
+   "bench": "duel",
+   "score": 47.2,
+   "lo": 41.7,
+   "hi": 52.7,
    "verdict": "neutre",
-   "status": "mesuré",
-   "details": "Banc tours 1-10 : couverture oracle 41.0% vs 28.5% (+44% relatif). Duel sur 250 parties contre la v1.2 (@2000) : 47.2% (IC 41.7% - 52.7%, neutre). L'inclusion inconditionnelle de cartes faibles dilue le budget quand les gains ne sont pas proches.",
-   "duel": {
-    "games": 250,
-    "score": 0.472,
-    "interval": [
-     0.417,
-     0.527
-    ],
-    "against": "experimental@1.2",
-    "verdict": "neutre"
-   }
+   "when": "08/10 18:15",
+   "note": "Banc tours 1-10 : couverture oracle 41.0% vs 28.5% (+44% relatif). Duel sur 250 parties contre la v1.2 (@2000) : 47.2% (IC 41.7% - 52.7%, neutre). L'inclusion inconditionnelle de cartes faibles dilue le budget quand les gains ne sont pas proches.",
+   "idea": "Sur les tours 1-10, le core sature le Top 8 sur 1 ou 2 cartes seulement (dupliquées sur 4 bornes vides). L'oracle est absent du Top 8 dans 62.4% des débuts de partie ! L'option +diverse=1 sélectionne le meilleur coup de chaque carte distincte en main avant de compléter par les meilleurs gains restants."
   },
   {
    "id": "root-diversity-cap2",
    "name": "Diversification au mérite : max 2 bornes par carte (+diverse=2)",
    "family": "racine",
-   "date": "2026-10-08 21:26",
-   "idea": "Réponse D : tri par gain décroissant du core avec un plafond strict de 2 bornes max par carte. Explore au moins 4 cartes distinctes parmi les meilleures sans diluer les simulations.",
+   "bench": "duel",
+   "score": 49,
+   "lo": 46.5,
+   "hi": 51.5,
    "verdict": "neutre",
-   "status": "mesuré",
-   "details": "Banc tours 1-10 : couverture oracle 36.0% (vs 32.0% baseline) avec ~4.8 cartes distinctes dans le Top 8. Duel sur 1 000 parties (4 datasets de 250 parties, 500 paires miroir) contre experimental@1.2 à budget @2000 : score 49.0% [46.5% – 51.5%], statistiquement équivalent à la v1.2. Style de jeu : ouvre les bornes vierges +3.6%, joue au centre +2.7%, moins stéréotypé en début de partie.",
-   "duel": {
-    "games": 1000,
-    "score": 0.49,
-    "interval": [
-     0.465,
-     0.515
-    ],
-    "against": "experimental@1.2",
-    "verdict": "neutre"
-   }
+   "when": "08/10 21:26",
+   "note": "Banc tours 1-10 : couverture oracle 36.0% (vs 32.0% baseline) avec ~4.8 cartes distinctes dans le Top 8. Duel sur 1 000 parties (4 datasets de 250 parties, 500 paires miroir) contre experimental@1.2 à budget @2000 : score 49.0% [46.5% – 51.5%], statistiquement équivalent à la v1.2. Style de jeu : ouvre les bornes vierges +3.6%, joue au centre +2.7%, moins stéréotypé en début de partie.",
+   "idea": "Réponse D : tri par gain décroissant du core avec un plafond strict de 2 bornes max par carte. Explore au moins 4 cartes distinctes parmi les meilleures sans diluer les simulations."
   },
   {
    "id": "tree-widen5-diverse2",
    "name": "Cap 2 partout et canalisation de l'arbre (+widen=5+diverse=2)",
    "family": "racine",
-   "date": "2026-10-09 00:23",
-   "idea": "Application du cap à 2 bornes par carte partout dans l'arbre (à la racine ET sous la racine dans shortlist) combinée à la réduction de widen de 7 à 5. Avec le cap à 2, 5 coups offrent 3 cartes distinctes (plus que les 2 cartes du Top 7 standard) tout en réduisant le branchement de 28 %, permettant à UCB de converger et d'explorer plus en profondeur.",
-   "verdict": "gagne",
-   "status": "mesuré",
-   "details": "Duel sur 500 parties (250 donnes en miroir) contre experimental@1.2 à budget @2000 : score 81.2 % (IC 95 % par paires : 77.8 % – 84.6 %). En commençant : 75.2 % · En second : 87.2 %. Victoire écrasante confirmant que widen=7 était un contournement artificiel de la saturation de cartes du core.",
-   "duel": {
-    "games": 500,
-    "score": 0.812,
-    "interval": [
-     0.778,
-     0.846
-    ],
-    "against": "experimental@1.2",
-    "verdict": "gagne"
-   }
+   "bench": "duel",
+   "score": 81.2,
+   "lo": 77.8,
+   "hi": 84.6,
+   "verdict": "attente",
+   "when": "09/10 00:23",
+   "note": "Duel sur 500 parties (250 donnes en miroir) contre experimental@1.2 à budget @2000 : score 81.2 % (IC 95 % par paires : 77.8 % – 84.6 %). En commençant : 75.2 % · En second : 87.2 %. Victoire écrasante confirmant que widen=7 était un contournement artificiel de la saturation de cartes du core. En attente : 500 parties seulement, quand le cap à 2 à la racine seule faisait 49,0 % sur 1 000. Les quatre duels longs du protocole sont au backlog (VALIDATE_LONG_1 à 4_Borne10).",
+   "idea": "Application du cap à 2 bornes par carte partout dans l'arbre (à la racine ET sous la racine dans shortlist) combinée à la réduction de widen de 7 à 5. Avec le cap à 2, 5 coups offrent 3 cartes distinctes (plus que les 2 cartes du Top 7 standard) tout en réduisant le branchement de 28 %, permettant à UCB de converger et d'explorer plus en profondeur."
   }
  ],
- "manualJobs": []
+ "manualJobs": [],
+ "commitLabels": {
+  "8950651": [
+   "extension",
+   "Le recyclage du V♣ ajusté ; le worker du robot ne plante plus"
+  ],
+  "ad8376c": [
+   "sortie",
+   "L'Expérimental 1.2 sort : ExactEnd12, 52,7 % sur 1 500 parties"
+  ],
+  "6ec8061": [
+   "extension",
+   "Le Valet de Trèfle refait : -10 à égalité et recyclage de la main"
+  ],
+  "6301d81": [
+   "racine",
+   "Mains révélées (--open) et diversité des candidats à la racine (+diverse)"
+  ],
+  "da36b79": [
+   "mains",
+   "Les mains découvertes dans la page, le runner et les replays"
+  ],
+  "80d5951": [
+   "racine",
+   "Le plafond de diversité appliqué aussi dans l'arbre"
+  ],
+  "730462f": [
+   "sortie",
+   "Les notes de version du 1.2 finalisées"
+  ],
+  "fa5929a": [
+   "racine",
+   "Le Borné 1.0 : l'arbre canalisé (widen=5, diverse=2)"
+  ],
+  "7dbc2ac": [
+   "lecteur",
+   "Le menu Versions : Le Borné et le 1.2"
+  ],
+  "4dd673b": [
+   "lecteur",
+   "« Nouvelle partie » sur deux colonnes"
+  ],
+  "1685f6b": [
+   "lecteur",
+   "Le score contre le robot du dessous, à côté de l'Elo"
+  ],
+  "03e6d81": [
+   "lecteur",
+   "Les couleurs des cartes 20 % plus grandes"
+  ],
+  "0c00279": [
+   "outils",
+   "Duels du backlog, essais de puzzles et une partie humaine gardés"
+  ],
+  "fc41f4d": [
+   "racine",
+   "La variante lead2 / 2-1 de la diversité"
+  ],
+  "dcdce41": [
+   "extension",
+   "La défausse du V♣ choisie à la souris"
+  ],
+  "170c0a6": [
+   "extension",
+   "Règles, rapports et PDF à jour pour le V♣"
+  ],
+  "3838a7c": [
+   "lecteur",
+   "Les cartes adverses alignées, les figures rapprochées"
+  ],
+  "02ca937": [
+   "lecteur",
+   "Le bouton « Passer mon tour » quand aucun coup n'est possible"
+  ],
+  "a091bd5": [
+   "lecteur",
+   "Les replays sur trois lignes : mode, durée et date"
+  ],
+  "456a650": [
+   "extension",
+   "Les anciens replays du V♣ (pioche après la pose) se relisent"
+  ],
+  "36b537f": [
+   "lecteur",
+   "La marge des boutons du lecteur de replays"
+  ]
+ },
+ "next": [
+  {
+   "when": "Cette nuit",
+   "title": "Valider Le Borné 1.0 selon le protocole",
+   "text": "Quatre duels longs de 250 parties contre l'Expérimental 1.2 (VALIDATE_LONG_1 à 4_Borne10, au backlog), mis en commun avec npm run versus. Ses 81,2 % viennent de 500 parties : un écart aussi grand demande la mesure complète avant d'en faire la référence."
+  },
+  {
+   "when": "Ensuite",
+   "title": "Rejouer l'équilibre de l'extension",
+   "text": "data/extension.json date d'avant la version finale du Valet de Trèfle : npm run extension la remesure, pioche par pioche."
+  }
+ ]
 }

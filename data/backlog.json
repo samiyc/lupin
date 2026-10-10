@@ -1556,6 +1556,42 @@
       "doneAt": "2026-10-09T19:17",
       "minutes": 33,
       "output": "backlog-runs/2026-10-09-18-44_confirm-lead2-offset1.txt"
+    },
+    {
+      "id": "VALIDATE_LONG_1_Borne10",
+      "command": "npm run duel -- \"ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000\" \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" --long --games 125 --page --offset 1",
+      "estimate": "35 min",
+      "limit": 60,
+      "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 1 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
+      "status": "scheduled",
+      "notBefore": "2026-10-10T23:30:00+02:00"
+    },
+    {
+      "id": "VALIDATE_LONG_2_Borne10",
+      "command": "npm run duel -- \"ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000\" \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" --long --games 125 --page --offset 2",
+      "estimate": "35 min",
+      "limit": 60,
+      "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 2 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
+      "status": "scheduled",
+      "notBefore": "2026-10-10T23:30:00+02:00"
+    },
+    {
+      "id": "VALIDATE_LONG_3_Borne10",
+      "command": "npm run duel -- \"ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000\" \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" --long --games 125 --page --offset 3",
+      "estimate": "35 min",
+      "limit": 60,
+      "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 3 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
+      "status": "scheduled",
+      "notBefore": "2026-10-10T23:30:00+02:00"
+    },
+    {
+      "id": "VALIDATE_LONG_4_Borne10",
+      "command": "npm run duel -- \"ismcts+widen=5+depth=5+core=stfig6+exact=12+diverse=2@2000\" \"ismcts+widen=7+depth=5+core=stfig6+exact=12@2000\" --long --games 125 --page --offset 4",
+      "estimate": "35 min",
+      "limit": 60,
+      "why": "Le Borné 1.0 contre l'Expérimental 1.2, donnes 4 sur 4 : la validation 1k@2k que ses 81,2 % (500 parties) n'ont pas eue (relecture du 10/10).",
+      "status": "scheduled",
+      "notBefore": "2026-10-10T23:30:00+02:00"
     }
   ]
 }

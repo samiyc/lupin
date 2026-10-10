@@ -228,7 +228,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
 <header class="band">
   <div class="wrap">
     <p class="eyebrow">Lopin n°742 · Bornage · Changelog Exp v__VERSION__ · carnet de laboratoire</p>
-    <h1>Le carnet <em>du 1.2</em></h1>
+    <h1>Le carnet <em>du 1.3</em></h1>
     <p class="lead" id="lead"></p>
     <div class="tiles" id="tiles"></div>
     <nav class="toc" aria-label="Sections">
@@ -260,7 +260,7 @@ footer { border-top: 1px solid var(--line); padding-block: 18px 30px; color: var
       <p class="eyebrow">II · Chaque essai</p>
       <h2 id="t-carnet">Le carnet de labo</h2>
     </div>
-    <p>Tous les essais de la période, avec leur score contre le 1.1 (ou son cœur), leur fourchette à 95 % quand elle est connue, et le verdict. La colonne « forêt » place chaque essai autour de la ligne des 50 % : un trait qui la traverse, c'est du bruit. Le banc « écarts rejoués au tour 30 » donne un écart en points, centré sur la même ligne.</p>
+    <p>Tous les essais de la période, avec leur score contre le 1.2 (ou son cœur), leur fourchette à 95 % quand elle est connue, et le verdict. La colonne « forêt » place chaque essai autour de la ligne des 50 % : un trait qui la traverse, c'est du bruit. Le banc « écarts rejoués au tour 30 » donne un écart en points, centré sur la même ligne.</p>
     <div class="panel">
       <div class="notebook-top">
         <div class="filters">
@@ -566,7 +566,7 @@ document.addEventListener("pointerover", (event) => {
 document.addEventListener("pointermove", (event) => { if (!tip.hidden) moveTip(event); });
 document.addEventListener("pointerout", (event) => { if (event.target.closest?.("[data-tip]")) tip.hidden = true; });
 
-const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b", sortie: "#c9a227", reference: "#a0522d" };
+const FAMILY_COLORS = { phases: "#7a8b83", premiere: "#b07d1a", formes: "#8a5a9c", replays: "#1f7a52", jokers: "#c0761f", appats: "#9c4f6a", oracle: "#2b5f8f", fenetres: "#3f8f8a", vitesse: "#b3262f", outils: "#5d6a63", lecteur: "#6a7d2b", sortie: "#c9a227", reference: "#a0522d", racine: "#2b5f8f", extension: "#8a5a9c", mains: "#3f8f8a" };
 const VERDICTS = { gagne: ["gagne", "mark"], tendance: ["tendance", "brass"], neutre: ["neutre", "off-ink"], perd: ["perd", "seal"], attente: ["en attente", "off"] };
 const attempt = (name) => J.attempts.find((a) => a.name === name);
 const measured = J.attempts.filter((a) => a.score !== null);
