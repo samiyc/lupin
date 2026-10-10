@@ -1,0 +1,203 @@
+{
+  "early": {
+    "top10NoCap": {
+      "hits": 222,
+      "total": 500,
+      "pct": 44.4
+    },
+    "top10Cap2": {
+      "hits": 251,
+      "total": 500,
+      "pct": 50.2
+    },
+    "top8NoCap": {
+      "hits": 185,
+      "total": 500,
+      "pct": 37
+    },
+    "top8Cap2": {
+      "hits": 210,
+      "total": 500,
+      "pct": 42
+    },
+    "top8Cap321": {
+      "hits": 214,
+      "total": 500,
+      "pct": 42.8
+    },
+    "top8Hybrid": {
+      "hits": 210,
+      "total": 500,
+      "pct": 42
+    },
+    "top7NoCap": {
+      "hits": 165,
+      "total": 500,
+      "pct": 33
+    },
+    "top7Cap2": {
+      "hits": 189,
+      "total": 500,
+      "pct": 37.8
+    },
+    "top7Cap321": {
+      "hits": 182,
+      "total": 500,
+      "pct": 36.4
+    },
+    "top6Cap2": {
+      "hits": 161,
+      "total": 500,
+      "pct": 32.2
+    },
+    "top6NoCap": {
+      "hits": 146,
+      "total": 500,
+      "pct": 29.2
+    },
+    "top5NoCap": {
+      "hits": 131,
+      "total": 500,
+      "pct": 26.2
+    },
+    "top5Cap2": {
+      "hits": 142,
+      "total": 500,
+      "pct": 28.4
+    }
+  },
+  "mid": {
+    "top10NoCap": {
+      "hits": 318,
+      "total": 500,
+      "pct": 63.6
+    },
+    "top10Cap2": {
+      "hits": 314,
+      "total": 500,
+      "pct": 62.8
+    },
+    "top8NoCap": {
+      "hits": 271,
+      "total": 500,
+      "pct": 54.2
+    },
+    "top8Cap2": {
+      "hits": 266,
+      "total": 500,
+      "pct": 53.2
+    },
+    "top8Cap321": {
+      "hits": 253,
+      "total": 500,
+      "pct": 50.6
+    },
+    "top8Hybrid": {
+      "hits": 266,
+      "total": 500,
+      "pct": 53.2
+    },
+    "top7NoCap": {
+      "hits": 244,
+      "total": 500,
+      "pct": 48.8
+    },
+    "top7Cap2": {
+      "hits": 245,
+      "total": 500,
+      "pct": 49
+    },
+    "top7Cap321": {
+      "hits": 232,
+      "total": 500,
+      "pct": 46.4
+    },
+    "top6Cap2": {
+      "hits": 217,
+      "total": 500,
+      "pct": 43.4
+    },
+    "top6NoCap": {
+      "hits": 215,
+      "total": 500,
+      "pct": 43
+    },
+    "top5NoCap": {
+      "hits": 177,
+      "total": 500,
+      "pct": 35.4
+    },
+    "top5Cap2": {
+      "hits": 184,
+      "total": 500,
+      "pct": 36.8
+    }
+  },
+  "all": {
+    "top10NoCap": {
+      "hits": 540,
+      "total": 1000,
+      "pct": 54
+    },
+    "top10Cap2": {
+      "hits": 565,
+      "total": 1000,
+      "pct": 56.5
+    },
+    "top8NoCap": {
+      "hits": 456,
+      "total": 1000,
+      "pct": 45.6
+    },
+    "top8Cap2": {
+      "hits": 476,
+      "total": 1000,
+      "pct": 47.6
+    },
+    "top8Cap321": {
+      "hits": 467,
+      "total": 1000,
+      "pct": 46.7
+    },
+    "top8Hybrid": {
+      "hits": 476,
+      "total": 1000,
+      "pct": 47.6
+    },
+    "top7NoCap": {
+      "hits": 409,
+      "total": 1000,
+      "pct": 40.9
+    },
+    "top7Cap2": {
+      "hits": 434,
+      "total": 1000,
+      "pct": 43.4
+    },
+    "top7Cap321": {
+      "hits": 414,
+      "total": 1000,
+      "pct": 41.4
+    },
+    "top6Cap2": {
+      "hits": 378,
+      "total": 1000,
+      "pct": 37.8
+    },
+    "top6NoCap": {
+      "hits": 361,
+      "total": 1000,
+      "pct": 36.1
+    },
+    "top5NoCap": {
+      "hits": 308,
+      "total": 1000,
+      "pct": 30.8
+    },
+    "top5Cap2": {
+      "hits": 326,
+      "total": 1000,
+      "pct": 32.6
+    }
+  }
+}

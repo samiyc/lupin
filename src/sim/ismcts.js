@@ -5,9 +5,11 @@ import { applyMove, legalMoves } from "./game.js";
 import { createHalving, parseHalving } from "./halving.js";
 import { createReader, inferredHands, pickHand } from "./infer.js";
 import { determinize, playOut } from "./lookahead.js";
-import { pickCandidates } from "./pick.js";
+import { pickCandidates, resolveDiverse, treeDiverseOf } from "./pick.js";
 import { decidedCount } from "./truncate.js";
 import { moveKey } from "./search.js";
+
+export { resolveDiverse };
 
 /**
  * A tree search over hidden information (single-observer ISMCTS), the 4th
@@ -33,7 +35,7 @@ import { moveKey } from "./search.js";
  *   child's value blends in that shared statistic, weighted √(k / (3n + k)): it
  *   speaks while the child has few visits, and fades as they grow.
  */
-export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7, diverse: 0 });
+export const ISMCTS = Object.freeze({ budget: 400, candidates: 8, widen: 4, depth: 3, exploration: 0.7, diverse: 0, pw: 0, rave: 0, trunc: 0, oddsOf: null });
 
 const newNode = () => ({ visits: 0, wins: 0, avail: 0, children: new Map() });
 
@@ -207,20 +209,20 @@ function iterate(root, ctx) {
 const guessedHands = (state, judge, seed, { infer, readings }) => (infer > 0 ? inferredHands(state, judge, createRng(seed ^ 0x5bd1e995), { size: infer, readings }) : null);
 
 function resolveCtx(state, scored, { seed, treePolicy, policy, firstExploration, ...settings }, deals) {
-  const { candidates, widen, depth, exploration, pw = 0, rave = 0, trunc = 0, oddsOf = null, diverse } = { ...ISMCTS, ...settings };
-  const rootMoves = pickCandidates(scored, candidates, diverse);
+  const cfg = { ...ISMCTS, ...settings };
+  const rootCap = resolveDiverse(cfg.rootDiverse ?? cfg.diverse, state);
+  const rootMoves = pickCandidates(scored, cfg.candidates, rootCap);
   const judge = (treePolicy ?? policy)(createRng(1));
   const phases = parseHalving(settings.halving);
   return {
     state, player: state.current, deals, rootMoves, judge,
     rollout: policy(createRng(deals.int(2 ** 31))),
-    widen, depth, exploration, pw, rave, trunc, oddsOf,
-    amaf: rave > 0 ? new Map() : null,
+    widen: cfg.widen, depth: cfg.depth, exploration: cfg.exploration,
+    pw: cfg.pw, rave: cfg.rave, trunc: cfg.trunc, oddsOf: cfg.oddsOf,
+    amaf: cfg.rave > 0 ? new Map() : null,
     hands: guessedHands(state, judge, seed, settings),
-    firstExploration,
-    halving: phases ? createHalving(phases, rootMoves) : null,
-    iterations: 0,
-    diverse,
+    firstExploration, halving: phases ? createHalving(phases, rootMoves) : null,
+    iterations: 0, diverse: treeDiverseOf(cfg.diverse), rootDiverse: cfg.rootDiverse,
   };
 }
 
@@ -321,8 +323,8 @@ export function ismctsSettings(name) {
     changes.map((change) => {
       const [key, value] = change.split("=");
       if (["core", "shortlist", "rollout", "halving"].includes(key)) return [key, value];
-      if (key === "diverse") return [key, Number.isNaN(Number(value)) ? value : Number(value)];
-      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
+      if (key === "diverse" || key === "rootDiverse") return [key, Number.isNaN(Number(value)) ? value : Number(value)];
+      if (!["depth", "widen", "exploration", "candidates", "sample", "exact", "pivot", "hope", "pw", "rave", "late", "early", "smart", "trunc", "infer", "memory", "lite", "firstExploration", "rootDiverse"].includes(key)) throw new Error(`Variante inconnue : « ${key} »`);
       return [key, Number(value)];
     }),
   );

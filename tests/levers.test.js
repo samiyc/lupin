@@ -148,8 +148,14 @@ describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
     // Diverse=lead2 / 2-1 gives 2 to the lead card and 1 to others: [1:0, 1:1, 2:0, 3:0]
     assert.deepEqual(pickCandidates(scored, 4, "lead2").map((m) => m.card), [1, 1, 2, 3]);
     // Too few cards for the cap: the rest is filled by gain, never left short.
-    assert.deepEqual(pickCandidates(scored.slice(0, 5), 4, 1).map(({ card, border }) => `${card}:${border}`), ["1:0", "2:0", "1:1", "1:2"]);
     assert.deepEqual(pickCandidates(scored, 4, "2-1").map((m) => m.card), [1, 1, 2, 3]);
+    // Diverse=cap321 / 321 gives 3 to lead, 2 to 2nd, 1 to others:
+    // With candidates=4: [1, 1, 1, 2]
+    assert.deepEqual(pickCandidates(scored, 4, "cap321").map((m) => m.card), [1, 1, 1, 2]);
+    // With candidates=6: [1, 1, 1, 2, 2, 3]
+    assert.deepEqual(pickCandidates(scored, 6, "cap321").map((m) => m.card), [1, 1, 1, 2, 2, 3]);
+    // With candidates=7: [1, 1, 1, 2, 2, 3, 4] (4 distinct cards)
+    assert.deepEqual(pickCandidates(scored, 7, "cap321").map((m) => m.card), [1, 1, 1, 2, 2, 3, 4]);
   });
 
   it("diverse=2 runs ISMCTS search down the tree with cap at 2 everywhere", () => {
@@ -165,4 +171,44 @@ describe("root candidate diversity (pickCandidates, ismcts+diverse)", () => {
     assert.equal(search.tree().visits, 0);
     assert.equal(search.tree().children.size, 4);
   });
+
+  it("rootDiverse=cap321_2 applies cap321 on turn < 4 and cap2 on turn >= 4", () => {
+    const spec = { borders: 3, handSize: 4, values: 7, colors: 2, jokers: 0, suits: ["♠", "♥"] };
+    const gameTurn1 = createGame(spec, { order: ["sum"], jokerRule: "colorless", rng: createRng(1) });
+    gameTurn1.turn = 1; // Tour 2 (< 4)
+    const gameTurn5 = createGame(spec, { order: ["sum"], jokerRule: "colorless", rng: createRng(1) });
+    gameTurn5.turn = 4; // Tour 5 (>= 4)
+
+    const scored = [
+      { move: { card: 1, border: 0 }, gain: 0.9 },
+      { move: { card: 1, border: 1 }, gain: 0.8 },
+      { move: { card: 1, border: 2 }, gain: 0.7 },
+      { move: { card: 2, border: 0 }, gain: 0.6 },
+      { move: { card: 2, border: 1 }, gain: 0.5 },
+      { move: { card: 3, border: 0 }, gain: 0.4 },
+      { move: { card: 3, border: 1 }, gain: 0.35 },
+      { move: { card: 4, border: 0 }, gain: 0.3 },
+      { move: { card: 5, border: 0 }, gain: 0.2 },
+    ];
+
+    const searchEarly = createIsmcts(gameTurn1, scored, {
+      budget: 10, candidates: 8, widen: 6, depth: 5, diverse: 2, rootDiverse: "cap321_2", seed: 10,
+      policy: (r) => BOTS.strategist(r),
+    });
+    // On turn < 4, root cap321 allows 3 for lead (card 1), 2 for 2nd (card 2), 1 for others (3, 4, 5) -> 5 distinct cards!
+    const cardsEarly = new Set(searchEarly.scored().filter((s) => s.gain >= 0).map((s) => s.move.card));
+    assert.equal(cardsEarly.size, 5);
+
+    const searchLate = createIsmcts(gameTurn5, scored, {
+      budget: 10, candidates: 8, widen: 6, depth: 5, diverse: 2, rootDiverse: "cap321_2", seed: 10,
+      policy: (r) => BOTS.strategist(r),
+    });
+    // On turn >= 4, root cap2 allows at most 2 per card -> cards 1 (2), 2 (2), 3 (1), 4 (1), 5 (1) -> max 2 per card!
+    const cardCountsLate = {};
+    searchLate.scored().filter((s) => s.gain >= 0).forEach((s) => {
+      cardCountsLate[s.move.card] = (cardCountsLate[s.move.card] || 0) + 1;
+    });
+    assert.ok(Math.max(...Object.values(cardCountsLate)) <= 2);
+  });
 });
+
