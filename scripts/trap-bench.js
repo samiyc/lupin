@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { FAMILIES } from "../src/sim/traps.js";
 import { applyThreadsOption, runPool } from "./lib/pool.js";
+import { tmpFile } from "./lib/tmp.js";
 
 /**
  * `npm run trap-bench -- [<core>] [--build --games N --from S --minutes M] [--threads N|max]`:
@@ -8,7 +9,7 @@ import { applyThreadsOption, runPool } from "./lib/pool.js";
  * core-against-core games of the page's rule; where the pile is empty and the
  * position is won, the 1.1's rollout core either keeps the win or falls into
  * a trap. Built a few thousand games at a time (`--build`, seeds from `--from`),
- * appended to data/trap-bench.json — every trap kept whole with its winning
+ * appended to tmp/trap-bench.json — every trap kept whole with its winning
  * moves, one sound position in three as a control — towards 5 000 traps.
  *
  * Without `--build`, a core (`stfig6` by default, the 1.2's `stfig6ej`…) plays
@@ -19,7 +20,7 @@ import { applyThreadsOption, runPool } from "./lib/pool.js";
 const args = process.argv.slice(2);
 const option = (name, fallback) => (args.includes(name) ? args[args.indexOf(name) + 1] : fallback);
 applyThreadsOption(args);
-const BENCH = new URL("../data/trap-bench.json", import.meta.url);
+const BENCH = tmpFile("trap-bench.json");
 const RESULTS = new URL("../data/trap-bench-results.json", import.meta.url);
 const WORKER = new URL("./lib/trap-bench-worker.js", import.meta.url);
 const readJson = (url, fallback) => readFile(url, "utf8").then((text) => JSON.parse(text), () => fallback);
@@ -40,7 +41,7 @@ async function build() {
   bench.controls.push(...tallies.flatMap((tally) => tally.controls));
   await writeFile(BENCH, `${JSON.stringify(bench)}\n`);
   console.log(`${run.games} parties (graines ${from} à ${from + run.games - 1}), ${run.positions} positions pioche vide, ${run.won} gagnées, ${run.traps} pièges (${pct(run.traps / run.won)}), ${run.deep} trop profondes`);
-  console.log(`Le banc : ${bench.traps.length} pièges, ${bench.controls.length} positions saines → data/trap-bench.json`);
+  console.log(`Le banc : ${bench.traps.length} pièges, ${bench.controls.length} positions saines → tmp/trap-bench.json`);
 }
 
 async function judge() {

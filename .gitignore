@@ -44,8 +44,7 @@ yarn-error.log*
 # Oracle positions (npm run oracle): appended as they land, the summary goes to data/.
 /oracle/
 
-# Raw benchmark generation data (~25MB)
-/data/trap-bench.json
-
-# Raw tree analyses (24 MB): the findings live in docs/analyse-arbre-ismcts.md
-/data/arbre-analysis-results-1000.json
+# Working files a script can write again (scripts/lib/tmp.js): raw dumps,
+# rebuilt benches, exports a report is made from. data/ keeps the versioned
+# facts and summaries, each file under 500 KB (tests/data-budget.test.js).
+/tmp/

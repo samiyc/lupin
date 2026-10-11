@@ -1,6 +1,7 @@
 import fs from 'node:fs';
+import { tmpFile } from "./lib/tmp.js";
 
-const d = JSON.parse(fs.readFileSync('./data/arbre-analysis-results.json', 'utf8'));
+const d = JSON.parse(fs.readFileSync(tmpFile("arbre-analysis-results.json"), 'utf8'));
 const c = JSON.parse(fs.readFileSync('./data/couverture-oracle-1000.json', 'utf8'));
 
 function stats(arr) {

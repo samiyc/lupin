@@ -72,12 +72,18 @@ web/          index.html, style.css, app/: main (tabs), play (Jouer) + play-game
               player moves), explain, replays-api, dom
 data/irl/     essais.json: the 10 real games, transcribed from the photos
 data/replays/ kept replays (versioned); replays/ holds the rest (ignored)
+tmp/          working files a script can write again (ignored): raw dumps, rebuilt
+              benches, exports a report is made from — through tmpFile() (scripts/lib/tmp.js)
 scripts/      build.js (+ lib/pool.js, lib/sim-worker.js), pdf.js,
               play-server.js (+ lib/replay-files.js), duel.js, replays.js
 ```
 
 ## Rules that everything follows
 
+- **`data/` is versioned, `tmp/` is not.** A file a script can regenerate goes to
+  `tmp/` via `tmpFile()`; `data/` keeps facts and summaries, each under 500 KB
+  (`tests/data-budget.test.js`). Never add a `.gitignore` line for one export:
+  a 24 MB tree dump landed in `data/` on 10/10 and went into git.
 - **No number is typed by hand into a report.** `src/report/data.js` computes,
   `analysis.js` derives findings, renderers only format. A rule change is an
   edit to `src/config/` followed by a rebuild.

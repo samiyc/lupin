@@ -5,6 +5,16 @@ script décrit ses options en détail dans son en-tête (`scripts/<nom>.js`) ; l
 recettes de mesure sont dans [validation.md](validation.md). Un test
 (`tests/docs.test.js`) échoue si une commande de `package.json` manque ici.
 
+## Où écrire un fichier
+
+- **`data/`** est dans git : les faits et les résumés que lisent les pages et les docs (carnets, `elo-duels.json`,
+  `backlog.json`, résultats d'un banc…). Chaque fichier y reste **sous 500 Ko** : `tests/data-budget.test.js`
+  échoue sinon.
+- **`tmp/`** est hors de git, une fois pour toutes : tout ce qu'un script peut réécrire (dumps bruts d'arbres,
+  bancs reconstruits, exports dont on tire un rapport). Un script y écrit par `tmpFile("nom.json")`
+  (`scripts/lib/tmp.js`), qui crée le dossier ; aucune ligne à ajouter au `.gitignore`.
+- Les autres dossiers hors git gardent leur rôle : `replays/`, `selfplay/`, `duels/`, `backlog-runs/`, `oracle/`.
+
 ## Le parcours d'une idée
 
 1. **Cœur contre cœur** (quelques secondes) : `npm run duel -- core:<idée> core:stfig6`. Écarte ce qui
@@ -87,7 +97,7 @@ seul (`core:<nom>`, les cœurs de `CORES` dans `src/sim/experimental.js`), ou un
 | `npm run puzzles -- [--minutes N] [--count 50] [--add] [--source duels] [--min-moves N] [--core-fails] [--unique] [--keep 2,3,…]` | des fins de partie résolues exactement, gagnées par peu de coups ; `--min-moves`, `--core-fails`, `--unique` choisissent le genre (les favoris de Sami : beaucoup de coups, le coup du cœur perd), `--keep` ne garde que ces numéros | `web/data/puzzles.json` |
 | `npm run puzzle-stats` | tes tentatives de puzzles, puzzle par puzzle, les plus durs d'abord : résolu du premier coup ou non, le temps, les faux pas (et s'ils tombent dans le piège du cœur), « Révéler » | `data/puzzle-stats.json` (lit `data/puzzle-attempts.jsonl`) |
 | `npm run traps -- [--minutes 20] [--threads N|max]` | les pièges de fin de partie : les fins de partie des duels gardés, résolues exactement ; là où le joueur au trait gagne mais où le favori du cœur des simulations du 1.1 perd, l'erreur est classée par famille (joker, borne perdue, côté complété, borne ouverte, bonne carte et mauvaise borne…) | `data/traps.json`, `data/traps-list.json` |
-| `npm run trap-bench -- [<cœur>] [--build --games N --from S --minutes M]` | le banc de pièges : `--build` tire des parties cœur contre cœur (les fins de partie que jouent les simulations de l'arbre) et garde entières les positions pioche vide où le cœur du 1.1 se trompe, avec leurs coups gagnants, plus des positions saines ; sans `--build`, un cœur y joue : pièges évités par famille, positions saines cassées, en secondes | `data/trap-bench.json`, `data/trap-bench-results.json` |
+| `npm run trap-bench -- [<cœur>] [--build --games N --from S --minutes M]` | le banc de pièges : `--build` tire des parties cœur contre cœur (les fins de partie que jouent les simulations de l'arbre) et garde entières les positions pioche vide où le cœur du 1.1 se trompe, avec leurs coups gagnants, plus des positions saines ; sans `--build`, un cœur y joue : pièges évités par famille, positions saines cassées, en secondes | `tmp/trap-bench.json`, `data/trap-bench-results.json` |
 | `npm run puzzles:immediate` | des puzzles de milieu de partie, gagnés tout de suite par revendication | `web/data/puzzles.json` |
 
 ## La nuit

@@ -1,9 +1,10 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { runPool, workerCount } from "./lib/pool.js";
+import { tmpFile } from "./lib/tmp.js";
 
 const DUEL_FILE = new URL("../duels/2026-10-10-16-59-01_borne@1.0_vs_experimental@1.2.json", import.meta.url);
 const WORKER_URL = new URL("./lib/tree-worker.js", import.meta.url);
-const RESULTS_FILE = new URL("../data/arbre-analysis-results-1000.json", import.meta.url);
+const RESULTS_FILE = tmpFile("arbre-analysis-results-1000.json");
 
 const NEW_ENGINE = {
   key: "w8_d4_r10_c2",
