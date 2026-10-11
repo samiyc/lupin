@@ -88,12 +88,37 @@ Valet de Trèfle face à un Roi de Carreau : le +10 et le -10 s'appliquent indé
   Ce sont ses habitudes qu'on mesure. La prochaine mesure se fait avec l'arbre, qui joue les
   figures dans ses simulations.
 
+## Avec l'arbre, le nouveau Valet de Trèfle (11/10)
+
+`npm run extension -- --engine "ismcts+widen=7+depth=5+core=stfig6@200" --games 500` : l'arbre du 1.1
+à 200 itérations des deux côtés, 500 parties par pioche, à la règle de la page (46 min sur 18 fils,
+`data/extension-tree.json`). Le Valet de Trèfle est celui du 10/10 (-10 à égalité et recyclage) ;
+la colonne « 08/10 » est la même mesure, avec l'ancien Valet (« la plus faible gagne »).
+
+| Figure | Posée dans | Au tour | Borne gagnée | Partie gagnée par qui la pose | 08/10 |
+| --- | --- | --- | --- | --- | --- |
+| Valet de Trèfle | 88 % des parties | 25 | 17 % | 44,0 % ± 3,3 | 62,4 % ± 3,5 |
+| Valet de Carreau | 66 % | 27 | 68 % | **62,4 % ± 3,7** | 59,9 % ± 3,8 |
+| Dame de Cœur | 91 % | 24 | 32 % | 44,4 % ± 3,2 | 43,5 % ± 3,2 |
+| Dame de Pique | 79 % | 25 | 27 % | 41,1 % ± 3,4 | 41,5 % ± 3,5 |
+| Roi de Pique | 72 % | 26 | 40 % | 44,0 % ± 3,6 | 45,4 % ± 3,6 |
+| Roi de Carreau | 83 % | 24 | 31 % | 42,5 % ± 3,4 | 43,7 % ± 3,4 |
+
+- **Le nouveau Valet de Trèfle n'est plus trop fort** : 44,0 % pour qui le pose, contre 62,4 % pour
+  l'ancien. L'arbre le pose bien plus que le cœur (88 % des parties contre 40 %) : les 29 % du cœur
+  seul, le 10/10, le jugeaient trop sévèrement.
+- **Le Valet de Carreau (la Somme) est la seule figure au-dessus de 60 %**, de peu, et son écart
+  avec le 08/10 tient dans la marge : c'est la prochaine à regarder.
+- **Le premier joueur** gagne 48,8 % sans figure, de 45,6 % (Dame de Pique seule) à 53,2 % (Valet
+  de Carreau seul) avec une figure, 49,2 % avec les six. Les parties durent 35 à 37 tours, 41 avec
+  les six.
+
 ## Où en est l'extension (07/10)
 
 - **Le moteur** : fait (`src/core/figures.js`, `src/sim/border-rules.js`, `figure-moves.js`,
   `figure-gains.js`), le jeu de base inchangé au bit près (empreintes identiques).
-- **L'équilibre** : mesuré avec le cœur (ci-dessus) ; la mesure avec l'arbre du 1.1 est en file
-  (`extension-tree`).
+- **L'équilibre** : mesuré avec le cœur, puis avec l'arbre du 1.1 (ci-dessus, 11/10, le nouveau
+  Valet de Trèfle compris).
 - **La page** : le choix de 0 à 6 cartes bonus dans « Nouvelle partie », la figure dessinée en
   petit à droite de son côté, la Dame de Cœur en deux clics.
 - **La règle imprimée** : une 3e page « L'extension » (`regles/regles.pdf`, 3 pages).

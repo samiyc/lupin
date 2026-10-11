@@ -1,8 +1,8 @@
 {
- "built": "2026-10-08T03:43:50.449Z",
+ "built": "2026-10-10T23:43:01.800Z",
  "engine": "ismcts+widen=7+depth=5+core=stfig6@200",
  "gamesPerPile": 500,
- "minutes": 41,
+ "minutes": 46,
  "piles": [
   {
    "config": "none",
@@ -12,11 +12,11 @@
    "turns": 35.266
   },
   {
-   "config": "weakest",
+   "config": "minusTen",
    "label": "V♣ seul",
    "games": 500,
-   "firstPlayer": 0.494,
-   "turns": 36.684
+   "firstPlayer": 0.498,
+   "turns": 35.998
   },
   {
    "config": "sum",
@@ -57,24 +57,24 @@
    "config": "all",
    "label": "les six",
    "games": 500,
-   "firstPlayer": 0.48,
-   "turns": 41.476
+   "firstPlayer": 0.492,
+   "turns": 41.168
   }
  ],
  "figures": [
   {
-   "key": "weakest",
+   "key": "minusTen",
    "text": "V♣",
    "name": "Valet de Trèfle",
-   "rule": "la plus faible gagne",
+   "rule": "-10 à égalité",
    "gamesIn": 1000,
-   "laid": 718,
-   "laidRate": 0.718,
-   "meanTurn": 25.318941504178273,
-   "wonBorder": 0.5557103064066853,
-   "wonGame": 0.6239554317548747,
-   "margin": 0.035431561628724975,
-   "tooStrong": true
+   "laid": 884,
+   "laidRate": 0.884,
+   "meanTurn": 25.27262443438914,
+   "wonBorder": 0.16855203619909503,
+   "wonGame": 0.44004524886877827,
+   "margin": 0.03272314780320568,
+   "tooStrong": false
   },
   {
    "key": "sum",
@@ -82,13 +82,13 @@
    "name": "Valet de Carreau",
    "rule": "la Somme",
    "gamesIn": 1000,
-   "laid": 651,
-   "laidRate": 0.651,
-   "meanTurn": 27.61904761904762,
-   "wonBorder": 0.6497695852534562,
-   "wonGame": 0.5990783410138248,
-   "margin": 0.03764758700934848,
-   "tooStrong": false
+   "laid": 655,
+   "laidRate": 0.655,
+   "meanTurn": 27.18320610687023,
+   "wonBorder": 0.6824427480916031,
+   "wonGame": 0.6244274809160305,
+   "margin": 0.03708713873770056,
+   "tooStrong": true
   },
   {
    "key": "swap",
@@ -96,12 +96,12 @@
    "name": "Dame de Cœur",
    "rule": "l'Échange",
    "gamesIn": 1000,
-   "laid": 912,
-   "laidRate": 0.912,
-   "meanTurn": 24.229166666666668,
-   "wonBorder": 0.3048245614035088,
-   "wonGame": 0.43530701754385964,
-   "margin": 0.032178269284640335,
+   "laid": 905,
+   "laidRate": 0.905,
+   "meanTurn": 23.844198895027624,
+   "wonBorder": 0.3237569060773481,
+   "wonGame": 0.44419889502762433,
+   "margin": 0.032372796827182845,
    "tooStrong": false
   },
   {
@@ -110,12 +110,12 @@
    "name": "Dame de Pique",
    "rule": "le Rappel",
    "gamesIn": 1000,
-   "laid": 781,
-   "laidRate": 0.781,
-   "meanTurn": 25.393085787451984,
-   "wonBorder": 0.2586427656850192,
-   "wonGame": 0.4148527528809219,
-   "margin": 0.03455493860497466,
+   "laid": 786,
+   "laidRate": 0.786,
+   "meanTurn": 25.18702290076336,
+   "wonBorder": 0.2697201017811705,
+   "wonGame": 0.410941475826972,
+   "margin": 0.03439648064228067,
    "tooStrong": false
   },
   {
@@ -124,12 +124,12 @@
    "name": "Roi de Pique",
    "rule": "la Couleur impaire",
    "gamesIn": 1000,
-   "laid": 732,
-   "laidRate": 0.732,
-   "meanTurn": 25.889344262295083,
-   "wonBorder": 0.40846994535519127,
-   "wonGame": 0.453551912568306,
-   "margin": 0.03606521182260011,
+   "laid": 718,
+   "laidRate": 0.718,
+   "meanTurn": 25.80640668523677,
+   "wonBorder": 0.3955431754874652,
+   "wonGame": 0.4401114206128134,
+   "margin": 0.03630997691879147,
    "tooStrong": false
   },
   {
@@ -138,12 +138,12 @@
    "name": "Roi de Carreau",
    "rule": "+10 aux suites",
    "gamesIn": 1000,
-   "laid": 819,
-   "laidRate": 0.819,
-   "meanTurn": 23.945054945054945,
-   "wonBorder": 0.32844932844932845,
-   "wonGame": 0.4371184371184371,
-   "margin": 0.03397208442819818,
+   "laid": 829,
+   "laidRate": 0.829,
+   "meanTurn": 23.721351025331725,
+   "wonBorder": 0.3100120627261761,
+   "wonGame": 0.42460796139927626,
+   "margin": 0.03364765456482682,
    "tooStrong": false
   }
  ]

@@ -44,7 +44,7 @@
    "hi": null,
    "verdict": "neutre",
    "when": "08/10 18:05",
-   "note": "Implémenté dans figures.js, border-rules.js, figure-moves.js, figure-gains.js. Gestion déterministe du mélange de pioche compatible replays et tests 100% verts. Règle finale (10/10) : défausser une carte, en piocher deux, remélanger la défausse, pas de pioche en fin de tour ; sans défausse, la pioche normale. Son équilibre est à remesurer (npm run extension).",
+   "note": "Implémenté dans figures.js, border-rules.js, figure-moves.js, figure-gains.js. Gestion déterministe du mélange de pioche compatible replays et tests 100% verts. Règle finale (10/10) : défausser une carte, en piocher deux, remélanger la défausse, pas de pioche en fin de tour ; sans défausse, la pioche normale. Mesuré avec l'arbre du 1.1 le 11/10 : 44,0 % ± 3,3 pour qui le pose (62,4 % pour l'ancienne règle), posé dans 88 % des parties.",
    "idea": "Remplacement de l'ancienne règle trop forte « la plus faible gagne » : sur sa borne, malus de 10 points sur la somme en cas d'égalité pour son camp (miroir du Roi de Carreau). Bonus immédiat : défausser une carte en main, piocher une remplaçante, remélanger la défausse dans la pioche, puis pioche normale en fin de tour."
   },
   {
@@ -182,8 +182,8 @@
   },
   {
    "when": "Ensuite",
-   "title": "Remesurer le Valet de Trèfle avec l'arbre",
-   "text": "npm run extension a remesuré la version finale le 10/10 avec le cœur : V♣ posé dans 39,6 % des parties, partie gagnée 29,0 % ± 5,0 quand il est posé. La figure paraît faible ; à confirmer avec l'Expérimental."
+   "title": "Le Valet de Carreau, seule figure au-dessus de 60 %",
+   "text": "Remesuré avec l'arbre du 1.1 (@200, 500 parties par pioche) le 11/10 : le nouveau Valet de Trèfle n'est plus trop fort (44,0 % ± 3,3 pour qui le pose, contre 62,4 % pour l'ancien). Le Valet de Carreau (la Somme) passe à 62,4 % ± 3,7 : la seule figure au-dessus du seuil, à regarder (docs/extension.md)."
   }
  ]
 }
